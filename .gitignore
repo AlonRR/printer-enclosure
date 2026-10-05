@@ -1,0 +1,8 @@
+# ESP-IDF output, and the sdkconfig it derives from sdkconfig.defaults: committing that would make a
+# second source of truth that silently wins over the defaults file. (espnow-rssi ignores its own.)
+firmware/espnow-c/build/
+firmware/espnow-c/sdkconfig
+firmware/espnow-c/sdkconfig.old
+
+__pycache__/
+*.pyc
