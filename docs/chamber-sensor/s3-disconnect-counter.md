@@ -18,7 +18,7 @@
 ## The problem: the node says 18, Home Assistant says 50
 
 Measured 10 Sep 2026, and this is the concrete cost of the `total_increasing` contradiction that
-[`f276ff1`](../../firmware/prusa-cam-c/main/wifi.c) fixes:
+[`f276ff1`](https://github.com/AlonRR/3d-printing-toolkit/blob/9f83a0f/firmware/prusa-cam-c/main/wifi.c) fixes:
 
 | Source | Value |
 |---|---|

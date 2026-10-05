@@ -1,0 +1,19 @@
+This repository is licensed under two licences, chosen by the kind of work:
+
+  Code: firmware/ and scripts/
+      Mozilla Public License 2.0 (MPL-2.0)
+      Full text: LICENSES/MPL-2.0.txt
+
+  Everything else: docs/, data/ and the README
+      Creative Commons Attribution 4.0 International (CC-BY-4.0)
+      Full text: LICENSES/CC-BY-4.0.txt
+
+Every file states its own licence, following the REUSE specification
+(https://reuse.software/): an SPDX-License-Identifier header in the file, or
+an entry in REUSE.toml for files that cannot carry one.
+
+These files came from the 3D-printing toolkit, with their history. Versions
+published there before September 2026 were CC-BY-4.0 in full, and anyone who
+already has one of those copies keeps those terms for it.
+
+Copyright 2026 Alon A. Rabinowitz

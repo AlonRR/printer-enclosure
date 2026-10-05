@@ -2,7 +2,7 @@
 
 Knowing what the air inside the printer's Lack enclosure actually does — the chamber air, the
 electronics bay, and the room — so the enclosure can be closed up for ASA without cooking the Einsy.
-It is step 5 of [asa-print-quality.md](asa-print-quality.md), the last and largest item there.
+It is step 5 of [asa-print-quality.md](https://github.com/AlonRR/3d-printing-toolkit/blob/main/docs/asa-print-quality.md), the last and largest item there.
 
 These notes began as a design on 30 Aug 2026 and grew into a record of what was built and measured.
 They are split into the topic pages below; this page says where things stand and where to look.

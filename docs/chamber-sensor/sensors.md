@@ -103,7 +103,7 @@ different sensors on different paths, which is how you find out that one of them
 
 ⚠️ **Unverified: whether PrusaLink exposes the value at all.** The firmware reads it and the
 LCD shows it; whether it appears in PrusaLink's JSON is untested here, and cannot be tested
-right now because [the stored API key is dead](../../README.md) (open item 8). Check that before
+right now because [the stored API key is dead](https://github.com/AlonRR/3d-printing-toolkit/blob/9f83a0f/README.md) (open item 8). Check that before
 building anything on it.
 
 **✅ T1 is a free thermistor input.** On the MK3S the three jacks are T0 = hotend, T2 = heatbed,

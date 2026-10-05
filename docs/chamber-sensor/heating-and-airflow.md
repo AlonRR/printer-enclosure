@@ -38,7 +38,7 @@ expensive to reverse.
 
 ⚠️ **A recirculate-only build closes a door you may want open.** Acetone is ruled out here
 until the filtration system runs in its extract-to-outside mode
-([fdm-design-rules §6a](../fdm-design-rules.md#6a-joining-two-printed-parts)). A design that can
+([fdm-design-rules §6a](https://github.com/AlonRR/3d-printing-toolkit/blob/main/docs/fdm-design-rules.md#6a-joining-two-printed-parts)). A design that can
 *only* recirculate keeps ASA solvent welding and vapour smoothing permanently unavailable — a
 bigger consequence than it looks while drawing ducts.
 
@@ -51,7 +51,7 @@ sits slightly **below room pressure**.
 **Why this is better than either thing that was being argued.** The recirculate-only proposal below
 cleans the chamber air but does nothing about *leakage* — a Lack enclosure is not airtight, and fumes
 escape through every gap regardless of how clean the air inside is. Extract-only exports the chamber
-heat that [asa-print-quality](../asa-print-quality.md) is trying to build. Negative pressure resolves
+heat that [asa-print-quality](https://github.com/AlonRR/3d-printing-toolkit/blob/main/docs/asa-print-quality.md) is trying to build. Negative pressure resolves
 both at once, and it is the principle fume hoods, biosafety cabinets and cleanrooms all run on:
 **below ambient, every leak flows INWARD.** The enclosure no longer has to be sealed to contain
 fumes — it only has to be closed enough that a modest extraction can hold the differential.
@@ -138,7 +138,7 @@ extractor)"*. Flagged on 30 Aug 2026, and rightly so: it has to be
 settled before parts are printed. **This section argues for a change; it does not record a
 decision.** Until Alon rules on it, the documented plan is extraction, and the reason to consider
 recirculating at all is that an extractor removes the very chamber heat
-[asa-print-quality.md](../asa-print-quality.md) is trying to build up.
+[asa-print-quality.md](https://github.com/AlonRR/3d-printing-toolkit/blob/main/docs/asa-print-quality.md) is trying to build up.
 
 ## No second filter in the exhaust duct
 

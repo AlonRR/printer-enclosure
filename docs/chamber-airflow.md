@@ -254,7 +254,7 @@ The negative-pressure design *requires* a continuous inward flow of room-tempera
 is inside the Lack frame** and is the part most at risk from closing the box — ⚠️ the **PSU is already
 outside**, moved there when the enclosure was built, so target the inlet at the Einsy specifically
 rather than at a general "electronics bay" —
-[asa-print-quality](asa-print-quality.md) warns not to seal it for exactly this reason, and
+[asa-print-quality](https://github.com/AlonRR/3d-printing-toolkit/blob/main/docs/asa-print-quality.md) warns not to seal it for exactly this reason, and
 `chamber-sensor.md` puts Einsy trouble at around **60 °C**.
 
 Put the inlet at the electronics bay, and that incoming air becomes **forced cooling of the
