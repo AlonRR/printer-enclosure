@@ -72,10 +72,11 @@ brim, no crossing perimeter`, as [`scad-check.sh`](https://github.com/AlonRR/sca
 ## The air through it
 
 An airflow simulation of the whole stack, standing on the chamber's floor with the chamber's air round it:
-OpenFOAM, the two Deltas on their published curve, the filters as resistances, on the same assumptions
-as [the LunchBox's](lunchbox-scrubber.md#the-air-through-it). How it is built and every assumption in it:
-[`sim/bentobox-cfd/`](../sim/bentobox-cfd/README.md). The HEPA cartridge's grade is not known, and it sets
-the flow more than anything else: the numbers are for a mid-grade one.
+OpenFOAM, the two Deltas on their published curve, the filters as resistances, on [the LunchBox's](lunchbox-scrubber.md#the-air-through-it)
+assumptions but one. The HEPA cartridge's grade is not known, and it sets the flow more than anything
+else: the numbers are for the LunchBox's mid-grade paper, folded into this cartridge's 15 mm pleats instead
+of 19 mm, which leaves it 15/19 of the paper and so 19/15 of the resistance - a judgement, not a
+measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](../sim/bentobox-cfd/README.md).
 
 ![A cut across the box through a fan: the air comes in at the cover, goes down through the HEPA cartridge and the C-MAG's trays, through the fan, and the duct turns it out along the floor](bentobox/cfd/side-fan.png)
 
@@ -92,7 +93,10 @@ the flow more than anything else: the numbers are for a mid-grade one.
 - **The HEPA cartridge sets the flow.** It takes about nine tenths of what the fans can give. Its paper sees
   only the 78 × 37 mm opening of its ledge, where the LunchBox's paper sees 70 cm², more than twice as
   much. So the BentoBox moves about half the LunchBox's air (1.3 to 1.5 L/s with its leaks sealed), and
-  turns the chamber over every 4.5 minutes where the LunchBox does it every 2 to 2.5.
+  turns the chamber over every 4.5 minutes where the LunchBox does it every 2 to 2.5. Without the
+  19/15 for its shallower pleats - the very same resistance per face as the LunchBox's paper - the lumped
+  model gives 0.79 L/s with the section, and the simulation would come out near 0.8: three fifths of the
+  LunchBox's air rather than half.
 - **The section costs little**: 1.5 % of the flow in the simulation, 4 % by the lumped model. The two
   differ by about as much as the meshes of two cases do. Its sheet is evenly loaded, 0.14 m/s on average,
   except over the grid's two long ribs.

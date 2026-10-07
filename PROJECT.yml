@@ -7,4 +7,4 @@ projects:
     state:    active
     next:     "prove one ESP32 can carry fan PWM + tach + I2C, then build it"
     trackers: [docs/chamber-sensor.md, docs/chamber-airflow.md, docs/lunchbox-scrubber.md, docs/bentobox-scrubber.md]
-    review:   2026-10-05
+    review:   2026-10-07

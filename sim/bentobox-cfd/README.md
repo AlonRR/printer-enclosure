@@ -70,5 +70,5 @@ The LunchBox's list, and:
   That one sums a closed box 3 mm round the scrubber; it is a coarse locator, closing to a few per cent.
 - **The mesh check**: on the LunchBox, a 1 mm run moved the filtered flow by 2 %. Here nearly all of the
   pressure drop is in porous zones whose resistance is set exactly, whatever the mesh, and the 2 mm runs
-  agree with the lumped model, which has no mesh, to 2 %. A 1 mm run, `--fine`, is about 2 million cells
+  agree with the lumped model, which has no mesh, within 1 to 4 %. A 1 mm run, `--fine`, is about 2 million cells
   and some two and a half hours on 14 cores.
