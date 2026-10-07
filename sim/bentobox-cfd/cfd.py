@@ -123,8 +123,13 @@ def v3(v, scale=1.0):
 
 def off_grid(z):
     """A measuring plane must not lie on a mesh plane, where it would catch no faces or two rows of them: the
-    mesh's planes are on whole millimetres, so nudge a plane to a quarter past one."""
-    return math.floor(z) + 0.25 if abs(z - round(z)) < 0.24 else z
+    mesh's planes are on whole millimetres, so nudge a plane to a quarter past one. Nor on the cells' centres,
+    for the same reason: a face is caught when the line between its two cells' centres crosses the plane. On
+    the 2 mm mesh those are on whole millimetres too; on the 1 mm mesh they are on the half, where a plane
+    through the section's sheet caught 0.90 L/s of the 0.65 that passes it."""
+    if abs(z - round(z)) < 0.24:
+        return math.floor(z) + 0.25
+    return math.floor(z) + 0.75 if abs(z - math.floor(z) - 0.5) < 0.12 else z
 
 
 def case_files(case, nums, fine, cores):
