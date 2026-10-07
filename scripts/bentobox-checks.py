@@ -52,6 +52,7 @@ CONTROLS = [
     ("check_ring_opening", [("ring_beads", "6")], "the ring's walls thickened over the ledge's opening"),
     # The wedges' width is derived; overriding it moves the wedges and leaves the paper, drawn from its own values.
     ("check_wedges_paper", [("wedge_w", "4")], "the caps' wedges made wider than the paper's channels"),
+    ("check_wedges_paper", [("tooth_w", "4")], "the caps' teeth from below made wider than theirs"),
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.
     ("check_section_carbon", [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
     ("check_ring_holder", [("hepa_stl", '"original/missing.stl"')], "the holder's STL missing - must be reported, not passed"),

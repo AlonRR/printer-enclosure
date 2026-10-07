@@ -97,8 +97,8 @@ else if (view == "cap") color("dimgray") hepa_cap();
 else if (view == "check_ring_holder") intersection() { translate([0, 0, ledge_z + sep]) hepa_ring(); orig(hepa_stl, st[2] - st[1]); }
 // The ring leaves the ledge's opening clear.
 else if (view == "check_ring_opening") intersection() { hepa_ring(); opening_probe(); }
-// The caps' wedges fill the channels open at the top without cutting into the paper: the paper is drawn from
-// its own values, the wedges from their arithmetic, and the wedges are held sep inside their outline.
+// The caps' wedges and teeth stand in the paper's channels without cutting into it: the paper is drawn from
+// its own values, the wedges and teeth from their arithmetic, and they are held sep inside their outline.
 else if (view == "check_wedges_paper") intersection() { paper_pack(); caps_in_place(0, true, sep); }
 else assert(false, str("unknown view: ", view));
 

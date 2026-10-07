@@ -47,15 +47,19 @@ pack_n = max(1, round(ring_in[0] / paper_pitch));   // pleats across: the channe
 pack_pitch = ring_in[0] / pack_n;
 pack_l = ring_in[1] - 2 * cap_plate;                 // the piece's length, along the folds
 // Seen along the folds, the paper's middle runs from a top fold paper_t / 2 under the pack's top face to a
-// bottom fold paper_t / 2 over its bottom, leaning pleat_alpha from upright. A channel open at the top is
-// what lies inside the paper's faces, between two top folds: its sides are those middles moved
-// paper_t / (2 cos(alpha)) sideways, so its bottom is paper_t / (2 sin(alpha)) above the bottom fold's middle
-// - in a narrow pleat, millimetres, not the paper's thickness. Each wedge is that channel's shape.
+// bottom fold paper_t / 2 over its bottom, leaning pleat_alpha from upright. The paper sits in a slot
+// cap_slot wide, centred on that middle, so the side of a wedge or a tooth is the middle moved
+// cap_slot / (2 cos(alpha)) sideways. A wedge, in a channel open at the top, is wedge_w wide at the top face
+// and comes to a point cap_slot / (2 sin(alpha)) above the bottom fold's middle - in a narrow pleat,
+// millimetres, not the slot's width. A tooth, in a channel open at the bottom, is the same shape upside down.
+cap_slot = cap_teeth_below ? paper_t + cap_slot_play : paper_t;
 pleat_alpha = atan((pack_pitch / 2) / (paper_depth - paper_t));
-wedge_w = 2 * ((paper_depth - paper_t / 2) * tan(pleat_alpha) - paper_t / (2 * cos(pleat_alpha)));   // at the top face
-wedge_z0 = paper_t / 2 + paper_t / (2 * sin(pleat_alpha));    // its point, above the pack's bottom face
+wedge_w = 2 * ((paper_depth - paper_t / 2) * tan(pleat_alpha) - cap_slot / (2 * cos(pleat_alpha)));   // at the top face
+wedge_z0 = paper_t / 2 + cap_slot / (2 * sin(pleat_alpha));    // its point, above the pack's bottom face
+tooth_w = 2 * ((paper_depth - paper_t / 2) * tan(pleat_alpha) - cap_slot / (2 * cos(pleat_alpha)));   // at the bottom face
+tooth_z1 = paper_depth - paper_t / 2 - cap_slot / (2 * sin(pleat_alpha));   // its point, above the pack's bottom face
 
-assert(wedge_w > 0, "the pleats are too narrow for the paper's thickness: no channel is left to close");
+assert(wedge_w > 0 && tooth_w > 0, "the pleats are too narrow for the paper's slot: no channel is left to close");
 assert(pack_l > 2 * cap_wedge_l + 10, "the ring is too short for its caps' wedges");
 assert(hepa_ledge + ring_h < hepa_h - 1, "the paper is deeper than the HEPA holder is tall");
 
@@ -76,5 +80,6 @@ warns = [
         str("the paper is ", pack_pitch > paper_pitch ? "stretched" : "squeezed", " ", round(100 * abs(pack_pitch / paper_pitch - 1)),
             " % to fill the ring: ", pack_n, " pleats in ", ring_in[0], " mm"),
     if (wedge_w < 2 * bead - 1e-9) str("the caps' wedges are ", wedge_w, " mm wide at the top, under two beads: they may not print"),
+    if (cap_teeth_below && cap_slot < bead - 1e-9) str("the caps' slot for the paper is ", cap_slot, " mm, under a bead: it may print shut"),
 ];
 for (w = warns) echo(str("WARNING: ", w));

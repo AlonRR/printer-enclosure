@@ -98,13 +98,25 @@ module hepa_ring() {
         translate([-ring_in[0] / 2, -ring_in[1] / 2, -1]) cube([ring_in[0], ring_in[1], ring_h + 2]);
     }
 }
-// One end's wedges, in a plane across the folds: X across, the second axis up the pack from its bottom face.
-// Each fills a channel open at the top (bentobox.layout.scad says how its shape follows from the paper's).
-module wedges_2d(shrink = 0) offset(delta = -shrink) for (i = [0 : pack_n - 1]) {
-    x = -ring_in[0] / 2 + (i + 0.5) * pack_pitch;
-    polygon([[x - wedge_w / 2, ring_h], [x + wedge_w / 2, ring_h], [x, wedge_z0]]);
+// One end's wedges and teeth, in a plane across the folds: X across, the second axis up the pack from its
+// bottom face (bentobox.layout.scad says how their shapes follow from the paper's). A wedge fills each
+// channel open at the top. A tooth fills each channel open at the bottom, under every top fold: the two at
+// the edges, beside the ring's walls, are halves.
+module wedges_2d(shrink = 0) offset(delta = -shrink) {
+    for (i = [0 : pack_n - 1]) {
+        x = -ring_in[0] / 2 + (i + 0.5) * pack_pitch;
+        polygon([[x - wedge_w / 2, ring_h], [x + wedge_w / 2, ring_h], [x, wedge_z0]]);
+    }
+    // The halves stop eps inside the plate's sides: flush with them, the union leaves broken faces there.
+    if (cap_teeth_below) intersection() {
+        translate([-ring_in[0] / 2 - cap_squeeze + eps, 0]) square([ring_in[0] + 2 * (cap_squeeze - eps), ring_h]);
+        for (i = [0 : pack_n]) {
+            x = -ring_in[0] / 2 + i * pack_pitch;
+            polygon([[x - tooth_w / 2, 0], [x + tooth_w / 2, 0], [x, tooth_z1]]);
+        }
+    }
 }
-// A cap, as it prints: its plate on the bed, X across, Y up the pack, the wedges standing up out of it.
+// A cap, as it prints: its plate on the bed, X across, Y up the pack, the wedges and teeth standing up out of it.
 module hepa_cap(wedges_only = false, shrink = 0) {
     w = ring_in[0] + 2 * cap_squeeze;
     if (!wedges_only) translate([-w / 2, 0, 0]) cube([w, ring_h, cap_plate]);
@@ -145,7 +157,8 @@ module cmag_standing(z0) translate([cmag[2] / 2, -cmag[1] / 2, z0]) rotate([0, -
 module say_paper_cut() echo(str("paper: cut a piece ", round(pack_l * 10) / 10, " mm long along the folds and ", pack_n,
     " pleats across, both long edges on a top fold (about ", round(pack_n * paper_pitch * 10) / 10, " mm as folded; the ring spreads it to ",
     round(ring_in[0] * 10) / 10, " mm, ", round(pack_pitch * 100) / 100, " mm a pleat). The caps' wedges are ", round(wedge_w * 100) / 100,
-    " mm wide, their points ", round(wedge_z0 * 10) / 10, " mm above the bottom face"));
+    " mm wide, their points ", round(wedge_z0 * 10) / 10, " mm above the bottom face",
+    cap_teeth_below ? str("; the teeth from below the same, and the paper's slot between them ", round(cap_slot * 100) / 100, " mm") : ""));
 
 if (draw_model) {
     if (part == "section") section();
