@@ -48,8 +48,8 @@ ETA = 0.9                               # what one pass through fresh carbon rem
 # its flow with the section (sim/bentobox-cfd), filled to the guide's line or to the top.
 BOXES = {
     "LunchBox": (150.0, 1.30),
-    "BentoBox, to the line": (55.5, 0.64),
-    "BentoBox, trays full": (222.0, 0.57),
+    "BentoBox, to the line": (55.5, 0.68),
+    "BentoBox, trays full": (222.0, 0.58),
 }
 EMISSIONS = (0.5, 1.5, 3.5)             # mg/h
 

@@ -30,10 +30,24 @@ a blank for the middle fan bay, and M3 tabs added to the originals.
 - To measure the original again: `uv run scad-tools/scripts/stl-inspect.py` (sections, bounds, the 3MF's
   print orientation), from a scad-tools new enough to have it.
 
+## The BentoBox - `models/bentobox/`
+
+ThrutheFrame's BentoBox v2.0 (CC BY-NC-SA 4.0) with its C-MAG carbon magazine, weighed against the LunchBox
+from 7 Oct 2026, and a carbon-dust section for it. [docs/bentobox-scrubber.md](docs/bentobox-scrubber.md) is
+its page. It has the LunchBox's layout: the originals are not in git (`original/README.md`), every value is in
+`bentobox.params.scad`, and `uv run scripts/bentobox-checks.py all` runs its fit checks and controls.
+
+## The airflow simulations - `sim/`
+
+One OpenFOAM case per box, built from its `*-cfd.scad`; each README says how to run it and what a result
+must pass before it is quoted. The two are kept apart on purpose: changing one must not move the other's
+published numbers. A porous zone must be snapped to the mesh (`sim/bentobox-cfd/README.md` says why).
+
 ## Rules for this repository
 
 - Built for public release: no hostnames, private IPs, SSIDs, machine paths or procurement in any file.
 - Commit subjects are `type(scope): summary`, at most 72 characters; `git commit -F <file>`.
-- `REUSE.toml` and SPDX headers: every new file states its licence (`reuse lint` must pass). The remix and
-  its pictures are CC-BY-SA-4.0; code is MPL-2.0; other docs CC-BY-4.0.
+- `REUSE.toml` and SPDX headers: every new file states its licence (`reuse lint` must pass). Each remix and
+  its pictures carry the original's licence: the LunchBox's CC-BY-SA-4.0, the BentoBox's CC-BY-NC-SA-4.0.
+  Code is MPL-2.0; other docs CC-BY-4.0.
 - Pushes go to the `gitea` remote. The `github` remote is public: pushing there is the owner's call.

@@ -30,6 +30,8 @@ for two 40 mm fans, with a carbon-dust filter, gaskets and clamping tabs.
 | [`docs/chamber-sensor.md`](docs/chamber-sensor.md), [`docs/chamber-sensor/`](docs/chamber-sensor/) | the record and the decisions: sensors, the node, boards, WiFi, the SuperMini antenna, measurements, heating and airflow, the build order |
 | [`docs/chamber-airflow.md`](docs/chamber-airflow.md) | the two-fan filter and extraction plan |
 | [`docs/lunchbox-scrubber.md`](docs/lunchbox-scrubber.md), [`models/lunchbox/`](models/lunchbox/), [`scripts/lunchbox-checks.py`](scripts/lunchbox-checks.py) | the filter: the LunchBox remix, its parts, how it goes together, and its fit checks against the original |
+| [`docs/bentobox-scrubber.md`](docs/bentobox-scrubber.md), [`models/bentobox/`](models/bentobox/), [`scripts/bentobox-checks.py`](scripts/bentobox-checks.py) | the other filter weighed against it: BentoBox v2.0 with its carbon magazine, a carbon-dust section for it, and its fit checks |
+| [`sim/`](sim/) | airflow simulations of both filters, OpenFOAM, from their models |
 | [`scad-tools/`](https://github.com/AlonRR/scad-tools) | the shared OpenSCAD tools, a git submodule: `scad-check.sh`, and the xyz arrows the pictures use |
 | [`firmware/chamber-c3.yaml`](firmware/chamber-c3.yaml) | the chamber node in service |
 | [`firmware/chamber-baseline.yaml`](firmware/chamber-baseline.yaml), [`scripts/chamber-log.py`](scripts/chamber-log.py), [`data/chamber-baseline.csv`](data/chamber-baseline.csv) | the first enclosure test, steps 1 and 2 of the build order, and its data |
@@ -70,9 +72,10 @@ rm -rf scad-tools && mkdir scad-tools && curl -sL "https://github.com/AlonRR/sca
 
 ## Licence
 
-Code — `firmware/` and `scripts/` — is MPL-2.0. The LunchBox remix — `models/lunchbox/` and its pictures
+Code — `firmware/`, `scripts/` and `sim/` — is MPL-2.0. The LunchBox remix — `models/lunchbox/` and its pictures
 in `docs/lunchbox/` — is CC-BY-SA-4.0, as the [LunchBox](https://www.printables.com/model/468166) it builds
-on is. Everything else, the docs, the data and this README, is CC-BY-4.0. Every file states its own
+on is. The BentoBox remix — `models/bentobox/` and its pictures in `docs/bentobox/` — is
+CC-BY-NC-SA-4.0, as [BentoBox v2.0](https://www.printables.com/model/272525) is. Everything else, the docs, the data and this README, is CC-BY-4.0. Every file states its own
 licence, following [REUSE](https://reuse.software/): an `SPDX-License-Identifier` header, or an entry in
 `REUSE.toml`. Full texts are in [`LICENSES/`](LICENSES/).
 

@@ -58,7 +58,17 @@ Its 1 mm check meshes it exactly.
 ## What a result must pass before it is quoted
 
 The LunchBox's list, and:
+- **Settled, read on the filters' side.** Here the flow creeps up to its value for a long time, because the
+  HEPA cartridge takes nearly all the fans' pressure: at 1000 iterations it still moved 2.5 % over the last
+  quarter, so a case runs 2000. Judge the drift on the planes the filtered air crosses - the cover, under
+  the HEPA, the housing's floor, the sheet. The fan floor's and the duct's planes sit in the fans' wake and
+  swing by 2 to 3 % however long it runs.
 - **Nothing round the C-MAG**: `round_cmag_L_s` in `summary.json`, the flow down the band between the
   C-MAG's inside and the housing's outside, must be nil, since the model closes it.
 - **Every flow plane agrees**: the cover, under the HEPA, the housing's floor, the fan case's floor and the
   duct's outlet carry the same air, unless `inflow_by_face_L_s` names where the difference goes in or out.
+  That one sums a closed box 3 mm round the scrubber; it is a coarse locator, closing to a few per cent.
+- **The mesh check**: on the LunchBox, a 1 mm run moved the filtered flow by 2 %. Here nearly all of the
+  pressure drop is in porous zones whose resistance is set exactly, whatever the mesh, and the 2 mm runs
+  agree with the lumped model, which has no mesh, to 2 %. A 1 mm run, `--fine`, is about 2 million cells
+  and some two and a half hours on 14 cores.
