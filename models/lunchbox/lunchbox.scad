@@ -9,7 +9,7 @@ whichever part happens to be on screen.
 
 Every part is drawn in the box's frame (see lunchbox.params.scad) and moved to its printing pose only at the
 end, in the part list at the bottom: the body and the fan section print standing as they stand in use, the
-insert too, the lid upside down, and the blank on its face.
+insert too, and the blank on its face. The lid is printed as the original.
 */
 include <lunchbox.layout.scad>
 
@@ -60,25 +60,12 @@ module body_orig() original(body_stl, body_from_stl);
 module lid_orig() original(lid_stl, body_from_stl);
 module fans_orig() original(fans_stl, fans_from_stl);
 
+// The body's tabs are at its bottom only, on the bed in print: the lid is held by its own two screws.
 module body_tabbed() {
     body_orig();
     difference() {
-        for (s = [-1, 1], y = tab_ys) {
-            tab_block(s, y, 0, tab_t);                                // on the bed in print
-            tab_block(s, y, body_h - tab_t, tab_t, under = true);     // at the top in print
-        }
-        for (s = [-1, 1], y = tab_ys) {
-            tab_hole(s, y, -1, tab_t + 2);
-            tab_hole(s, y, body_h - tab_t - chamfer_h - 1, tab_t + chamfer_h + 2);
-            nut_slot(s, y, body_h - tab_t / 2);
-        }
-    }
-}
-module lid_tabbed() {
-    lid_orig();
-    difference() {
-        for (s = [-1, 1], y = tab_ys) tab_block(s, y, lid_tab_z, lid_t);
-        for (s = [-1, 1], y = tab_ys) tab_hole(s, y, lid_tab_z - 1, lid_t + 2);
+        for (s = [-1, 1], y = tab_ys) tab_block(s, y, 0, tab_t);
+        for (s = [-1, 1], y = tab_ys) tab_hole(s, y, -1, tab_t + 2);
     }
 }
 module fans_tabbed() {
@@ -123,11 +110,10 @@ module insert() {
 module ears2d() for (s = [-1, 1], y = tab_ys) mirror([s < 0 ? 1 : 0, 0])
     translate([hx - 1, y - tab_w / 2]) square([tab_l + 1, tab_w]);
 module ear_holes2d() for (s = [-1, 1], y = tab_ys) translate([s * tab_x, y]) circle(d = hole_d);
-// The lid's: a ring on the body's top rim, round the lid's plug.
+// The lid's: a ring on the body's top rim, round the lid's plug, clamped by the lid's own two screws.
 module gasket_lid() linear_extrude(gasket_t) difference() {
-    union() { outline2d(); ears2d(); }
+    outline2d();
     gasket_hole2d();
-    ear_holes2d();
 }
 // The fans': solid under the HEPA paper and over the fans - the paper's bottom edge sits on it, and nothing
 // reaches the fans but through the carbon - and open behind, round the lip, where the air goes down.
@@ -152,8 +138,8 @@ module report() {
     echo(str("insert       : ", ins_h, " mm tall (grid ", grid_t, ", sheet ", sheet_t, ", plenum ", plenum_h, "), tabs ", insert_tabs));
     echo(str("filter sheet : cut ", sheet_cut[0], " x ", sheet_cut[1], " mm; ", round(sheet_area / 100), " cm2, against the channel's ",
              round(chan_area / 100), " cm2"));
-    echo(str("screws       : lid M3 x ", screw_lid, ", fans M3 x ", screw_fans, ", fans with the insert M3 x ", screw_ins,
-             " - each with an M3 nut; ", 4, " per joint"));
+    echo(str("screws       : fan joint M3 x ", screw_fans, ", or M3 x ", screw_ins, " through the insert - 4, each with an M3 nut;",
+             " the lid its own 2, M3 x ", lid_screw_l));
     echo(str("gaskets      : ", gasket_t, " mm TPU"));
     echo(str("blank        : ", blank_w, " x ", blank_h, " x ", blank_d, " mm, for the middle bay"));
     for (w = warns) echo(str("WARNING: ", w));
@@ -170,6 +156,5 @@ if (draw_model) {
     else if (part == "blank") blank();
     else if (part == "body") body_tabbed();
     else if (part == "fans") translate([0, 0, fans_h]) fans_tabbed();
-    else if (part == "lid") translate([0, 0, body_h + lid_t]) rotate([180, 0, 0]) lid_tabbed();
     else assert(false, str("unknown part: ", part));
 }

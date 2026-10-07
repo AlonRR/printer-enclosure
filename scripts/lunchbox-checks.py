@@ -37,7 +37,7 @@ BACKEND = ["--backend=manifold"]
 FITS = [("check_insert_body", [("tabbed", "true")]), ("check_insert_body", [("tabbed", "false"), ("insert_tabs", "false")]),
         ("check_insert_fans", [("tabbed", "true")]), ("check_insert_fans", [("tabbed", "false"), ("insert_tabs", "false")]),
         ("check_blank", []), ("check_gasket_fans", []), ("check_gasket_insert", []), ("check_gasket_lid", []),
-        ("check_tabs_lid", []), ("check_tabs_fans", []), ("check_air_insert", []), ("check_air_plenum", [])]
+        ("check_tabs_fans", []), ("check_air_insert", []), ("check_air_plenum", [])]
 
 # Each control breaks ONE side of its check's relationship - a modelled feature against the original's
 # fixed mesh, or against a probe built from the original's measurements - never both, so that the check
@@ -50,7 +50,6 @@ CONTROLS = [
     ("check_gasket_fans", [("gasket_open_y0", "32")], "the fans' gasket left over the front of the lip"),
     ("check_gasket_insert", [("gasket_open_y0", "32")], "the same gasket against the insert's lip"),
     ("check_gasket_lid", [("gasket_hx", "59.5")], "the lid's gasket ring made wider, onto the lid's plug"),
-    ("check_tabs_lid", [("lid_tab_z", "116.43")], "the lid's tabs dropped 1 mm, into the body's"),
     ("check_tabs_fans", [("fans_tab_z0", "-5")], "the fan section's tabs raised 1 mm, into the body's"),
     ("check_air_insert", [("cav_y1", "50")], "the insert's cavity cut short of the channel's back"),
     ("check_air_plenum", [("probe_h", "30")], "the probe sent down to the plenum's curved floor"),

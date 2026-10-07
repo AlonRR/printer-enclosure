@@ -14,8 +14,9 @@ underneath, whose fans blow it out at the front. This remix adds, for a build wi
               stops carbon dust reaching the fans. It mates with the unmodified parts on both faces.
   gaskets     flat TPU, one for the lid joint and one for each joint at the fans.
   blank       closes the fan section's middle bay.
-  tabs        two per short end at every joint, clamped with an M3 screw and a nut in a side slot. The
-              body, the lid and the fan section get them added to the original STLs.
+  tabs        two per short end at the fan joint, clamped with an M3 screw and a nut in a side slot. The
+              body and the fan section get them added to the original STLs. The lid has none: it keeps
+              its own two screws, which clamp its gasket (Alon, 7 Oct 2026).
 
 COORDINATES are the box as it stands: X along its length, Y from the front (the grid, where air comes in)
 to the back, Z up, with Z = 0 at the joint between the body and the fan section. X is centred.
@@ -26,7 +27,7 @@ original/ - see the README there.
 */
 
 /* [Which part] */
-part = "insert";   /* "insert", "gasket-lid", "gasket-fans", "blank", "body", "lid" or "fans". The last three are the originals with tabs added, and need original/. lunchbox-assembly.scad shows them together. */
+part = "insert";   /* "insert", "gasket-lid", "gasket-fans", "blank", "body" or "fans". The last two are the originals with tabs added, and need original/. lunchbox-assembly.scad shows them together. */
 insert_tabs = true;   /* false makes the insert a plain drop-in, for a LunchBox built without tabs. */
 /* [The original LunchBox - measured by sectioning its STLs, 6-7 Oct 2026] */
 // All MEASURED: horizontal sections of filter_caddy_110x74x21.stl (the body), filter_lid_110x74x21.stl and
@@ -38,7 +39,8 @@ lb_r    = 2;        /* The outline's corner radius. */
 lb_wall = 2;        /* The body's wall; the lid's plug fills the inside of it, 120 x 56. */
 body_h  = 117.43;   /* The body, from the fan joint to the lid joint. */
 lid_t   = 2;        /* The lid's plate. Its plug, lid_t more, sits inside the body's top. */
-lid_screw_ys = [5, 55];   /* The lid's own two screws, at X = 0. They stay. */
+lid_screw_ys = [5, 55];   /* The lid's own two screws, at X = 0. They clamp the lid's gasket. Their 3 mm holes in the body start in bosses 5.4 to 7.9 mm below its rim and run at least 12.5 mm deep (MEASURED: cut every 2.5 mm, 7 Oct 2026). */
+lid_screw_l  = 20;  /* So M3 x 20: the lid's top stands 3 mm above the rim on its gasket, so the tip ends 17 mm below it - 9 to 11.6 mm into a boss, inside the hole. */
 groove_w = 2.6;     /* The channel in the body's bottom face, inside its wall, that the fan section's lip seats in... */
 groove_h = 2;       /* ...and its depth. */
 hepa_hw  = 55;      /* The HEPA holder's opening in the body's bottom face: X +/-55, from the wall to Y = hepa_y1. */
@@ -68,7 +70,7 @@ gasket_t = 1.0;     /* Five layers. Every joint's stack height counts it, uncomp
 tab_ys    = [15, 45];   /* The two tabs on each short end, by Y. Alon, Q81, 7 Oct 2026: two per side. */
 tab_l     = 9;      /* How far a tab stands out from the end wall. */
 tab_w     = 10;     /* Its width, along Y. */
-tab_t     = 6;      /* Its height, on the body and the fan section. The lid's tab is the lid's plate. */
+tab_t     = 6;      /* Its height, on the body and on the fan section. */
 tab_axis  = 4.5;    /* The screw, this far out from the end wall: the nut's slot then stops about 1 mm short of it. */
 screw_d   = 3.0;    /* M3. */
 nut_af    = 5.5;    /* The M3 hex nut, across its flats - ISO 4032... */

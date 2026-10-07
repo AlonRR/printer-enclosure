@@ -39,7 +39,7 @@ module piece(c) color(c) if (view == "section")
 module stack(g, ex) {
     z = stack_z(g, ex);
     piece("tan") if (tabbed) body_tabbed(); else body_orig();
-    piece("steelblue") translate([0, 0, z[2] - body_h]) if (tabbed) lid_tabbed(); else lid_orig();
+    piece("steelblue") translate([0, 0, z[2] - body_h]) lid_orig();
     piece("orange") translate([0, 0, z[1]]) if (tabbed) fans_tabbed(); else fans_orig();
     piece("dimgray") translate([0, 0, z[1]]) blank_in_bay();
     if (with_insert) piece("seagreen") translate([0, 0, z[0]]) insert();
@@ -77,8 +77,7 @@ else if (view == "check_blank") intersection() { fans_orig(); blank_in_bay(sep);
 else if (view == "check_gasket_fans") intersection() { fans_orig(); translate([0, 0, sep]) gasket_fans(); }
 else if (view == "check_gasket_insert") intersection() { insert(); translate([0, 0, sep]) gasket_fans(); }
 else if (view == "check_gasket_lid") intersection() { lid_orig(); translate([0, 0, body_h - gasket_t - sep]) gasket_lid(); }
-// The tabs of each joint meet face to face, and nothing else of one part enters the other.
-else if (view == "check_tabs_lid") intersection() { body_tabbed(); translate([0, 0, sep]) lid_tabbed(); }
+// The tabs of the fan joint meet face to face, and nothing else of one part enters the other.
 else if (view == "check_tabs_fans") intersection() { body_tabbed(); translate([0, 0, -sep]) fans_tabbed(); }
 // The air's way stays open: through the insert, and into the fan section under it.
 else if (view == "check_air_insert") intersection() { insert(); air_probe(); }

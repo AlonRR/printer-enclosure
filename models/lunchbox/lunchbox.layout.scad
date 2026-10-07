@@ -69,17 +69,14 @@ nut_slot_w = nut_af + 2 * (fdm_hole_comp + nut_fit);
 nut_slot_h = up_to_layer(nut_h + 2 * nut_fit);
 nut_inner  = tab_axis - (nut_ac / 2 + fdm_hole_comp + nut_fit);   // the slot's inner end, from the end wall
 chamfer_h  = tab_l;                             // the 45-degree support under a tab that overhangs in print
-lid_tab_z   = body_h;                           // the lid's tabs: level with its plate
 fans_tab_z0 = -tab_t;                           // the fan section's tabs: under its rim
 
-// The screw stacks, head to tip. A nut sits mid-way up the lower tab of its joint.
+// The screw stacks at the fan joint, head to tip. The nut sits mid-way up the fan section's tab.
 nut_drop = (tab_t - nut_slot_h) / 2;            // from the lower tab's top to the nut's top
 function need(above) = above + nut_drop + nut_h + screw_tip;
 function room(above) = above + tab_t + chamfer_h;
-stack_lid  = lid_t + gasket_t;                                  // lid tab, gasket, then the body's tab
 stack_fans = tab_t + gasket_t;                                  // body tab, gasket, then the fan section's
 stack_ins  = tab_t + gasket_t + ins_h + gasket_t;               // ... with the insert between
-screw_lid  = first_fit(need(stack_lid), room(stack_lid), screw_lengths);
 screw_fans = first_fit(need(stack_fans), room(stack_fans), screw_lengths);
 screw_ins  = first_fit(need(stack_ins), room(stack_ins), screw_lengths);
 
@@ -106,7 +103,7 @@ assert(sheet_t > 0 && plenum_h > 0 && grid_t > 0, "the insert's layers must all 
 assert(nut_inner > 0, str("the nut's slot cuts into the original's end wall (", nut_inner, ")"));
 assert(tab_w / 2 - nut_slot_w / 2 >= bead - 1e-9, "the nut's slot breaks out of the tab's sides");
 assert(nut_drop >= bead - 1e-9, "the nut's slot breaks out of the tab's top or bottom");
-assert(!is_undef(screw_lid) && !is_undef(screw_fans) && !is_undef(screw_ins), "no listed screw length fits a stack");
+assert(!is_undef(screw_fans) && !is_undef(screw_ins), "no listed screw length fits a stack");
 assert(gasket_clear > 0 && gasket_hx < hx - 4 * fdm_layer_h, "the gaskets' ring has no width left");
 assert(blank_w > 2 * blank_wall && blank_d > blank_face, "the blank has no inside");
 
