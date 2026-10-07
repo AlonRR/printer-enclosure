@@ -12,6 +12,7 @@ fit checks that scripts/bentobox-checks.py renders. Needs the originals in origi
   view = "section"    the section alone, as it prints - the one view that needs no original
   view = "frame"      the frame for your own HEPA paper, pulled apart: the ring, the paper, the two caps
   view = "cap"        one cap, as it prints
+  view = "paper_cut"  flat, across the folds: the ring's middle with the paper, beside a cap's face with it
   view = "check_..."  one fit check: a solid that must come out EMPTY. Each is an intersection of two
                       parts that should only touch; anything left is two parts in the same place.
 */
@@ -71,6 +72,22 @@ module frame_exploded(ex) {
     color("dimgray") for (a = [0, 180]) rotate([0, 0, a]) translate([0, ex, ring_h + ex]) caps_in_place_one();
 }
 module caps_in_place_one() translate([0, ring_in[1] / 2, 0]) rotate([90, 0, 0]) hepa_cap();
+// Across the folds, flat: on the left the ring's middle - its long walls, the strips on their feet, the
+// paper with a flap in each slot; on the right a cap's face, its wedges and teeth round the paper's end.
+module paper_cut() {
+    gap = ring_out[0] / 2 + 4;
+    translate([-gap, 0]) {
+        color("orange") {
+            for (m = [0, 1]) mirror([m, 0]) translate([-ring_out[0] / 2, 0]) square([ring_wall, ring_h]);
+            if (paper_flaps) strips_2d();
+        }
+        color("black") paper_2d();
+    }
+    translate([gap, 0]) {
+        color("silver") wedges_2d();
+        color("black") paper_2d();
+    }
+}
 
 if (view == "stack") stack(0);
 else if (view == "exploded") stack(explode);
@@ -93,13 +110,18 @@ else if (view == "check_magnets_bottom") intersection() {
 else if (view == "check_air") intersection() { section(); air_probe(); }
 else if (view == "frame") frame_exploded(explode);
 else if (view == "cap") color("dimgray") hepa_cap();
+else if (view == "paper_cut") paper_cut();
 // The ring stands in the HEPA holder's pocket, on its ledge.
 else if (view == "check_ring_holder") intersection() { translate([0, 0, ledge_z + sep]) hepa_ring(); orig(hepa_stl, st[2] - st[1]); }
-// The ring leaves the ledge's opening clear.
-else if (view == "check_ring_opening") intersection() { hepa_ring(); opening_probe(); }
+// The ring's walls stand on the ledge, clear of its opening. The strips reach over it on purpose.
+else if (view == "check_ring_opening") intersection() { hepa_ring_walls(); opening_probe(); }
 // The caps' wedges and teeth stand in the paper's channels without cutting into it: the paper is drawn from
 // its own values, the wedges and teeth from their arithmetic, and they are held sep inside their outline.
 else if (view == "check_wedges_paper") intersection() { paper_pack(); caps_in_place(0, true, sep); }
+// The ring's walls and strips clear the paper: each flap in its slot, each strip under the first pleat.
+else if (view == "check_ring_paper") intersection() { paper_pack(); hepa_ring(); }
+// The caps' teeth, cut back, clear the strips where both stand in the channel beside a flap.
+else if (view == "check_caps_strips") intersection() { caps_in_place(); hepa_ring_strips(); }
 else assert(false, str("unknown view: ", view));
 
 if (show_axes && (view == "stack" || view == "exploded")) axes([-bb_w / 2 - 30, -bb_l / 2, 0], l = 25);
@@ -107,12 +129,15 @@ axes_cam = [55, 0, 30];   // the picture's --camera angles, so the arrows' label
 if (show_axes && view == "section") axes([-bb_w / 2 - 20, -bb_l / 2, 0], l = 15, cam = axes_cam);
 if (show_axes && view == "frame") axes([-ring_out[0] / 2 - 25, -ring_out[1] / 2 - explode, 0], l = 15, cam = axes_cam);
 if (show_axes && view == "cap") axes([-ring_in[0] / 2 - 15, -5, 0], l = 8, cam = axes_cam);
-// The cut is flat, so it gets a flat key: across is +y (along the box), up is +z.
-if (show_axes && view == "cut") color("black") translate([-bb_l / 2 - 30, 10]) {
+// A flat view gets a flat key: an arrow across, labelled with the box's axis it shows, and +z up.
+module flat_key(across) color("black") {
     translate([0, -0.6]) square([16, 1.2]);
     translate([16, 0]) polygon([[0, -2.5], [5, 0], [0, 2.5]]);
     translate([-0.6, 0]) square([1.2, 16]);
     translate([0, 16]) polygon([[-2.5, 0], [2.5, 0], [0, 5]]);
-    translate([23, 0]) text("+y", size = 3.5, valign = "center");
+    translate([23, 0]) text(across, size = 3.5, valign = "center");
     translate([0, 24]) text("+z up", size = 3.5, halign = "center");
 }
+// The cut's across is +y, along the box; the paper's cut's is +x, across it.
+if (show_axes && view == "cut") translate([-bb_l / 2 - 30, 10]) flat_key("+y");
+if (show_axes && view == "paper_cut") translate([-ring_out[0] - 4 - 22, 2]) scale(0.5) flat_key("+x");

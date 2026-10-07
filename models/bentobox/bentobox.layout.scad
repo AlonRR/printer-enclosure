@@ -36,28 +36,49 @@ cmag_z0 = carbon_floor;                                         // the C-MAG's b
 cmag_layers = [for (i = [0 : 2]) cmag_grills[i] + cmag_grill_t / 2];
 
 // The frame for your own HEPA paper. The ring stands on the HEPA holder's ledge, in its pocket; the paper
-// fills it with its folds along Y, and a cap closes each end. The piece's two long edges are cut along a
-// top fold, so it holds a whole number of pleats across: as many as come nearest the ring's inside,
-// stretched or squeezed to fill it, as a pleated pack will - and the caps' wedges are spaced to match.
+// fills it with its folds along Y, and a cap closes each end. Across, the piece holds a whole number of
+// pleats: as many as come nearest filling the ring, stretched or squeezed to fill it, as a pleated pack
+// will - and the caps' wedges and teeth are spaced to match. Its long edges are cut on a top fold, which
+// rests against the ring's wall; or, with paper_flaps, on a bottom fold, so each side keeps half a pleat more
+// as a flap whose cut end stands in a slot at the wall's foot.
 ring_wall = ring_beads * bead;
 ring_out = [in_w - 2 * ring_play, hepa_pocket_l - 2 * ring_play];   // X, Y
 ring_in = ring_out - 2 * [ring_wall, ring_wall];
 ring_h = paper_depth;
-pack_n = max(1, round(ring_in[0] / paper_pitch));   // pleats across: the channels open at the top
-pack_pitch = ring_in[0] / pack_n;
+slot_w = cap_teeth_below || paper_flaps ? paper_t + slot_play : paper_t;   // a slot the paper sits in
+pack_edge = paper_flaps ? ring_in[0] / 2 - slot_w / 2 : ring_in[0] / 2;   // the paper's middle at its long edges, +/- X
+pack_halves = paper_flaps ? 1 : 0;                   // the flaps: a half pleat each side
+pack_n = max(1, round(2 * pack_edge / paper_pitch) - pack_halves);   // full pleats across
+pack_pitch = 2 * pack_edge / (pack_n + pack_halves);
 pack_l = ring_in[1] - 2 * cap_plate;                 // the piece's length, along the folds
+// The folds across the piece, from one long edge to the other: the i-th is at fold_x(i), a top fold or a
+// bottom one. With flaps, the first and the last are the flaps' cut ends, at the walls' feet.
+fold_last = 2 * (pack_n + pack_halves);
+function fold_x(i) = -pack_edge + i * pack_pitch / 2;
+function fold_top(i) = (i % 2 == 0) != paper_flaps;
 // Seen along the folds, the paper's middle runs from a top fold paper_t / 2 under the pack's top face to a
 // bottom fold paper_t / 2 over its bottom, leaning pleat_alpha from upright. The paper sits in a slot
-// cap_slot wide, centred on that middle, so the side of a wedge or a tooth is the middle moved
-// cap_slot / (2 cos(alpha)) sideways. A wedge, in a channel open at the top, is wedge_w wide at the top face
-// and comes to a point cap_slot / (2 sin(alpha)) above the bottom fold's middle - in a narrow pleat,
+// slot_w wide, centred on that middle, so the side of a wedge or a tooth is the middle moved
+// slot_w / (2 cos(alpha)) sideways. A wedge, in a channel open at the top, is wedge_w wide at the top face
+// and comes to a point slot_w / (2 sin(alpha)) above the bottom fold's middle - in a narrow pleat,
 // millimetres, not the slot's width. A tooth, in a channel open at the bottom, is the same shape upside down.
-cap_slot = cap_teeth_below ? paper_t + cap_slot_play : paper_t;
 pleat_alpha = atan((pack_pitch / 2) / (paper_depth - paper_t));
-wedge_w = 2 * ((paper_depth - paper_t / 2) * tan(pleat_alpha) - cap_slot / (2 * cos(pleat_alpha)));   // at the top face
-wedge_z0 = paper_t / 2 + cap_slot / (2 * sin(pleat_alpha));    // its point, above the pack's bottom face
-tooth_w = 2 * ((paper_depth - paper_t / 2) * tan(pleat_alpha) - cap_slot / (2 * cos(pleat_alpha)));   // at the bottom face
-tooth_z1 = paper_depth - paper_t / 2 - cap_slot / (2 * sin(pleat_alpha));   // its point, above the pack's bottom face
+wedge_w = 2 * ((paper_depth - paper_t / 2) * tan(pleat_alpha) - slot_w / (2 * cos(pleat_alpha)));   // at the top face
+wedge_z0 = paper_t / 2 + slot_w / (2 * sin(pleat_alpha));    // its point, above the pack's bottom face
+tooth_w = 2 * ((paper_depth - paper_t / 2) * tan(pleat_alpha) - slot_w / (2 * cos(pleat_alpha)));   // at the bottom face
+tooth_z1 = paper_depth - paper_t / 2 - slot_w / (2 * sin(pleat_alpha));   // its point, above the pack's bottom face
+// With flaps: the strip on the left wall's foot, seen along the folds. A floor two layers thick closes the
+// slot's bottom, and the flap's cut end stands on it; the strip's face is the slot's clean side, parallel to
+// the flap. strip_x(z) is that face, ring_strip_beads further in the strip's other side. The caps' teeth are
+// cut back strip_notch clear of it, at the ends, where both stand in the same channel.
+strip_floor = 2 * fdm_layer_h;
+strip_w = ring_strip_beads * bead;
+function strip_x(z) = -pack_edge + (z - paper_t / 2) * tan(pleat_alpha) + slot_w / (2 * cos(pleat_alpha));
+strip_notch = slot_play / 2;
+// The dirty sliver between each flap and its wall, which the caps close with a half wedge: wide at the top,
+// coming to nothing near the bottom, where the flap meets the wall.
+half_wedge_w = strip_x(ring_h) - slot_w / cos(pleat_alpha) + ring_in[0] / 2;   // at the top face
+half_wedge_z0 = paper_t / 2 + slot_w * (1 / cos(pleat_alpha) - 1) / (2 * tan(pleat_alpha));   // where it meets the wall
 
 assert(wedge_w > 0 && tooth_w > 0, "the pleats are too narrow for the paper's slot: no channel is left to close");
 assert(pack_l > 2 * cap_wedge_l + 10, "the ring is too short for its caps' wedges");
@@ -80,6 +101,6 @@ warns = [
         str("the paper is ", pack_pitch > paper_pitch ? "stretched" : "squeezed", " ", round(100 * abs(pack_pitch / paper_pitch - 1)),
             " % to fill the ring: ", pack_n, " pleats in ", ring_in[0], " mm"),
     if (wedge_w < 2 * bead - 1e-9) str("the caps' wedges are ", wedge_w, " mm wide at the top, under two beads: they may not print"),
-    if (cap_teeth_below && cap_slot < bead - 1e-9) str("the caps' slot for the paper is ", cap_slot, " mm, under a bead: it may print shut"),
+    if (slot_w > paper_t && slot_w < bead - 1e-9) str("the slots for the paper are ", slot_w, " mm, under a bead: they may print shut"),
 ];
 for (w = warns) echo(str("WARNING: ", w));

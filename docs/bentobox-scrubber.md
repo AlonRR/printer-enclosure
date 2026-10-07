@@ -64,7 +64,8 @@ joint rather than changing it.
 
 Pleated HEPA paper off a roll can take the bought cartridge's place. The holder's pocket is 82 × 40.8 mm,
 straight for 15.6 mm above the ledge, its ends flaring out above that, so a pack 20 mm deep stands in it.
-A ring holds the paper there, and a TPU cap on each end closes its pleats' ends.
+A ring holds the paper there, with a slot along the foot of each long wall for the paper's edge, and a
+TPU cap on each end closes its pleats' ends.
 
 ![The frame pulled apart: the ring, the cut paper above it with its folds running end to end, a cap drawn back from each end](bentobox/paper-frame.png)
 
@@ -76,19 +77,26 @@ A ring holds the paper there, and a TPU cap on each end closes its pleats' ends.
   is the one at higher pressure, by about 85 Pa, so the air presses the paper onto the teeth and closes
   the slot; with wedges alone it would push the paper away from them. The teeth also hold up the paper's
   ends, which stand over the ledge's opening, and they cover no paper the wedges do not already cover.
+- **The long sides.** The paper runs on half a pleat past its last top fold, down to the foot of the
+  ring's wall, as a flap. Its cut end stands in a slot between the wall and a strip moulded onto the wall's
+  foot, 8 mm tall. Dirty air between the flap and the wall presses the flap onto the strip, the whole
+  length of the ring: a strip of contact, not the line of a fold against a wall. At each end the flap runs
+  on into the cap's slot, so the seal goes round the corner.
+
+  ![Across the folds, flat: on the left the ring's middle, its walls and the strips at their feet, each flap down in its slot; on the right a cap's face, its wedges and teeth round the paper, notched where the strips pass](bentobox/paper-cut.png)
 - **Cutting the paper.** For this build's paper, 20 mm deep with about 3.3 mm between top folds: a piece
-  **75.7 mm long along the folds, and 11 pleats across**, both long edges cut along a top fold. Count the
-  pleats rather than measuring the width: folded, that is about 36.7 mm, and the ring spreads it to 37.7.
-  The roll's 300 × 100 mm pack gives six pieces.
+  **75.7 mm long along the folds, and 10 pleats across with half a pleat more each side** - both long
+  edges cut along a bottom fold. Count the pleats rather than measuring the width: folded, that is about
+  36.7 mm, and the ring spreads it to 37.2. The roll's 300 × 100 mm pack gives six pieces.
 - **Putting it together.** Push a cap onto each end of the piece, with its wedges at the top, where the
-  air comes in, and every pleat wall in its slot. Drop the three into the ring; the ring stands on the
-  ledge like the cartridge. To take it out, lift the holder off the stack and tip it over. Print one cap
-  first and try it on an offcut: the slot is barely wider than a printed line, and how well TPU keeps it
-  open is for the print to show.
-- **If dust gets round it.** Where the paper's outer folds meet the ring's long walls nothing is glued. If a
-  dusty streak ever shows along an edge on the paper's underside, run hot glue along that seam: standard
-  sticks, not low-temperature ones, since the chamber runs at about 45 °C during an ASA print. Hot glue
-  peels off the ASA ring, so the ring can still be used again.
+  air comes in, and every pleat wall in its slot. Lower the three into the ring, each flap running down
+  between the wall and its strip; the ring stands on the ledge like the cartridge. To take it out, lift the
+  holder off the stack and tip it over. Print one cap first and try it on an offcut: the slots are barely
+  wider than a printed line, and how well TPU keeps them open is for the print to show.
+- **If dust gets round it.** Nothing is glued. If a dusty streak ever shows along an edge of the paper's
+  underside, run hot glue along that flap in its slot: standard sticks, not low-temperature ones, since the
+  chamber runs at about 45 °C during an ASA print. Hot glue peels off the ASA ring, so the ring can still
+  be used again.
 
 ![A cap as it prints: the plate on the bed, the wedges and teeth standing up out of it, the zigzag slot between them](bentobox/paper-cap.png)
 
@@ -96,9 +104,11 @@ A ring holds the paper there, and a TPU cap on each end closes its pleats' ends.
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) - `paper_depth` (fold to fold),
 `paper_pitch` (top fold to top fold) and `paper_t` (its thickness) - and export the ring and the cap again.
 The ring stands as tall as the paper is deep. The pleats across are the whole number nearest to filling
-the ring, and the wedges and teeth are spaced to match; rendering either part echoes the new cut. The slot
-is `cap_slot_play`, 0.2 mm, wider than `paper_t`: paper thicker than the slot will not go in, and thinner
-paper sits loose and is pressed onto the teeth. `cap_teeth_below = false` leaves the wedges alone.
+the ring, and the wedges, teeth and strips are placed to match; rendering either part echoes the new cut.
+The slots are `slot_play`, 0.2 mm, wider than `paper_t`: paper thicker than a slot will not go in, and
+thinner paper sits loose and is pressed onto the teeth and the strips. `paper_flaps = false` cuts the long
+edges on a top fold instead, resting against the wall with no strips; `cap_teeth_below = false` leaves
+the wedges alone.
 
 **Still to confirm** for this build's paper: the 3.3 mm between folds is worked out from the roll, 1200 mm
 folded into 100, not counted, and the 0.3 mm thickness is an estimate - the one that matters, since it sets
@@ -112,7 +122,7 @@ them, the section and the ring bottom down, a cap with its plate on the bed. No 
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
 | Section | ASA | 1 | 1 h 43 m | 16 g |
-| Paper ring | ASA | 1 | 54 m | 7 g |
+| Paper ring | ASA | 1 | 1 h 8 m | 8 g |
 | Paper cap | TPU 95A | 2 | 52 m each | 5 g each |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
@@ -215,9 +225,10 @@ OPENSCAD="<the OpenSCAD nightly>" uv run scripts/bentobox-checks.py all
 It intersects the section with the carbon housing above it and the fan case below it, puts a magnet across
 each joint through both parts' holes, and runs the air's way from the housing's floor openings down through
 the section. For the paper's frame it stands the ring in the original HEPA holder, runs the ledge's opening
-up through the ring, and sets the caps' wedges and teeth in a model of the paper drawn from the paper's own
-values. Each must come out empty. Every check has a positive control, something broken on purpose that it
-must catch, and the run fails if one passes unnoticed: 8 fits and 11 controls.
+up through the ring's walls, sets the caps' wedges and teeth and the ring's strips in a model of the paper
+drawn from the paper's own values, and the caps against the strips. Each must come out empty. Every check
+has a positive control, something broken on purpose that it must catch, and the run fails if one passes
+unnoticed: 10 fits and 13 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.

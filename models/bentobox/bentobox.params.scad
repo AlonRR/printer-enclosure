@@ -90,16 +90,21 @@ ledge_beads = 3;    /* A ledge round the inside at the grid's level: the ribs en
 // open at the top and leaves by those open at the bottom. Each cap has a wedge in the end of every channel
 // open at the top, and a tooth in the end of every channel open at the bottom, so the paper's cut end sits
 // in a zigzag slot between them; the air's pressure, higher on the dirty side, presses the paper onto the
-// teeth and closes the slot.
+// teeth and closes the slot. Along the long sides the paper runs on half a pleat past its last top fold,
+// down to the foot of the ring's wall, into a slot between the wall and a strip moulded onto it: the dirty
+// air between that flap and the wall presses it onto the strip, the whole length.
 paper_depth = 20;   /* The pleats' depth, fold to fold: the pack's thickness. The listing's "folds 20mm". <<CONFIRM with a ruler>> */
 paper_pitch = 100 / 30;   /* One pleat, top fold to top fold. DERIVED, not measured: 1200 mm of paper in 20 mm folds packs into 100 mm, so about 30 pleats. <<CONFIRM by counting the folds>> Only the whole number of pleats in the ring follows from it: 28 to 30 folds in 100 mm all give the same parts. */
-paper_t = 0.3;      /* The paper's thickness - an estimate. <<CONFIRM with calipers>> The slot is cap_slot_play wider than this: paper thicker than the slot will not go in, thinner sits loose in it, and the air presses it onto the teeth. */
+paper_t = 0.3;      /* The paper's thickness - an estimate. <<CONFIRM with calipers>> The slots are slot_play wider than this: paper thicker than a slot will not go in, thinner sits loose in it, and the air presses it onto the teeth and the strips. */
+paper_flaps = true; /* The long edges cut on a bottom fold, so each side keeps half a pleat more, as a flap held in the ring's slot. false: cut on a top fold, which rests against the wall. */
 ring_play = 0.2;    /* Between the ring and the holder's pocket, each side. */
 ring_beads = 3;     /* The ring's wall, in beads. */
+ring_strip_beads = 3;   /* With flaps: the strip along the foot of each long wall that the flap is pressed onto, in beads... */
+ring_strip_h = 8;   /* ...and its height. It stands in the clean channel between the flap and the first full pleat, which narrows upwards to the fold: fit check check_ring_paper says whether it clears the paper. */
 cap_plate = 1.6;    /* Each cap's plate, behind its wedges: eight layers. */
 cap_wedge_l = 4;    /* How far the wedges and teeth reach into the pack, along the pleats. */
 cap_teeth_below = true;   /* The teeth from below. Without them each wedge fills its channel to the paper's faces, and the air's pressure pushes the paper away from it. */
-cap_slot_play = 0.2;      /* With the teeth, the slot the paper sits in is this much wider than the paper: paper_t + 0.2. It must print open - at least a bead wide. */
+slot_play = 0.2;    /* The slots the paper sits in - the caps' zigzag, and the ring's along its long walls - are this much wider than the paper. They must print open: at least a bead wide. */
 cap_squeeze = 0.1;  /* Each cap is this much wider than the ring's inside, each side: TPU, pressed in, so its edges seal on the ring's walls. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
