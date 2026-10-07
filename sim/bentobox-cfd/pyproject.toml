@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: 2026 Alon A. Rabinowitz
+# SPDX-License-Identifier: MPL-2.0
+[project]
+name = "bentobox-cfd"
+version = "0.1.0"
+description = "Airflow through the BentoBox v2.0 scrubber: an OpenFOAM case built from the OpenSCAD model, and its pictures"
+requires-python = ">=3.11"
+dependencies = ["numpy", "pyvista", "matplotlib"]
+
+[tool.uv]
+package = false

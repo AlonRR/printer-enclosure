@@ -28,3 +28,10 @@ SPDX-License-Identifier = "CC-BY-4.0"
 path = "docs/lunchbox/**"
 SPDX-FileCopyrightText = ["2026 Alon A. Rabinowitz", "GekoPrime (LunchBox, https://www.printables.com/model/468166)"]
 SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+# The BentoBox remix's pictures render the remix, and with it ThrutheFrame's BentoBox v2.0, which is
+# CC BY-NC-SA 4.0: they share its licence.
+[[annotations]]
+path = "docs/bentobox/**"
+SPDX-FileCopyrightText = ["2026 Alon A. Rabinowitz", "ThrutheFrame (BentoBox v2.0, https://www.printables.com/model/272525)"]
+SPDX-License-Identifier = "CC-BY-NC-SA-4.0"

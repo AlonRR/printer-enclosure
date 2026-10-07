@@ -20,6 +20,12 @@ __pycache__/
 
 # The airflow simulation's generated cases and their results, and its environment.
 sim/lunchbox-cfd/cases/
+sim/bentobox-cfd/cases/
 .venv/
 # ...but the airflow results the build page quotes are evidence, kept beside their pictures.
 !docs/lunchbox/cfd/*.json
+!docs/bentobox/cfd/*.json
+
+# The BentoBox's originals, as downloaded: not ours to republish (models/bentobox/original/README.md).
+models/bentobox/original/*
+!models/bentobox/original/README.md
