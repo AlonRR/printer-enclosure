@@ -23,15 +23,16 @@ filters?"*
             ┌──────────── chamber ────────────┐
   makeup ──►│  (defined inlet, known area)    │
    air in   │   ┌──────────────────────────┐  │
-            └──►│ ventobox: carbon + HEPA  │  │   recirculating scrubber
+            └──►│ LunchBox: carbon + HEPA  │  │   recirculating scrubber
                 │   2 × Delta 4020, 12 V   ├──┘   (all flow returns)
                 └──────────────────────────┘
             ┌────────────────────────────────┐
             └──► JUMPEAK 120 mm ──► duct ──► outside     the extraction
 ```
 
-The **ventobox** scrubs continuously inside the chamber; the **JUMPEAK** pulls the bleed out
-through the duct. Two jobs, two fans, each sized for its own load.
+The **scrubber** — GekoPrime's LunchBox, remixed: [lunchbox-scrubber.md](lunchbox-scrubber.md) —
+scrubs continuously inside the chamber; the **JUMPEAK** pulls the bleed out through the duct. Two
+jobs, two fans, each sized for its own load.
 
 ### ⚠️ Read the one-fan section below before assuming this is strictly better — it is not
 
@@ -45,10 +46,14 @@ both jobs.
 1. **Independent extraction rate.** This page already names that as a two-fan trigger —
    *"if solvent work later wants extraction turned up independently of the recirculation rate"*.
    Splitting now buys it without a rebuild.
-2. **The 40 mm fans and their model already exist.** `ventobox/` (54 × 122 mm, 40 mm class,
+2. ~~**The 40 mm fans and their model already exist.** `ventobox/` (54 × 122 mm, 40 mm class,
    downloaded 12 Apr 2026) is a complete carbon + HEPA tray stack with nothing else to do, and
    the two 24 V Gdstime fans were bought for it. The one-fan design needs a 120 mm Bento body
-   printed instead.
+   printed instead.~~ ⛔ **WRONG, found 6 Oct 2026: `ventobox/` is a 120 mm-fan design** — one
+   120 mm fan, 105 mm hole spacing — so it never took the 40 mm fans. The 40 mm scrubber is now
+   **GekoPrime's LunchBox**, which takes three 40 mm fans in a 124 × 60 mm stack, remixed for two:
+   [lunchbox-scrubber.md](lunchbox-scrubber.md). The reason itself stands: a 40 mm scrubber model
+   exists, and the fans are owned.
 3. **The heavy restriction stops fighting the duct.** Carbon trays plus HEPA in series with a
    duct bleed is one fan doing two dissimilar loads. Separating them means neither is a
    compromise, and the *"do not PWM it down far"* constraint below applies only to the vent fan.
@@ -76,13 +81,15 @@ both jobs.
 - ~~**A 24 V rail is now required** at the chamber.~~ ⛔ **NO LONGER TRUE, 14 Sep 2026 — the
   scrubber fans that were ORDERED are 12 V** (see the correction under *The fans*). No 24 V tap
   into the printer PSU is needed, and applying one would destroy them.
-- **Fan count is unconfirmed** — 122 mm is almost exactly 3 × 40 mm and only two were bought.
-  Count the apertures in the slicer; a third is ~₪12.71.
+- ~~**Fan count is unconfirmed** — 122 mm is almost exactly 3 × 40 mm and only two were bought.
+  Count the apertures in the slicer; a third is ~₪12.71.~~ ✅ **Settled:** the LunchBox's fan
+  section has three 40 mm bays; the two fans take the outer ones and a printed blank closes the
+  middle one (Alon, Q80).
 
 ### 🔬 The measurement that would settle it
 
 **Two 40 mm fans may not turn the chamber over fast enough.** That is the one real risk and it
-is not answerable from a datasheet: build the ventobox, run it in the closed chamber, and use
+is not answerable from a datasheet: build the scrubber, run it in the closed chamber, and use
 the tissue test in *Verification* plus the temperature rise. If the scrubber cannot keep up,
 the fallback is not a redesign — it is the one-fan architecture below, unchanged and still
 correct.
@@ -316,20 +323,21 @@ condition it exists for.
 2. **Measure the closed chamber temperature**, against the open-configuration baseline already
    recorded (31 °C ± 2, door open, 3 Sep 2026). This is the number that decides whether a chamber
    heater is ever needed — answer it before buying one.
-3. **Build the SCRUBBER** — `ventobox/` (base, carbon trays, HEPA tray, fan tray), the HEPA
-   paper, the ENVIROCARB pellets, and the **2 × 12 V Delta EFB0412VHD** fans on a **12 V** feed — ⛔ **never the
-   printer's 24 V PSU**, which would destroy them. Run it as a pure recirculator inside the closed chamber and **verify it turns the
-   chamber over** — see *The measurement that would settle it*. ⚠️ Count the fan apertures in
-   the slicer first: 122 mm is almost exactly 3 × 40 mm, and **only two fans arrived** — see the count correction under *The fans*, above.
+3. **Build the SCRUBBER** — the LunchBox remix ([lunchbox-scrubber.md](lunchbox-scrubber.md): the
+   body, the fan section with a blank in its middle bay, the carbon-dust insert, TPU gaskets, tabs),
+   the HEPA paper, the ENVIROCARB pellets, and the **2 × 12 V Delta EFB0412VHD** fans on a **12 V**
+   feed — ⛔ **never the printer's 24 V PSU**, which would destroy them. Run it as a pure
+   recirculator inside the closed chamber and **verify it turns the chamber over** — see *The
+   measurement that would settle it*.
 4. **Add the extraction** — the JUMPEAK on the duct, its own 12 V feed. Size the orifice, run
-   the duct out. ⚠️ **Take the duct off the ventobox's clean side**, so what leaves the house is
+   the duct out. ⚠️ **Take the duct off the scrubber's clean side**, so what leaves the house is
    filtered air. That was free in the one-fan design and is now a plumbing decision.
 5. **Cut the makeup inlet.** Known area, low, away from the filter intake.
 6. **Tissue test, print running.** Adjust the orifice until inflow is unambiguous.
 7. **Then** add the control node, the sensor, and HA integration — automation last, after the
    mechanical design is known good. A fan that is manually switched and correct beats an automated
    one that has never been verified.
-8. ~~Add carbon when convenient.~~ **Carbon is in from step 3** — 20 kg of ENVIROCARB AP4-60 pellets are owned, and the ventobox has three carbon trays. It stopped being the deferred nice-to-have the moment it turned out not to need buying.
+8. ~~Add carbon when convenient.~~ **Carbon is in from step 3** — 20 kg of ENVIROCARB AP4-60 pellets are owned, and the LunchBox has a carbon bed. It stopped being the deferred nice-to-have the moment it turned out not to need buying.
 
 ## Buy list
 
@@ -433,8 +441,8 @@ never called for one.
 
 **📎 A second model on disk that this page should know about, and has not acted on.**
 `usefull\Bento box 120mm fan.3mf` is a **140 × 140 mm** tray stack (trays 40/45/30/100 mm tall, plus
-two tie rods) built around a **120 mm** fan — a complete alternative scrubber body to the 54 × 122 mm
-`ventobox/`. It is recorded here, not adopted: the two-fan split was **Alon's decision on 8 Sep** and
+two tie rods) built around a **120 mm** fan — a complete alternative scrubber body, like `ventobox/`,
+which is a 120 mm design too. It is recorded here, not adopted: the two-fan split was **Alon's decision on 8 Sep** and
 this does not reopen it. But if the 4010 bench test above goes badly, this is the other end of the
 design space and it is already modelled.
 | ~~**A 24 V feed** for the scrubber fans~~ | ⛔ **NOT REQUIRED** | The ordered scrubber fans are **12 V** and a 24 V feed would destroy them. Struck rather than deleted so the old instruction stays visible as wrong. ~~Nothing here makes 24 V — the PD trigger boards stop at 20 V. The printer's own PSU is the intended source.~~ |

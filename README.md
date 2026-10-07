@@ -19,7 +19,9 @@ there.
   number that matters most — and the fans with their interlock.
 
 [`docs/chamber-sensor.md`](docs/chamber-sensor.md) is the full status and the index to the topic pages;
-[`docs/chamber-airflow.md`](docs/chamber-airflow.md) is the filter and extraction build.
+[`docs/chamber-airflow.md`](docs/chamber-airflow.md) is the filter and extraction build, and
+[`docs/lunchbox-scrubber.md`](docs/lunchbox-scrubber.md) the filter itself: GekoPrime's LunchBox, remixed
+for two 40 mm fans, with a carbon-dust filter, gaskets and clamping tabs.
 
 ## What is where
 
@@ -27,10 +29,35 @@ there.
 |---|---|
 | [`docs/chamber-sensor.md`](docs/chamber-sensor.md), [`docs/chamber-sensor/`](docs/chamber-sensor/) | the record and the decisions: sensors, the node, boards, WiFi, the SuperMini antenna, measurements, heating and airflow, the build order |
 | [`docs/chamber-airflow.md`](docs/chamber-airflow.md) | the two-fan filter and extraction plan |
+| [`docs/lunchbox-scrubber.md`](docs/lunchbox-scrubber.md), [`models/lunchbox/`](models/lunchbox/), [`scripts/lunchbox-checks.py`](scripts/lunchbox-checks.py) | the filter: the LunchBox remix, its parts, how it goes together, and its fit checks against the original |
+| [`scad-tools/`](https://github.com/AlonRR/scad-tools) | the shared OpenSCAD tools, a git submodule: `scad-check.sh`, and the xyz arrows the pictures use |
 | [`firmware/chamber-c3.yaml`](firmware/chamber-c3.yaml) | the chamber node in service |
 | [`firmware/chamber-baseline.yaml`](firmware/chamber-baseline.yaml), [`scripts/chamber-log.py`](scripts/chamber-log.py), [`data/chamber-baseline.csv`](data/chamber-baseline.csv) | the first enclosure test, steps 1 and 2 of the build order, and its data |
 | `firmware/chamber-*-espnow.yaml`, `chamber-sensor-mini1.yaml`, [`espnow-c/`](firmware/espnow-c/), [`espnow-rssi/`](firmware/espnow-rssi/), [`scripts/chamber-serial-log.py`](scripts/chamber-serial-log.py) | the ESP-NOW attempt: ESPHome's component would not pass a packet, so it was tested in plain ESP-IDF |
 | [`firmware/secrets.yaml.example`](firmware/secrets.yaml.example) | copy to `firmware/secrets.yaml`, which is gitignored, and fill in |
+
+**The models need the [`scad-tools`](https://github.com/AlonRR/scad-tools) submodule.** Clone with it:
+
+```sh
+git clone --recursive https://github.com/AlonRR/printer-enclosure
+```
+
+A ZIP from GitHub comes without it: from the unpacked folder, fetch the version this repository is pinned
+to. In PowerShell:
+
+```powershell
+$pin = (Invoke-RestMethod https://api.github.com/repos/AlonRR/printer-enclosure/contents/scad-tools).sha
+Invoke-WebRequest "https://github.com/AlonRR/scad-tools/archive/$pin.zip" -OutFile scad-tools.zip
+Remove-Item -Recurse -ErrorAction SilentlyContinue scad-tools
+Expand-Archive scad-tools.zip . ; Rename-Item "scad-tools-$pin" scad-tools ; Remove-Item scad-tools.zip
+```
+
+or in a POSIX shell:
+
+```sh
+pin=$(curl -s https://api.github.com/repos/AlonRR/printer-enclosure/contents/scad-tools | sed -n 's/.*"sha": *"\([0-9a-f]*\)".*/\1/p')
+rm -rf scad-tools && mkdir scad-tools && curl -sL "https://github.com/AlonRR/scad-tools/archive/$pin.tar.gz" | tar xz --strip-components=1 -C scad-tools
+```
 
 ## Related
 
@@ -43,8 +70,10 @@ there.
 
 ## Licence
 
-Code — `firmware/` and `scripts/` — is MPL-2.0; everything else, the docs, the data and this README, is
-CC-BY-4.0. Every file states its own licence, following [REUSE](https://reuse.software/): an
-`SPDX-License-Identifier` header, or an entry in `REUSE.toml`. Full texts are in [`LICENSES/`](LICENSES/).
+Code — `firmware/` and `scripts/` — is MPL-2.0. The LunchBox remix — `models/lunchbox/` and its pictures
+in `docs/lunchbox/` — is CC-BY-SA-4.0, as the [LunchBox](https://www.printables.com/model/468166) it builds
+on is. Everything else, the docs, the data and this README, is CC-BY-4.0. Every file states its own
+licence, following [REUSE](https://reuse.software/): an `SPDX-License-Identifier` header, or an entry in
+`REUSE.toml`. Full texts are in [`LICENSES/`](LICENSES/).
 
 _Parts of this repository were drafted with the help of an LLM agent; reviewed and verified locally._
