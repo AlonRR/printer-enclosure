@@ -41,7 +41,7 @@ step topoSet
 step transformPoints -scale 0.001
 step checkMesh
 grep -E "^ +cells:|Mesh OK|\*\*\*" log.checkMesh || true
-for z in hepa carbon sheet fan1 fan2 inlet outlet belowHepa carbonFloor fanFloor sheetFace fan1Around fan2Around; do
+for z in hepa carbon1 carbon2 carbon3 sheet fan1 fan2 inlet outlet belowHepa carbonFloor fanFloor sheetFace fan1Around fan2Around; do
     grep -E "(cellZone|faceZone)Set $z\b.*now size|$z.*size" log.topoSet | tail -n 1 || true
 done
 step decomposePar -force

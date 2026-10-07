@@ -4,7 +4,7 @@
 """Airflow through the BentoBox v2.0 scrubber with its C-MAG - an OpenFOAM case built from the OpenSCAD
 model. From the repository's root:
 
-  uv run --project sim/bentobox-cfd sim/bentobox-cfd/cfd.py case [--plain] [--fine] [--cores N]
+  uv run --project sim/bentobox-cfd sim/bentobox-cfd/cfd.py case [--plain] [--full] [--fine] [--cores N]
         render the geometry from models/bentobox/bentobox-cfd.scad, write the case into
         sim/bentobox-cfd/cases/<name>/, and print the command that runs it in WSL
   uv run --project sim/bentobox-cfd sim/bentobox-cfd/cfd.py network
@@ -12,7 +12,8 @@ model. From the repository's root:
         the HEPA grades and pellet-bed voidages it might be, beside the LunchBox's on the same assumptions -
         the cross-check for the simulation's total flow
 
---plain is the stack as designed, without the remix's section; --fine meshes the box at 1 mm instead of
+--plain is the stack as designed, without the remix's section; --full fills the C-MAG's trays to the top
+instead of to the line its guide gives, four times the carbon; --fine meshes the box at 1 mm instead of
 2 mm; --cores sets the MPI ranks (14, or 7 each to run two cases side by side).
 
 Built the same way as sim/lunchbox-cfd/, whose README says how a case runs and what a result must pass
@@ -89,10 +90,12 @@ def openscad(args, out):
     return log
 
 
-def geometry(case, with_section):
+def geometry(case, with_section, full=False):
     tri = case / "constant" / "triSurface"
     tri.mkdir(parents=True, exist_ok=True)
     flag = ["-D", f"with_section={'true' if with_section else 'false'}"]
+    if full:
+        flag += ["-D", "cmag_fill=cmag[2] - 4"]   # to the top: the C-MAG's inside, lying open
     echo = case / "numbers.echo"
     openscad(flag + ["-D", 'view="numbers"'], echo)
     m = re.search(r"cfd = (\[.*\])", echo.read_text(encoding="utf-8"))
@@ -192,10 +195,25 @@ mergeTolerance 1e-6;
                     f"surfaceType searchablePlate; origin {v3((b[0], b[2], off_grid(z)))}; "
                     f"span {v3((b[1] - b[0], b[3] - b[2], 0))}; }}")
 
-    boxzone("hepa", [nums["hepa"]])
-    boxzone("carbon", nums["carbon"])
+    # A porous zone is whole cells, chosen by their centres: a 15 mm filter on a 2 mm mesh comes out 14 or 16
+    # mm thick, depending only on where the cells fall - which differs between two cases whose stacks differ
+    # in height, and so biased their comparison by +/-7 % in the largest resistance. So each zone is snapped to
+    # the mesh's planes through the filter, and its coefficients scaled by true thickness over meshed.
+    h = cell / 2 ** box_level
+
+    def snapped(b):
+        z0s, z1s = round(b[4] / h) * h, round(b[5] / h) * h
+        z1s = max(z1s, z0s + h)
+        return [b[0], b[1], b[2], b[3], z0s, z1s], (b[5] - b[4]) / (z1s - z0s)
+
+    zones = {"hepa": nums["hepa"], **{f"carbon{i}": b for i, b in enumerate(nums["carbon"], 1)}}
     if nums["sheet"]:
-        boxzone("sheet", [nums["sheet"]])
+        zones["sheet"] = nums["sheet"]
+    scale = {}
+    for name, b in zones.items():
+        box, scale[name] = snapped(b)
+        boxzone(name, [box])
+    (case / "zones.json").write_text(json.dumps({"cell_mm": h, "true_over_meshed": scale}, indent=1), encoding="utf-8")
     fz0, fz1 = nums["fan_z"]
     for i, (fx, fy) in enumerate(nums["fans"], 1):
         acts.append(f"{{ name fan{i}Cells; type cellSet; action new; source cylinderToCell; "
@@ -223,9 +241,12 @@ mergeTolerance 1e-6;
     write(case, "system/topoSetDict", "actions\n(\n    " + "\n    ".join(acts) + "\n);\n")
 
     co = coefficients()
-    zone_names = ["hepa", "carbon"] + (["sheet"] if nums["sheet"] else [])
+    zone_names = list(zones)
     opts = []
     for zone in zone_names:
+        k = scale[zone]
+        medium = co[zone.rstrip("123")]
+        d, f = tuple(x * k for x in medium["d"]), tuple(x * k for x in medium["f"])
         opts.append(f"""{zone}Porosity
 {{
     type            explicitPorositySource;
@@ -237,8 +258,8 @@ mergeTolerance 1e-6;
         type            DarcyForchheimer;
         DarcyForchheimerCoeffs
         {{
-            d   d [0 -2 0 0 0 0 0] {v3(co[zone]['d'])};
-            f   f [0 -1 0 0 0 0 0] {v3(co[zone]['f'])};
+            d   d [0 -2 0 0 0 0 0] {v3(d)};
+            f   f [0 -1 0 0 0 0 0] {v3(f)};
             coordinateSystem {{ origin (0 0 0); e1 (1 0 0); e2 (0 1 0); }}
         }}
     }}
@@ -315,7 +336,9 @@ mergeTolerance 1e-6;
         log false; writeFields false; regionType faceZone; name {f};
         operation weightedAverage; weightField phi; fields (s);
     }}""" for f in faces]
-    end, every = (1500 if fine else 1000), 250
+    # The HEPA cartridge takes nearly all the fans' pressure, and the flow creeps up to its value: at 1000
+    # iterations it still moved 2.5 % over the last quarter. 2000 settles it.
+    end, every = (2500 if fine else 2000), 250
     # The solver writes its fields only every `every` iterations; an end between two writes leaves the last
     # stretch unsaved - a 1600-iteration run kept nothing past 1500.
     assert end % every == 0, "endTime must be a multiple of writeInterval"
@@ -383,13 +406,13 @@ relaxationFactors
     shutil.copy(HERE / "run_case.sh", case / "run_case.sh")
 
 
-def make_case(with_section, fine, cores):
-    name = ("section" if with_section else "plain") + ("-fine" if fine else "")
+def make_case(with_section, fine, cores, full=False):
+    name = ("section" if with_section else "plain") + ("-full" if full else "") + ("-fine" if fine else "")
     case = HERE / "cases" / name
     if case.exists():
         shutil.rmtree(case)
     case.mkdir(parents=True)
-    nums = geometry(case, with_section)
+    nums = geometry(case, with_section, full)
     case_files(case, nums, fine, cores)
     win = str(case.resolve())
     wsl = "/mnt/" + win[0].lower() + win[2:].replace("\\", "/")
@@ -405,7 +428,7 @@ A_CARBON = 0.096 * 0.036                              # the C-MAG's inside, m2
 A_SHEET = 0.1008 * 0.0408                             # the section's inside, m2
 
 
-def network(dp_hepa_at_1=None, with_section=True, eps=None):
+def network(dp_hepa_at_1=None, with_section=True, eps=None, layer_t=LAYER_T):
     """Two fans in parallel against the filters in series: the flow where the fans' pressure equals the
     filters' loss. Areas are the open faces each filter sees; every coefficient is the one the CFD uses."""
     d_c, f_c = ergun(eps or MEDIA["carbon"]["eps"], MEDIA["carbon"]["dp"])
@@ -414,7 +437,7 @@ def network(dp_hepa_at_1=None, with_section=True, eps=None):
 
     def loss(q):
         v_c = q / A_CARBON
-        carbon = AIR["rho"] * LAYERS * LAYER_T * (AIR["nu"] * d_c * v_c + 0.5 * f_c * v_c ** 2)
+        carbon = AIR["rho"] * LAYERS * layer_t * (AIR["nu"] * d_c * v_c + 0.5 * f_c * v_c ** 2)
         return k_hepa * q + carbon + (k_sheet * q if with_section else 0.0)
 
     def fans(q):
@@ -460,9 +483,10 @@ if __name__ == "__main__":
     ap.add_argument("what", choices=["case", "network"])
     ap.add_argument("--plain", action="store_true")
     ap.add_argument("--fine", action="store_true")
+    ap.add_argument("--full", action="store_true", help="the C-MAG's trays filled to the top")
     ap.add_argument("--cores", type=int, default=14)
     a = ap.parse_args()
     if a.what == "network":
         show_network()
     else:
-        make_case(not a.plain, a.fine, a.cores)
+        make_case(not a.plain, a.fine, a.cores, a.full)
