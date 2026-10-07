@@ -9,8 +9,10 @@ side, at the floor. It is built for the two Delta EFB0412VHD this build has, 40 
 
 ![The stack pulled apart: the cover, the HEPA holder, the carbon housing with the C-MAG in it, the section, the fan case, the duct](bentobox/exploded.png)
 
-**It needs bought HEPA:** an 80 × 40 × 15 mm cartridge, which rests on a ledge in its holder. The HEPA paper
-this build already has is pleated 20 mm deep and does not fit.
+**It takes its HEPA as a cartridge:** a bought one, 80 × 40 × 15 mm, rests on a ledge in its holder. The
+HEPA paper this build already has, pleated 20 mm deep, fits only in a frame of its own: the pocket's walls
+run straight for 15.6 mm above the ledge and its ends flare out above that, so a 20 mm pack stands in it,
+but nothing would seal its cut edges. This remix has no such frame.
 
 The remix adds one part, and changes nothing of the original:
 
@@ -98,15 +100,20 @@ measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](.
   model gives 0.79 L/s with the section, and the simulation would come out near 0.8: three fifths of the
   LunchBox's air rather than half.
 - **The section costs little**: 1.5 % of the flow in the simulation, 4 % by the lumped model. The two
-  differ by about as much as the meshes of two cases do. Its sheet is evenly loaded, 0.14 m/s on average,
-  except over the grid's two long ribs.
+  differ by about as much as the meshes of two cases do. Its sheet is evenly loaded: 0.15 m/s on average,
+  nowhere below 0.12, a little less over the grid's two long ribs (on the 1 mm mesh, below).
 
-  ![The section's sheet from above: evenly loaded but for two strips over the grid's long ribs](bentobox/cfd/sheet.png)
+  ![The section's sheet from above, on the 1 mm mesh: evenly loaded, a little less over the grid's two long ribs](bentobox/cfd/sheet.png)
 - **Filling the C-MAG's trays full costs a seventh of the flow and quadruples the carbon**: 222 cm³ instead
   of 55, more than the LunchBox's 150, and the air spends nearly five times as long in it. The carbon is
   not what limits this box's flow, so carbon here is cheap.
 - **No leaks.** The air in at the cover and out at the duct agree to within 2 %, and to 1 % on every plane
   between them, and nothing gets round the C-MAG. Unlike the LunchBox, there is nothing to seal.
+- **Checked on a finer mesh** (1 mm instead of 2, with the section): the air through the filters comes out
+  3.5 % lower, **0.65 L/s** instead of 0.68 - the lumped model's figure - and the chamber goes through it
+  every 4.6 minutes. The cover, the HEPA's ledge, the housing's floor, the sheet and the fan case's floor
+  now carry the same air to within 0.05 %. The other two cases are likely high by about as much, so read
+  the table's flows as about 3 % generous; its comparisons between them stand.
 - **None of its own air comes back in.** The duct throws the fans' air out along the floor, and the inlet
   is on top, 23 cm above it: in the air modelled round the box, none of it gets back there. A real
   chamber's walls turn it, so take it as a sign, not a number, as on the LunchBox's page.

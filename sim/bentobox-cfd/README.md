@@ -42,7 +42,8 @@ uv run --project sim/bentobox-cfd sim/bentobox-cfd/cfd.py case [--plain] [--fine
 uv run --project sim/bentobox-cfd sim/bentobox-cfd/post.py section [--out docs/bentobox/cfd]
 ```
 
-`--plain` is the stack as designed, without the section. A 2 mm case is about 380,000 cells.
+`--plain` is the stack as designed, without the section. A 2 mm case is about 380,000 cells; a 1 mm one,
+`--fine`, 1.5 million, and it runs 2500 iterations.
 
 ## A porous zone's thickness is the mesh's, unless it is made not to be
 
@@ -68,7 +69,15 @@ The LunchBox's list, and:
 - **Every flow plane agrees**: the cover, under the HEPA, the housing's floor, the fan case's floor and the
   duct's outlet carry the same air, unless `inflow_by_face_L_s` names where the difference goes in or out.
   That one sums a closed box 3 mm round the scrubber; it is a coarse locator, closing to a few per cent.
-- **The mesh check**: on the LunchBox, a 1 mm run moved the filtered flow by 2 %. Here nearly all of the
-  pressure drop is in porous zones whose resistance is set exactly, whatever the mesh, and the 2 mm runs
-  agree with the lumped model, which has no mesh, within 1 to 4 %. A 1 mm run, `--fine`, is about 2 million cells
-  and some two and a half hours on 14 cores.
+- **The mesh check**: the section's case on the 1 mm mesh, 1.50 million cells, 2500 iterations, 2 h 23 min
+  on 14 cores (`summary-section-fine.json` in `docs/bentobox/cfd/`). The filtered flow comes out 3.5 % lower
+  than on 2 mm, 0.653 L/s at the cover instead of 0.676, and equal to the lumped model's 0.654 within
+  0.2 %; it drifted under 0.1 % over the last quarter on every filter-side plane, and those planes and the
+  fan case's floor agree to 0.05 %. The duct's plane reads 1.5 % low, in the fans' wake as before.
+- **A measuring plane must miss the cells' centres as well as their faces**: a face is caught when the
+  line between its two cells' centres crosses the plane, so a plane through a row of centres catches two
+  rows of faces, or part of them. The 1 mm run's plane through the sheet sat on its cells' centres, at
+  90.5 mm, and read 0.90 L/s of the 0.65 that passes it; re-measured afterwards at 90.75 mm it reads the
+  inlet's flow exactly, and the summary carries that value and says so. `off_grid()` now nudges a plane
+  off both. A 2 mm case written again therefore has its planes under the HEPA and through the sheet a
+  fraction of a millimetre from where the committed results measured them; the results stand.
