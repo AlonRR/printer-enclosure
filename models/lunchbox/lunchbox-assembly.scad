@@ -24,11 +24,7 @@ explode = 40;           /* "exploded": the gap between parts */
 section_x = -8;         /* "section": where to cut, along X */
 show_axes = true;
 
-// Where each part sits, by the gaps between them: g at every gasket, plus `ex` when exploded.
-function stack_z(g, ex) = let(
-    ins_top  = -g - ex,
-    fans_rim = with_insert ? ins_top - ins_h - g - ex : -g - ex)
-    [ins_top, fans_rim, body_h + g + ex];   // the insert's top, the fan section's rim, the lid's underside
+function stack_z(g, ex) = stack_at(g, ex, with_insert);
 
 // One part of the stack, in its colour - or, for "section", its cut at X = section_x, laid out with the
 // box's depth (Y) across and its height (Z) up. The cut's frame is a rotation, not a mirror: (y, z, x).

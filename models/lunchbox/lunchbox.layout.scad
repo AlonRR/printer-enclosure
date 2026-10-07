@@ -80,6 +80,14 @@ stack_ins  = tab_t + gasket_t + ins_h + gasket_t;               // ... with the 
 screw_fans = first_fit(need(stack_fans), room(stack_fans), screw_lengths);
 screw_ins  = first_fit(need(stack_ins), room(stack_ins), screw_lengths);
 
+// =================================================================== the stack
+// Where each part sits, with g at every gasket and ex more between parts when exploded: the insert's top,
+// the fan section's rim and the lid's underside. The body stands at Z = 0.
+function stack_at(g, ex, with_ins) = let(
+    ins_top  = -g - ex,
+    fans_rim = with_ins ? ins_top - ins_h - g - ex : -g - ex)
+    [ins_top, fans_rim, body_h + g + ex];
+
 // =================================================================== the gaskets
 gasket_clear = 0.3;                             // round the lid's plug and the fan section's lip
 gasket_hx = hx - lb_wall + gasket_clear;        // the gaskets' opening: the body's inside, which the lid's plug fills...
