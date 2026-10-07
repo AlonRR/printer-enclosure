@@ -81,6 +81,55 @@ bosses through the lid and its gasket; the holes are at least 12.5 mm deep.
 6. **Carbon** in from the top, through the funnel.
 7. **The lid:** its gasket on the rim, the lid, and its two M3 × 20.
 
+## The air through it
+
+An airflow simulation of the whole stack, with the chamber's air in front of it: OpenFOAM, the two
+Deltas on their published curve, the filters as resistances. How it is built and every assumption in it:
+[`sim/lunchbox-cfd/`](../sim/lunchbox-cfd/README.md). The HEPA paper's grade is not known, and it sets the
+flow more than anything else: the numbers are for a mid-grade paper.
+
+![A cut through a fan: the air comes in at the grid, crosses the HEPA paper and the carbon, falls down the channel at the back, spreads over the insert's sheet, turns on the fan section's curved floor and leaves through the fan along the floor](lunchbox/cfd/side-fan.png)
+
+| With the HEPA frame's top sealed (see below) | Without the insert | With the insert |
+|---|---|---|
+| Air through the HEPA paper | 1.39 L/s | 1.27 L/s |
+| Air out through the fans | 1.77 L/s | 1.67 L/s |
+| ...of it in at the wire hole, unfiltered | 0.36 L/s | 0.37 L/s |
+| What the fans work against | 83 Pa | 84 Pa |
+
+- **The insert costs about 9 % of the filtered air**: its sheet takes 10 Pa, against 65-75 Pa through the
+  HEPA paper. At 1.27 L/s the scrubber filters a 180 L chamber's volume every 2.4 minutes.
+- **All the air from the channel goes through the sheet**, at 0.35 m/s on average (0.52 at most), evenly
+  along most of its length; it weakens towards the +x end, the wire hole's side.
+
+  ![The sheet from above: even along most of its length, weak at the +x end](lunchbox/cfd/sheet.png)
+
+### Two leaks, both downstream of the filters
+
+**The wire hole.** The fan section's floor has a hole for the fans' wires, in its back right corner, and a
+recess under it, 2 mm deep, open to the end and the back. Standing on a flat floor, that recess is a duct
+straight into the plenum, under every filter, with the fans pulling 84 Pa on it: **about a fifth of the air
+the fans move comes in there, unfiltered.** Seal it round the wires - a plug of putty or tape - before
+anything else.
+
+**Over the HEPA frame.** The holder is 76.0 mm tall and the frame 73.4, so a 2.6 mm slot runs over the
+paper, the whole width, straight into the carbon. Left open, the simulation sends **about half the air that
+comes in at the grid through that slot instead of the paper** - an estimate, as the slot is barely wider
+than the simulation's cells, but an orifice calculation agrees with it. Fill it: a strip on the frame's top.
+
+![The same cut with the slot open: the bright band over the HEPA frame is air going round the paper](lunchbox/cfd/hepa-top-gap.png)
+
+### Where the air goes after the fans
+
+The fans' jet runs out along the floor. Some of it curls back up to the grid: of the air the scrubber takes
+in, 7 % with the insert and 24 % without has just come out of it. The two differ in the stack's height, and
+the simulation's chamber is only a box of air in front, so take it as a sign, not a number: give the outlet
+room to throw its air away from the box.
+
+![The fans' air, followed: it runs along the floor, and some of it rises back towards the grid](lunchbox/cfd/tracer.png)
+
+![Paths from the grid: through the HEPA paper and the carbon, down the back, round the plenum and out through the fans](lunchbox/cfd/streamlines.png)
+
 ## Checking it
 
 The model's rules are asserts and warnings in [`lunchbox.layout.scad`](../models/lunchbox/lunchbox.layout.scad).

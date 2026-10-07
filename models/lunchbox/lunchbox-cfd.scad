@@ -17,6 +17,7 @@ draw_model = false;
 
 view = "solid";
 with_insert = true;
+hepa_top_sealed = true;   /* the 2.6 mm slot over the HEPA frame closed, as by a strip on its top; false: open, as built */
 
 g = gasket_t;
 st = stack_at(g, 0, with_insert);           // the insert's top, the fan section's rim, the lid's underside
@@ -41,6 +42,10 @@ hepa_y0 = hepa_y1 - hepa_frame[1];
 hepa_stl_x = [-30.564, 78.836];                                        // its STL's x range (stl-inspect bounds)
 hepa_from_stl = [-(hepa_stl_x[0] + hepa_stl_x[1]) / 2, hepa_y0, 117.244];   // centred in x, front face, bottom on z = 0
 hepa_in = [-52.7, 52.7, hepa_y0, hepa_y1, 2.0, 71.4];                  // inside the frame: the paper
+// The holder's ceiling - the funnel's underside - is flat at Z = 76.0 from the grid to the carbon bed
+// (MEASURED: cuts at x = -30, 0 and 30, 7 Oct 2026). The frame is 73.4 tall, so 2.6 mm of slot runs over it
+// the whole width: a way round the paper into the carbon, with almost no resistance.
+hepa_ceiling = 76.0;
 
 // The carbon bed's perforated walls: cut out from the cap's top to where the walls turn solid.
 bars_cut = [-(hx - lb_wall), hx - lb_wall, hepa_y1 - 0.1, cap_y1 + 0.1, 4.0, 75.9];
@@ -63,6 +68,9 @@ module solid() {
     translate([0, 0, g]) lid_orig();
     translate([0, 0, body_h]) gasket_lid();
     translate(hepa_from_stl) import("original/furnace_filter.stl", convexity = 10);
+    if (hepa_top_sealed)
+        translate([-hepa_frame[0] / 2, hepa_y0, hepa_frame[2] - eps])
+            cube([hepa_frame[0], hepa_frame[1], hepa_ceiling - hepa_frame[2] + 2 * eps]);
     translate([0, 0, -g]) gasket_fans();
     if (with_insert) {
         translate([0, 0, st[0]]) insert();
@@ -76,7 +84,7 @@ module solid() {
 
 if (view == "solid") solid();
 else if (view == "numbers") echo(cfd = [
-    ["with_insert", with_insert],
+    ["with_insert", with_insert], ["hepa_top_sealed", hepa_top_sealed], ["hepa_ceiling", hepa_ceiling],
     ["box", [-hx, hx, 0, lb_d, floor_z, top_z]],
     ["floor_z", floor_z], ["fans_rim", fans_rim], ["body_top", body_h],
     ["hepa", hepa_in], ["carbon", carbon], ["sheet", with_insert ? sheet : []],

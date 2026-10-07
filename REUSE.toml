@@ -9,6 +9,8 @@ path = [
   "docs/**",
   "data/**",
   "models/**/README.md",
+  "sim/**/README.md",
+  "sim/**/uv.lock",
   "PROJECT.yml",
   ".gitignore",
   ".gitattributes",

@@ -1,0 +1,39 @@
+{
+ "flow_inlet_L_s": 2.370076,
+ "flow_inlet_drift_pct": 0.10794632745953393,
+ "tracer_inlet": 0.136381396,
+ "flow_outlet_L_s": 2.69628036,
+ "flow_outlet_drift_pct": 0.6095226684809603,
+ "tracer_outlet": 0.992385074,
+ "p_avg_hepa_Pa": -33.35158068,
+ "p_avg_carbon_Pa": -60.88923851999999,
+ "probes_p_Pa": {
+  "ambient_front": -0.15443172,
+  "grid_gap": -0.39928115999999997,
+  "behind_hepa": -63.2596236,
+  "channel": -70.15560839999999,
+  "channel_low": -71.3719992,
+  "below_insert": -71.616846,
+  "fan_in": -73.3356456,
+  "fan_out": 0.023304776399999998,
+  "jet": -0.15016342800000002
+ },
+ "fan1_L_s": 1.3389984,
+ "fan2_L_s": 1.3586435000000001,
+ "network_L_s": 1.7753643639054846,
+ "network_fan_Pa": 84.30687160976436,
+ "iterations": 1500,
+ "converged": false,
+ "hepa_face": {
+  "mean": 0.36514201760292053,
+  "min": -0.3486420214176178,
+  "max": 4.593631744384766,
+  "cov": 1.8891874551773071
+ },
+ "wire_channel_in_L_s": 0.17583383525907992,
+ "hepa_paper_L_s": 1.1490302577947518,
+ "hepa_beside_frame_L_s": 0.05536527816633774,
+ "hepa_over_frame_L_s": 1.1650704687356128,
+ "not_through_grid_L_s": 0.32620435999999975,
+ "speed_p99_5": 3.087470769882202
+}

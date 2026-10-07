@@ -17,3 +17,9 @@ __pycache__/
 
 # OpenSCAD Customizer parameter sets: a second source of truth that only the GUI reads.
 *.json
+
+# The airflow simulation's generated cases and their results, and its environment.
+sim/lunchbox-cfd/cases/
+.venv/
+# ...but the airflow results the build page quotes are evidence, kept beside their pictures.
+!docs/lunchbox/cfd/*.json
