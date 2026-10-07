@@ -5,6 +5,7 @@ version = 1
 [[annotations]]
 path = [
   "README.md",
+  "CLAUDE.md",
   "docs/**",
   "data/**",
   "models/**/README.md",
