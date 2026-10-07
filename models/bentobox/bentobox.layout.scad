@@ -35,6 +35,30 @@ cmag_z0 = carbon_floor;                                         // the C-MAG's b
 // Each layer's bottom: the top face of the grill under it, from the C-MAG's bottom.
 cmag_layers = [for (i = [0 : 2]) cmag_grills[i] + cmag_grill_t / 2];
 
+// The frame for your own HEPA paper. The ring stands on the HEPA holder's ledge, in its pocket; the paper
+// fills it with its folds along Y, and a cap closes each end. The piece's two long edges are cut along a
+// top fold, so it holds a whole number of pleats across: as many as come nearest the ring's inside,
+// stretched or squeezed to fill it, as a pleated pack will - and the caps' wedges are spaced to match.
+ring_wall = ring_beads * bead;
+ring_out = [in_w - 2 * ring_play, hepa_pocket_l - 2 * ring_play];   // X, Y
+ring_in = ring_out - 2 * [ring_wall, ring_wall];
+ring_h = paper_depth;
+pack_n = max(1, round(ring_in[0] / paper_pitch));   // pleats across: the channels open at the top
+pack_pitch = ring_in[0] / pack_n;
+pack_l = ring_in[1] - 2 * cap_plate;                 // the piece's length, along the folds
+// Seen along the folds, the paper's middle runs from a top fold paper_t / 2 under the pack's top face to a
+// bottom fold paper_t / 2 over its bottom, leaning pleat_alpha from upright. A channel open at the top is
+// what lies inside the paper's faces, between two top folds: its sides are those middles moved
+// paper_t / (2 cos(alpha)) sideways, so its bottom is paper_t / (2 sin(alpha)) above the bottom fold's middle
+// - in a narrow pleat, millimetres, not the paper's thickness. Each wedge is that channel's shape.
+pleat_alpha = atan((pack_pitch / 2) / (paper_depth - paper_t));
+wedge_w = 2 * ((paper_depth - paper_t / 2) * tan(pleat_alpha) - paper_t / (2 * cos(pleat_alpha)));   // at the top face
+wedge_z0 = paper_t / 2 + paper_t / (2 * sin(pleat_alpha));    // its point, above the pack's bottom face
+
+assert(wedge_w > 0, "the pleats are too narrow for the paper's thickness: no channel is left to close");
+assert(pack_l > 2 * cap_wedge_l + 10, "the ring is too short for its caps' wedges");
+assert(hepa_ledge + ring_h < hepa_h - 1, "the paper is deeper than the HEPA holder is tall");
+
 assert(grid_t >= groove_h + 2 * fdm_layer_h, "the grid's rim must roof the groove in the section's bottom");
 assert(ledge_w > -groove_in, "the ledge must reach past the groove's inner face");
 assert(cmag[0] < carbon_h - carbon_floor, "the C-MAG must stand inside the carbon housing");
@@ -48,5 +72,9 @@ assert(mag_wall > 2 * bead, "a magnet's hole must not break into the joint's gro
 warns = [
     if (ledge_w + groove_in < 2 * bead - 1e-9) str("the groove's inner wall is ", ledge_w + groove_in, " mm, under two beads"),
     if (plenum_h < 3) str("only ", plenum_h, " mm of air above the sheet: the openings above will load it unevenly"),
+    if (abs(pack_pitch / paper_pitch - 1) > 0.1)
+        str("the paper is ", pack_pitch > paper_pitch ? "stretched" : "squeezed", " ", round(100 * abs(pack_pitch / paper_pitch - 1)),
+            " % to fill the ring: ", pack_n, " pleats in ", ring_in[0], " mm"),
+    if (wedge_w < 2 * bead - 1e-9) str("the caps' wedges are ", wedge_w, " mm wide at the top, under two beads: they may not print"),
 ];
 for (w = warns) echo(str("WARNING: ", w));

@@ -14,6 +14,10 @@ long side, at the floor. This remix adds:
   section   a section between the carbon housing and the fan case, holding a flat filter sheet that stops
             carbon dust reaching the fans. Its top is the fan case's tongue and its bottom the carbon
             housing's groove, and it has the same magnets, so it drops into any BentoBox v2.0 stack.
+  hepa_ring a frame for pleated HEPA paper off a roll, in place of the bought cartridge: a ring that stands
+  hepa_cap  on the HEPA holder's ledge, and two TPU caps, one at each end of a cut piece of paper, whose
+            wedges close the ends of the pleats that the dirty air comes into. Everything about it follows
+            from the paper's three values below, so other paper means changing those and exporting again.
 
 COORDINATES are the box as it stands: X across it, Y along it, Z up, with Z = 0 on the floor the duct
 stands on. X and Y are centred. The duct's outlet faces -X.
@@ -23,7 +27,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section": the only part the remix adds. bentobox-assembly.scad shows it in the stack. */
+part = "section";   /* "section", "hepa_ring" or "hepa_cap": the parts the remix adds. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -43,7 +47,11 @@ fan_ys   = [-30, 30];   /* The two fans' centres, along Y, on X = 0. Their screw
 carbon_h = 77.6;    /* The carbon housing, from the fan case to the HEPA holder. */
 carbon_floor = 4;   /* Its floor, with an opening over each fan: X +/-18, Y 2 to 48 each side of the middle. */
 hepa_h   = 50;      /* The HEPA holder. */
-hepa_ledge = 4;     /* The ledge the cartridge rests on, at the holder's bottom. Its opening: X +/-18.4, Y +/-39. */
+hepa_ledge = 4;     /* The ledge the cartridge rests on, at the holder's bottom. */
+hepa_open = [36.8, 78];     /* The ledge's opening, X and Y, its corners rounded 2 mm: the air's way down. */
+hepa_open_r = 2;
+hepa_pocket_l = 82; /* The pocket above the ledge, along Y; across, it is the inside, in_w. Square corners. */
+hepa_pocket_straight = 15.6;   /* Its end walls run straight this high above the ledge, then flare out; its side walls stay straight. */
 cover_top = 3.4;    /* The cover's top, above the holder's top. */
 // The joint, the same at every one: a tongue on the top of the part below, in a groove in the bottom of the
 // part above, both rings round the inside. Offsets are outwards from the inside's outline.
@@ -75,6 +83,19 @@ plenum_h = 5;       /* Free air above the sheet: the carbon housing's floor has 
 grid_pitch = 10;    /* Ribs across the box (along X), this far apart; two more ribs cross them along Y. */
 grid_beads = 2;     /* Each rib is this many beads wide. */
 ledge_beads = 3;    /* A ledge round the inside at the grid's level: the ribs end on it, the sheet's edges seal on it, and it is the groove's inner wall. */
+
+/* [Your own HEPA paper, and the frame that holds it] */
+// The paper: pleated, sold by the metre. These three describe it; change them for other paper, then export
+// the ring and the cap again. A pleat is one fold up and one down: the dirty air comes into the channels
+// open at the top, and the caps close those channels' ends.
+paper_depth = 20;   /* The pleats' depth, fold to fold: the pack's thickness. The listing's "folds 20mm". <<CONFIRM with a ruler>> */
+paper_pitch = 100 / 30;   /* One pleat, top fold to top fold. DERIVED, not measured: 1200 mm of paper in 20 mm folds packs into 100 mm, so about 30 pleats. <<CONFIRM by counting the folds>> Only the whole number of pleats in the ring follows from it: 28 to 30 folds in 100 mm all give the same parts. */
+paper_t = 0.3;      /* The paper's thickness - an estimate, kept on the thin side. <<CONFIRM with calipers>> The wedges narrow about 0.1 mm for every 0.1 mm more: paper thicker than this meets a wedge a little too wide, which the TPU and the pleats take up; thinner paper would leave a gap beside each wedge. */
+ring_play = 0.2;    /* Between the ring and the holder's pocket, each side. */
+ring_beads = 3;     /* The ring's wall, in beads. */
+cap_plate = 1.6;    /* Each cap's plate, behind its wedges: eight layers. */
+cap_wedge_l = 4;    /* How far each wedge reaches into the pack, along the pleats. */
+cap_squeeze = 0.1;  /* Each cap is this much wider than the ring's inside, each side: TPU, pressed in, so its edges seal on the ring's walls. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;

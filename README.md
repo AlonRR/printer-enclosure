@@ -30,7 +30,7 @@ for two 40 mm fans, with a carbon-dust filter, gaskets and clamping tabs.
 | [`docs/chamber-sensor.md`](docs/chamber-sensor.md), [`docs/chamber-sensor/`](docs/chamber-sensor/) | the record and the decisions: sensors, the node, boards, WiFi, the SuperMini antenna, measurements, heating and airflow, the build order |
 | [`docs/chamber-airflow.md`](docs/chamber-airflow.md) | the two-fan filter and extraction plan |
 | [`docs/lunchbox-scrubber.md`](docs/lunchbox-scrubber.md), [`models/lunchbox/`](models/lunchbox/), [`scripts/lunchbox-checks.py`](scripts/lunchbox-checks.py) | the filter: the LunchBox remix, its parts, how it goes together, and its fit checks against the original |
-| [`docs/bentobox-scrubber.md`](docs/bentobox-scrubber.md), [`models/bentobox/`](models/bentobox/), [`scripts/bentobox-checks.py`](scripts/bentobox-checks.py) | the other filter weighed against it: BentoBox v2.0 with its carbon magazine, a carbon-dust section for it, and its fit checks |
+| [`docs/bentobox-scrubber.md`](docs/bentobox-scrubber.md), [`models/bentobox/`](models/bentobox/), [`scripts/bentobox-checks.py`](scripts/bentobox-checks.py) | the other filter weighed against it: BentoBox v2.0 with its carbon magazine, a carbon-dust section for it, a frame for the build's own HEPA paper, and its fit checks |
 | [`sim/`](sim/) | airflow simulations of both filters, OpenFOAM, from their models |
 | [`scad-tools/`](https://github.com/AlonRR/scad-tools) | the shared OpenSCAD tools, a git submodule: `scad-check.sh`, and the xyz arrows the pictures use |
 | [`firmware/chamber-c3.yaml`](firmware/chamber-c3.yaml) | the chamber node in service |

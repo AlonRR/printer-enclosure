@@ -10,6 +10,8 @@ fit checks that scripts/bentobox-checks.py renders. Needs the originals in origi
   view = "exploded"   the same, pulled apart along Z
   view = "cut"        the stack cut open at X = cut_x, seen from the side
   view = "section"    the section alone, as it prints - the one view that needs no original
+  view = "frame"      the frame for your own HEPA paper, pulled apart: the ring, the paper, the two caps
+  view = "cap"        one cap, as it prints
   view = "check_..."  one fit check: a solid that must come out EMPTY. Each is an intersection of two
                       parts that should only touch; anything left is two parts in the same place.
 */
@@ -57,6 +59,18 @@ module air_probe() for (sy = [-1, 1])
     translate([-floor_open[0], sy > 0 ? floor_open[1] : -floor_open[2], grid_t + eps])
         cube([2 * floor_open[0], floor_open[2] - floor_open[1], sec_h - grid_t - 2 * eps]);
 floor_open = [18, 2, 48];   /* MEASURED: the carbon housing's floor openings, X +/-18, Y 2 to 48 each side */
+// The HEPA holder's ledge, with the section in the stack: where the frame's ring stands.
+ledge_z = st[3] + hepa_ledge;
+// The ledge's opening, from the original's measurement, carried up through the ring's height: the air's way
+// down, which the ring must leave open.
+module opening_probe() translate([0, 0, -1]) linear_extrude(ring_h + 2) rrect(hepa_open[0], hepa_open[1], hepa_open_r);
+// The frame pulled apart: the paper lifted out of the ring, the caps drawn back off its ends.
+module frame_exploded(ex) {
+    color("orange") hepa_ring();
+    color("ivory") paper_pack(ring_h + ex);
+    color("dimgray") for (a = [0, 180]) rotate([0, 0, a]) translate([0, ex, ring_h + ex]) caps_in_place_one();
+}
+module caps_in_place_one() translate([0, ring_in[1] / 2, 0]) rotate([90, 0, 0]) hepa_cap();
 
 if (view == "stack") stack(0);
 else if (view == "exploded") stack(explode);
@@ -77,11 +91,22 @@ else if (view == "check_magnets_bottom") intersection() {
 }
 // The air from the housing's openings reaches the whole sheet.
 else if (view == "check_air") intersection() { section(); air_probe(); }
+else if (view == "frame") frame_exploded(explode);
+else if (view == "cap") color("dimgray") hepa_cap();
+// The ring stands in the HEPA holder's pocket, on its ledge.
+else if (view == "check_ring_holder") intersection() { translate([0, 0, ledge_z + sep]) hepa_ring(); orig(hepa_stl, st[2] - st[1]); }
+// The ring leaves the ledge's opening clear.
+else if (view == "check_ring_opening") intersection() { hepa_ring(); opening_probe(); }
+// The caps' wedges fill the channels open at the top without cutting into the paper: the paper is drawn from
+// its own values, the wedges from their arithmetic, and the wedges are held sep inside their outline.
+else if (view == "check_wedges_paper") intersection() { paper_pack(); caps_in_place(0, true, sep); }
 else assert(false, str("unknown view: ", view));
 
 if (show_axes && (view == "stack" || view == "exploded")) axes([-bb_w / 2 - 30, -bb_l / 2, 0], l = 25);
 axes_cam = [55, 0, 30];   // the picture's --camera angles, so the arrows' labels face it
 if (show_axes && view == "section") axes([-bb_w / 2 - 20, -bb_l / 2, 0], l = 15, cam = axes_cam);
+if (show_axes && view == "frame") axes([-ring_out[0] / 2 - 25, -ring_out[1] / 2 - explode, 0], l = 15, cam = axes_cam);
+if (show_axes && view == "cap") axes([-ring_in[0] / 2 - 15, -5, 0], l = 8, cam = axes_cam);
 // The cut is flat, so it gets a flat key: across is +y (along the box), up is +z.
 if (show_axes && view == "cut") color("black") translate([-bb_l / 2 - 30, 10]) {
     translate([0, -0.6]) square([16, 1.2]);

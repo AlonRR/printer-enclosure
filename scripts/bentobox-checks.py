@@ -35,7 +35,8 @@ ASSEMBLY = "models/bentobox/bentobox-assembly.scad"
 BACKEND = ["--backend=manifold"]
 
 FITS = [("check_section_carbon", []), ("check_section_fans", []), ("check_magnets_top", []),
-        ("check_magnets_bottom", []), ("check_air", [])]
+        ("check_magnets_bottom", []), ("check_air", []),
+        ("check_ring_holder", []), ("check_ring_opening", []), ("check_wedges_paper", [])]
 
 # Each control breaks ONE side of its check's relationship - the section's feature against the original's
 # fixed mesh, or against a probe built from the original's measurements - never both, so that the check
@@ -47,8 +48,13 @@ CONTROLS = [
     ("check_magnets_top", [("mag_xy", "[23.5, 52.5]")], "the section's magnet holes moved 1 mm off the housing's"),
     ("check_magnets_bottom", [("mag_xy", "[23.5, 52.5]")], "the same, against the fan case's"),
     ("check_air", [("in_w", "30")], "the section's inside narrowed into the openings' path"),
+    ("check_ring_holder", [("ring_play", "-0.3")], "the ring made wider than the holder's pocket"),
+    ("check_ring_opening", [("ring_beads", "6")], "the ring's walls thickened over the ledge's opening"),
+    # The wedges' width is derived; overriding it moves the wedges and leaves the paper, drawn from its own values.
+    ("check_wedges_paper", [("wedge_w", "4")], "the caps' wedges made wider than the paper's channels"),
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.
     ("check_section_carbon", [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
+    ("check_ring_holder", [("hepa_stl", '"original/missing.stl"')], "the holder's STL missing - must be reported, not passed"),
 ]
 MISSING = "Can't open import file"
 
@@ -107,12 +113,15 @@ def controls():
 FIGURES = {
     "exploded": [("view", '"exploded"')], "cut": [("view", '"cut"'), ("cut_x", "0")],
     "section-top": [("view", '"section"')], "section-bottom": [("view", '"section"'), ("axes_cam", "[235, 0, 30]")],
+    "paper-frame": [("view", '"frame"'), ("explode", "25")], "paper-cap": [("view", '"cap"')],
 }
 CAMERAS = {
     "exploded": ["--imgsize=1200,1900", "--viewall", "--autocenter", "--camera=0,0,0,70,0,320,0"],
     "cut": ["--imgsize=1200,1900", "--projection=o", "--viewall", "--autocenter", "--camera=0,0,0,0,0,0,0"],
     "section-top": ["--imgsize=1400,900", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
     "section-bottom": ["--imgsize=1400,900", "--viewall", "--autocenter", "--camera=0,0,0,235,0,30,0"],
+    "paper-frame": ["--imgsize=1400,1100", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
+    "paper-cap": ["--imgsize=1200,800", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
 }
 
 

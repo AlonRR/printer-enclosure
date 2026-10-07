@@ -89,6 +89,42 @@ module section() {
     translate([0, 0, sec_h - eps]) tongue();
 }
 
+// ------------------------------------------------------------------ the frame for your own HEPA paper
+// The ring: its bottom face on Z = 0, as it stands on the ledge and as it prints. It has no floor: the
+// paper's long edges rest on the ledge, its ends on the caps' wedges, and the ledge's opening stays open.
+module hepa_ring() {
+    difference() {
+        translate([-ring_out[0] / 2, -ring_out[1] / 2, 0]) cube([ring_out[0], ring_out[1], ring_h]);
+        translate([-ring_in[0] / 2, -ring_in[1] / 2, -1]) cube([ring_in[0], ring_in[1], ring_h + 2]);
+    }
+}
+// One end's wedges, in a plane across the folds: X across, the second axis up the pack from its bottom face.
+// Each fills a channel open at the top (bentobox.layout.scad says how its shape follows from the paper's).
+module wedges_2d(shrink = 0) offset(delta = -shrink) for (i = [0 : pack_n - 1]) {
+    x = -ring_in[0] / 2 + (i + 0.5) * pack_pitch;
+    polygon([[x - wedge_w / 2, ring_h], [x + wedge_w / 2, ring_h], [x, wedge_z0]]);
+}
+// A cap, as it prints: its plate on the bed, X across, Y up the pack, the wedges standing up out of it.
+module hepa_cap(wedges_only = false, shrink = 0) {
+    w = ring_in[0] + 2 * cap_squeeze;
+    if (!wedges_only) translate([-w / 2, 0, 0]) cube([w, ring_h, cap_plate]);
+    translate([0, 0, cap_plate - eps]) linear_extrude(cap_wedge_l + eps) wedges_2d(shrink);
+}
+// Both caps in the ring, its bottom at z: each plate's back against an end wall, the wedges reaching in.
+module caps_in_place(z = 0, wedges_only = false, shrink = 0)
+    for (a = [0, 180]) rotate([0, 0, a]) translate([0, ring_in[1] / 2, z]) rotate([90, 0, 0]) hepa_cap(wedges_only, shrink);
+// The paper, for pictures and for checking the wedges against it - drawn from the paper's own values, not
+// from the wedges' arithmetic: each flank a strip paper_t thick, round at the folds, between fold lines
+// paper_t / 2 inside the pack's faces. Its long edges are top folds, at the ring's inside.
+module paper_2d() {
+    pts = [for (i = [0 : 2 * pack_n]) [-ring_in[0] / 2 + i * pack_pitch / 2, i % 2 == 0 ? ring_h - paper_t / 2 : paper_t / 2]];
+    for (k = [0 : len(pts) - 2]) hull() {
+        translate(pts[k]) circle(d = paper_t, $fn = 16);
+        translate(pts[k + 1]) circle(d = paper_t, $fn = 16);
+    }
+}
+module paper_pack(z = 0) translate([0, 0, z]) rotate([90, 0, 0]) linear_extrude(pack_l, center = true) paper_2d();
+
 // ------------------------------------------------------------------ the originals, in the box's frame
 orig_dir = "original/";
 duct_stl   = str(orig_dir, "fan duct BambuLab 20231017.stl");
@@ -104,7 +140,16 @@ module orig(file, dz = 0) translate([0, 0, dz] - stl_origin) import(file, convex
 module cmag_standing(z0) translate([cmag[2] / 2, -cmag[1] / 2, z0]) rotate([0, -90, 0])
     for (f = cmag_stls) import(f, convexity = 10);
 
+// How to cut the paper for the frame, from the values above: what the build page quotes. Only the length is
+// measured; across the folds the piece is counted, since the ring sets its width.
+module say_paper_cut() echo(str("paper: cut a piece ", round(pack_l * 10) / 10, " mm long along the folds and ", pack_n,
+    " pleats across, both long edges on a top fold (about ", round(pack_n * paper_pitch * 10) / 10, " mm as folded; the ring spreads it to ",
+    round(ring_in[0] * 10) / 10, " mm, ", round(pack_pitch * 100) / 100, " mm a pleat). The caps' wedges are ", round(wedge_w * 100) / 100,
+    " mm wide, their points ", round(wedge_z0 * 10) / 10, " mm above the bottom face"));
+
 if (draw_model) {
     if (part == "section") section();
+    else if (part == "hepa_ring") { hepa_ring(); say_paper_cut(); }
+    else if (part == "hepa_cap") { hepa_cap(); say_paper_cut(); }
     else assert(false, str("unknown part: ", part));
 }

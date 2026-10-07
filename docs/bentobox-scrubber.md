@@ -9,16 +9,17 @@ side, at the floor. It is built for the two Delta EFB0412VHD this build has, 40 
 
 ![The stack pulled apart: the cover, the HEPA holder, the carbon housing with the C-MAG in it, the section, the fan case, the duct](bentobox/exploded.png)
 
-**It takes its HEPA as a cartridge:** a bought one, 80 × 40 × 15 mm, rests on a ledge in its holder. The
-HEPA paper this build already has, pleated 20 mm deep, fits only in a frame of its own: the pocket's walls
-run straight for 15.6 mm above the ledge and its ends flare out above that, so a 20 mm pack stands in it,
-but nothing would seal its cut edges. This remix has no such frame.
+**It takes its HEPA as a cartridge:** a bought one, 80 × 40 × 15 mm, rests on a ledge in its holder. Or
+the HEPA paper this build already has, pleated 20 mm deep, in the remix's frame (see *Your own HEPA
+paper*).
 
-The remix adds one part, and changes nothing of the original:
+The remix adds three parts, and changes nothing of the original:
 
 | | What it does | File |
 |---|---|---|
 | **Section** | Goes between the carbon housing and the fan case, holding a flat filter sheet that stops carbon dust reaching the fans. Its top is the fan case's tongue and its bottom the housing's groove, with the same magnets, so it drops into any BentoBox v2.0 stack. | [`bentobox-section.scad`](../models/bentobox/bentobox-section.scad) |
+| **Paper ring** | Stands on the HEPA holder's ledge in place of the cartridge and holds a cut piece of pleated paper. | [`bentobox-hepa-ring.scad`](../models/bentobox/bentobox-hepa-ring.scad) |
+| **Paper cap** | Two, in TPU, one on each end of the paper: their wedges close the ends of the pleats the dirty air comes into. | [`bentobox-hepa-cap.scad`](../models/bentobox/bentobox-hepa-cap.scad) |
 
 **Not printed yet.** Every fit is checked against the original's STLs (see *Checking it*), not yet against
 printed parts.
@@ -59,17 +60,58 @@ neighbour the way the two of them met.
 The groove is 1 mm from each magnet hole, and so it is in every BentoBox part. The section copies that
 joint rather than changing it.
 
+## Your own HEPA paper
+
+Pleated HEPA paper off a roll can take the bought cartridge's place. The holder's pocket is 82 × 40.8 mm,
+straight for 15.6 mm above the ledge, its ends flaring out above that, so a pack 20 mm deep stands in it.
+A ring holds the paper there, and a TPU cap on each end closes its pleats' ends.
+
+![The frame pulled apart: the ring, the cut paper above it with its folds running end to end, a cap drawn back from each end](bentobox/paper-frame.png)
+
+- **Why the ends need closing.** Pleated paper is a row of channels: one open at the top, where the dirty
+  air comes in, then one open at the bottom, where it leaves after passing through the paper between them.
+  Cut, each channel is open at its ends too, and air could go round the paper there. Each cap's wedges fill
+  the ends of the channels open at the top; those open at the bottom carry filtered air and can stay open.
+- **Cutting the paper.** For this build's paper, 20 mm deep with about 3.3 mm between top folds: a piece
+  **75.7 mm long along the folds, and 11 pleats across**, both long edges cut along a top fold. Count the
+  pleats rather than measuring the width: folded, that is about 36.7 mm, and the ring spreads it to 37.7.
+  The roll's 300 × 100 mm pack gives six pieces.
+- **Putting it together.** Push a cap onto each end of the piece, wedges into the channels, and drop the
+  three into the ring; the ring stands on the ledge like the cartridge. To take it out, lift the holder off
+  the stack and tip it over.
+- **If dust gets round it.** Where the paper's outer folds meet the ring's long walls nothing is glued. If a
+  dusty streak ever shows along an edge on the paper's underside, run hot glue along that seam: standard
+  sticks, not low-temperature ones, since the chamber runs at about 45 °C during an ASA print. Hot glue
+  peels off the ASA ring, so the ring can still be used again.
+
+![A cap as it prints: the plate on the bed, the wedges standing up out of it](bentobox/paper-cap.png)
+
+**Other paper:** change its three values in
+[`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) - `paper_depth` (fold to fold),
+`paper_pitch` (top fold to top fold) and `paper_t` (its thickness) - and export the ring and the cap again.
+The ring stands as tall as the paper is deep. The pleats across are the whole number nearest to filling
+the ring, and the wedges are spaced to match; rendering either part echoes the new cut. A thickness guessed
+on the thin side is the safe way to be wrong: the wedges come out a little too wide, and the TPU and the
+pleats take that up, where too thick a guess would leave a gap beside each wedge.
+
+**Still to confirm** for this build's paper: the 3.3 mm between folds is worked out from the roll, 1200 mm
+folded into 100, not counted, and the 0.3 mm thickness is an estimate. Anything from 28 to 30 folds in 100
+mm gives the same parts.
+
 ## Printing
 
-Every part prints as the author's project lays it out; the section prints as its file draws it, bottom
-down. No supports, no brim.
+Every original part prints as the author's project lays it out; the remix's print as their files draw
+them, the section and the ring bottom down, a cap with its plate on the bed. No supports, no brim.
 
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
 | Section | ASA | 1 | 1 h 43 m | 16 g |
+| Paper ring | ASA | 1 | 54 m | 7 g |
+| Paper cap | TPU 95A | 2 | 36 m each | 3 g each |
 
-Time and weight are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
-brim, no crossing perimeter`, as [`scad-check.sh`](https://github.com/AlonRR/scad-tools) slices them.
+Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
+brim, no crossing perimeter`, as [`scad-check.sh`](https://github.com/AlonRR/scad-tools) slices them, with
+`Inslogic TPU 95A` for the caps.
 
 ## The air through it
 
@@ -166,11 +208,13 @@ OPENSCAD="<the OpenSCAD nightly>" uv run scripts/bentobox-checks.py all
 
 It intersects the section with the carbon housing above it and the fan case below it, puts a magnet across
 each joint through both parts' holes, and runs the air's way from the housing's floor openings down through
-the section. Each must come out empty. Every check has a positive control, something broken on purpose that
-it must catch, and the run fails if one passes unnoticed: 5 fits and 6 controls.
+the section. For the paper's frame it stands the ring in the original HEPA holder, runs the ledge's opening
+up through the ring, and sets the caps' wedges in a model of the paper drawn from the paper's own values.
+Each must come out empty. Every check has a positive control, something broken on purpose that it must
+catch, and the run fails if one passes unnoticed: 8 fits and 10 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
-by sectioning its STLs, and every setting of the section.
+by sectioning its STLs, and every setting of the section and of the paper's frame.
 
 ## Credit and licence
 
