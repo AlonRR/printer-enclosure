@@ -1,0 +1,60 @@
+{
+ "flow_inlet_L_s": 1.32560009,
+ "flow_inlet_drift_pct": 0.18996151395856467,
+ "tracer_inlet": 0.079507316,
+ "flow_outlet_L_s": 1.79074084,
+ "flow_outlet_drift_pct": 0.40887211797771456,
+ "tracer_outlet": 1.00034019,
+ "flow_sheetFace_L_s": 1.33674588,
+ "flow_sheetFace_drift_pct": 0.4394245823297347,
+ "tracer_sheetFace": 0.0722350388,
+ "p_avg_hepa_Pa": -37.31215992,
+ "p_avg_carbon_Pa": -71.64081024,
+ "p_avg_sheet_Pa": -80.3436342,
+ "probes_p_Pa": {
+  "ambient_front": -0.0156438276,
+  "grid_gap": -0.137196072,
+  "behind_hepa": -67.6996908,
+  "channel": -73.5485292,
+  "channel_low": -74.0955972,
+  "below_insert": -87.628362,
+  "fan_in": -88.831992,
+  "fan_out": -0.5130022679999999,
+  "jet": -0.0349344036,
+  "above_sheet": -74.43656879999999,
+  "below_sheet": -87.6380244
+ },
+ "fan1_L_s": 0.60683001,
+ "fan2_L_s": 0.65360807,
+ "network_L_s": 1.5368048884442316,
+ "network_fan_Pa": 86.89933019593109,
+ "iterations": 1600,
+ "converged": false,
+ "hepa_face": {
+  "mean": 0.22112347185611725,
+  "min": -0.3945140838623047,
+  "max": 0.4829064905643463,
+  "cov": 0.3408839702606201
+ },
+ "sheet_face": {
+  "mean": 0.46508529782295227,
+  "min": 0.07137811928987503,
+  "max": 0.5426471829414368,
+  "cov": 0.1770784556865692
+ },
+ "wire_channel_in_L_s": 0.2159675551490546,
+ "inflow_by_face_L_s": {
+  "front_grid": 1.3420982241196797,
+  "front_joints": -0.049212670168038326,
+  "front_fans": -1.7794274424241228,
+  "end_plus_x": 0.2057624784383699,
+  "end_minus_x": 0.001234380341690394,
+  "back": 0.21002567116416934,
+  "top": 0.00026248992262541446
+ },
+ "hepa_paper_L_s": 1.3742350311252185,
+ "hepa_beside_frame_L_s": 0.013584378761421852,
+ "hepa_over_frame_L_s": 0.0003148805223472379,
+ "not_through_grid_L_s": 0.46514075,
+ "speed_p99_5": 3.1167356967926025
+}

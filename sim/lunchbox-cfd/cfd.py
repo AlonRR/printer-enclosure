@@ -286,9 +286,13 @@ mergeTolerance 1e-6;
         log false; writeFields false; regionType faceZone; name {f};
         operation weightedAverage; weightField phi; fields (s);
     }}""" for f in faces]
+    end, every = (1500 if fine else 1000), 250
+    # The solver writes its fields only every `every` iterations; an end between two writes leaves the last
+    # stretch unsaved - a 1600-iteration run kept nothing past 1500.
+    assert end % every == 0, "endTime must be a multiple of writeInterval"
     write(case, "system/controlDict", f"""application simpleFoam;
-startFrom latestTime; startTime 0; stopAt endTime; endTime {1600 if fine else 1000}; deltaT 1;
-writeControl timeStep; writeInterval 250; purgeWrite 2; writeFormat binary; writePrecision 8;
+startFrom latestTime; startTime 0; stopAt endTime; endTime {end}; deltaT 1;
+writeControl timeStep; writeInterval {every}; purgeWrite 2; writeFormat binary; writePrecision 8;
 writeCompression off; timeFormat general; timePrecision 6; runTimeModifiable true;
 functions
 {{
@@ -303,6 +307,9 @@ functions
     tracer
     {{
         type scalarTransport; libs (solverFunctionObjects); field s; nut nut; alphaD 1; alphaDt 1;
+        // Only at the solver's own write times. Left to itself it writes s every iteration, a time folder
+        // per step, and purgeWrite then counts those and deletes the real results.
+        writeControl writeTime;
         fvOptions
         {{
 {chr(10).join(f'            fixAtFan{i} {{ type scalarFixedValueConstraint; selectionMode cellZone; cellZone fan{i}; fieldValues {{ s 1; }} }}' for i in range(1, len(nums['fans']) + 1))}

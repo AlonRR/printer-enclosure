@@ -97,19 +97,22 @@ flow more than anything else: the numbers are for a mid-grade paper.
 | ...of it in at the wire hole, unfiltered | 0.36 L/s | 0.37 L/s |
 | What the fans work against | 83 Pa | 84 Pa |
 
-- **The insert costs about 9 % of the filtered air**: its sheet takes 10 Pa, against 65-75 Pa through the
-  HEPA paper. At 1.27 L/s the scrubber filters a 180 L chamber's volume every 2.4 minutes.
-- **All the air from the channel goes through the sheet**, at 0.35 m/s on average (0.52 at most), evenly
-  along most of its length; it weakens towards the +x end, the wire hole's side.
+- **The insert costs about 9 % of the filtered air**: its sheet takes 10-13 Pa, against 65-75 Pa through
+  the HEPA paper. At 1.27 L/s the scrubber filters a 180 L chamber's volume every 2.4 minutes.
+- **All the air from the channel goes through the sheet**, evenly: 0.47 m/s on average, 0.54 at most, and
+  nowhere below 0.07.
 
-  ![The sheet from above: even along most of its length, weak at the +x end](lunchbox/cfd/sheet.png)
+  ![The sheet from above: evenly loaded](lunchbox/cfd/sheet.png)
+- **Checked on a finer mesh** (1 mm instead of 2, with the insert): the filtered air comes out within 2 % -
+  1.33 L/s instead of 1.30. The wire hole's leak grows, 0.47 L/s instead of 0.37, as its 2 mm recess is
+  better resolved: if anything, the table under-states it.
 
 ### Two leaks, both downstream of the filters
 
 **The wire hole.** The fan section's floor has a hole for the fans' wires, in its back right corner, and a
 recess under it, 2 mm deep, open to the end and the back. Standing on a flat floor, that recess is a duct
-straight into the plenum, under every filter, with the fans pulling 84 Pa on it: **about a fifth of the air
-the fans move comes in there, unfiltered.** Seal it round the wires - a plug of putty or tape - before
+straight into the plenum, under every filter, with the fans pulling 84 Pa on it: **a fifth to a quarter of
+the air the fans move comes in there, unfiltered.** Seal it round the wires - a plug of putty or tape - before
 anything else.
 
 **Over the HEPA frame.** The holder is 76.0 mm tall and the frame 73.4, so a 2.6 mm slot runs over the

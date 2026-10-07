@@ -72,5 +72,9 @@ committed; the pictures and summaries the build page quotes are in `docs/lunchbo
   second opening, under the back wall, was found.
 - **Every flow split by where it goes** - through the HEPA paper, beside its frame, over it - on planes
   clipped to each region, not averaged over a whole cut.
-- **The sheet's pressure drop matches its own model** (10.1 Pa in the run, 9.2 by the floss coefficient at
-  its mean speed), and **the total flow agrees with the lumped model** in `cfd.py network`.
+- **The sheet's pressure drop matches its own model** (13.2 Pa on the 1 mm mesh, 12.4 by the floss
+  coefficient at its mean speed of 0.47 m/s), and **the total flow agrees with the lumped model** in
+  `cfd.py network`.
+- **The mesh does not decide it:** the 1 mm run's filtered flow is within 2 % of the 2 mm run's. Thin
+  features are another matter - read a face's statistics from the 1 mm run, where a 5 mm sheet is five
+  cells and not two and a half.
