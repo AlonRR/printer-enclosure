@@ -6,3 +6,14 @@ firmware/espnow-c/sdkconfig.old
 
 __pycache__/
 *.pyc
+
+# Rendered and sliced output: build products, made again from the .scad sources whenever needed.
+*.stl
+*.3mf
+*.gcode
+
+# The one-file parts scad-tools/scripts/printables.py makes for Printables, from the sources.
+/printables/
+
+# OpenSCAD Customizer parameter sets: a second source of truth that only the GUI reads.
+*.json
