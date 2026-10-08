@@ -81,7 +81,10 @@ module auto_nuts(way = 0) {
 }
 module auto_screws() translate([screw_shift[0], screw_shift[1], 0]) {
     for (s = auto_fan_screws) translate([s[0], s[1], fan_tip_z]) cylinder(d = screw_d, h = fan_screw);
-    for (s = auto_plate_screws) translate([s[0], s[1], plate_head_z]) cylinder(d = screw_d, h = plate_screw);
+    for (s = auto_plate_screws) translate([s[0], s[1], plate_head_z]) {
+        cylinder(d = screw_d, h = plate_screw);
+        translate([0, 0, -plate_head[1]]) cylinder(d = plate_head[0], h = plate_head[1]);
+    }
 }
 module wire_probe() translate([auto_conduit[0] + wire_shift, auto_conduit[1], auto_conduit_z[0] - 2])
     cylinder(d = wire_d, h = auto_conduit_z[1] - auto_conduit_z[0] + 3);

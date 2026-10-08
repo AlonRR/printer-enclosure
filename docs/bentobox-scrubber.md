@@ -25,7 +25,7 @@ The remix adds three parts, and takes its bottom from the BentoBox Auto, with nu
 | **Paper cap** | Two, in TPU, one on each end of the paper: wedges from above and teeth from below hold the paper's cut end in a zigzag slot, closing its pleats' ends. | [`bentobox-hepa-cap.scad`](../models/bentobox/bentobox-hepa-cap.scad) |
 | **Base** | The Auto's, in place of the duct: the bay under it, the wires' tube, and six nuts in slots where it had heat-set inserts. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
 | **Fan section** | The Auto's, as it comes, in place of the fan case. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
-| **Plate** | The Auto's, closing the bay, its two holes opened to M3. | [`bentobox-auto-plate.scad`](../models/bentobox/bentobox-auto-plate.scad) |
+| **Plate** | The Auto's outline, closing the bay: flush with the base's bottom, its two screws' heads sunk in it. | [`bentobox-auto-plate.scad`](../models/bentobox/bentobox-auto-plate.scad) |
 
 **Not printed yet.** Every fit is checked against the original's STLs (see *Checking it*), not yet against
 printed parts.
@@ -98,12 +98,15 @@ before it. Their mount is not drawn yet.
   2 mm under the base's top, in a post on a 45° cone. The two posts at the end walls open to the outlet, so a
   nut goes in, or back in, from outside. The two beside the wires' tube open between the fans. All four are
   cut back clear of the fans' air.
-- **The plate's two screws**, M3 × 8 countersunk, come up through the plate into nuts slid into slots from
-  the bay, before the plate goes on.
-- Each slot's roof starts with two bridging layers, a channel and then a square, so the screw's hole
-  prints over the slot without support.
+- **The plate's two screws**, M3 × 8 socket head, come up through counterbores in the plate, their heads
+  sunk 0.2 mm inside the bottom face, into nuts in slots that open out through the end walls, so a nut goes
+  in from outside. The plate fills its recess, flush with the base's bottom, and each counterbore is in a
+  lobe that rises into a pocket in the base. The screws sit 1.6 mm nearer the end walls than the Auto's, where
+  the duct's floor stands high enough over them.
+- Each slot's roof, each counterbore's, and each pocket's starts with two bridging layers, a channel and
+  then a square, so the screw's hole prints over it without support.
 
-**Putting it together:** a nut in each of the plate's slots, then the plate on with its two screws; a nut
+**Putting it together:** a nut in each end wall's slot, then the plate on with its two screws; a nut
 in each of the four posts; the fans' leads down the tube; the fan section on the base, the fans in it, and
 their four screws down through them.
 
@@ -169,7 +172,7 @@ the slot. Anything from 28 to 30 folds in 100 mm gives the same parts.
 
 Every original part prints as the author's project lays it out; the remix's print as their files draw
 them, the section and the ring bottom down, a cap with its plate on the bed. The base stands on its bottom
-face, the fan section on its floor, and the plate on its inner face, its countersinks up. No supports, no
+face, the fan section on its floor, and the plate on its outer face, its lobes up. No supports, no
 brim. Standing, the base's bay roof is a 41 mm bridge, as the Auto has it.
 
 | Part | Material | Count | Time | Filament |
@@ -177,9 +180,9 @@ brim. Standing, the base's bay roof is a 41 mm bridge, as the Auto has it.
 | Section | ASA | 1 | 1 h 43 m | 16 g |
 | Paper ring | ASA | 1 | 1 h 8 m | 8 g |
 | Paper cap | TPU 95A | 2 | 52 m each | 5 g each |
-| Base | ASA | 1 | 4 h 15 m | 44 g |
+| Base | ASA | 1 | 4 h 17 m | 44 g |
 | Fan section | ASA | 1 | 3 h 21 m | 33 g |
-| Plate | ASA | 1 | 29 m | 7 g |
+| Plate | ASA | 1 | 37 m | 8 g |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
 brim, no crossing perimeter`, as [`scad-check.sh`](https://github.com/AlonRR/scad-tools) slices them, with
@@ -191,7 +194,7 @@ For the bottom:
 |---|---|
 | 6 | M3 hex nut, ISO 4032 |
 | 4 | M3 × 30 socket head cap screw, ISO 4762: the fans |
-| 2 | M3 × 8 countersunk screw, ISO 10642: the plate |
+| 2 | M3 × 8 socket head cap screw, ISO 4762: the plate, their heads sunk |
 
 ## The air through it
 
@@ -297,7 +300,7 @@ section on the base and the plate in its recess, sets a nut in each slot and sli
 slot's mouth, runs each screw from its head to its tip, and the wires down the tube, and the fans' air
 down into the base past the posts. Each must come out empty. Every check has a positive control,
 something broken on purpose that it must catch, and the run fails if one passes unnoticed: 17 fits and
-21 controls.
+22 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.

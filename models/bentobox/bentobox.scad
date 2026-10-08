@@ -208,34 +208,49 @@ module fan_post(s) difference() {
 // An insert's hole, filled: the screw's hole and the slot are cut through the fill.
 module fan_plug(s) translate([s[0], s[1], duct_h - auto_fan_insert[1] - 0.1])
     cylinder(d = auto_fan_insert[0] + 0.2, h = auto_fan_insert[1] + 0.1 - meet);
-module plate_plug(s) translate([s[0], s[1], auto_seat_z + meet])
+module plate_plug(p) translate([p[0], p[1], auto_seat_z + meet])
     cylinder(d = auto_plate_insert[0] + 0.2, h = auto_plate_insert[1] + 0.1 - meet);
 // A fan screw's way: its slot, the roof over it, and its hole, down from the base's top past its tip.
 module fan_screw_cut(s) {
     slot_frame(s, fan_slot_bot) { slot(); roof_hole(duct_h - fan_slot_top + 1); }
     translate([s[0], s[1], fan_tip_z - 0.5]) cylinder(d = hole_d, h = fan_slot_bot - fan_tip_z + 0.5 + eps);
 }
-// A plate screw's: its hole, up from the seat, its slot, the roof over it, and on past its tip.
+// A plate screw's: the pocket its lobe rises into, its hole bridged up through the pocket's roof to its slot, the
+// roof over that, and on past its tip.
 module plate_screw_cut(s) {
-    translate([s[0], s[1], auto_seat_z - 1]) cylinder(d = hole_d, h = plate_slot_bot - auto_seat_z + 1 + eps);
+    translate([s[0], s[1], auto_base_z0 - 1]) cylinder(d = pocket_d, h = pocket_top - auto_base_z0 + 1);
+    translate([s[0], s[1], pocket_top]) bridged_hole(pocket_d, hole_d, plate_slot_bot - pocket_top + eps, fdm_layer_h, eps);
     slot_frame(s, plate_slot_bot) { slot(); roof_hole(plate_tip_z + 0.5 - plate_slot_top); }
 }
 module auto_base() difference() {
     union() {
         orig(auto_base_stl);
         for (s = auto_fan_screws) { fan_post(s); fan_plug(s); }
-        for (s = auto_plate_screws) plate_plug(s);
+        for (p = auto_plate_inserts) plate_plug(p);
     }
     for (s = auto_fan_screws) fan_screw_cut(s);
     for (s = auto_plate_screws) plate_screw_cut(s);
 }
-// The plate, its two countersunk holes opened to M3.
+// The plate: the Auto's outline, its countersunk holes filled, as thick as its recess is deep, so it is flush with
+// the base's bottom face; a lobe on it for each screw, a counterbore up into the lobe for the screw's head, and the
+// screw's hole bridged up through the counterbore's roof.
+module plate_outline() union() {
+    projection() orig(auto_plate_stl, auto_plate_dz);
+    for (p = auto_plate_inserts) translate(p) circle(d = 7);
+}
 module auto_plate() difference() {
-    orig(auto_plate_stl, auto_plate_dz);
-    for (s = auto_plate_screws) translate([s[0], s[1], plate_head_z - 1]) cylinder(d = hole_d, h = auto_plate_t + 2);
+    union() {
+        translate([0, 0, auto_base_z0]) linear_extrude(plate_t) plate_outline();
+        for (s = auto_plate_screws) translate([s[0], s[1], auto_base_z0]) cylinder(d = lobe_d, h = lobe_top - auto_base_z0);
+    }
+    for (s = auto_plate_screws) translate([s[0], s[1], 0]) {
+        translate([0, 0, auto_base_z0 - 1]) cylinder(d = plate_cb[0], h = plate_cb[1] + 1);
+        translate([0, 0, plate_head_z]) bridged_hole(plate_cb[0], hole_d, lobe_top - plate_head_z + 1, fdm_layer_h, eps);
+    }
 }
 module say_auto_hardware() echo(str("auto: six M3 nuts; the fans' four screws M3 x ", fan_screw,
-    " socket head, through the fans; the plate's two M3 x ", plate_screw, " countersunk"));
+    " socket head, through the fans; the plate's two M3 x ", plate_screw, " socket head, sunk ", head_sink,
+    " mm into the bottom face"));
 
 // How to cut the paper for the frame, from the values above: what the build page quotes. Only the length is
 // measured; across the folds the piece is counted, since the ring sets its width.
@@ -251,9 +266,9 @@ if (draw_model) {
     if (part == "section") section();
     else if (part == "hepa_ring") { hepa_ring(); say_paper_cut(); }
     else if (part == "hepa_cap") { hepa_cap(); say_paper_cut(); }
-    // The Auto's parts as they print: the base and the fan section standing, the plate on its inner face.
+    // The Auto's parts as they print: the base and the fan section standing, the plate on its outer face.
     else if (part == "auto_base") { translate([0, 0, -auto_base_z0]) auto_base(); say_auto_hardware(); }
     else if (part == "auto_fans") translate([0, 0, -duct_h]) auto_fans();
-    else if (part == "auto_plate") { translate([0, 0, auto_seat_z]) rotate([180, 0, 0]) auto_plate(); say_auto_hardware(); }
+    else if (part == "auto_plate") { translate([0, 0, -auto_base_z0]) auto_plate(); say_auto_hardware(); }
     else assert(false, str("unknown part: ", part));
 }

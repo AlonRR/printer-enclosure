@@ -99,13 +99,23 @@ post_bot = fan_slot_bot - nut_floor;                   // ...its foot, with a 45
 fan_head_z = duct_h + auto_floor_t + fan_t;            // a fan screw's head, on the fan's top flange
 fan_screw = screw_for(fan_t + auto_floor_t + nut_roof + nut_h + screw_tip);
 fan_tip_z = fan_head_z - fan_screw;
-plate_head_z = auto_seat_z - auto_plate_t;             // a plate screw's head, flush in the plate's countersink
-plate_slot_bot = auto_seat_z + nut_floor;
+// A plate screw comes up through a counterbore in the plate, its head head_sink inside the base's bottom face, the
+// counterbore in a lobe that rises into a pocket in the base; its nut's slot is over the pocket.
+plate_t = auto_seat_z - auto_base_z0;                  // the plate: it fills its recess
+plate_cb = [plate_head[0] + 2 * fdm_hole_comp + head_room, plate_head[1] + head_sink];   // a head's counterbore, d and depth
+plate_head_z = auto_base_z0 + plate_cb[1];             // where a head bears, up in its lobe
+lobe_d = plate_cb[0] + 2 * perim3;
+lobe_top = plate_head_z + lobe_cap;
+pocket_d = lobe_d + 2 * lobe_play;
+pocket_top = lobe_top + lobe_play;
+plate_slot_bot = pocket_top + nut_floor;
 plate_slot_top = plate_slot_bot + nut_slot_h;
-plate_screw = screw_for(auto_plate_t + nut_floor + nut_h + screw_tip);
+plate_screw = screw_for(plate_slot_bot + nut_h + screw_tip - plate_head_z);
 plate_tip_z = plate_head_z + plate_screw;
 
 assert(!is_undef(fan_screw) && !is_undef(plate_screw), "no screw in screw_lengths is long enough");
+assert(plate_tip_z + 0.5 < auto_plate_room - 2 * fdm_layer_h, "a plate screw's hole breaks into the duct over it");
+assert(head_sink >= 0, "a plate screw's head stands out of the base's bottom face");
 assert(fan_tip_z - 0.5 > post_bot - post_r + hole_d / 2, "a fan screw's tip runs out of its post's cone");
 assert(bottom == "auto" || bottom == "bambu", str("unknown bottom: ", bottom));
 

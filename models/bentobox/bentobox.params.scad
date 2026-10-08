@@ -124,11 +124,12 @@ auto_floor_t  = 3;      /* The fan section's floor, which the fans' screws pass.
 auto_fan_air  = 37;     /* The fan section's floor opening under each fan, at fan_ys. Nothing new may stand under one. */
 auto_fan_screws = [[-16, -46, 180], [-16, 46, 180], [16, -14, 135], [16, 14, 225]];   /* The fans' screws, X and Y, and the way each nut's slot opens, in degrees from +X: the two at the end walls to the outlet, the two at the long wall between the fans, clear of their air. */
 auto_fan_insert = [4.2, 4];     /* The heat-set inserts' holes the nuts replace, d and depth, down from the base's top. */
-auto_plate_screws = [[-1, -46.4, 90], [-1, 46.4, 270]];   /* The plate's two screws, X and Y, their slots open to the bay. */
-auto_plate_insert = [3.8, 3.5]; /* ...their inserts' holes, up from the seats' ceiling. */
+auto_plate_screws = [[-1, -48, 270], [-1, 48, 90]];   /* The plate's two screws, X and Y, 1.6 mm nearer the end walls than the Auto's, where the end wall's fillet stands high enough over a sunk head's screw; their slots open out through the end walls, so a nut goes in from outside. */
+auto_plate_inserts = [[-1, -46.4], [-1, 46.4]];   /* The Auto's own plate screws: their inserts' holes in the base, filled, and their countersunk holes in the plate, filled. */
+auto_plate_insert = [3.8, 3.5]; /* ...those inserts' holes, d and depth, up from the seats' ceiling. */
 auto_base_z0  = 6;      /* The base's bottom face. */
-auto_seat_z   = 8.5;    /* The seats' ceiling, which the plate's ends press against: the plate sits 0.7 mm up inside the base's bottom face. */
-auto_plate_t  = 1.8;    /* The plate. Its two holes are countersunk from below for flush heads; this remix opens them to M3. */
+auto_seat_z   = 8.5;    /* The seats' ceiling, which the plate's ends press against, 2.5 mm up inside the base's bottom face. The Auto's plate is 1.8 thick; this remix's fills the recess, flush with the bottom face. */
+auto_plate_room = 18.8; /* Over each plate screw, Y +/-48, the end wall's fillet - the duct's floor - stands this high: the screw's hole stops under it. */
 auto_conduit  = [16.38, 0, 6];  /* The wires' way down: X, Y and d - the floor's hole, and the tube under it to the bay. */
 auto_conduit_z = [16, 55];      /* ...from the bay's ceiling to the floor's top. */
 
@@ -145,6 +146,11 @@ nut_floor = 1.5;    /* Under a slot: a fan screw's, and a plate screw's over the
 post_beads = 3;     /* The new post round a fan screw's slot, each side of it, in beads. */
 post_clear_air = true;   /* Cut the posts back clear of the fans' air: round, they would reach 0.3 mm under the floor's openings. */
 nut_slot_out = 12;  /* How far past its screw each slot is cut towards its mouth: out into the open. */
+plate_head = [5.5, 3];  /* The plate's screws, M3 socket head, ISO 4762: the head's diameter and height. */
+head_sink = 0.2;    /* Each head sits this far up inside the base's bottom face... */
+head_room = 0.4;    /* ...in a counterbore this much wider than the head, past fdm_hole_comp: room for the key. */
+lobe_cap = 1;       /* The plate over each head: the counterbore is in a lobe that rises from the plate into a pocket in the base... */
+lobe_play = 0.2;    /* ...with this much room round it and over it, so the plate's ends bear on the seats, not the lobes. */
 meet = 0.05;        /* A new face kept this far off an imported one it would otherwise share: the STL's float32 corners are not where the same number computed here is, and faces a hair apart make slivers the slicer removes. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
