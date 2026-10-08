@@ -254,9 +254,10 @@ module say_auto_hardware() echo(str("auto: six M3 nuts; the fans' four screws M3
     " mm into the bottom face"));
 
 // ------------------------------------------------------------------ the gaskets' test
-// The candidate beads side by side, joined by a web (scad-tools gasket.scad), in TPU; and a bar with the joint's
-// tongue along it, in ASA, to press each bead as a tongue would. Load the bar with known weights and read how far
-// each bead goes down: the force per mm at a fifth's squeeze is what decides how a joint must be held.
+// One plate, all TPU: the candidate beads side by side, joined by a web (scad-tools gasket.scad), and a bar with
+// the joint's tongue along it, to press each bead as a tongue would. Load the bar with known weights and read how
+// far each bead goes down: the force per mm at a fifth's squeeze is what decides how a joint must be held. The bar
+// may be TPU too: 500 g over 60 mm is about 0.1 MPa on the tongue's tip, which squeezes solid TPU 95A 0.4 %.
 module gasket_press() {
     w = 8; t = 3; l = coupon_l + 10;
     translate([0, -w / 2, 0]) cube([l, w, t]);
@@ -283,7 +284,6 @@ if (draw_model) {
     else if (part == "auto_base") { translate([0, 0, -auto_base_z0]) auto_base(); say_auto_hardware(); }
     else if (part == "auto_fans") translate([0, 0, -duct_h]) auto_fans();
     else if (part == "auto_plate") { translate([0, 0, -auto_base_z0]) auto_plate(); say_auto_hardware(); }
-    else if (part == "gasket_coupon") gasket_coupon(coupon_beads, coupon_l);
-    else if (part == "gasket_press") gasket_press();
+    else if (part == "gasket_test") { gasket_coupon(coupon_beads, coupon_l); translate([0, -12, 0]) gasket_press(); }
     else assert(false, str("unknown part: ", part));
 }

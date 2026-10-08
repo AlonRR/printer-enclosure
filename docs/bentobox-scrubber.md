@@ -134,10 +134,9 @@ A printed gasket is a hollow TPU bead in a groove, squeezed a fifth of its heigh
 the stack is held by magnets, which give little. How much a bead pushes back with is on no datasheet, so it
 is measured first:
 
-- **The test piece** ([`bentobox-gasket-coupon.scad`](../models/bentobox/bentobox-gasket-coupon.scad)), in
-  TPU: three beads side by side, 1.6, 2.0 and 2.5 mm, each 60 mm long.
-- **The press** ([`bentobox-gasket-press.scad`](../models/bentobox/bentobox-gasket-press.scad)), in ASA:
-  a bar with the joint's tongue along it.
+[`bentobox-gasket-test.scad`](../models/bentobox/bentobox-gasket-test.scad) is one plate, all in TPU:
+three beads side by side, 1.6, 2.0 and 2.5 mm, each 60 mm long, and a bar with the joint's tongue along it
+to press them. The bar can be TPU as well: the loads are small, and the tongue's tip barely gives.
 
 Lay the bar's tongue on one bead, load it with a known weight, and measure how far the bead goes down. A
 fifth of its height is the squeeze a ring would work at, and the weight that takes it there, over 60 mm, is
@@ -212,12 +211,11 @@ brim. Standing, the base's bay roof is a 41 mm bridge, as the Auto has it.
 | Base | ASA | 1 | 4 h 17 m | 44 g |
 | Fan section | ASA | 1 | 3 h 21 m | 33 g |
 | Plate | ASA | 1 | 37 m | 8 g |
-| Gasket test piece | TPU 95A | 1 | 6 m | 1 g |
-| Gasket press | ASA | 1 | 10 m | 2 g |
+| Gasket test | TPU 95A | 1 | 27 m | 3 g |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
 brim, no crossing perimeter`, as [`scad-check.sh`](https://github.com/AlonRR/scad-tools) slices them, with
-`Inslogic TPU 95A` for the caps and the gasket test piece.
+`Inslogic TPU 95A` for the caps and the gasket test.
 
 For the bottom:
 

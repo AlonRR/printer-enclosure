@@ -30,7 +30,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "hepa_ring", "hepa_cap", "auto_base", "auto_fans", "auto_plate", "gasket_coupon" or "gasket_press": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "hepa_ring", "hepa_cap", "auto_base", "auto_fans", "auto_plate" or "gasket_test": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
