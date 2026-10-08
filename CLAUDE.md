@@ -35,7 +35,8 @@ a blank for the middle fan bay, and M3 tabs added to the originals.
 ThrutheFrame's BentoBox v2.0 (CC BY-NC-SA 4.0) with its C-MAG carbon magazine, weighed against the LunchBox
 from 7 Oct 2026, and a carbon-dust section for it. [docs/bentobox-scrubber.md](docs/bentobox-scrubber.md) is
 its page. It has the LunchBox's layout: the originals are not in git (`original/README.md`), every value is in
-`bentobox.params.scad`, and `uv run scripts/bentobox-checks.py all` runs its fit checks and controls.
+`bentobox.params.scad`, and `uv run scripts/bentobox-checks.py all` runs its fit checks and controls - with
+`OPENSCAD` set to the nightly, as for the LunchBox: under the 2021.01 release every control reads BLIND.
 
 ## The airflow simulations - `sim/`
 
@@ -51,3 +52,8 @@ published numbers. A porous zone must be snapped to the mesh (`sim/bentobox-cfd/
   its pictures carry the original's licence: the LunchBox's CC-BY-SA-4.0, the BentoBox's CC-BY-NC-SA-4.0.
   Code is MPL-2.0; other docs CC-BY-4.0.
 - Pushes go to the `gitea` remote. The `github` remote is public: pushing there is the owner's call.
+- **Other sessions work in scad-tools, and may work here.** Never edit scad-tools' own clone: change it in a
+  worktree of its own on a branch, and land it by fast-forward. Before writing to any repo, look at its
+  `git status` and newest commits; if another session is in it, work in a temporary clone or worktree on a
+  branch, and fast-forward `main` only if it has not moved. Move the `scad-tools/` pin only to a commit that
+  is already on GitHub, so that a GitHub clone of this repo still builds.
