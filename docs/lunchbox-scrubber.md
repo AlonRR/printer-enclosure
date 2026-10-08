@@ -154,6 +154,11 @@ does in hours.
 bars meet the frame along a line. They are in the original's `filter_caddy_110x74x21.stl` as it comes, and
 PrusaSlicer slices the body without repairing anything, so the remix leaves them.
 
+It builds the fan section with two warnings, and these are the remix's own: the tops of its four tabs sit at
+44.6 mm, as the remix computes them, against the original rim's 44.599998, as its STL stores it. Where the
+two meet, 16 facets about two millionths of a millimetre tall result, and PrusaSlicer removes them as it loads
+the part; the print is the same. They are known and left as they are.
+
 [`lunchbox.params.scad`](../models/lunchbox/lunchbox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the remix.
 
