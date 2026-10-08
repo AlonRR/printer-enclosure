@@ -150,6 +150,10 @@ something broken on purpose that it must catch, and the run fails if one passes 
 an 8 MB mesh, so it needs the nightly, whose Manifold backend does in seconds what the 2021.01 release
 does in hours.
 
+`scad-check.sh` builds the body with one warning: 56 edges with four faces on each, where the front grid's
+bars meet the frame along a line. They are in the original's `filter_caddy_110x74x21.stl` as it comes, and
+PrusaSlicer slices the body without repairing anything, so the remix leaves them.
+
 [`lunchbox.params.scad`](../models/lunchbox/lunchbox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the remix.
 
