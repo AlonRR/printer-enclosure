@@ -74,7 +74,8 @@ module grid() {
         }
     }
 }
-module section() {
+module section() if (sealed) section_sealed(); else section_magnets();
+module section_magnets() {
     // The groove is cut after the grid is in: its inner face is 0.1 mm inside the inside's outline, in the
     // grid's ledge, and a ledge added afterwards would fill that back and stand against the tongue.
     difference() {
@@ -253,18 +254,129 @@ module say_auto_hardware() echo(str("auto: six M3 nuts; the fans' four screws M3
     " socket head, through the fans; the plate's two M3 x ", plate_screw, " socket head, sunk ", head_sink,
     " mm into the bottom face"));
 
-// ------------------------------------------------------------------ the gaskets' test
-// One plate, all TPU: the candidate beads side by side, joined by a web (scad-tools gasket.scad), and a bar with
-// the joint's tongue along it, to press each bead as a tongue would. Load the bar with known weights and read how
-// far each bead goes down: the force per mm at a fifth's squeeze is what decides how a joint must be held. The bar
-// may be TPU too: 500 g over 60 mm is about 0.1 MPa on the tongue's tip, which squeezes solid TPU 95A 0.4 %.
-module gasket_press() {
-    w = 8; t = 3; l = coupon_l + 10;
-    translate([0, -w / 2, 0]) cube([l, w, t]);
-    // The tongue's section, its top on the bar's middle: one face upright, as the tongue's inner face is.
-    translate([0, 0, t - eps]) rotate([90, 0, 90]) linear_extrude(l)
-        polygon([[-(tongue_base - tongue_top / 2), 0], [tongue_top / 2, 0], [tongue_top / 2, tongue_h], [-tongue_top / 2, tongue_h]]);
+// ------------------------------------------------------------------ the sealed joints
+// See bentobox.params.scad. A lower part's top: its tongue cut away `meet` under its face (the STL's float32 face
+// is not where the same number computed here is), its magnets' holes filled, a collar round its edge, the bead's
+// groove, and four tabs with a nut in each, on cubic brackets. An upper part's bottom: its groove and its magnets'
+// holes filled, its edge cut back at 45 degrees to sit in the collar, and four tabs under the screws' heads.
+module outline_in(d) offset(delta = -d) rrect(bb_w, bb_l, bb_r);
+// One tab's outline from above, at the +X, +Y corner: from the end wall along the parabola, round the screw's
+// boss, down the side face's line into the body.
+function _tab_pts() = concat(
+    [for (i = [0 : 24]) let(x = tab_x0 + (tab_p[0] - tab_x0) * i / 24) [x, tab_ye - tab_dip + tab_c * pow(x - tab_x0, 2)]],
+    [for (a = [tab_a0 - 5 : -5 : 0]) tab_sc + tab_boss_r * [cos(a), sin(a)]],
+    [[tab_sc[0] + tab_boss_r, tab_ye - bb_r - 1], [tab_x0, tab_ye - bb_r - 1]]);
+module tabs2d() for (mx = [0, 1], my = [0, 1]) mirror([mx, 0, 0]) mirror([0, my, 0]) polygon(_tab_pts());
+// Under a nut's tab, its bottom at zt: a bracket whose face is a cubic in its height, from bracket_in inside the end
+// wall at its foot, crossing the wall's face at a slant, to the tab's tip at 45 degrees. Not below the part's bottom, z0.
+module brackets(zt, z0) {
+    foot = zt - bracket_h;
+    zs = max(foot, z0 + 0.2);
+    n = 24;
+    face = [for (i = [0 : n]) let(z = zs + (zt - zs) * i / n)
+        [tab_ye - bracket_in + (tab_l + bracket_in) * pow((z - foot) / bracket_h, 3), z]];
+    // It reaches 1 mm up into the tab, which has the same outline, so no face of it lies a hair from the tab's.
+    intersection() {
+        translate([0, 0, zs]) linear_extrude(zt - zs + 1) tabs2d();
+        for (my = [0, 1]) mirror([0, my, 0]) rotate([90, 0, 90]) translate([0, 0, -bb_w])
+            linear_extrude(2 * bb_w) polygon(concat([[tab_ye - 1, zs], [tab_ye - 1, zt + 1], [tab_ye + tab_l + 1, zt + 1]],
+                [for (i = [n : -1 : 0]) face[i]]));
+    }
 }
+// The collar on a lower part's top, its face at z: its outside meet in from the outline, its inside at 45 degrees,
+// none where the tabs are. Its rounded corners have their own number of facets: with the part's 64, its slant met
+// the section's wall at the wall's own corners, and left degenerate slivers there.
+module collar(z, $fn = 97) difference() {
+    translate([0, 0, z - 0.5]) linear_extrude(collar_h + 0.5) outline_in(meet);
+    hull() {
+        translate([0, 0, z - 0.5 - eps]) linear_extrude(eps) outline_in(collar_base + 0.5);
+        translate([0, 0, z + collar_h]) linear_extrude(eps) outline_in(collar_top);
+    }
+    translate([0, 0, z - 1]) linear_extrude(collar_h + 2) offset(delta = collar_play) tabs2d();
+}
+// What an upper part's bottom edge loses, its face at z: everything outside a 45-degree face from chamfer_in in at
+// the face to the outline itself; it stops just past the outline, so it meets none of the part's faces.
+module chamfer_cut(z, $fn = 97) difference() {
+    translate([0, 0, z - 1]) linear_extrude(chamfer_in + 1 + meet) offset(delta = 5) outline_in(0);
+    hull() {
+        translate([0, 0, z - 1 - eps]) linear_extrude(eps) outline_in(chamfer_in + 1);
+        translate([0, 0, z + chamfer_in + meet]) linear_extrude(eps) outline_in(-meet);
+    }
+}
+module seal_groove_cut(z) translate([0, 0, z - seal_groove[1]]) linear_extrude(seal_groove[1] + 1)
+    gasket_groove_2d(seal_ring[0], seal_ring[1], seal_groove[0]);
+module bead_ring() gasket_ring(seal_ring[0], seal_ring[1], seal_bead);
+module magnet_fill(z0, z1) for (sx = [-1, 1], sy = [-1, 1]) translate([sx * mag_xy[0], sy * mag_xy[1], z0]) cylinder(d = mag_d + 0.2, h = z1 - z0);
+// A lower part's top. zf: its imported face; z0: its bottom. The new face is zf - meet.
+module lower_face(zf, z0) let(z = zf - meet) difference() {
+    union() {
+        difference() {
+            union() {
+                children();
+                magnet_fill(zf - mag_h - 0.1, zf + 1);
+                translate([0, 0, z - tab_lower_t]) linear_extrude(tab_lower_t + 1) tabs2d();
+                brackets(z - tab_lower_t + eps, z0);
+            }
+            translate([0, 0, z]) linear_extrude(10) offset(delta = 20) outline_in(0);
+        }
+        collar(z);
+    }
+    seal_groove_cut(z);
+    for (s = tab_screws) {
+        slot_frame(s, z + seal_slot_bot) { slot(); roof_hole(-(seal_slot_bot + nut_slot_h) + 1); }
+        translate([s[0], s[1], z - 9]) cylinder(d = hole_d, h = 9 + seal_slot_bot + eps);
+    }
+}
+// An upper part's bottom, its face at z.
+module upper_face(z) difference() {
+    union() {
+        difference() {
+            union() {
+                children();
+                translate([0, 0, z + meet]) linear_extrude(groove_h + 0.1)
+                    difference() { inside_offset(groove_out + 0.1); inside_offset(-0.2); }
+                magnet_fill(z + meet, z + mag_h + 0.1);
+            }
+            chamfer_cut(z);
+        }
+        translate([0, 0, z + meet]) linear_extrude(tab_upper_t - meet) tabs2d();
+    }
+    for (s = tab_screws) translate([s[0], s[1], z - 1]) cylinder(d = hole_d, h = tab_upper_t + 2);
+}
+// The section, sealed: flat underneath, chamfered to sit in the fan section's collar; a collar and the bead's
+// groove on top; a pillar at each corner, which the screw from the carbon housing passes through; no magnets. Its
+// outside is one hull with the chamfer in it: cut afterwards, the slant met the wall at the corner's first facet.
+module section_sealed() difference() {
+    union() {
+        difference() {
+            union() {
+                difference() {
+                    hull() {
+                        linear_extrude(eps) outline_in(chamfer_in);
+                        translate([0, 0, chamfer_in]) linear_extrude(sec_h - chamfer_in - bb_chamfer) outline_in(0);
+                        translate([0, 0, sec_h - eps]) linear_extrude(eps) outline_in(bb_chamfer);
+                    }
+                    translate([0, 0, -1]) linear_extrude(sec_h + 2) inside_offset(0);
+                }
+                grid();
+            }
+        }
+        linear_extrude(sec_h) tabs2d();
+        collar(sec_h);
+    }
+    seal_groove_cut(sec_h);
+    for (s = tab_screws) translate([s[0], s[1], -1]) cylinder(d = hole_d, h = sec_h + 2);
+}
+// The sealed stack's parts in place: the fan section, the carbon housing, the HEPA holder.
+sst = stack(true, true);
+carbon_dz = sst[2] - (duct_h + fans_h);
+hepa_dz = sst[3] - (duct_h + fans_h + carbon_h);
+module fans_sealed() lower_face(duct_h + fans_h, duct_h) fan_section();
+module carbon_sealed() lower_face(duct_h + fans_h + carbon_h + carbon_dz, sst[2]) upper_face(sst[2]) orig(carbon_stl, carbon_dz);
+module hepa_sealed() upper_face(sst[3]) orig(hepa_stl, hepa_dz);
+module say_seal_hardware() echo(str("sealed joints: three TPU bead rings, ", seal_bead[0], " mm; four M3 x ", j3_screw,
+    " socket head into nuts, HEPA holder to carbon housing; four M3 x ", j12_screw,
+    " through the carbon housing's tabs and the section's pillars into the fan section's nuts; eight M3 nuts"));
 
 // How to cut the paper for the frame, from the values above: what the build page quotes. Only the length is
 // measured; across the folds the piece is counted, since the ring sets its width.
@@ -282,8 +394,11 @@ if (draw_model) {
     else if (part == "hepa_cap") { hepa_cap(); say_paper_cut(); }
     // The Auto's parts as they print: the base and the fan section standing, the plate on its outer face.
     else if (part == "auto_base") { translate([0, 0, -auto_base_z0]) auto_base(); say_auto_hardware(); }
-    else if (part == "auto_fans") translate([0, 0, -duct_h]) auto_fans();
+    else if (part == "auto_fans") translate([0, 0, -duct_h]) if (sealed) fans_sealed(); else auto_fans();
+    // The sealed stack's remixed originals and the bead ring, as they print: standing, the ring flat.
+    else if (part == "carbon") { translate([0, 0, -sst[2]]) carbon_sealed(); say_seal_hardware(); }
+    else if (part == "hepa") { translate([0, 0, -sst[3]]) hepa_sealed(); say_seal_hardware(); }
+    else if (part == "bead_ring") bead_ring();
     else if (part == "auto_plate") { translate([0, 0, -auto_base_z0]) auto_plate(); say_auto_hardware(); }
-    else if (part == "gasket_test") { gasket_coupon(coupon_beads, coupon_l); translate([0, -12, 0]) gasket_press(); }
     else assert(false, str("unknown part: ", part));
 }

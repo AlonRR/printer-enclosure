@@ -10,22 +10,28 @@ side, at the floor. It is built for the two Delta EFB0412VHD this build has, 40 
 **Its bottom is the BentoBox Auto's** (see *The bottom*): the same duct, its floor raised over a bay for the
 electronics, with a tube down to it for the wires, and nuts where the Auto had heat-set inserts.
 
-![The stack pulled apart: the cover, the HEPA holder, the carbon housing with the C-MAG in it, the section, the fan section, the base, the plate under its bay](bentobox/exploded.png)
+**Its joints under suction are sealed** (see *The sealed joints*): a TPU bead in a groove at each, and four
+screws in tabs at the corners, where the original has magnets.
+
+![The stack pulled apart: the cover, the HEPA holder, the carbon housing with the C-MAG in it, the section, the fan section, the base, the plate under its bay; tabs at the corners of the three sealed joints](bentobox/exploded.png)
 
 **It takes its HEPA as a cartridge:** a bought one, 80 × 40 × 15 mm, rests on a ledge in its holder. Or
 the HEPA paper this build already has, pleated 20 mm deep, in the remix's frame (see *Your own HEPA
 paper*).
 
-The remix adds three parts, and takes its bottom from the BentoBox Auto, with nuts for its inserts:
+The remix adds four parts, takes its bottom from the BentoBox Auto, and seals the joints under suction:
 
 | | What it does | File |
 |---|---|---|
-| **Section** | Goes between the carbon housing and the fan case, holding a flat filter sheet that stops carbon dust reaching the fans. Its top is the fan case's tongue and its bottom the housing's groove, with the same magnets, so it drops into any BentoBox v2.0 stack. | [`bentobox-section.scad`](../models/bentobox/bentobox-section.scad) |
+| **Section** | Goes between the carbon housing and the fan section, holding a flat filter sheet that stops carbon dust reaching the fans. Sealed at both its faces, with a pillar at each corner that the carbon housing's screws pass through. `sealed = false` builds it with the original's tongue, groove and magnets, to drop into any BentoBox v2.0 stack. | [`bentobox-section.scad`](../models/bentobox/bentobox-section.scad) |
 | **Paper ring** | Stands on the HEPA holder's ledge in place of the cartridge and holds a cut piece of pleated paper. | [`bentobox-hepa-ring.scad`](../models/bentobox/bentobox-hepa-ring.scad) |
 | **Paper cap** | Two, in TPU, one on each end of the paper: wedges from above and teeth from below hold the paper's cut end in a zigzag slot, closing its pleats' ends. | [`bentobox-hepa-cap.scad`](../models/bentobox/bentobox-hepa-cap.scad) |
 | **Base** | The Auto's, in place of the duct: the bay under it, the wires' tube, and six nuts in slots where it had heat-set inserts. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
-| **Fan section** | The Auto's, as it comes, in place of the fan case. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
+| **Fan section** | The Auto's, in place of the fan case, its top remixed for the sealed joint. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
 | **Plate** | The Auto's outline, closing the bay: flush with the base's bottom, its two screws' heads sunk in it. | [`bentobox-auto-plate.scad`](../models/bentobox/bentobox-auto-plate.scad) |
+| **Carbon housing** | ThrutheFrame's, remixed for the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
+| **HEPA holder** | ThrutheFrame's, its bottom remixed to sit sealed on the carbon housing. | [`bentobox-hepa.scad`](../models/bentobox/bentobox-hepa.scad) |
+| **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
 
 **Not printed yet.** Every fit is checked against the original's STLs (see *Checking it*), not yet against
 printed parts.
@@ -47,24 +53,20 @@ honeycomb (the project's plate 3). Print them from the project, not from the STL
 
 ## The section
 
-![The section from above: the grid at its bottom, the tongue round its top, a magnet hole at each corner](bentobox/section-top.png)
+![The section from above: the grid at its bottom, the collar and the bead's groove round its top, a pillar at each corner](bentobox/section-top.png)
 
 The sheet lies on a grid at the section's bottom, with 5 mm of air above it. The carbon housing's floor has
 an opening over each fan only, and that air spreads over the whole sheet before it goes through. Below the
-grid is the fan case, with 11 mm of air above the fans.
+grid is the fan section, with 11 mm of air above the fans.
 
 **The sheet:** polyester filter floss, about 5 mm thick loose, cut to **42 × 102 mm**: a little over the
 section's inside, 40.8 × 100.8, so it seals at its edges on the ledge round the grid. It is there for carbon
 dust, which is coarse, so it needs to be open, not fine. Change it when it turns grey.
 
-![The section from below: the groove the fan case's tongue seats in, the magnet holes, the grid](bentobox/section-bottom.png)
+![The section from below: flat, its edge chamfered to sit in the fan section's collar, the grid, a pillar at each corner](bentobox/section-bottom.png)
 
-**Magnets:** eight more, 4 × 2 mm like the rest, four in each face. Set the top four's poles as the fan
-case's top has them, and the bottom four's as the carbon housing's bottom: the section then meets each
-neighbour the way the two of them met.
-
-The groove is 1 mm from each magnet hole, and so it is in every BentoBox part. The section copies that
-joint rather than changing it.
+**No magnets:** both its joints are sealed (see *The sealed joints*), and the carbon housing's four screws
+hold it, through its pillars, to the fan section.
 
 ## The bottom
 
@@ -80,8 +82,8 @@ The base and the fan section are Strangwooduk's, from the
   opening is 74 × 46 (3,400 mm²). Both are larger than the fans' own two 37 mm openings, and the HEPA, not
   the duct, sets the flow, so the airflow below, simulated with the duct, should hold within a few per cent.
   The simulation will be run again with this base before the remix is published.
-- **The fan section is the fan case's top exactly**: its tongue, its inside and its magnet holes, so the
-  section and everything above sit on it unchanged. Each fan is held by two screws, at opposite corners,
+- **The fan section is the fan case's top exactly**: its tongue, its inside and its magnet holes. The sealed
+  joint then remixes that top (see *The sealed joints*). Each fan is held by two screws, at opposite corners,
   down through the fan section's floor into the base.
 
 The Auto also has a spacer for a sensor between the HEPA holder and the carbon housing, and a 24 V
@@ -110,9 +112,8 @@ before it. Their mount is not drawn yet.
 in each of the four posts; the fans' leads down the tube; the fan section on the base, the fans in it, and
 their four screws down through them.
 
-**Magnets:** the fan section's top keeps its four, as the fan case has, for the section above it. The
-base's underside has four holes for 4 × 2 mm magnets too, from the Auto; magnets there would hold the box
-to a steel floor. They are optional.
+**Magnets:** none at the fan section's top, whose joint is sealed. The base's underside has four holes for
+4 × 2 mm magnets, from the Auto; magnets there would hold the box to a steel floor. They are optional.
 
 **Seal the wires' hole.** The hole in the fan section's floor opens above the floor, into the fans' intake,
 the lowest pressure in the box, about 97 Pa under the chamber's. The tube under it opens into the bay, and
@@ -121,26 +122,45 @@ drawn in that way passes neither filter. Through the 6 mm hole with the fans' le
 that is up to about 0.09 L/s, a seventh of the flow. Seal it round the leads where they pass the floor: hot
 glue, or a TPU grommet. The LunchBox's wire hole had the same fault, and it let in a fifth of its air.
 
-## Gaskets
+## The sealed joints
 
 The joints between the HEPA holder and the fans, three of them, are under suction: the air under the HEPA is
 about 87 Pa below the chamber's, under the C-MAG 93, over the fans 97. Chamber air that leaks in at one of
 them passes the filters above it. A 0.1 mm gap round a joint's 300 mm lets in about 0.03 L/s, 5 % of the
 flow, and the leak grows as the gap's cube. The cover's joint has the chamber's air on both sides, and the
-base's is downstream of the fans, so neither matters.
+base's is downstream of the fans, so those two stay as they are.
 
-A printed gasket is a hollow TPU bead in a groove, squeezed a fifth of its height as the parts meet, after
-[scad-tools' gasket](https://github.com/AlonRR/scad-tools/blob/main/lib/gasket.scad). It needs force, and
-the stack is held by magnets, which give little. How much a bead pushes back with is on no datasheet, so it
-is measured first:
+So the section on the fan section, the carbon housing on the section, and the HEPA holder on the carbon
+housing are sealed:
 
-[`bentobox-gasket-test.scad`](../models/bentobox/bentobox-gasket-test.scad) is one plate, all in TPU:
-three beads side by side, 1.6, 2.0 and 2.5 mm, each 60 mm long, and a bar with the joint's tongue along it
-to press them. The bar can be TPU as well: the loads are small, and the tongue's tip barely gives.
+- **A bead in a groove.** A hollow TPU bead, 2 mm, its wall one perimeter, after
+  [scad-tools' gasket](https://github.com/AlonRR/scad-tools/blob/main/lib/gasket.scad), lies in a groove
+  2.5 × 1.6 mm in the lower part's top, round the inside. It stands 0.4 mm proud; the upper part's flat
+  bottom presses it down as the two faces meet, a fifth of its height.
+- **The upper part sits in the lower one.** A collar 1 mm tall runs round the lower part's top edge, its
+  inner face at 45 degrees; the upper part's bottom edge is cut back at 45 degrees to sit in it, 0.2 mm
+  clear. It centres the parts, and it is a second barrier outside the bead. Both print without support.
+- **Four tabs and screws, where the magnets were.** At each corner a tab stands 9.4 mm past the end wall,
+  its outline a parabola leaving the wall and running on flush with the side face. Under each nut's tab, a
+  bracket whose face is a cubic in its height: tangent to the wall at its foot, 45 degrees at the tab, so it
+  prints without support. Each nut slides in from the tab's end.
+- **The screws.** Four M3 × 12 through the HEPA holder's tabs into nuts in the carbon housing's. Four
+  M3 × 25 through the carbon housing's bottom tabs and pillars in the section into nuts in the fan
+  section's: one screw at each corner holds both of the section's joints.
 
-Lay the bar's tongue on one bead, load it with a known weight, and measure how far the bead goes down. A
-fifth of its height is the squeeze a ring would work at, and the weight that takes it there, over 60 mm, is
-the force per millimetre. A joint is about 300 mm round.
+![The sealed joints pulled apart: the fan section, the section, the carbon housing and the HEPA holder, a bead ring over each lower part's groove, the screws](bentobox/joints.png)
+
+**Putting it together:** a bead ring in the groove on the fan section, the section and the carbon housing;
+a nut in each tab of the fan section and the carbon housing; the section on the fan section, the carbon
+housing on the section, and the four M3 × 25 down through them. The carbon housing's own top tabs stand
+over those screws, 35 mm above their heads: turn them with an L-shaped key from the side. Then the HEPA
+holder on the carbon housing and its four M3 × 12, and the cover on its magnets.
+
+The sheet in the section, the C-MAG and the HEPA come out by the same screws. Only the cover's joint keeps
+magnets: four in the HEPA holder's top and four in the cover.
+
+`sealed = false` in [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) builds every part as
+the original has it: magnets, a tongue on each top, a groove under each bottom.
 
 ## Your own HEPA paper
 
@@ -198,24 +218,26 @@ the slot. Anything from 28 to 30 folds in 100 mm gives the same parts.
 
 ## Printing
 
-Every original part prints as the author's project lays it out; the remix's print as their files draw
-them, the section and the ring bottom down, a cap with its plate on the bed. The base stands on its bottom
-face, the fan section on its floor, and the plate on its outer face, its lobes up. No supports, no
-brim. Standing, the base's bay roof is a 41 mm bridge, as the Auto has it.
+The cover and the C-MAG print as the author's project lays them out; the remix's parts print as their files
+draw them, standing on their bottoms - the section, the ring, the base, the fan section, the carbon housing
+and the HEPA holder - a cap with its plate on the bed, the plate on its outer face, its lobes up, and a bead
+ring flat. No supports, no brim. Standing, the base's bay roof is a 41 mm bridge, as the Auto has it.
 
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
-| Section | ASA | 1 | 1 h 43 m | 16 g |
+| Section | ASA | 1 | 1 h 59 m | 17 g |
 | Paper ring | ASA | 1 | 1 h 8 m | 8 g |
 | Paper cap | TPU 95A | 2 | 52 m each | 5 g each |
 | Base | ASA | 1 | 4 h 17 m | 44 g |
-| Fan section | ASA | 1 | 3 h 21 m | 33 g |
+| Fan section | ASA | 1 | 3 h 43 m | 36 g |
 | Plate | ASA | 1 | 37 m | 8 g |
-| Gasket test | TPU 95A | 1 | 27 m | 3 g |
+| Carbon housing | ASA | 1 | 7 h 25 m | 71 g |
+| HEPA holder | ASA | 1 | 4 h 41 m | 48 g |
+| Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
 brim, no crossing perimeter`, as [`scad-check.sh`](https://github.com/AlonRR/scad-tools) slices them, with
-`Inslogic TPU 95A` for the caps and the gasket test.
+`Inslogic TPU 95A` for the caps and the bead rings.
 
 For the bottom:
 
@@ -224,6 +246,15 @@ For the bottom:
 | 6 | M3 hex nut, ISO 4032 |
 | 4 | M3 × 30 socket head cap screw, ISO 4762: the fans |
 | 2 | M3 × 8 socket head cap screw, ISO 4762: the plate, their heads sunk |
+
+For the sealed joints:
+
+| Quantity | Item |
+|---|---|
+| 8 | M3 hex nut, ISO 4032 |
+| 4 | M3 × 25 socket head cap screw, ISO 4762: the carbon housing and the section to the fan section |
+| 4 | M3 × 12 socket head cap screw, ISO 4762: the HEPA holder to the carbon housing |
+| 8 | 4 × 2 mm magnet: the cover's joint, four in the HEPA holder and four in the cover |
 
 ## The air through it
 
@@ -264,7 +295,7 @@ measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](.
 - **Simulated with ThrutheFrame's duct**, not the Auto's base (see *The bottom*).
 - **No leaks in the model.** The air in at the cover and out at the duct agree to within 2 %, and to 1 % on
   every plane between them, and nothing gets round the C-MAG. The model's joints are closed, though; the
-  real ones under suction want gaskets, and the Auto's wires' hole wants sealing (see *Gaskets* and
+  real ones under suction are sealed, and the Auto's wires' hole wants sealing (see *The sealed joints* and
   *The bottom*).
 - **Checked on a finer mesh** (1 mm instead of 2, with the section): the air through the filters comes out
   3.5 % lower, **0.65 L/s** instead of 0.68 - the lumped model's figure - and the chamber goes through it
@@ -322,16 +353,19 @@ uv run scripts/bentobox-auto-stl.py                                # the Auto's 
 OPENSCAD="<the OpenSCAD nightly>" uv run scripts/bentobox-checks.py all
 ```
 
-It intersects the section with the carbon housing above it and the fan case below it, puts a magnet across
-each joint through both parts' holes, and runs the air's way from the housing's floor openings down through
-the section. For the paper's frame it stands the ring in the original HEPA holder, runs the ledge's opening
+For the sealed joints it stands each upper part on its lower one - flat on the land, its chamfer in the
+collar, tab on tab - lays each bead in its groove, runs each screw from its head to its tip through the tabs
+and the section's pillars, sets a nut in each slot and slides it out through the tab's end, and keeps the
+room over each screw's head clear. With `sealed=false` it checks the original's joints: the section against
+the carbon housing above it and the fan section below it, a magnet across each joint through both parts'
+holes. It runs the air's way from the housing's floor openings down through the section. For the paper's frame it stands the ring in the original HEPA holder, runs the ledge's opening
 up through the ring's walls, sets the caps' wedges and teeth and the ring's strips in a model of the paper
 drawn from the paper's own values, and the caps against the strips. For the bottom it stands the fan
 section on the base and the plate in its recess, sets a nut in each slot and slides it out through the
 slot's mouth, runs each screw from its head to its tip, and the wires down the tube, and the fans' air
 down into the base past the posts. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 17 fits and
-22 controls.
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 25 fits and
+30 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.

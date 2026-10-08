@@ -15,6 +15,8 @@ fit checks that scripts/bentobox-checks.py renders. Needs the originals in origi
   view = "paper_cut"  flat, across the folds: the ring's middle with the paper, beside a cap's face with it
   view = "bottom"     the Auto's bottom pulled apart: the plate, the base with its nuts in their slots, the
                       fan section, and the screws
+  view = "joints"     the sealed joints pulled apart: the fan section, the section, the carbon housing and the
+                      HEPA holder, a bead ring over each lower part's groove, and the screws
   view = "check_..."  one fit check: a solid that must come out EMPTY. Each is an intersection of two
                       parts that should only touch; anything left is two parts in the same place.
 */
@@ -34,7 +36,8 @@ module piece(c) color(c) if (view == "cut")
     projection(cut = true) multmatrix([[0, 1, 0, 0], [0, 0, 1, 0], [1, 0, 0, -cut_x]]) children();
     else children();
 
-module stack(ex) {
+module stack(ex) if (sealed) stack_sealed(ex); else stack_magnets(ex);
+module stack_magnets(ex) {
     st = stack(with_section);
     dz = st[2] - st[1];
     if (bottom == "auto") {
@@ -48,6 +51,49 @@ module stack(ex) {
     piece("sienna") translate([0, 0, 3 * ex]) cmag_standing(st[2] + cmag_z0);
     piece("lightsteelblue") translate([0, 0, 4 * ex]) orig(hepa_stl, dz);
     piece("darkslategray") translate([0, 0, 5 * ex]) orig(cover_stl, dz);
+}
+
+// The sealed stack: each sealed part in its place, a bead ring in each lower part's groove, the screws.
+module stack_sealed(ex) {
+    assert(with_section, "the sealed stack is built for the section: without it, the carbon housing's screws have no fan section's nuts to reach");
+    if (bottom == "auto") {
+        piece("dimgray") translate([0, 0, -ex]) auto_plate();
+        piece("dimgray") auto_base();
+    }
+    else piece("dimgray") orig(duct_stl);
+    piece("steelblue") translate([0, 0, ex]) fans_sealed();
+    piece("seagreen") translate([0, 0, sst[1] + 2 * ex]) section();
+    piece("tan") translate([0, 0, 3 * ex]) carbon_sealed();
+    piece("sienna") translate([0, 0, 3 * ex]) cmag_standing(sst[2] + cmag_z0);
+    piece("lightsteelblue") translate([0, 0, 4 * ex]) hepa_sealed();
+    piece("darkslategray") translate([0, 0, 4 * ex]) orig(cover_stl, hepa_dz);
+}
+// Where the sealed joints' parts are, and what goes in them. A lower part's face, sealed: J1 the fan section's
+// top, J2 the section's, J3 the carbon housing's.
+seal_faces = [sst[1], sst[2], sst[3]];
+module seal_beads(lift = 0) for (z = seal_faces) translate([0, 0, z - seal_groove[1] + lift]) bead_ring();
+module seal_screws() translate([screw_shift[0], screw_shift[1], 0]) for (s = tab_screws) {
+    for (j = [[sst[3], j3_screw], [sst[2], j12_screw]]) translate([s[0], s[1], j[0] + tab_upper_t]) {
+        translate([0, 0, -j[1]]) cylinder(d = screw_d, h = j[1]);
+        cylinder(d = plate_head[0], h = plate_head[1]);
+    }
+}
+module seal_nuts(way = 0) for (s = tab_screws, z = [sst[1], sst[3]])
+    hull() for (x = [0, way]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, z + seal_slot_bot);
+// Over each screw's head, as far up as the screw is long and 10 mm more: the room to put it in and turn it.
+module seal_access() for (s = tab_screws, j = [[sst[3], j3_screw], [sst[2], j12_screw]])
+    translate([s[0], s[1], j[0] + tab_upper_t + plate_head[1]]) cylinder(d = plate_head[0] + 1, h = j[1] + 10);
+module seal_parts() { fans_sealed(); translate([0, 0, sst[1]]) section(); carbon_sealed(); hepa_sealed(); }
+module joints_exploded(ex) {
+    color("steelblue") fans_sealed();
+    color("seagreen") translate([0, 0, sst[1] + ex]) section();
+    color("tan") translate([0, 0, 2 * ex]) carbon_sealed();
+    color("lightsteelblue") translate([0, 0, 3 * ex]) hepa_sealed();
+    color("orange") for (i = [0 : 2]) translate([0, 0, seal_faces[i] - seal_groove[1] + (i + 0.5) * ex]) bead_ring();
+    color("silver") for (s = tab_screws) {
+        translate([s[0], s[1], sst[3] + tab_upper_t + 3.5 * ex]) { translate([0, 0, -j3_screw]) cylinder(d = screw_d, h = j3_screw); cylinder(d = plate_head[0], h = plate_head[1]); }
+        translate([s[0], s[1], sst[2] + tab_upper_t + 2.5 * ex]) { translate([0, 0, -j12_screw]) cylinder(d = screw_d, h = j12_screw); cylinder(d = plate_head[0], h = plate_head[1]); }
+    }
 }
 
 // Parts that meet face to face are checked sep apart along the joint, so that touching leaves nothing at all
@@ -158,6 +204,25 @@ else if (view == "check_auto_wires") intersection() { union() { auto_base(); aut
 // Nothing of the base stands under the fans' openings in the floor, its new posts included.
 else if (view == "check_auto_air") intersection() { auto_base(); fan_air(8); }
 else if (view == "bottom") bottom_exploded(explode);
+else if (view == "joints") joints_exploded(explode);
+// The sealed joints: each upper part on its lower one - flat on the land, its chamfer in the collar, tab on tab.
+else if (view == "check_seal_j1") intersection() { fans_sealed(); translate([0, 0, sst[1] + sep]) section(); }
+else if (view == "check_seal_j2") intersection() { translate([0, 0, sst[1]]) section(); translate([0, 0, sep]) carbon_sealed(); }
+else if (view == "check_seal_j3") intersection() { carbon_sealed(); translate([0, 0, sep]) hepa_sealed(); }
+// Each bead lies in its groove, clear of its walls and floor: against its own lower part only, since it stands
+// proud into the part above by design - the squeeze.
+else if (view == "check_seal_beads") union() {
+    intersection() { fans_sealed(); translate([0, 0, seal_faces[0] - seal_groove[1] + sep]) bead_ring(); }
+    intersection() { translate([0, 0, sst[1]]) section(); translate([0, 0, seal_faces[1] - seal_groove[1] + sep]) bead_ring(); }
+    intersection() { carbon_sealed(); translate([0, 0, seal_faces[2] - seal_groove[1] + sep]) bead_ring(); }
+}
+// The screws, head to tip, through the tabs, the section's pillars and the nuts' slots.
+else if (view == "check_seal_screws") intersection() { seal_parts(); seal_screws(); }
+// The nuts in their slots, and their way in from the tabs' ends.
+else if (view == "check_seal_nuts") intersection() { seal_parts(); seal_nuts(); }
+else if (view == "check_seal_nut_ways") intersection() { seal_parts(); seal_nuts(nut_way); }
+// Room over each head to put the screw in and turn it: nothing of the stack above it.
+else if (view == "check_seal_access") intersection() { seal_parts(); seal_access(); }
 else if (view == "frame") frame_exploded(explode);
 else if (view == "cap") color("dimgray") hepa_cap();
 else if (view == "paper_cut") paper_cut();
@@ -178,6 +243,7 @@ if (show_axes && (view == "stack" || view == "exploded")) axes([-bb_w / 2 - 40, 
 axes_cam = [55, 0, 30];   // the picture's --camera angles, so the arrows' labels face it
 if (show_axes && view == "section") axes([-bb_w / 2 - 20, -bb_l / 2, 0], l = 15, cam = axes_cam);
 if (show_axes && view == "frame") axes([-ring_out[0] / 2 - 25, -ring_out[1] / 2 - explode, 0], l = 15, cam = axes_cam);
+if (show_axes && view == "joints") axes([bb_w / 2 + 20, bb_l / 2, sst[0] + 30], l = 20, cam = axes_cam);
 if (show_axes && view == "bottom") axes([bb_w / 2 + 15, bb_l / 2, 0], l = 20, cam = axes_cam);
 if (show_axes && view == "cap") axes([-ring_in[0] / 2 - 15, -5, 0], l = 8, cam = axes_cam);
 // A flat view gets a flat key: an arrow across, labelled with the box's axis it shows, and +z up.

@@ -34,22 +34,27 @@ from scadtools import DEGENERATE, defines, describe, parallel, problems, render,
 ASSEMBLY = "models/bentobox/bentobox-assembly.scad"
 BACKEND = ["--backend=manifold"]
 
-FITS = [("check_section_carbon", []), ("check_section_fans", []), ("check_magnets_top", []),
-        ("check_magnets_bottom", []), ("check_air", []),
+# The joints as the originals have them - magnets, tongue and groove - are checked with sealed=false; the model's
+# default is the sealed stack, whose joints are the check_seal_ ones.
+UNSEALED = [("sealed", "false")]
+FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("check_magnets_top", UNSEALED),
+        ("check_magnets_bottom", UNSEALED), ("check_air", []),
         ("check_ring_holder", []), ("check_ring_opening", []), ("check_wedges_paper", []),
         ("check_ring_paper", []), ("check_caps_strips", []),
         ("check_auto_fans_base", []), ("check_auto_plate", []), ("check_auto_nuts", []), ("check_auto_nut_ways", []),
-        ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", [])]
+        ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", []),
+        ("check_seal_j1", []), ("check_seal_j2", []), ("check_seal_j3", []), ("check_seal_beads", []),
+        ("check_seal_screws", []), ("check_seal_nuts", []), ("check_seal_nut_ways", []), ("check_seal_access", [])]
 
 # Each control breaks ONE side of its check's relationship - the section's feature against the original's
 # fixed mesh, or against a probe built from the original's measurements - never both, so that the check
 # could only pass by not looking. None may trip one of the model's asserts instead: that would prove the
 # assert, not the check.
 CONTROLS = [
-    ("check_section_carbon", [("tongue_h", "2.5")], "the section's tongue made taller than the housing's groove is deep"),
-    ("check_section_fans", [("groove_h", "1.2")], "the section's groove made shallower than the fan case's tongue is tall"),
-    ("check_magnets_top", [("mag_xy", "[23.5, 52.5]")], "the section's magnet holes moved 1 mm off the housing's"),
-    ("check_magnets_bottom", [("mag_xy", "[23.5, 52.5]")], "the same, against the fan case's"),
+    ("check_section_carbon", UNSEALED + [("tongue_h", "2.5")], "the section's tongue made taller than the housing's groove is deep"),
+    ("check_section_fans", UNSEALED + [("groove_h", "1.2")], "the section's groove made shallower than the fan case's tongue is tall"),
+    ("check_magnets_top", UNSEALED + [("mag_xy", "[23.5, 52.5]")], "the section's magnet holes moved 1 mm off the housing's"),
+    ("check_magnets_bottom", UNSEALED + [("mag_xy", "[23.5, 52.5]")], "the same, against the fan case's"),
     ("check_air", [("in_w", "30")], "the section's inside narrowed into the openings' path"),
     ("check_ring_holder", [("ring_play", "-0.3")], "the ring made wider than the holder's pocket"),
     ("check_ring_opening", [("ring_beads", "6")], "the ring's walls thickened over the ledge's opening"),
@@ -66,8 +71,18 @@ CONTROLS = [
     ("check_auto_screws", [("screw_shift", "[1, 0]")], "the screws moved 1 mm off their holes"),
     ("check_auto_wires", [("wire_shift", "1.5")], "the wires moved 1.5 mm off the tube"),
     ("check_auto_air", [("post_clear_air", "false")], "the fan screws' posts left round, under the fans' openings"),
+    # The sealed joints. collar_play narrows the upper parts' chamfers, not the collars; bead_side the grooves,
+    # not the beads; bracket_h reaches the carbon housing's top brackets down over the section's screws.
+    ("check_seal_j1", [("collar_play", "-0.4")], "the section's chamfer cut back less than the fan section's collar"),
+    ("check_seal_j2", [("collar_play", "-0.4")], "the carbon housing's chamfer, against the section's collar"),
+    ("check_seal_j3", [("collar_play", "-0.4")], "the HEPA holder's chamfer, against the carbon housing's collar"),
+    ("check_seal_beads", [("bead_side", "-0.35")], "the grooves made narrower than the beads"),
+    ("check_seal_screws", [("screw_shift", "[1, 0]")], "the joints' screws moved 1 mm off their holes"),
+    ("check_seal_nuts", [("nut_fit", "-0.3")], "the joints' nut slots made narrower and lower than a nut"),
+    ("check_seal_nut_ways", [("nut_slot_out", "1")], "the joints' nut slots cut short of the tabs' ends"),
+    ("check_seal_access", [("bracket_h", "80")], "the carbon housing's brackets reaching down over the section's screws"),
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.
-    ("check_section_carbon", [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
+    ("check_section_carbon", UNSEALED + [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
     ("check_ring_holder", [("hepa_stl", '"original/missing.stl"')], "the holder's STL missing - must be reported, not passed"),
     ("check_auto_fans_base", [("auto_base_stl", '"original/missing.stl"')], "the Auto base's STL missing - must be reported, not passed"),
 ]
@@ -130,6 +145,7 @@ FIGURES = {
     "section-top": [("view", '"section"')], "section-bottom": [("view", '"section"'), ("axes_cam", "[235, 0, 30]")],
     "paper-frame": [("view", '"frame"'), ("explode", "25")], "paper-cap": [("view", '"cap"')],
     "paper-cut": [("view", '"paper_cut"')], "auto-bottom": [("view", '"bottom"'), ("explode", "28"), ("axes_cam", "[50, 0, 215]")],
+    "joints": [("view", '"joints"'), ("explode", "22")],
 }
 CAMERAS = {
     "exploded": ["--imgsize=1200,1900", "--viewall", "--autocenter", "--camera=0,0,0,70,0,320,0"],
@@ -140,6 +156,7 @@ CAMERAS = {
     "paper-cap": ["--imgsize=1200,800", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
     "paper-cut": ["--imgsize=1800,560", "--projection=o", "--camera=-8,11,0,0,0,0,118"],
     "auto-bottom": ["--imgsize=1400,1300", "--viewall", "--autocenter", "--camera=0,0,0,50,0,215,0"],
+    "joints": ["--imgsize=1300,1800", "--viewall", "--autocenter", "--camera=0,0,0,62,0,30,0"],
 }
 
 

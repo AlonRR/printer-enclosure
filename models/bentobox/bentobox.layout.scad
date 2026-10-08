@@ -15,12 +15,15 @@ sec_h = grid_t + sheet_t + plenum_h;
 ledge_w = ledge_beads * bead;
 rib_w = grid_beads * bead;
 
-// The stack, bottom up: the Z of each part's bottom face, with the section or without.
-function stack(with_section) = let(
+// The stack, bottom up: the Z of each part's bottom face, with the section or without. Sealed, a lower part's top
+// is cut `meet` under its imported face (bentobox.scad, sealed joints), and what stands on it is that much lower;
+// the section's own faces are exact. The airflow simulation asks for the originals' stack.
+function stack(with_section, seal = false) = let(
+    drop = seal ? meet : 0,
     fans_z = duct_h,
-    sec_z = fans_z + fans_h,
+    sec_z = fans_z + fans_h - drop,
     carbon_z = sec_z + (with_section ? sec_h : 0),
-    hepa_z = carbon_z + carbon_h
+    hepa_z = carbon_z + carbon_h - drop
 ) [fans_z, sec_z, carbon_z, hepa_z, hepa_z + hepa_h + cover_top];
 // [fan case, section, carbon housing, HEPA holder, the cover's top]
 
@@ -118,6 +121,40 @@ assert(plate_tip_z + 0.5 < auto_plate_room - 2 * fdm_layer_h, "a plate screw's h
 assert(head_sink >= 0, "a plate screw's head stands out of the base's bottom face");
 assert(fan_tip_z - 0.5 > post_bot - post_r + hole_d / 2, "a fan screw's tip runs out of its post's cone");
 assert(bottom == "auto" || bottom == "bambu", str("unknown bottom: ", bottom));
+
+// The sealed joints. Across a wall, out from the inside's outline: the groove's inner wall, the groove, a land, and
+// the collar's base, which is collar_top + collar_h in from the outside; the upper part's bottom edge is cut back
+// collar_play further, at 45 degrees, so it sits in the collar.
+wall = (bb_w - in_w) / 2;
+seal_groove = [seal_bead[0] + 2 * bead_side, seal_bead[1] * (1 - bead_squeeze)];   // its width and depth
+seal_gc = seal_inner + seal_groove[0] / 2;                               // its middle, out from the inside's outline
+collar_base = collar_top + collar_h;                                     // the collar at its foot, in from the outside
+chamfer_in = collar_base + collar_play;                                  // the upper part's bottom edge, in from the outside
+seal_ring = [[for (sx = [1, -1], sy = [1, -1]) [sx * (in_w / 2 + seal_gc), sx * sy * (in_l / 2 + seal_gc)]], in_r + seal_gc];
+// The tabs, at the corners: the screw tab_out past the end wall, its boss tangent to the side face; the outline
+// leaves the end wall at tab_x0 along the parabola y = ye + tab_c (x - tab_x0)^2, which meets the boss's round end
+// at tab_a0, tangent to it.
+tab_ye = bb_l / 2;
+tab_sc = [bb_w / 2 - tab_side_in - tab_boss_r, tab_ye + tab_out];
+tab_l = tab_out + tab_boss_r;                                            // how far a tab stands out
+tab_p = tab_sc + tab_boss_r * [cos(tab_a0), sin(tab_a0)];
+tab_m = -cos(tab_a0) / sin(tab_a0);                                      // the round end's slope there
+tab_x0 = tab_p[0] - 2 * (tab_p[1] - tab_ye + tab_dip) / tab_m;
+tab_c = tab_m / (2 * (tab_p[0] - tab_x0));
+bracket_h = 3 * (tab_l + bracket_in);   // under a nut's tab: y = ye - bracket_in + (tab_l + bracket_in) ((z - foot) / bracket_h)^3, 45 degrees at the tab
+tab_screws = [for (sx = [-1, 1], sy = [-1, 1]) [sx * tab_sc[0], sy * tab_sc[1], sy > 0 ? 90 : 270]];
+// The screws: through the HEPA holder's tab into the carbon housing's nut; and through the carbon housing's tab and
+// the section's pillar into the fan section's nut. Each nut sits in the middle of its tab's height, pulled up
+// against its slot's roof.
+seal_slot_bot = -tab_lower_t / 2 - nut_slot_h / 2;                      // a nut's slot, below the joint's face
+j3_screw = screw_for(tab_upper_t - (seal_slot_bot + nut_slot_h) + nut_h + screw_tip);
+j12_screw = screw_for(tab_upper_t + sec_h - (seal_slot_bot + nut_slot_h) + nut_h + screw_tip);
+
+assert(seal_inner + seal_groove[0] + bead_land <= wall - chamfer_in + 1e-9,
+    str("the groove, ", seal_groove[0], " mm, does not fit between the inside and the collar"));
+assert(seal_bead[1] > seal_groove[1], "the bead must stand proud of its groove");
+assert(tab_x0 > 0 && tab_x0 < tab_sc[0], "the tab's parabola must leave the end wall between the middle and the screw");
+assert(!sealed || (bottom == "auto" || bottom == "bambu"), "a sealed stack needs a fan section");
 
 assert(wedge_w > 0 && tooth_w > 0, "the pleats are too narrow for the paper's slot: no channel is left to close");
 assert(pack_l > 2 * cap_wedge_l + 10, "the ring is too short for its caps' wedges");

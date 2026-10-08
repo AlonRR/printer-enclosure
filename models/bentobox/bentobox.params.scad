@@ -30,7 +30,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "hepa_ring", "hepa_cap", "auto_base", "auto_fans", "auto_plate" or "gasket_test": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "hepa_ring", "hepa_cap", "auto_base", "auto_fans", "auto_plate", "carbon", "hepa" or "bead_ring": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -153,11 +153,32 @@ lobe_cap = 1;       /* The plate over each head: the counterbore is in a lobe th
 lobe_play = 0.2;    /* ...with this much room round it and over it, so the plate's ends bear on the seats, not the lobes. */
 meet = 0.05;        /* A new face kept this far off an imported one it would otherwise share: the STL's float32 corners are not where the same number computed here is, and faces a hair apart make slivers the slicer removes. */
 
-/* [Gaskets - the test before any ring] */
-// The joints between the HEPA and the fans are under suction, and printed TPU is stiff: what a millimetre of
-// hollow bead pushes back with is on no datasheet, and it decides whether the stack's magnets can squeeze one.
-coupon_beads = [[1.6, 1.6, 0.45], [2, 2, 0.45], [2.5, 2.5, 0.45]];   /* The beads to try: width, height, wall. */
-coupon_l = 60;      /* Each bead's length in the test piece. */
+/* [The sealed joints - Alon, 8 Oct 2026: D114, D116, D118, D119, D120] */
+// The three joints under suction - the section on the fan section, the carbon housing on the section, the HEPA
+// holder on the carbon housing - are sealed. A TPU bead lies in a groove in the lower part's top; the upper part's
+// flat bottom presses it, nested in a collar round the lower part's top edge, whose inner face is at 45 degrees as
+// the upper part's bottom edge is; and four screws in tabs at the corners, where the magnets were, hold each joint.
+// The tabs stand out past the end walls, their outline a parabola leaving the end wall and flush with the side
+// face; under a nut's tab, a bracket whose face is a cubic, tangent to the wall. One screw at each corner holds
+// both of the section's joints: from the carbon housing's tab, through a pillar in the section, into the fan
+// section's nut.
+sealed = true;      /* false: the originals' magnets, tongue and groove, as they come. */
+seal_bead = [2, 2, 0.45];   /* The bead: its width, its height free, its wall. */
+bead_squeeze = 0.2; /* The upper part presses it this fraction of its height, as the faces meet. */
+bead_side = 0.25;   /* Room each side of the bead in its groove, to bulge into. */
+seal_inner = 0.9;   /* The wall between the inside and the groove: two beads. */
+bead_land = 0.45;   /* At least this flat between the groove and the collar, for the upper part to stop on. */
+collar_h = 1;       /* The collar round the lower part's top edge: its height... */
+collar_top = 0.9;   /* ...its width at its top - two beads - its inner face at 45 degrees below that... */
+collar_play = 0.2;  /* ...and the gap to the upper part's chamfer, which sits in it. */
+tab_out = 5;        /* A tab's screw stands this far out past the end wall... */
+tab_boss_r = 4.4;   /* ...the tab round it: the nut's slot and three beads each side. */
+tab_a0 = 150;       /* Where the tab's parabola meets its round end, in degrees round the screw: it leaves the end wall nearer the middle for a smaller angle. */
+tab_side_in = 0.3;  /* The tab's outer side, this far in from the side face: nearer, it crosses the original's rounded corner too shallowly to mesh cleanly. */
+tab_dip = 0.15;     /* The parabola's vertex, this far inside the end wall, so it leaves the wall at a slant, not tangent. */
+bracket_in = 0.3;   /* A bracket's cubic starts this far inside the end wall, for the same reason. */
+tab_lower_t = 6;    /* The lower part's tab, with the nut in it. */
+tab_upper_t = 5;    /* The upper part's tab, under the screw's head. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;
