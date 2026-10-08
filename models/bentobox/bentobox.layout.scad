@@ -83,22 +83,24 @@ strip_notch = slot_play / 2;
 half_wedge_w = strip_x(ring_h) - slot_w / cos(pleat_alpha) + ring_in[0] / 2;   // at the top face
 half_wedge_z0 = paper_t / 2 + slot_w * (1 / cos(pleat_alpha) - 1) / (2 * tan(pleat_alpha));   // where it meets the wall
 
-// The Auto's bottom, its heat-set inserts made nuts. Each nut lies flat in a slot that opens one way, its
-// flats against the slot's sides; its back corner stops against the slot's closed end with the nut on the
-// screw's axis. A fan screw comes down through the fan, the fan section's floor and the base's top into its
-// nut, which it pulls up against the slot's roof; a plate screw comes up through the plate into its nut, which
-// it pulls down onto the slot's floor. Each screw is the shortest of screw_lengths that stands screw_tip out.
+// The Auto's bottom, its heat-set inserts made nuts. A plate screw's nut lies flat in a slot that opens one way,
+// its flats against the slot's sides; its back corner stops against the slot's closed end with the nut on the
+// screw's axis. The screw comes up through the plate into it and pulls it down onto the slot's floor. A fan
+// screw's nut is a pull nut (D123): it goes up into a hex pocket under its post, on the screw's axis and open
+// downwards, and the screw, down through the fan, the fan section's floor and the base's top, pulls it up against
+// the pocket's roof. Each screw is the shortest of screw_lengths that stands screw_tip out.
 function up_to_layer(z) = ceil(z / fdm_layer_h - 1e-9) * fdm_layer_h;
 function screw_for(need) = [for (l = screw_lengths) if (l >= need - 1e-9) l][0];
 hole_d = 2 * (screw_d / 2 + fdm_hole_comp);
 nut_ac = nut_af / cos(30);
 nut_slot_w = nut_af + 2 * (fdm_hole_comp + nut_fit);
 nut_slot_h = up_to_layer(nut_h + 2 * nut_fit);
-fan_slot_top = duct_h - nut_roof;
-fan_slot_bot = fan_slot_top - nut_slot_h;
-post_r = nut_slot_w / 2 + post_beads * bead;           // the post round a fan screw's slot...
-post_reach = nut_ac / 2;                               // ...running on this far towards its mouth, past the nut
-post_bot = fan_slot_bot - nut_floor;                   // ...its foot, with a 45-degree cone under it
+pull_af = nut_slot_w;                                  // a fan nut's pocket, across its flats: a slot's fit
+pull_ac = pull_af / cos(30);
+pull_top = duct_h - nut_roof;                          // ...its roof, which the nut is pulled up against
+post_r = pull_ac / 2 + post_beads * bead;              // the post round the pocket...
+post_bot = pull_top - nut_slot_h;                      // ...its foot, round the nut, with a 45-degree cone under it
+pull_bot = pull_top - pull_way;                        // ...and the pocket's mouth, under the cone's point
 fan_head_z = duct_h + auto_floor_t + fan_t;            // a fan screw's head, on the fan's top flange
 fan_screw = screw_for(fan_t + auto_floor_t + nut_roof + nut_h + screw_tip);
 fan_tip_z = fan_head_z - fan_screw;
@@ -119,8 +121,11 @@ plate_tip_z = plate_head_z + plate_screw;
 assert(!is_undef(fan_screw) && !is_undef(plate_screw), "no screw in screw_lengths is long enough");
 assert(plate_tip_z + 0.5 < auto_plate_room - 2 * fdm_layer_h, "a plate screw's hole breaks into the duct over it");
 assert(head_sink >= 0, "a plate screw's head stands out of the base's bottom face");
-assert(fan_tip_z - 0.5 > post_bot - post_r + hole_d / 2, "a fan screw's tip runs out of its post's cone");
+assert(pull_bot < post_bot - post_r, "a fan nut's pocket must run out through its post's cone");
+assert(fan_tip_z > pull_bot && fan_tip_z < pull_top - nut_h - screw_tip + 1e-9, "a fan screw's tip must stand out of its nut, inside the pocket");
 assert(bottom == "auto" || bottom == "bambu", str("unknown bottom: ", bottom));
+// The wall between a fan nut's pocket and the fans' air, which the post is cut back from: a flat faces the fan.
+pull_air_wall = min([for (s = auto_fan_screws, y = fan_ys) norm([s[0], s[1] - y])]) - pull_af / 2 - auto_fan_air / 2 - meet;
 
 // The sealed joints. Across a wall, out from the inside's outline: the groove's inner wall, the groove, a land, and
 // the collar's base, which is collar_top + collar_h in from the outside; the upper part's bottom edge is cut back
@@ -179,6 +184,7 @@ warns = [
     if (wedge_w < 2 * bead - 1e-9) str("the caps' wedges are ", wedge_w, " mm wide at the top, under two beads: they may not print"),
     if (slot_w > paper_t && slot_w < bead - 1e-9) str("the slots for the paper are ", slot_w, " mm, under a bead: they may print shut"),
     if (nut_roof < 5 * fdm_layer_h - 1e-9) str("a fan screw's nut has ", nut_roof, " mm over it: the screw may pull it through"),
+    if (pull_air_wall < 2 * bead - 1e-9) str("a fan nut's pocket is ", pull_air_wall, " mm from the fans' air, under two beads"),
     if (nut_floor < 5 * fdm_layer_h - 1e-9) str("a nut's slot has ", nut_floor, " mm under it"),
 ];
 for (w = warns) echo(str("WARNING: ", w));

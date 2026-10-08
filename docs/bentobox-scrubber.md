@@ -26,7 +26,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Section** | Goes between the carbon housing and the fan section, holding a flat filter sheet that stops carbon dust reaching the fans. Sealed at both its faces, with a pillar at each corner that the carbon housing's screws pass through. `sealed = false` builds it with the original's tongue, groove and magnets, to drop into any BentoBox v2.0 stack. | [`bentobox-section.scad`](../models/bentobox/bentobox-section.scad) |
 | **Paper ring** | Stands on the HEPA holder's ledge in place of the cartridge and holds a cut piece of pleated paper. | [`bentobox-hepa-ring.scad`](../models/bentobox/bentobox-hepa-ring.scad) |
 | **Paper cap** | Two, in TPU, one on each end of the paper: wedges from above and teeth from below hold the paper's cut end in a zigzag slot, closing its pleats' ends. | [`bentobox-hepa-cap.scad`](../models/bentobox/bentobox-hepa-cap.scad) |
-| **Base** | The Auto's, in place of the duct: the bay under it, the wires' tube, and six nuts in slots where it had heat-set inserts. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
+| **Base** | The Auto's, in place of the duct: the bay under it, the wires' tube, and six nuts where it had heat-set inserts: the fans' four pulled up into pockets, the plate's two in slots. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
 | **Fan section** | The Auto's, in place of the fan case, its top remixed for the sealed joint. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
 | **Plate** | The Auto's outline, closing the bay: flush with the base's bottom, its two screws' heads sunk in it. | [`bentobox-auto-plate.scad`](../models/bentobox/bentobox-auto-plate.scad) |
 | **Carbon housing** | ThrutheFrame's, remixed for the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
@@ -92,25 +92,27 @@ controller in the bay. Neither is used here. This build's sensors (the same as t
 **in the base's outlet**, where they read the air after the carbon; the chamber's own monitor reads the air
 before it. Their mount is not drawn yet.
 
-![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's slot in each post, the plate under its bay](bentobox/auto-bottom.png)
+![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's pocket under each post, the plate under its bay](bentobox/auto-bottom.png)
 
-**Nuts, not heat-set inserts.** Each nut lies flat in a slot that opens one way, and the screw holds it there.
+**Nuts, not heat-set inserts.** The fans' nuts are pull nuts; the plate's lie flat in slots that open one way.
 
-- **The fans' four screws**, M3 × 30, come down through each fan and the fan section's floor into a nut
-  2 mm under the base's top, in a post on a 45° cone. The two posts at the end walls open to the outlet, so a
-  nut goes in, or back in, from outside. The two beside the wires' tube open between the fans. All four are
-  cut back clear of the fans' air.
+- **The fans' four screws**, M3 × 30, come down through each fan and the fan section's floor into a pull
+  nut: a hex pocket under a post on a 45° cone, on the screw's axis, open downwards, its roof 2 mm under the
+  base's top. The nut goes up into the pocket from below, and the screw pulls it up against the roof. Each
+  pocket has a flat towards the nearer fan, and each post is cut back clear of the fans' air, which leaves
+  1 mm of wall there. At the end walls the pockets run on down through the Auto's own bosses, 12.5 mm in all.
 - **The plate's two screws**, M3 × 8 socket head, come up through counterbores in the plate, their heads
   sunk 0.2 mm inside the bottom face, into nuts in slots that open out through the end walls, so a nut goes
   in from outside. The plate fills its recess, flush with the base's bottom, and each counterbore is in a
   lobe that rises into a pocket in the base. The screws sit 1.6 mm nearer the end walls than the Auto's, where
   the duct's floor stands high enough over them.
-- Each slot's roof, each counterbore's, and each pocket's starts with two bridging layers, a channel and
-  then a square, so the screw's hole prints over it without support.
+- Each slot's roof, each nut pocket's, each counterbore's, and each lobe's pocket's starts with two bridging
+  layers, a channel and then a square, so the screw's hole prints over it without support.
 
-**Putting it together:** a nut in each end wall's slot, then the plate on with its two screws; a nut
-in each of the four posts; the fans' leads down the tube; the fan section on the base, the fans in it, and
-their four screws down through them.
+**Putting it together:** a nut in each end wall's slot, then the plate on with its two screws; the fans'
+leads down the tube; the fan section on the base, the fans in it. Then each fan screw: hold its nut up in its
+pocket from inside the duct, reaching in through the outlet, and drive the screw down through the fan until
+it catches; tightening pulls the nut up against the pocket's roof.
 
 **Magnets:** none at the fan section's top, whose joint is sealed. The base's underside has four holes for
 4 × 2 mm magnets, from the Auto; magnets there would hold the box to a steel floor. They are optional.
@@ -366,7 +368,7 @@ holes. It runs the air's way from the housing's floor openings down through the 
 up through the ring's walls, sets the caps' wedges and teeth and the ring's strips in a model of the paper
 drawn from the paper's own values, and the caps against the strips. For the bottom it stands the fan
 section on the base and the plate in its recess, sets a nut in each slot and slides it out through the
-slot's mouth, runs each screw from its head to its tip, and the wires down the tube, and the fans' air
+slot's mouth, and one in each fan screw's pocket and draws it 10 mm down out of it, runs each screw from its head to its tip, and the wires down the tube, and the fans' air
 down into the base past the posts. Each must come out empty. Every check has a positive control,
 something broken on purpose that it must catch, and the run fails if one passes unnoticed: 25 fits and
 30 controls.

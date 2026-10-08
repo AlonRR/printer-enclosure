@@ -13,8 +13,8 @@ fit checks that scripts/bentobox-checks.py renders. Needs the originals in origi
   view = "frame"      the frame for your own HEPA paper, pulled apart: the ring, the paper, the two caps
   view = "cap"        one cap, as it prints
   view = "paper_cut"  flat, across the folds: the ring's middle with the paper, beside a cap's face with it
-  view = "bottom"     the Auto's bottom pulled apart: the plate, the base with its nuts in their slots, the
-                      fan section, and the screws
+  view = "bottom"     the Auto's bottom pulled apart: the plate, the base with its nuts in their pockets and
+                      slots, the fan section, and the screws
   view = "joints"     the sealed joints pulled apart: the fan section, the section, the carbon housing and the
                       HEPA holder, a bead ring over each lower part's groove, and the screws
   view = "check_..."  one fit check: a solid that must come out EMPTY. Each is an intersection of two
@@ -112,17 +112,18 @@ module air_probe() for (sy = [-1, 1])
     translate([-floor_open[0], sy > 0 ? floor_open[1] : -floor_open[2], grid_t + eps])
         cube([2 * floor_open[0], floor_open[2] - floor_open[1], sec_h - grid_t - 2 * eps]);
 floor_open = [18, 2, 48];   /* MEASURED: the carbon housing's floor openings, X +/-18, Y 2 to 48 each side */
-// The Auto's bottom: the nuts in their slots, centred in height; each nut's way in, slid out through its
-// slot's mouth; the screws, head to tip; the wires' way down. Built from the screws' places, not the slots':
+// The Auto's bottom: the plate's nuts in their slots, centred in height, and the fans' pulled up against their
+// pockets' roofs, sep under them; each nut's way in - slid out through its slot's mouth, or down out of its
+// pocket; the screws, head to tip; the wires' way down. Built from the screws' places, not the slots':
 // a control moves them (screw_shift, wire_shift) and leaves the holes where they are.
-nut_way = 10;           /* How far each nut is slid out of its slot, to show the way in is open. */
+nut_way = 10;           /* How far each nut is slid out of its slot or pocket, to show the way in is open. */
 screw_shift = [0, 0];   /* Controls only: the screws moved off their holes. */
 wire_shift = 0;         /* Controls only: the wires' probe moved off the tube, along X. */
 wire_d = 4.5;           /* The wires that must pass the floor's hole and the tube: the two fans' six leads, about 4 mm
                            bundled. A 5 mm rod would graze the tube's exit, which turns 1.2 mm towards -X into the bay. */
 module nut_at(s, z) slot_frame(s, z + (nut_slot_h - nut_h) / 2) hex_nut(nut_af, nut_h);
 module auto_nuts(way = 0) {
-    for (s = auto_fan_screws) hull() for (x = [0, way]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, fan_slot_bot);
+    for (s = auto_fan_screws) hull() for (z = [0, way]) pull_frame(s, pull_top - sep - nut_h - z) hex_nut(nut_af, nut_h);
     for (s = auto_plate_screws) hull() for (x = [0, way]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, plate_slot_bot);
 }
 module auto_screws() translate([screw_shift[0], screw_shift[1], 0]) {

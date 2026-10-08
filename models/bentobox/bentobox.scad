@@ -198,24 +198,28 @@ module roof_hole(l) translate([0, 0, nut_slot_h]) rotate(90) bridged_hole(nut_sl
 // The fan section's floor openings, carried down into the base: the fans' air.
 module fan_air(h, grow = 0) for (y = fan_ys) translate([0, y, duct_h - h]) cylinder(d = auto_fan_air + 2 * grow, h = h + 1);
 
-// A fan screw's post: round its slot and on past the nut towards the mouth, on a 45-degree cone; cut back clear
-// of the fans' air. Its top stays `meet` under the base's.
+// A fan screw's post: round its nut's pocket, on a 45-degree cone; cut back clear of the fans' air. Its top stays
+// `meet` under the base's.
 module fan_post(s) difference() {
-    slot_frame(s, 0) hull() for (x = [0, post_reach]) {
-        translate([x, 0, post_bot]) cylinder(r = post_r, h = duct_h - meet - post_bot);
-        translate([x, 0, post_bot - post_r]) cylinder(r = 0.01, h = 0.01);
+    translate([s[0], s[1], 0]) hull() {
+        translate([0, 0, post_bot]) cylinder(r = post_r, h = duct_h - meet - post_bot);
+        translate([0, 0, post_bot - post_r]) cylinder(r = 0.01, h = 0.01);
     }
     if (post_clear_air) fan_air(duct_h, meet);
 }
+// A fan nut's pocket's own frame: the screw's axis on Z, a corner along X, and a flat facing s[2], the nearer fan.
+module pull_frame(s, z) translate([s[0], s[1], z]) rotate(s[2] - 30) children();
 // An insert's hole, filled: the screw's hole and the slot are cut through the fill.
 module fan_plug(s) translate([s[0], s[1], duct_h - auto_fan_insert[1] - 0.1])
     cylinder(d = auto_fan_insert[0] + 0.2, h = auto_fan_insert[1] + 0.1 - meet);
 module plate_plug(p) translate([p[0], p[1], auto_seat_z + meet])
     cylinder(d = auto_plate_insert[0] + 0.2, h = auto_plate_insert[1] + 0.1 - meet);
-// A fan screw's way: its slot, the roof over it, and its hole, down from the base's top past its tip.
-module fan_screw_cut(s) {
-    slot_frame(s, fan_slot_bot) { slot(); roof_hole(duct_h - fan_slot_top + 1); }
-    translate([s[0], s[1], fan_tip_z - 0.5]) cylinder(d = hole_d, h = fan_slot_bot - fan_tip_z + 0.5 + eps);
+// A fan screw's way: its nut's pocket, up from under the post's cone to the roof, and its hole on up through the
+// roof to the base's top, bridged (scad-tools fdm.scad): a channel the hole's width from corner to corner, then the
+// hole's square, then the round hole.
+module fan_screw_cut(s) pull_frame(s, 0) {
+    translate([0, 0, pull_bot]) cylinder(r = pull_ac / 2, h = pull_top - pull_bot, $fn = 6);
+    translate([0, 0, pull_top]) bridged_hole(pull_ac, hole_d, duct_h - pull_top + 1, fdm_layer_h, eps);
 }
 // A plate screw's: the pocket its lobe rises into, its hole bridged up through the pocket's roof to its slot, the
 // roof over that, and on past its tip.
@@ -250,7 +254,7 @@ module auto_plate() difference() {
         translate([0, 0, plate_head_z]) bridged_hole(plate_cb[0], hole_d, lobe_top - plate_head_z + 1, fdm_layer_h, eps);
     }
 }
-module say_auto_hardware() echo(str("auto: six M3 nuts; the fans' four screws M3 x ", fan_screw,
+module say_auto_hardware() echo(str("auto: six M3 nuts, the fans' four pulled up into pockets; the fans' four screws M3 x ", fan_screw,
     " socket head, through the fans; the plate's two M3 x ", plate_screw, " socket head, sunk ", head_sink,
     " mm into the bottom face"));
 

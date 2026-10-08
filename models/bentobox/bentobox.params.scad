@@ -20,7 +20,8 @@ long side, at the floor. This remix adds:
             from the paper's three values below, so other paper means changing those and exporting again.
   auto_base the bottom from Strangwooduk's BentoBox Auto in place of the duct and the fan case: a base
   auto_fans with a bay for the electronics under the duct and a tube for the wires down to it, its fan
-  auto_plate section, and the plate that closes the bay. Its heat-set inserts become nuts in slots.
+  auto_plate section, and the plate that closes the bay. Its heat-set inserts become nuts: pulled into
+            pockets for the fans' screws, in slots for the plate's.
 
 COORDINATES are the box as it stands: X across it, Y along it, Z up, with Z = 0 on the floor the duct
 stands on. X and Y are centred. The duct's outlet faces -X.
@@ -122,7 +123,7 @@ auto_fans_dz  = -30;    /* The fan section, from where the STEP has it, to the s
 auto_plate_dz = 35.7;   /* The plate, from where the STEP has it, up into the base's recess: its ends against the seats' ceiling. */
 auto_floor_t  = 3;      /* The fan section's floor, which the fans' screws pass. */
 auto_fan_air  = 37;     /* The fan section's floor opening under each fan, at fan_ys. Nothing new may stand under one. */
-auto_fan_screws = [[-16, -46, 180], [-16, 46, 180], [16, -14, 135], [16, 14, 225]];   /* The fans' screws, X and Y, and the way each nut's slot opens, in degrees from +X: the two at the end walls to the outlet, the two at the long wall between the fans, clear of their air. */
+auto_fan_screws = [[-16, -46, 45], [-16, 46, -45], [16, -14, 225], [16, 14, 135]];   /* The fans' screws, X and Y, and which way a flat of each nut's pocket faces, in degrees from +X: towards the nearer fan, whose air the post is cut back from, so the pocket's thinnest wall is a flat's, not a corner's. */
 auto_fan_insert = [4.2, 4];     /* The heat-set inserts' holes the nuts replace, d and depth, down from the base's top. */
 auto_plate_screws = [[-1, -48, 270], [-1, 48, 90]];   /* The plate's two screws, X and Y, 1.6 mm nearer the end walls than the Auto's, where the end wall's fillet stands high enough over a sunk head's screw; their slots open out through the end walls, so a nut goes in from outside. */
 auto_plate_inserts = [[-1, -46.4], [-1, 46.4]];   /* The Auto's own plate screws: their inserts' holes in the base, filled, and their countersunk holes in the plate, filled. */
@@ -142,10 +143,13 @@ screw_tip = 1.5;    /* A screw must stand this far out of its nut. */
 screw_lengths = [6, 8, 10, 12, 16, 20, 25, 30, 35, 40];   /* M3 lengths to choose from: the build has many. */
 fan_t     = 20;     /* The fans, 40 x 40 x 20: their screws pass through them, the heads on their top flanges. */
 nut_roof  = 2;      /* Over a fan screw's nut, under the base's top face: ten layers. */
-nut_floor = 1.5;    /* Under a slot: a fan screw's, and a plate screw's over the seat. */
-post_beads = 3;     /* The new post round a fan screw's slot, each side of it, in beads. */
-post_clear_air = true;   /* Cut the posts back clear of the fans' air: round, they would reach 0.3 mm under the floor's openings. */
+nut_floor = 1.5;    /* Under a plate screw's slot, over the seat. */
+post_beads = 3;     /* The new post round a fan screw's pocket, past its corners, in beads. */
+post_clear_air = true;   /* Cut the posts back clear of the fans' air: round, they would reach under the floor's openings. */
 nut_slot_out = 12;  /* How far past its screw each slot is cut towards its mouth: out into the open. */
+// Alon, 8 Oct 2026 (D123): the fans' screws take pull nuts. Each nut goes into a hex pocket under its post, on the
+// screw's axis, open downwards; the screw, from above, pulls it up into the pocket against the roof.
+pull_way = 12.5;    /* How far each pocket runs down from its roof: out through its post's cone and, at the end walls, through the Auto's own boss under its insert, into the duct. */
 plate_head = [5.5, 3];  /* The plate's screws, M3 socket head, ISO 4762: the head's diameter and height. */
 head_sink = 0.2;    /* Each head sits this far up inside the base's bottom face... */
 head_room = 0.4;    /* ...in a counterbore this much wider than the head, past fdm_hole_comp: room for the key. */
