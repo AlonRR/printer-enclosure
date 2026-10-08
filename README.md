@@ -21,7 +21,7 @@ there.
 [`docs/chamber-sensor.md`](docs/chamber-sensor.md) is the full status and the index to the topic pages;
 [`docs/chamber-airflow.md`](docs/chamber-airflow.md) is the filter and extraction build, and
 [`docs/bentobox-scrubber.md`](docs/bentobox-scrubber.md) the filter itself: ThrutheFrame's BentoBox v2.0,
-remixed, with a carbon-dust section, sealed joints, the BentoBox Auto's bottom and a frame for the build's own
+remixed, with a carbon-dust section, sealed joints, the BentoBox Auto's bottom and a screwed clamp for the build's own
 HEPA paper. The LunchBox remix it was weighed against is archived in [`archive/lunchbox/`](archive/lunchbox/).
 
 ## What is where
@@ -30,7 +30,7 @@ HEPA paper. The LunchBox remix it was weighed against is archived in [`archive/l
 |---|---|
 | [`docs/chamber-sensor.md`](docs/chamber-sensor.md), [`docs/chamber-sensor/`](docs/chamber-sensor/) | the record and the decisions: sensors, the node, boards, WiFi, the SuperMini antenna, measurements, heating and airflow, the build order |
 | [`docs/chamber-airflow.md`](docs/chamber-airflow.md) | the two-fan filter and extraction plan |
-| [`docs/bentobox-scrubber.md`](docs/bentobox-scrubber.md), [`models/bentobox/`](models/bentobox/), [`scripts/bentobox-checks.py`](scripts/bentobox-checks.py), [`scripts/bentobox-auto-stl.py`](scripts/bentobox-auto-stl.py) | the filter: BentoBox v2.0 with its carbon magazine, a carbon-dust section for it, sealed joints, a frame for the build's own HEPA paper, the BentoBox Auto's bottom with nuts for its heat-set inserts, and its fit checks |
+| [`docs/bentobox-scrubber.md`](docs/bentobox-scrubber.md), [`models/bentobox/`](models/bentobox/), [`scripts/bentobox-checks.py`](scripts/bentobox-checks.py), [`scripts/bentobox-auto-stl.py`](scripts/bentobox-auto-stl.py) | the filter: BentoBox v2.0 with its carbon magazine, a carbon-dust section for it, sealed joints, a screwed clamp for the build's own HEPA paper, the BentoBox Auto's bottom with nuts for its heat-set inserts, and its fit checks |
 | [`sim/`](sim/) | the filter's airflow simulation, OpenFOAM, from its model |
 | [`archive/lunchbox/`](archive/lunchbox/) | archived 8 Oct 2026, not built: the LunchBox remix it was weighed against - its parts, build page, fit checks and airflow simulation, as they were, and still working |
 | [`scad-tools/`](https://github.com/AlonRR/scad-tools) | the shared OpenSCAD tools, a git submodule: `scad-check.sh`, and the xyz arrows the pictures use |

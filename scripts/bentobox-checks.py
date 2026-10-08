@@ -159,7 +159,7 @@ CAMERAS = {
     "section-bottom": ["--imgsize=1400,900", "--viewall", "--autocenter", "--camera=0,0,0,235,0,30,0"],
     "paper-frame": ["--imgsize=1400,1100", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
     "clamp-print": ["--imgsize=1400,900", "--viewall", "--autocenter", "--camera=0,0,0,55,0,25,0"],
-    "paper-cut": ["--imgsize=1800,560", "--projection=o", "--camera=-8,11,0,0,0,0,118"],
+    "paper-cut": ["--imgsize=1800,600", "--projection=o", "--camera=-12,11,0,0,0,0,125"],
     "auto-bottom": ["--imgsize=1400,1300", "--viewall", "--autocenter", "--camera=0,0,0,50,0,215,0"],
     "joints": ["--imgsize=1300,1800", "--viewall", "--autocenter", "--camera=0,0,0,62,0,30,0"],
 }

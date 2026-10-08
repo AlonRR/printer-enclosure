@@ -24,8 +24,8 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | | What it does | File |
 |---|---|---|
 | **Section** | Goes between the carbon housing and the fan section, holding a flat filter sheet that stops carbon dust reaching the fans. Sealed at both its faces, with a pillar at each corner that the carbon housing's screws pass through. `sealed = false` builds it with the original's tongue, groove and magnets, to drop into any BentoBox v2.0 stack. | [`bentobox-section.scad`](../models/bentobox/bentobox-section.scad) |
-| **Paper ring** | Stands on the HEPA holder's ledge in place of the cartridge and holds a cut piece of pleated paper. | [`bentobox-hepa-ring.scad`](../models/bentobox/bentobox-hepa-ring.scad) |
-| **Paper cap** | Two, in TPU, one on each end of the paper: wedges from above and teeth from below hold the paper's cut end in a zigzag slot, closing its pleats' ends. | [`bentobox-hepa-cap.scad`](../models/bentobox/bentobox-hepa-cap.scad) |
+| **Paper clamp** | Two ASA frames, screwed together with a cut piece of pleated paper between them, standing on the HEPA holder's ledge in place of the cartridge: wedges from above and teeth from below pinch the paper's cut ends, and a bar from each its long edges. | [`bentobox-clamp-lower.scad`](../models/bentobox/bentobox-clamp-lower.scad), [`bentobox-clamp-upper.scad`](../models/bentobox/bentobox-clamp-upper.scad) |
+| **Clamp sample** | One end of each frame, on one plate: to try the pinch on an offcut before the whole clamp. | [`bentobox-clamp-sample.scad`](../models/bentobox/bentobox-clamp-sample.scad) |
 | **Base** | The Auto's, in place of the duct: the bay under it, the wires' tube, and six nuts where it had heat-set inserts: the fans' four pulled up into pockets, the plate's two in slots. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
 | **Fan section** | The Auto's, in place of the fan case, its top remixed for the sealed joint. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
 | **Plate** | The Auto's outline, closing the bay: flush with the base's bottom, its two screws' heads sunk in it. | [`bentobox-auto-plate.scad`](../models/bentobox/bentobox-auto-plate.scad) |
@@ -194,71 +194,75 @@ the original has it: magnets, a tongue on each top, a groove under each bottom.
 
 Pleated HEPA paper off a roll can take the bought cartridge's place. The original holder's pocket is
 82 × 40.8 mm, sized for the 80 mm cartridge: its ends are solid, flaring out only 15.6 mm above the ledge. The
-remix cuts the pocket out to the box's whole inside, 100.8 × 40.8 mm with its rounded corners, from the
-ledge up, and the ledge's opening with it, to 90.2 × 36.8 mm (78 × 36.8 on the original). A ring holds the
-paper there, with a slot along the foot of each long wall for the paper's edge, and a TPU cap on each end
-closes its pleats' ends. The ring's corners are square, so it stops where the pocket's corners begin to
-round: 93.3 mm long, and the paper in it 87.4, where it was 75.7 - 15 % more paper.
+remix cuts the pocket out to the box's whole inside, 100.8 × 40.8 mm with its rounded corners, from the ledge
+up, and the ledge's opening with it, to 87.5 × 36.8 mm (78 × 36.8 on the original).
 
-![The frame pulled apart: the ring, the cut paper above it with its folds running end to end, a cap drawn back from each end](bentobox/paper-frame.png)
+A clamp holds the paper there: two ASA frames with a cut piece of paper between them, screwed together into a
+cassette that stands on the ledge, 100.5 × 40.5 mm. It takes a piece 87.1 mm long and 40.3 mm across - 11
+pleats and a half each side - where the bought cartridge is 80 × 40 and the original's pocket took 75.7 ×
+37.2 of this paper: 25 % more paper than that.
+
+![The clamp pulled apart: the lower frame with its teeth, the cut paper over it with its folds running end to end, the upper frame with its wedges, and its four screws](bentobox/paper-frame.png)
 
 - **Why the ends need closing.** Pleated paper is a row of channels: one open at the top, where the dirty
   air comes in, then one open at the bottom, where it leaves after passing through the paper between them.
-  Cut, each channel is open at its ends too, and air could go round the paper there. Each cap has a wedge
-  in the end of every channel open at the top and a tooth in the end of every channel open at the bottom,
-  so the paper's cut end sits in a zigzag slot between them, 0.5 mm wide for 0.3 mm paper. The dirty side
-  is the one at higher pressure, by about 85 Pa, so the air presses the paper onto the teeth and closes
-  the slot; with wedges alone it would push the paper away from them. The teeth also hold up the paper's
-  ends, which stand over the ledge's opening, and they cover no paper the wedges do not already cover.
-- **The long sides.** The paper runs on half a pleat past its last top fold, down to the foot of the
-  ring's wall, as a flap. Its cut end stands in a slot between the wall and a strip moulded onto the wall's
-  foot, 8 mm tall. Dirty air between the flap and the wall presses the flap onto the strip, the whole
-  length of the ring: a strip of contact, not the line of a fold against a wall. At each end the flap runs
-  on into the cap's slot, so the seal goes round the corner.
+  Cut, each channel is open at its ends too, and air could go round the paper there. At each end the upper
+  frame has a wedge in every channel open at the top, and the lower frame a tooth in every channel open at
+  the bottom, 4 mm into the paper. Screwed together they leave a zigzag slot 0.2 mm wide for 0.3 mm paper:
+  the four screws pinch the paper's cut end between the wedges and the teeth. The pleats' walls lean only
+  5° from upright, so the last millimetre of the screws' travel closes the slot.
+- **The long sides.** The paper runs on half a pleat past its last top fold, down to the lower frame's rim,
+  as a flap. The upper frame's half wedge runs down outside it, the whole length, and the lower frame's tooth
+  under the last top fold inside it: the screws pinch the flap between them too.
+- **One hard stop.** Each end is a block in two halves, the upper frame's on the lower's, and the frames meet
+  nowhere else: the band round the top and the rim round the bottom stand 0.2 mm clear of the paper's folds,
+  so the slot's width is set by the frames, not by the paper.
 
-  ![Across the folds, flat: on the left the ring's middle, its walls and the strips at their feet, each flap down in its slot; on the right a cap's face, its wedges and teeth round the paper, notched where the strips pass](bentobox/paper-cut.png)
+  ![Across the folds, flat: on the left the clamp at an end, the upper frame's wedges and the lower frame's teeth round the paper's zigzag; on the right at its middle, a half wedge and a long tooth round each flap](bentobox/paper-cut.png)
+- **The screws.** Four M2 × 16 socket head, two at each end, from the top, their heads sunk in the upper
+  frame, into M2 nuts pulled up into seats in the lower frame, as the fans' nuts are in the base. M2, not the
+  M2.5 first drawn: an end block is 6.5 mm along the pleats, and an M2.5 nut's pocket leaves it under two
+  beads of wall.
 - **Cutting the paper.** For this build's paper, 20 mm deep with about 3.3 mm between top folds: a piece
-  **87.4 mm long along the folds, and 10 pleats across with half a pleat more each side** - both long
-  edges cut along a bottom fold. Count the pleats rather than measuring the width: folded, that is about
-  36.7 mm, and the ring spreads it to 37.2. The roll's 300 × 100 mm pack gives six pieces.
-- **Putting it together.** Push a cap onto each end of the piece, with its wedges at the top, where the
-  air comes in, and every pleat wall in its slot. Lower the three into the ring, each flap running down
-  between the wall and its strip; the ring stands on the ledge like the cartridge. To take it out, lift the
-  holder off the stack and tip it over. Print one cap first and try it on an offcut: the slots are barely
-  wider than a printed line, and how well TPU keeps them open is for the print to show.
-- **If dust gets round it.** Nothing is glued. If a dusty streak ever shows along an edge of the paper's
-  underside, run hot glue along that flap in its slot: standard sticks, not low-temperature ones, since the
-  chamber runs at about 45 °C during an ASA print. Hot glue peels off the ASA ring, so the ring can still
-  be used again.
+  **87.1 mm long along the folds, and 11 pleats across with half a pleat more each side** - both long edges
+  cut along a bottom fold. Count the pleats rather than measuring the width: folded, that is about 40 mm, and
+  the clamp spreads it to 40.3. The roll's 300 × 100 mm pack gives six pieces.
+- **Putting it together.** Pull an M2 nut into each of the lower frame's four seats with a spare M2 screw from
+  above, and take the screw out: the nut stays. Lay the lower frame down, teeth up, and the paper on it, its
+  channels open at the bottom over the teeth at each end and each flap's cut end on the rim outside the long
+  teeth. Lower the upper frame on, its wedges into the channels open at the top and its half wedges outside
+  the flaps, and drive the four screws until the end blocks meet. Drop the cassette onto the holder's ledge;
+  to take it out, lift the holder off the stack and tip it over.
+- **Try it first.** The slot's 0.2 mm is a first guess, and so is the paper's thickness. Print the clamp sample
+  - one end of each frame, an hour - clamp an offcut 16 mm long in it, and look at the cut end: the paper should
+  be pinched all along the zigzag without being cut.
 
-![A cap as it prints: the plate on the bed, the wedges and teeth standing up out of it, the zigzag slot between them](bentobox/paper-cap.png)
+![The clamp's two frames as they print: the lower standing on its rim, the upper turned over onto its band](bentobox/clamp-print.png)
 
-**Other paper:** change its three values in
-[`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) - `paper_depth` (fold to fold),
-`paper_pitch` (top fold to top fold) and `paper_t` (its thickness) - and export the ring and the cap again.
-The ring stands as tall as the paper is deep. The pleats across are the whole number nearest to filling
-the ring, and the wedges, teeth and strips are placed to match; rendering either part echoes the new cut.
-The slots are `slot_play`, 0.2 mm, wider than `paper_t`: paper thicker than a slot will not go in, and
-thinner paper sits loose and is pressed onto the teeth and the strips. `paper_flaps = false` cuts the long
-edges on a top fold instead, resting against the wall with no strips; `cap_teeth_below = false` leaves
-the wedges alone.
+**Other paper:** change its values in [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) -
+`paper_depth` (fold to fold), `paper_pitch` (top fold to top fold) and `paper_t` (its thickness), and
+`clamp_slot` a little under `paper_t` - and export the frames again. The clamp stands as tall as the paper is
+deep. The pleats across are the whole number nearest to filling it, and the wedges and teeth are placed to
+match; rendering either frame echoes the new cut. `paper_flaps = false` cuts the long edges on a top fold
+instead.
 
 **Still to confirm** for this build's paper: the 3.3 mm between folds is worked out from the roll, 1200 mm
-folded into 100, not counted, and the 0.3 mm thickness is an estimate - the one that matters, since it sets
-the slot. Anything from 28 to 30 folds in 100 mm gives the same parts.
+folded into 100, not counted, and the 0.3 mm thickness is an estimate - the one that matters, since the slot
+pinches it. Anything from 28 to 30 folds in 100 mm gives the same parts.
 
 ## Printing
 
 The cover and the C-MAG print as the author's project lays them out; the remix's parts print as their files
-draw them, standing on their bottoms - the section, the ring, the base, the fan section, the carbon housing
-and the HEPA holder - a cap with its plate on the bed, the plate on its outer face, its lobes up, and a bead
-ring flat. No supports, no brim. Standing, the base's bay roof is a 41 mm bridge, as the Auto has it.
+draw them, standing on their bottoms - the section, the base, the fan section, the carbon housing
+and the HEPA holder - the clamp's lower frame on its rim and its upper frame turned over onto its band, the
+plate on its outer face, its lobes up, and a bead ring flat. No supports, no brim. Standing, the base's bay roof is a 41 mm bridge, as the Auto has it.
 
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
 | Section | ASA | 1 | 1 h 57 m | 17 g |
-| Paper ring | ASA | 1 | 1 h 14 m | 9 g |
-| Paper cap | TPU 95A | 2 | 52 m each | 5 g each |
+| Clamp, lower frame | ASA | 1 | 1 h 32 m | 11 g |
+| Clamp, upper frame | ASA | 1 | 1 h 19 m | 9 g |
+| Clamp sample | ASA | 1 plate | 1 h 6 m | 7 g |
 | Base | ASA | 1 | 4 h 17 m | 44 g |
 | Fan section | ASA | 1 | 3 h 42 m | 36 g |
 | Plate | ASA | 1 | 37 m | 8 g |
@@ -270,7 +274,7 @@ ring flat. No supports, no brim. Standing, the base's bay roof is a 41 mm bridge
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
 brim, no crossing perimeter`, as [`scad-check.sh`](https://github.com/AlonRR/scad-tools) slices them, with
-`Inslogic TPU 95A` for the caps and the bead rings.
+`Inslogic TPU 95A` for the bead rings.
 
 For the bottom:
 
@@ -290,6 +294,13 @@ For the sealed joints:
 | 8 | 4 × 2 mm magnet: the cover's joint, four in the HEPA holder and four in the cover |
 
 For the joint sample, from the same stock: 3 M3 nuts, 2 M3 × 12 and 1 M3 × 8.
+
+For the paper's clamp:
+
+| Quantity | Item |
+|---|---|
+| 4 | M2 hex nut, ISO 4032 |
+| 4 | M2 × 16 socket head cap screw, ISO 4762, and a spare to pull the nuts in with |
 
 ## The air through it
 
@@ -394,14 +405,15 @@ collar, tab on tab - lays each bead in its groove, runs each screw from its head
 and the section's pillars, sets a nut in each slot and slides it out through the tab's end, and keeps the
 room over each screw's head clear. With `sealed=false` it checks the original's joints: the section against
 the carbon housing above it and the fan section below it, a magnet across each joint through both parts'
-holes. It runs the air's way from the housing's floor openings down through the section. For the paper's frame it stands the ring in the original HEPA holder, runs the ledge's opening
-up through the ring's walls, sets the caps' wedges and teeth and the ring's strips in a model of the paper
-drawn from the paper's own values, and the caps against the strips. For the bottom it stands the fan
+holes. It runs the air's way from the housing's floor openings down through the section. For the paper's clamp it stands the cassette in the cut-out HEPA holder, sets the
+upper frame on the lower one - meeting only at the end blocks - lays a model of the paper, drawn from its own
+values at the slot's thickness, in the frames' zigzag, keeps the air's way down under the paper open, and
+runs the four screws through the end blocks and the nuts into their seats and down out of them. For the bottom it stands the fan
 section on the base and the plate in its recess, sets a nut in each slot and slides it out through the
-slot's mouth, and one in each fan screw's pocket and draws it 10 mm down out of it, runs each screw from its head to its tip, and the wires down the tube, and the fans' air
+slot's mouth, and one in each fan screw's seat and draws it down its pocket and out under its post, runs each screw from its head to its tip, and the wires down the tube, and the fans' air
 down into the base past the posts. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 25 fits and
-31 controls.
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 27 fits and
+35 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.
