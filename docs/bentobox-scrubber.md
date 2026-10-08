@@ -114,6 +114,35 @@ their four screws down through them.
 base's underside has four holes for 4 × 2 mm magnets too, from the Auto; magnets there would hold the box
 to a steel floor. They are optional.
 
+**Seal the wires' hole.** The hole in the fan section's floor opens above the floor, into the fans' intake,
+the lowest pressure in the box, about 97 Pa under the chamber's. The tube under it opens into the bay, and
+the bay is open to the chamber: the Auto's cable ports, the gap round the plate, the plate's nut slots. Air
+drawn in that way passes neither filter. Through the 6 mm hole with the fans' leads in it, as an orifice,
+that is up to about 0.09 L/s, a seventh of the flow. Seal it round the leads where they pass the floor: hot
+glue, or a TPU grommet. The LunchBox's wire hole had the same fault, and it let in a fifth of its air.
+
+## Gaskets
+
+The joints between the HEPA holder and the fans, three of them, are under suction: the air under the HEPA is
+about 87 Pa below the chamber's, under the C-MAG 93, over the fans 97. Chamber air that leaks in at one of
+them passes the filters above it. A 0.1 mm gap round a joint's 300 mm lets in about 0.03 L/s, 5 % of the
+flow, and the leak grows as the gap's cube. The cover's joint has the chamber's air on both sides, and the
+base's is downstream of the fans, so neither matters.
+
+A printed gasket is a hollow TPU bead in a groove, squeezed a fifth of its height as the parts meet, after
+[scad-tools' gasket](https://github.com/AlonRR/scad-tools/blob/main/lib/gasket.scad). It needs force, and
+the stack is held by magnets, which give little. How much a bead pushes back with is on no datasheet, so it
+is measured first:
+
+- **The test piece** ([`bentobox-gasket-coupon.scad`](../models/bentobox/bentobox-gasket-coupon.scad)), in
+  TPU: three beads side by side, 1.6, 2.0 and 2.5 mm, each 60 mm long.
+- **The press** ([`bentobox-gasket-press.scad`](../models/bentobox/bentobox-gasket-press.scad)), in ASA:
+  a bar with the joint's tongue along it.
+
+Lay the bar's tongue on one bead, load it with a known weight, and measure how far the bead goes down. A
+fifth of its height is the squeeze a ring would work at, and the weight that takes it there, over 60 mm, is
+the force per millimetre. A joint is about 300 mm round.
+
 ## Your own HEPA paper
 
 Pleated HEPA paper off a roll can take the bought cartridge's place. The holder's pocket is 82 × 40.8 mm,
@@ -183,10 +212,12 @@ brim. Standing, the base's bay roof is a 41 mm bridge, as the Auto has it.
 | Base | ASA | 1 | 4 h 17 m | 44 g |
 | Fan section | ASA | 1 | 3 h 21 m | 33 g |
 | Plate | ASA | 1 | 37 m | 8 g |
+| Gasket test piece | TPU 95A | 1 | 6 m | 1 g |
+| Gasket press | ASA | 1 | 10 m | 2 g |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
 brim, no crossing perimeter`, as [`scad-check.sh`](https://github.com/AlonRR/scad-tools) slices them, with
-`Inslogic TPU 95A` for the caps.
+`Inslogic TPU 95A` for the caps and the gasket test piece.
 
 For the bottom:
 
@@ -233,8 +264,10 @@ measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](.
   of 55, more than the LunchBox's 150, and the air spends nearly five times as long in it. The carbon is
   not what limits this box's flow, so carbon here is cheap.
 - **Simulated with ThrutheFrame's duct**, not the Auto's base (see *The bottom*).
-- **No leaks.** The air in at the cover and out at the duct agree to within 2 %, and to 1 % on every plane
-  between them, and nothing gets round the C-MAG. Unlike the LunchBox, there is nothing to seal.
+- **No leaks in the model.** The air in at the cover and out at the duct agree to within 2 %, and to 1 % on
+  every plane between them, and nothing gets round the C-MAG. The model's joints are closed, though; the
+  real ones under suction want gaskets, and the Auto's wires' hole wants sealing (see *Gaskets* and
+  *The bottom*).
 - **Checked on a finer mesh** (1 mm instead of 2, with the section): the air through the filters comes out
   3.5 % lower, **0.65 L/s** instead of 0.68 - the lumped model's figure - and the chamber goes through it
   every 4.6 minutes. The cover, the HEPA's ledge, the housing's floor, the sheet and the fan case's floor

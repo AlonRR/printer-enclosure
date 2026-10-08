@@ -7,6 +7,7 @@
 include <bentobox.layout.scad>
 use <../../scad-tools/lib/fdm.scad>
 use <../../scad-tools/lib/nuts.scad>
+use <../../scad-tools/lib/gasket.scad>
 
 draw_model = true;   // a file that includes this one for its values sets it false after the include
 
@@ -252,6 +253,18 @@ module say_auto_hardware() echo(str("auto: six M3 nuts; the fans' four screws M3
     " socket head, through the fans; the plate's two M3 x ", plate_screw, " socket head, sunk ", head_sink,
     " mm into the bottom face"));
 
+// ------------------------------------------------------------------ the gaskets' test
+// The candidate beads side by side, joined by a web (scad-tools gasket.scad), in TPU; and a bar with the joint's
+// tongue along it, in ASA, to press each bead as a tongue would. Load the bar with known weights and read how far
+// each bead goes down: the force per mm at a fifth's squeeze is what decides how a joint must be held.
+module gasket_press() {
+    w = 8; t = 3; l = coupon_l + 10;
+    translate([0, -w / 2, 0]) cube([l, w, t]);
+    // The tongue's section, its top on the bar's middle: one face upright, as the tongue's inner face is.
+    translate([0, 0, t - eps]) rotate([90, 0, 90]) linear_extrude(l)
+        polygon([[-(tongue_base - tongue_top / 2), 0], [tongue_top / 2, 0], [tongue_top / 2, tongue_h], [-tongue_top / 2, tongue_h]]);
+}
+
 // How to cut the paper for the frame, from the values above: what the build page quotes. Only the length is
 // measured; across the folds the piece is counted, since the ring sets its width.
 module say_paper_cut() echo(str("paper: cut a piece ", round(pack_l * 10) / 10, " mm long along the folds and ", pack_n,
@@ -270,5 +283,7 @@ if (draw_model) {
     else if (part == "auto_base") { translate([0, 0, -auto_base_z0]) auto_base(); say_auto_hardware(); }
     else if (part == "auto_fans") translate([0, 0, -duct_h]) auto_fans();
     else if (part == "auto_plate") { translate([0, 0, -auto_base_z0]) auto_plate(); say_auto_hardware(); }
+    else if (part == "gasket_coupon") gasket_coupon(coupon_beads, coupon_l);
+    else if (part == "gasket_press") gasket_press();
     else assert(false, str("unknown part: ", part));
 }

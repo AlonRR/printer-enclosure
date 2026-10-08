@@ -30,7 +30,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "hepa_ring", "hepa_cap", "auto_base", "auto_fans" or "auto_plate": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "hepa_ring", "hepa_cap", "auto_base", "auto_fans", "auto_plate", "gasket_coupon" or "gasket_press": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -139,7 +139,7 @@ nut_af    = 5.5;    /* The M3 hex nut, across its flats - ISO 4032... */
 nut_h     = 2.4;    /* ...and its height, the largest allowed. */
 nut_fit   = 0.15;   /* A nut's slot, per side, on top of fdm_hole_comp: the nut slides in and the screw holds it. */
 screw_tip = 1.5;    /* A screw must stand this far out of its nut. */
-screw_lengths = [8, 10, 12, 16, 20, 25, 30, 35, 40];   /* M3 lengths to choose from. */
+screw_lengths = [6, 8, 10, 12, 16, 20, 25, 30, 35, 40];   /* M3 lengths to choose from: the build has many. */
 fan_t     = 20;     /* The fans, 40 x 40 x 20: their screws pass through them, the heads on their top flanges. */
 nut_roof  = 2;      /* Over a fan screw's nut, under the base's top face: ten layers. */
 nut_floor = 1.5;    /* Under a slot: a fan screw's, and a plate screw's over the seat. */
@@ -152,6 +152,12 @@ head_room = 0.4;    /* ...in a counterbore this much wider than the head, past f
 lobe_cap = 1;       /* The plate over each head: the counterbore is in a lobe that rises from the plate into a pocket in the base... */
 lobe_play = 0.2;    /* ...with this much room round it and over it, so the plate's ends bear on the seats, not the lobes. */
 meet = 0.05;        /* A new face kept this far off an imported one it would otherwise share: the STL's float32 corners are not where the same number computed here is, and faces a hair apart make slivers the slicer removes. */
+
+/* [Gaskets - the test before any ring] */
+// The joints between the HEPA and the fans are under suction, and printed TPU is stiff: what a millimetre of
+// hollow bead pushes back with is on no datasheet, and it decides whether the stack's magnets can squeeze one.
+coupon_beads = [[1.6, 1.6, 0.45], [2, 2, 0.45], [2.5, 2.5, 0.45]];   /* The beads to try: width, height, wall. */
+coupon_l = 60;      /* Each bead's length in the test piece. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;
