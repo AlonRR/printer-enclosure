@@ -8,6 +8,7 @@ include <bentobox.layout.scad>
 use <../../scad-tools/lib/fdm.scad>
 use <../../scad-tools/lib/nuts.scad>
 use <../../scad-tools/lib/gasket.scad>
+use <../../scad-tools/lib/shapes.scad>
 
 draw_model = true;   // a file that includes this one for its values sets it false after the include
 
@@ -228,14 +229,14 @@ module fan_plug(s) translate([s[0], s[1], duct_h - auto_fan_insert[1] - 0.1])
     cylinder(d = auto_fan_insert[0] + 0.2, h = auto_fan_insert[1] + 0.1 - meet);
 module plate_plug(p) translate([p[0], p[1], auto_seat_z + meet])
     cylinder(d = auto_plate_insert[0] + 0.2, h = auto_plate_insert[1] + 0.1 - meet);
-// A fan screw's way: its nut's pocket, up from its mouth under the post to the seat, the seat a nut's height under
-// the roof, and the screw's hole on up through the roof to the base's top, bridged (scad-tools fdm.scad): a channel
-// the hole's width from corner to corner, then the hole's square, then the round hole.
-module fan_screw_cut(s) pull_frame(s, 0) {
-    translate([0, 0, pull_bot]) cylinder(r = pull_way_ac / 2, h = pull_seat - pull_bot + eps, $fn = 6);
-    translate([0, 0, pull_seat]) cylinder(r = pull_ac / 2, h = pull_top - pull_seat, $fn = 6);
-    translate([0, 0, pull_top]) bridged_hole(pull_ac, hole_d, duct_h - pull_top + 1, fdm_layer_h, eps);
+// A fan screw's way: its nut's pocket (scad-tools nuts.scad), up from its mouth under the post to the seat, the
+// seat a nut's height under the roof, and the screw's hole on up through the roof to the base's top, bridged
+// (scad-tools fdm.scad): a channel the hole's width from corner to corner, then the hole's square, then the round hole.
+module pull_pocket(way) {
+    pull_nut_pocket(nut_af, nut_slot_h, way, fdm_hole_comp + pull_fit, fdm_hole_comp + pull_way_fit, eps);
+    bridged_hole(pull_ac, hole_d, duct_h - pull_top + 1, fdm_layer_h, eps);
 }
+module fan_screw_cut(s) pull_frame(s, pull_top) pull_pocket(pull_seat - pull_bot);
 // A plate screw's: the pocket its lobe rises into, its hole bridged up through the pocket's roof to its slot, the
 // roof over that, and on past its tip.
 module plate_screw_cut(s) {
@@ -347,13 +348,9 @@ module brackets(zt, z0, g = 0) intersection() {
     translate([0, 0, z0 - 1]) linear_extrude(zt - z0 + 3) if (g > 0) tab_stuff2d(g); else polygon(plan_pts());
 }
 // Inside a 45-degree face over the outline with its tabs: at z, the outline inset by d, and 1 mm less inset for
-// every 1 mm up, for rise. It is Minkowski's sum of the inset outline and a cone, which is exact where the outline
-// turns no tighter than d - here nowhere: the tabs' bosses are tab_boss_r round, and the corners are the tabs'.
-// The cone's facets are odd in number, so its slant never runs onto the outline's own vertices.
-module slant_in(z, d, rise, $fn = 23) minkowski() {
-    translate([0, 0, z]) linear_extrude(eps) offset(delta = -d) polygon(plan_pts());
-    cylinder(r1 = 0, r2 = rise, h = rise);
-}
+// every 1 mm up, for rise (scad-tools shapes.scad, slant). It is exact where the outline turns no tighter than d -
+// here nowhere: the tabs' bosses are tab_boss_r round, and the corners are the tabs'.
+module slant_in(z, d, rise) translate([0, 0, z]) slant(d, rise, 23, eps) polygon(plan_pts());
 // The collar on a lower part's top, its face at z: round the whole outline, tabs and all; its outside the outline's,
 // its inside at 45 degrees, collar_base in at its foot.
 module collar(z) difference() {
@@ -475,9 +472,7 @@ module sample_up() translate([0, sample_l - seal_y, -sst[3]])
 pull_block = [16, 16];
 module sample_pull() let(h = 3 + nut_slot_h + nut_roof) difference() {
     linear_extrude(h) offset(r = 2) square(pull_block - [4, 4], center = true);
-    pull_frame([0, 0, 0], -eps) cylinder(r = pull_way_ac / 2, h = 3 + 2 * eps, $fn = 6);
-    pull_frame([0, 0, 0], 3) cylinder(r = pull_ac / 2, h = nut_slot_h, $fn = 6);
-    pull_frame([0, 0, 0], 3 + nut_slot_h) bridged_hole(pull_ac, hole_d, nut_roof + 1, fdm_layer_h, eps);
+    pull_frame([0, 0, 0], 3 + nut_slot_h) pull_pocket(3 + eps);
 }
 module joint_sample() {
     w = bb_w + sample_gap;
