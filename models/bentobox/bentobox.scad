@@ -94,74 +94,103 @@ module section_magnets() {
     translate([0, 0, sec_h - eps]) tongue();
 }
 
-// ------------------------------------------------------------------ the frame for your own HEPA paper
-// The ring: its bottom face on Z = 0, as it stands on the ledge and as it prints. It has no floor: the
-// paper's long edges rest on the ledge or in the strips' slots, its ends on the caps' teeth, and the ledge's
-// opening stays open but for the strips.
-module hepa_ring_walls() {
-    difference() {
-        translate([-ring_out[0] / 2, -ring_out[1] / 2, 0]) cube([ring_out[0], ring_out[1], ring_h]);
-        translate([-ring_in[0] / 2, -ring_in[1] / 2, -1]) cube([ring_in[0], ring_in[1], ring_h + 2]);
+// ------------------------------------------------------------------ the clamp for your own HEPA paper (D127)
+// See bentobox.params.scad. The cassette in its own frame: X across, Y along the folds, Z up from its bottom face,
+// as it stands on the ledge. The lower frame prints as it stands; the upper one upside down, its band on the bed.
+module cas2d() offset(delta = -clamp_play) inside_offset(meet);
+// Across the folds - X, and up over the pack's bottom face - what fills the paper's channels. A tooth under every
+// top fold, from the lower frame's rim up; a wedge over every bottom fold between the edges, from the upper
+// frame's band down; outside each flap, a half wedge from the band down to where it is two beads thick.
+module tooth_2d(i) let(x = fold_x(i), g = clamp_fold_gap * tan(pleat_alpha))
+    polygon([[x - tooth_w / 2 - g, -clamp_fold_gap - eps], [x + tooth_w / 2 + g, -clamp_fold_gap - eps], [x, tooth_z1]]);
+module teeth_2d() for (i = [0 : fold_last]) if (fold_top(i)) tooth_2d(i);
+module long_teeth_2d() if (paper_flaps) { tooth_2d(1); tooth_2d(fold_last - 1); }
+module half_wedge_2d() let(t = paper_depth + clamp_fold_gap + eps) polygon([[-cas[0] / 2 - 1, half_wedge_z0],
+    [flap_out_x(half_wedge_z0), half_wedge_z0], [flap_out_x(t), t], [-cas[0] / 2 - 1, t]]);
+module half_wedges_2d() if (paper_flaps) for (m = [0, 1]) mirror([m, 0]) half_wedge_2d();
+module wedges_2d() {
+    for (i = [1 : fold_last - 1]) if (!fold_top(i)) let(x = fold_x(i), g = clamp_fold_gap * tan(pleat_alpha), t = paper_depth + clamp_fold_gap + eps)
+        polygon([[x - wedge_w / 2 - g, t], [x + wedge_w / 2 + g, t], [x, wedge_z0]]);
+    half_wedges_2d();
+}
+// A profile across the folds, run along Y from y0 to y1, its heights over the pack's bottom face.
+module run_y(y0, y1) translate([0, y1, pack_z]) rotate([90, 0, 0]) linear_extrude(y1 - y0) children();
+// The same, from y0 to y_low under the end blocks' split and to y_high over it: what belongs to one frame stops
+// clamp_fold_gap short of the other's end block, and runs on into its own.
+module run_split(y0, y_low, y_high) {
+    intersection() { run_y(y0, y_low) children(); below(clamp_split); }
+    intersection() { run_y(y0, y_high) children(); above(clamp_split); }
+}
+module both_ends() for (s = [0, 1]) mirror([0, s, 0]) children();
+module clamp_screws_at() for (sx = [-1, 1], sy = [-1, 1]) translate([sx * clamp_screw_x, sy * clamp_screw_y, 0]) children();
+// The lower frame: a rim round its bottom, under the ends' combs and along the long sides out of the long teeth;
+// the end blocks' lower halves; the teeth at each end, and the long teeth beside the flaps. Each end block has a
+// pull nut's seat for each screw, its way open underneath.
+module clamp_low() let(g = clamp_fold_gap, w = clamp_wedge_l) difference() {
+    intersection() {
+        union() {
+            linear_extrude(clamp_rim) difference() { cas2d(); square([-2 * rim_in, 2 * (comb_y - w)], center = true); }
+            linear_extrude(clamp_split) difference() { cas2d(); square([100, 2 * comb_y], center = true); }
+            both_ends() run_split(comb_y - w, comb_y + 1, comb_y - g) teeth_2d();
+            intersection() { run_y(-comb_y - 1, comb_y + 1) long_teeth_2d(); below(clamp_split); }
+            intersection() { run_y(-comb_y + g, comb_y - g) long_teeth_2d(); above(clamp_split); }
+        }
+        linear_extrude(cas_h) cas2d();
+    }
+    clamp_screws_at() translate([0, 0, clamp_nut_top]) {
+        pull_nut_pocket(small_nut[0], small_nut_slot_h, clamp_way, fdm_hole_comp + pull_fit, fdm_hole_comp + pull_way_fit, eps);
+        bridged_hole(small_seat_af / cos(30), small_hole_d, clamp_split - clamp_nut_top + 1, fdm_layer_h, eps);
     }
 }
-// With flaps, the strips on the long walls' feet, seen along the folds: X across, the second axis up. Each is
-// a floor from the wall to the strip, under the slot, and the strip itself, parallel to the flap.
-module strips_2d() for (m = [0, 1]) mirror([m, 0]) polygon([
-    [-ring_in[0] / 2 - eps, 0], [strip_x(0) + strip_w / cos(pleat_alpha), 0],
-    [strip_x(ring_strip_h) + strip_w / cos(pleat_alpha), ring_strip_h], [strip_x(ring_strip_h), ring_strip_h],
-    [strip_x(strip_floor), strip_floor], [-ring_in[0] / 2 - eps, strip_floor]]);
-// The strips run between the caps' plates, 0.1 mm short of each.
-module hepa_ring_strips() if (paper_flaps) rotate([90, 0, 0]) linear_extrude(pack_l - 0.2, center = true) strips_2d();
-module hepa_ring() {
-    hepa_ring_walls();
-    hepa_ring_strips();
-}
-// One end's wedges and teeth, in a plane across the folds: X across, the second axis up the pack from its
-// bottom face (bentobox.layout.scad says how their shapes follow from the paper's). A wedge fills each
-// channel open at the top, over every bottom fold between the edges. A tooth fills each channel open at the
-// bottom, under every top fold; without flaps the two at the edges, beside the ring's walls, are halves.
-// With flaps, a half wedge fills the sliver between each flap and its wall, and the teeth beside the flaps
-// are cut back clear of the strips.
-module wedges_2d(shrink = 0) offset(delta = -shrink) difference() {
-    union() {
-        for (i = [1 : fold_last - 1]) if (!fold_top(i))
-            polygon([[fold_x(i) - wedge_w / 2, ring_h], [fold_x(i) + wedge_w / 2, ring_h], [fold_x(i), wedge_z0]]);
-        // Every half stops eps inside the plate's sides: flush with them, the union leaves broken faces there.
-        if (paper_flaps) for (m = [0, 1]) mirror([m, 0]) polygon([
-            [-ring_in[0] / 2 - cap_squeeze + eps, ring_h], [-ring_in[0] / 2 + half_wedge_w, ring_h],
-            [-ring_in[0] / 2, half_wedge_z0], [-ring_in[0] / 2 - cap_squeeze + eps, half_wedge_z0]]);
-        if (cap_teeth_below) intersection() {
-            translate([-ring_in[0] / 2 - cap_squeeze + eps, 0]) square([ring_in[0] + 2 * (cap_squeeze - eps), ring_h]);
-            for (i = [0 : fold_last]) if (fold_top(i))
-                polygon([[fold_x(i) - tooth_w / 2, 0], [fold_x(i) + tooth_w / 2, 0], [fold_x(i), tooth_z1]]);
+// The upper frame: a band round its top, over the ends' combs and along the long sides out to the first top
+// fold; the end blocks' upper halves; the wedges at each end, and the half wedges outside the flaps. Each end
+// block has each screw's hole, and a counterbore its head sinks in - bridged, since the frame prints upside down.
+module clamp_up() let(g = clamp_fold_gap, w = clamp_wedge_l) difference() {
+    intersection() {
+        union() {
+            translate([0, 0, band_z]) linear_extrude(clamp_band) difference() { cas2d(); square([-2 * fold_x(1), 2 * (comb_y - w)], center = true); }
+            translate([0, 0, clamp_split]) linear_extrude(cas_h - clamp_split) difference() { cas2d(); square([100, 2 * comb_y], center = true); }
+            both_ends() run_split(comb_y - w, comb_y - g, comb_y + 1) wedges_2d();
+            intersection() { run_y(-comb_y + g, comb_y - g) half_wedges_2d(); below(clamp_split); }
+            intersection() { run_y(-comb_y - 1, comb_y + 1) half_wedges_2d(); above(clamp_split); }
+        }
+        linear_extrude(cas_h) cas2d();
+    }
+    clamp_screws_at() {
+        translate([0, 0, clamp_split - 1]) cylinder(d = small_hole_d, h = cas_h - clamp_split + 2);
+        translate([0, 0, clamp_head_z]) {
+            cylinder(d = small_cb[0], h = small_cb[1] + 1);
+            mirror([0, 0, 1]) bridged_hole(small_cb[0], small_hole_d, 1, fdm_layer_h, eps);
         }
     }
-    if (paper_flaps) offset(delta = strip_notch) strips_2d();
 }
-// A cap, as it prints: its plate on the bed, X across, Y up the pack, the wedges and teeth standing up out of it.
-module hepa_cap(wedges_only = false, shrink = 0) {
-    w = ring_in[0] + 2 * cap_squeeze;
-    if (!wedges_only) translate([-w / 2, 0, 0]) cube([w, ring_h, cap_plate]);
-    translate([0, 0, cap_plate - eps]) linear_extrude(cap_wedge_l + eps) wedges_2d(shrink);
-}
-// Both caps in the ring, its bottom at z: each plate's back against an end wall, the wedges reaching in.
-module caps_in_place(z = 0, wedges_only = false, shrink = 0)
-    for (a = [0, 180]) rotate([0, 0, a]) translate([0, ring_in[1] / 2, z]) rotate([90, 0, 0]) hepa_cap(wedges_only, shrink);
-// The paper, for pictures and for checking the wedges and the strips against it - drawn from the paper's
-// own values, not from their arithmetic: each flank a strip paper_t thick, round at the folds, between fold
-// lines paper_t / 2 inside the pack's faces. With flaps, each flap's cut end stands on its slot's floor.
-flap_z = strip_floor + paper_t;   // a flap's cut end, its middle
-module paper_2d() {
+module clamp_cassette() { clamp_low(); clamp_up(); }
+// The paper, for pictures and for checking the frames against it - drawn from the paper's own values, not from
+// their arithmetic: each flank a strip t thick, round at the folds, between fold lines paper_t / 2 inside the
+// pack's faces. With flaps, each flap's cut end stands on the lower frame's rim.
+module paper_2d(t = paper_t) {
     pts = [for (i = [0 : fold_last])
         paper_flaps && (i == 0 || i == fold_last)
-            ? [fold_x(i) + (i == 0 ? 1 : -1) * (flap_z - paper_t / 2) * tan(pleat_alpha), flap_z]
-            : [fold_x(i), fold_top(i) ? ring_h - paper_t / 2 : paper_t / 2]];
+            ? [fold_x(i) + (i == 0 ? 1 : -1) * (flap_foot_z - paper_t / 2) * tan(pleat_alpha), flap_foot_z]
+            : [fold_x(i), fold_top(i) ? paper_depth - paper_t / 2 : paper_t / 2]];
     for (k = [0 : len(pts) - 2]) hull() {
-        translate(pts[k]) circle(d = paper_t, $fn = 16);
-        translate(pts[k + 1]) circle(d = paper_t, $fn = 16);
+        translate(pts[k]) circle(d = t, $fn = 16);
+        translate(pts[k + 1]) circle(d = t, $fn = 16);
     }
 }
-module paper_pack(z = 0) translate([0, 0, z]) rotate([90, 0, 0]) linear_extrude(pack_l, center = true) paper_2d();
+module paper_pack(t = paper_t, z = 0) translate([0, 0, z]) run_y(-pack_l / 2, pack_l / 2) paper_2d(t);
+// The two frames as they print, side by side: the lower standing, the upper turned over onto its band.
+module clamp_frames_printing() {
+    translate([-cas[0] / 2 - 3, 0, 0]) clamp_low();
+    translate([cas[0] / 2 + 3, 0, cas_h]) mirror([0, 0, 1]) clamp_up();
+}
+// The clamp's sample (D130): one end of both frames, clamp_sample_l of each in from the end, as they print.
+clamp_sample_l = 16;
+module _clamp_end() translate([-50, cas[1] / 2 - clamp_sample_l, -1]) cube([100, clamp_sample_l + 1, cas_h + 2]);
+module clamp_sample() {
+    translate([-cas[0] / 2 - 3, 0, 0]) intersection() { clamp_low(); _clamp_end(); }
+    translate([cas[0] / 2 + 3, 0, cas_h]) mirror([0, 0, 1]) intersection() { clamp_up(); _clamp_end(); }
+}
 
 // ------------------------------------------------------------------ the originals, in the box's frame
 orig_dir = "original/";
@@ -494,20 +523,21 @@ module joint_sample() {
 module joint_sample_bead() translate([0, sample_l - seal_y, 0]) intersection() { bead_ring(); _sample_end(-1, 10); }
 module say_sample_hardware() echo(str("joint sample: two M3 x ", j3_screw, " socket head and two M3 nuts for the joint, one M3 nut and an M3 x 8 for the pocket's seat"));
 
-// How to cut the paper for the frame, from the values above: what the build page quotes. Only the length is
-// measured; across the folds the piece is counted, since the ring sets its width.
+// How to cut the paper for the clamp, from the values above: what the build page quotes. Only the length is
+// measured; across the folds the piece is counted, since the clamp sets its width.
 module say_paper_cut() echo(str("paper: cut a piece ", round(pack_l * 10) / 10, " mm long along the folds and ", pack_n,
     paper_flaps ? " pleats across and a half pleat more each side, both long edges on a bottom fold"
                 : " pleats across, both long edges on a top fold",
-    " (about ", round((pack_n + pack_halves) * paper_pitch * 10) / 10, " mm as folded; the ring spreads it to ",
-    round(2 * pack_edge * 10) / 10, " mm, ", round(pack_pitch * 100) / 100, " mm a pleat). The caps' wedges are ", round(wedge_w * 100) / 100,
-    " mm wide, their points ", round(wedge_z0 * 10) / 10, " mm above the bottom face",
-    cap_teeth_below ? "; the teeth from below the same" : "", "; the slots ", round(slot_w * 100) / 100, " mm"));
+    " (about ", round((pack_n + pack_halves) * paper_pitch * 10) / 10, " mm as folded; the clamp spreads it to ",
+    round(2 * pack_edge * 10) / 10, " mm, ", round(pack_pitch * 100) / 100, " mm a pleat). The clamp's slot is ",
+    clamp_slot, " mm; its four screws M2 x ", clamp_screw, " socket head, into M2 nuts pulled into the lower frame"));
 
 if (draw_model) {
     if (part == "section") section();
-    else if (part == "hepa_ring") { hepa_ring(); say_paper_cut(); }
-    else if (part == "hepa_cap") { hepa_cap(); say_paper_cut(); }
+    // The clamp's two frames as they print: the lower standing, the upper on its band; and its sample.
+    else if (part == "clamp_lower") { clamp_low(); say_paper_cut(); }
+    else if (part == "clamp_upper") { translate([0, 0, cas_h]) mirror([0, 0, 1]) clamp_up(); say_paper_cut(); }
+    else if (part == "clamp_sample") { clamp_sample(); say_paper_cut(); }
     // The Auto's parts as they print: the base and the fan section standing, the plate on its outer face.
     else if (part == "auto_base") { translate([0, 0, -auto_base_z0]) auto_base(); say_auto_hardware(); }
     else if (part == "auto_fans") translate([0, 0, -duct_h]) if (sealed) fans_sealed(); else auto_fans();

@@ -39,8 +39,8 @@ BACKEND = ["--backend=manifold"]
 UNSEALED = [("sealed", "false")]
 FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("check_magnets_top", UNSEALED),
         ("check_magnets_bottom", UNSEALED), ("check_air", []),
-        ("check_ring_holder", []), ("check_ring_opening", []), ("check_wedges_paper", []),
-        ("check_ring_paper", []), ("check_caps_strips", []),
+        ("check_clamp_holder", []), ("check_clamp_frames", []), ("check_clamp_paper", []),
+        ("check_clamp_opening", []), ("check_clamp_screws", []), ("check_clamp_nuts", []), ("check_clamp_nut_ways", []),
         ("check_auto_fans_base", []), ("check_auto_plate", []), ("check_auto_nuts", []), ("check_auto_nut_ways", []),
         ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", []),
         ("check_seal_j1", []), ("check_seal_j2", []), ("check_seal_j3", []), ("check_seal_beads", []),
@@ -56,13 +56,16 @@ CONTROLS = [
     ("check_magnets_top", UNSEALED + [("mag_xy", "[23.5, 52.5]")], "the section's magnet holes moved 1 mm off the housing's"),
     ("check_magnets_bottom", UNSEALED + [("mag_xy", "[23.5, 52.5]")], "the same, against the fan case's"),
     ("check_air", [("in_w", "30")], "the section's inside narrowed into the openings' path"),
-    ("check_ring_holder", [("ring_play", "-0.3")], "the ring made wider than the holder's pocket"),
-    ("check_ring_opening", [("ring_beads", "6")], "the ring's walls thickened over the ledge's opening"),
+    ("check_clamp_holder", [("clamp_play", "-0.3")], "the clamp made wider than the holder's pocket"),
+    ("check_clamp_frames", [("clamp_slot", "-0.4")], "the wedges and teeth made to meet through the paper's slot"),
+    ("check_clamp_opening", [("rim_in", "-13")], "the lower frame's rim made to reach in over the air's way down"),
+    ("check_clamp_screws", [("screw_shift", "[1, 0]")], "the clamp's screws moved 1 mm off their holes"),
+    ("check_clamp_nuts", [("pull_fit", "-0.25")], "the clamp's nut seats made narrower than a nut"),
+    ("check_clamp_nut_ways", [("clamp_way", "1")], "the clamp's nut ways stopped short of the lower frame's bottom"),
     # The wedges' width is derived; overriding it moves the wedges and leaves the paper, drawn from its own values.
-    ("check_wedges_paper", [("wedge_w", "4")], "the caps' wedges made wider than the paper's channels"),
-    ("check_wedges_paper", [("tooth_w", "4")], "the caps' teeth from below made wider than theirs"),
-    ("check_ring_paper", [("ring_strip_h", "12")], "the ring's strips made taller than the channel beside each flap"),
-    ("check_caps_strips", [("strip_notch", "-0.3")], "the caps' teeth not cut back for the strips"),
+    ("check_clamp_paper", [("wedge_w", "4")], "the clamp's wedges made wider than the paper's channels"),
+    ("check_clamp_paper", [("tooth_w", "4")], "the clamp's teeth made wider than theirs"),
+    ("check_clamp_paper", [("flap_off", "0")], "the half wedges' faces moved in onto the flaps' middles"),
     ("check_auto_fans_base", [("auto_fans_dz", "-30.5")], "the Auto's fan section set 0.5 mm down into its base"),
     ("check_auto_plate", [("plate_t", "3")], "the plate made 0.5 mm thicker than its recess is deep"),
     ("check_auto_plate", [("lobe_play", "-0.3")], "the base's pockets made smaller than the plate's lobes"),
@@ -85,7 +88,7 @@ CONTROLS = [
     ("check_seal_access", [("bracket_h", "80")], "the carbon housing's brackets reaching down over the section's screws"),
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.
     ("check_section_carbon", UNSEALED + [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
-    ("check_ring_holder", [("hepa_stl", '"original/missing.stl"')], "the holder's STL missing - must be reported, not passed"),
+    ("check_clamp_holder", [("hepa_stl", '"original/missing.stl"')], "the holder's STL missing - must be reported, not passed"),
     ("check_auto_fans_base", [("auto_base_stl", '"original/missing.stl"')], "the Auto base's STL missing - must be reported, not passed"),
 ]
 MISSING = "Can't open import file"
@@ -145,7 +148,7 @@ def controls():
 FIGURES = {
     "exploded": [("view", '"exploded"')], "cut": [("view", '"cut"'), ("cut_x", "0")],
     "section-top": [("view", '"section"')], "section-bottom": [("view", '"section"'), ("axes_cam", "[235, 0, 30]")],
-    "paper-frame": [("view", '"frame"'), ("explode", "25")], "paper-cap": [("view", '"cap"')],
+    "paper-frame": [("view", '"frame"'), ("explode", "25")], "clamp-print": [("view", '"clamp_print"')],
     "paper-cut": [("view", '"paper_cut"')], "auto-bottom": [("view", '"bottom"'), ("explode", "28"), ("axes_cam", "[50, 0, 215]")],
     "joints": [("view", '"joints"'), ("explode", "22")],
 }
@@ -155,7 +158,7 @@ CAMERAS = {
     "section-top": ["--imgsize=1400,900", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
     "section-bottom": ["--imgsize=1400,900", "--viewall", "--autocenter", "--camera=0,0,0,235,0,30,0"],
     "paper-frame": ["--imgsize=1400,1100", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
-    "paper-cap": ["--imgsize=1200,800", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
+    "clamp-print": ["--imgsize=1400,900", "--viewall", "--autocenter", "--camera=0,0,0,55,0,25,0"],
     "paper-cut": ["--imgsize=1800,560", "--projection=o", "--camera=-8,11,0,0,0,0,118"],
     "auto-bottom": ["--imgsize=1400,1300", "--viewall", "--autocenter", "--camera=0,0,0,50,0,215,0"],
     "joints": ["--imgsize=1300,1800", "--viewall", "--autocenter", "--camera=0,0,0,62,0,30,0"],

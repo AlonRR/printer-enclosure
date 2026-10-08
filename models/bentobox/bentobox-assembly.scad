@@ -10,9 +10,11 @@ fit checks that scripts/bentobox-checks.py renders. Needs the originals in origi
   view = "exploded"   the same, pulled apart along Z
   view = "cut"        the stack cut open at X = cut_x, seen from the side
   view = "section"    the section alone, as it prints - the one view that needs no original
-  view = "frame"      the frame for your own HEPA paper, pulled apart: the ring, the paper, the two caps
-  view = "cap"        one cap, as it prints
-  view = "paper_cut"  flat, across the folds: the ring's middle with the paper, beside a cap's face with it
+  view = "frame"      the clamp for your own HEPA paper, pulled apart: the lower frame, the paper, the upper
+                      frame, and the screws
+  view = "clamp_print" the clamp's two frames as they print: the lower standing, the upper on its band
+  view = "paper_cut"  flat, across the folds: the clamp at an end, through its combs, beside it at its middle,
+                      each with the paper
   view = "bottom"     the Auto's bottom pulled apart: the plate, the base with its nuts in their pockets and
                       slots, the fan section, and the screws
   view = "joints"     the sealed joints pulled apart: the fan section, the section, the carbon housing and the
@@ -150,32 +152,35 @@ module bottom_exploded(ex) {
     color("steelblue", 0.85) translate([0, 0, ex]) if (sealed) fans_sealed(); else auto_fans();
 }
 
-// The HEPA holder's ledge, with the section in the stack: where the frame's ring stands.
+// The HEPA holder's ledge, with the section in the stack: where the clamp stands.
 ledge_z = st[3] + ledge_top;
-// The ledge's opening, from the original's measurement, carried up through the ring's height: the air's way
-// down, which the ring must leave open.
-module opening_probe() translate([0, 0, -1]) linear_extrude(ring_h + 2) rrect(open_wl[0], open_wl[1], hepa_open_r);
-// The frame pulled apart: the paper lifted out of the ring, the caps drawn back off its ends.
-module frame_exploded(ex) {
-    color("orange") hepa_ring();
-    color("ivory") paper_pack(ring_h + ex);
-    color("dimgray") for (a = [0, 180]) rotate([0, 0, a]) translate([0, ex, ring_h + ex]) caps_in_place_one();
+// The air's way down under the paper, from the paper's own folds: between the combs, and between the second
+// bottom folds from the edges, inside the long teeth's channels. The lower frame must leave it open; its rim
+// and its end blocks stand round it, on the ledge.
+module opening_probe() translate([fold_x(2) + sep, -(comb_y - clamp_wedge_l) + sep, -1])
+    cube([fold_x(fold_last - 2) - fold_x(2) - 2 * sep, 2 * (comb_y - clamp_wedge_l - sep), pack_z]);
+// The clamp's screws, head to tip, and its nuts pulled up into their seats - or slid down out of them.
+module clamp_screws() translate([screw_shift[0], screw_shift[1], 0]) clamp_screws_at() {
+    translate([0, 0, clamp_head_z - clamp_screw]) cylinder(d = small_screw[0], h = clamp_screw);
+    translate([0, 0, clamp_head_z]) cylinder(d = small_screw[1], h = small_screw[2]);
 }
-module caps_in_place_one() translate([0, ring_in[1] / 2, 0]) rotate([90, 0, 0]) hepa_cap();
-// Across the folds, flat: on the left the ring's middle - its long walls, the strips on their feet, the
-// paper with a flap in each slot; on the right a cap's face, its wedges and teeth round the paper's end.
+module clamp_nuts(way = 0) clamp_screws_at() hull() for (z = [0, way])
+    translate([0, 0, clamp_nut_top - sep - small_nut[1] - z]) hex_nut(small_nut[0], small_nut[1]);
+// The clamp pulled apart: the paper lifted off the lower frame, the upper frame and the screws over it.
+module frame_exploded(ex) {
+    color("orange") clamp_low();
+    color("ivory") paper_pack(z = ex);
+    color("steelblue") translate([0, 0, 2 * ex]) clamp_up();
+    color("silver") translate([0, 0, 3 * ex]) clamp_screws();
+}
+// Across the folds, flat: the clamp through an end's combs - the teeth, the wedges, the half wedges, the paper
+// in its zigzag slot - and beside it, through its middle - the long teeth and half wedges round each flap.
 module paper_cut() {
-    gap = ring_out[0] / 2 + 4;
-    translate([-gap, 0]) {
-        color("orange") {
-            for (m = [0, 1]) mirror([m, 0]) translate([-ring_out[0] / 2, 0]) square([ring_wall, ring_h]);
-            if (paper_flaps) strips_2d();
-        }
-        color("black") paper_2d();
-    }
-    translate([gap, 0]) {
-        color("silver") wedges_2d();
-        color("black") paper_2d();
+    gap = cas[0] / 2 + 4;
+    for (side = [[-gap, comb_y - clamp_wedge_l / 2], [gap, 0]]) translate([side[0], 0]) {
+        color("orange") projection(cut = true) multmatrix([[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, -side[1]]]) clamp_low();
+        color("steelblue") projection(cut = true) multmatrix([[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, -side[1]]]) clamp_up();
+        color("black") translate([0, pack_z]) paper_2d();
     }
 }
 
@@ -231,28 +236,31 @@ else if (view == "check_seal_nut_ways") intersection() { seal_parts(); seal_nuts
 // Room over each head to put the screw in and turn it: nothing of the stack above it.
 else if (view == "check_seal_access") intersection() { seal_parts(); seal_access(); }
 else if (view == "frame") frame_exploded(explode);
-else if (view == "cap") color("dimgray") hepa_cap();
+else if (view == "clamp_print") color("orange") clamp_frames_printing();
 else if (view == "paper_cut") paper_cut();
-// The ring stands in the HEPA holder's pocket, on its ledge.
-else if (view == "check_ring_holder") intersection() { translate([0, 0, ledge_z + sep]) hepa_ring(); hepa_body(st[2] - st[1]); }
-// The ring's walls stand on the ledge, clear of its opening. The strips reach over it on purpose.
-else if (view == "check_ring_opening") intersection() { hepa_ring_walls(); opening_probe(); }
-// The caps' wedges and teeth stand in the paper's channels without cutting into it: the paper is drawn from
-// its own values, the wedges and teeth from their arithmetic, and they are held sep inside their outline.
-else if (view == "check_wedges_paper") intersection() { paper_pack(); caps_in_place(0, true, sep); }
-// The ring's walls and strips clear the paper: each flap in its slot, each strip under the first pleat.
-else if (view == "check_ring_paper") intersection() { paper_pack(); hepa_ring(); }
-// The caps' teeth, cut back, clear the strips where both stand in the channel beside a flap.
-else if (view == "check_caps_strips") intersection() { caps_in_place(); hepa_ring_strips(); }
+// The clamp stands in the HEPA holder's pocket, on its ledge.
+else if (view == "check_clamp_holder") intersection() { translate([0, 0, ledge_z + sep]) clamp_cassette(); hepa_body(st[2] - st[1]); }
+// The frames meet only where the end blocks' halves do - the one hard stop - held sep apart.
+else if (view == "check_clamp_frames") intersection() { clamp_low(); translate([0, 0, sep]) clamp_up(); }
+// The paper, drawn from its own values at the slot's thickness less sep each side, stands in the frames'
+// zigzag without either frame cutting into it: wedges, teeth, half wedges, long teeth, band and rim.
+else if (view == "check_clamp_paper") intersection() { clamp_cassette(); paper_pack(clamp_slot - 2 * sep); }
+// The lower frame leaves the air's way down open, under the paper between the combs.
+else if (view == "check_clamp_opening") intersection() { clamp_low(); opening_probe(); }
+// The screws, head to tip, through both frames' end blocks; the nuts in their seats, and down out through the
+// lower frame's bottom.
+else if (view == "check_clamp_screws") intersection() { clamp_cassette(); clamp_screws(); }
+else if (view == "check_clamp_nuts") intersection() { clamp_low(); clamp_nuts(); }
+else if (view == "check_clamp_nut_ways") intersection() { clamp_low(); clamp_nuts(clamp_nut_top + 2); }
 else assert(false, str("unknown view: ", view));
 
 if (show_axes && (view == "stack" || view == "exploded")) axes([-bb_w / 2 - 40, -bb_l / 2, 0], l = 25);
 axes_cam = [55, 0, 30];   // the picture's --camera angles, so the arrows' labels face it
 if (show_axes && view == "section") axes([-bb_w / 2 - 20, -bb_l / 2, 0], l = 15, cam = axes_cam);
-if (show_axes && view == "frame") axes([-ring_out[0] / 2 - 25, -ring_out[1] / 2 - explode, 0], l = 15, cam = axes_cam);
+if (show_axes && view == "frame") axes([-cas[0] / 2 - 25, -cas[1] / 2, 0], l = 15, cam = axes_cam);
 if (show_axes && view == "joints") axes([bb_w / 2 + 20, bb_l / 2, sst[0] + 30], l = 20, cam = axes_cam);
 if (show_axes && view == "bottom") axes([bb_w / 2 + 15, bb_l / 2, 0], l = 20, cam = axes_cam);
-if (show_axes && view == "cap") axes([-ring_in[0] / 2 - 15, -5, 0], l = 8, cam = axes_cam);
+if (show_axes && view == "clamp_print") axes([-cas[0] - 20, -cas[1] / 2, 0], l = 15, cam = axes_cam);
 // A flat view gets a flat key: an arrow across, labelled with the box's axis it shows, and +z up.
 module flat_key(across) color("black") {
     translate([0, -0.6]) square([16, 1.2]);
@@ -264,4 +272,4 @@ module flat_key(across) color("black") {
 }
 // The cut's across is +y, along the box; the paper's cut's is +x, across it.
 if (show_axes && view == "cut") translate([-bb_l / 2 - 30, 10]) flat_key("+y");
-if (show_axes && view == "paper_cut") translate([-ring_out[0] - 4 - 22, 2]) scale(0.5) flat_key("+x");
+if (show_axes && view == "paper_cut") translate([-cas[0] - 4 - 22, 2]) scale(0.5) flat_key("+x");

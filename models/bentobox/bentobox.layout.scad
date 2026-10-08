@@ -45,54 +45,55 @@ cmag_layers = [for (i = [0 : 2]) cmag_grills[i] + cmag_grill_t / 2];
 // will - and the caps' wedges and teeth are spaced to match. Its long edges are cut on a top fold, which
 // rests against the ring's wall; or, with paper_flaps, on a bottom fold, so each side keeps half a pleat more
 // as a flap whose cut end stands in a slot at the wall's foot.
-ring_wall = ring_beads * bead;
 // The HEPA holder's pocket and its ledge's opening: the original's, or cut out to the whole inside (hepa_full),
 // its ledge then cut `meet` under the original's.
 pocket_l = hepa_full ? in_l : hepa_pocket_l;
 ledge_top = hepa_ledge - (hepa_full ? meet : 0);             // over the original's floor
-// The ring's square corners stand ring_play clear of the pocket's corners, which are round once it is cut out.
 pocket_r = in_r + meet;
-ring_out = let(x = in_w / 2 - ring_play, c = [in_w / 2 + meet - pocket_r, in_l / 2 + meet - pocket_r])
-    [2 * x, hepa_full ? 2 * (c[1] + sqrt(pow(pocket_r - ring_play, 2) - pow(x - c[0], 2))) : pocket_l - 2 * ring_play];   // X, Y
-ring_in = ring_out - 2 * [ring_wall, ring_wall];
-// The ledge's opening, cut out with the pocket: hepa_ledge_w inside the walls across, and along to 0.2 inside
-// the ring, which stands on the ledge at its ends.
-open_wl = hepa_full ? [in_w - 2 * hepa_ledge_w, ring_in[1] - 0.4] : hepa_open;
-ring_h = paper_depth;
-slot_w = cap_teeth_below || paper_flaps ? paper_t + slot_play : paper_t;   // a slot the paper sits in
-pack_edge = paper_flaps ? ring_in[0] / 2 - slot_w / 2 : ring_in[0] / 2;   // the paper's middle at its long edges, +/- X
+// The clamp (D127): a cassette, its outline the pocket's, clamp_play in; X across, Y along the folds, Z from its
+// bottom face, which stands on the ledge. The paper's bottom face clamp_fold_gap over the lower frame's rim, its
+// top as deep again, and the upper frame's band clamp_fold_gap over that.
+cas = [in_w + 2 * meet - 2 * clamp_play, pocket_l + 2 * meet - 2 * clamp_play];
+pack_z = clamp_rim + clamp_fold_gap;
+pack_top = pack_z + paper_depth;
+band_z = pack_top + clamp_fold_gap;
+cas_h = band_z + clamp_band;
+comb_y = cas[1] / 2 - clamp_blk;                     // each end block's inner face; the combs reach in from it
+slot_w = clamp_slot;                                 // the slot the paper sits in, pinched
+pack_edge = paper_flaps ? cas[0] / 2 - slot_w / 2 : cas[0] / 2;   // the paper's middle at its long edges, +/- X
 pack_halves = paper_flaps ? 1 : 0;                   // the flaps: a half pleat each side
 pack_n = max(1, round(2 * pack_edge / paper_pitch) - pack_halves);   // full pleats across
 pack_pitch = 2 * pack_edge / (pack_n + pack_halves);
-pack_l = ring_in[1] - 2 * cap_plate;                 // the piece's length, along the folds
+pack_l = 2 * (comb_y - clamp_fold_gap);              // the piece's length, along the folds, clear of the end blocks
+// The ledge's opening, cut out with the pocket: hepa_ledge_w inside the walls across, and along to the combs.
+open_wl = hepa_full ? [in_w - 2 * hepa_ledge_w, 2 * comb_y] : hepa_open;
 // The folds across the piece, from one long edge to the other: the i-th is at fold_x(i), a top fold or a
-// bottom one. With flaps, the first and the last are the flaps' cut ends, at the walls' feet.
+// bottom one. With flaps, the first and the last are the flaps' cut ends.
 fold_last = 2 * (pack_n + pack_halves);
 function fold_x(i) = -pack_edge + i * pack_pitch / 2;
 function fold_top(i) = (i % 2 == 0) != paper_flaps;
 // Seen along the folds, the paper's middle runs from a top fold paper_t / 2 under the pack's top face to a
-// bottom fold paper_t / 2 over its bottom, leaning pleat_alpha from upright. The paper sits in a slot
-// slot_w wide, centred on that middle, so the side of a wedge or a tooth is the middle moved
+// bottom fold paper_t / 2 over its bottom, leaning pleat_alpha from upright. Screwed together, the frames leave
+// it a slot slot_w wide, centred on that middle, so the side of a wedge or a tooth is the middle moved
 // slot_w / (2 cos(alpha)) sideways. A wedge, in a channel open at the top, is wedge_w wide at the top face
 // and comes to a point slot_w / (2 sin(alpha)) above the bottom fold's middle - in a narrow pleat,
 // millimetres, not the slot's width. A tooth, in a channel open at the bottom, is the same shape upside down.
+// Heights here are over the pack's bottom face.
 pleat_alpha = atan((pack_pitch / 2) / (paper_depth - paper_t));
 wedge_w = 2 * ((paper_depth - paper_t / 2) * tan(pleat_alpha) - slot_w / (2 * cos(pleat_alpha)));   // at the top face
-wedge_z0 = paper_t / 2 + slot_w / (2 * sin(pleat_alpha));    // its point, above the pack's bottom face
-tooth_w = 2 * ((paper_depth - paper_t / 2) * tan(pleat_alpha) - slot_w / (2 * cos(pleat_alpha)));   // at the bottom face
-tooth_z1 = paper_depth - paper_t / 2 - slot_w / (2 * sin(pleat_alpha));   // its point, above the pack's bottom face
-// With flaps: the strip on the left wall's foot, seen along the folds. A floor two layers thick closes the
-// slot's bottom, and the flap's cut end stands on it; the strip's face is the slot's clean side, parallel to
-// the flap. strip_x(z) is that face, ring_strip_beads further in the strip's other side. The caps' teeth are
-// cut back strip_notch clear of it, at the ends, where both stand in the same channel.
-strip_floor = 2 * fdm_layer_h;
-strip_w = ring_strip_beads * bead;
-function strip_x(z) = -pack_edge + (z - paper_t / 2) * tan(pleat_alpha) + slot_w / (2 * cos(pleat_alpha));
-strip_notch = slot_play / 2;
-// The dirty sliver between each flap and its wall, which the caps close with a half wedge: wide at the top,
-// coming to nothing near the bottom, where the flap meets the wall.
-half_wedge_w = strip_x(ring_h) - slot_w / cos(pleat_alpha) + ring_in[0] / 2;   // at the top face
-half_wedge_z0 = paper_t / 2 + slot_w * (1 / cos(pleat_alpha) - 1) / (2 * tan(pleat_alpha));   // where it meets the wall
+wedge_z0 = paper_t / 2 + slot_w / (2 * sin(pleat_alpha));    // its point
+tooth_w = wedge_w;                                           // at the bottom face
+tooth_z1 = paper_depth - paper_t / 2 - slot_w / (2 * sin(pleat_alpha));   // its point
+// A flap's middle, on the line of a full pleat's wall, and its outer face: its cut end stands on the lower
+// frame's rim. Outside it, the upper frame's half wedge runs down from the band to where it is two beads thick;
+// inside it, the lower frame's tooth under the first top fold runs the whole length.
+flap_foot_z = clamp_rim + paper_t / 2 - pack_z;              // over the pack's bottom face: a little under it
+function flap_mid_x(z) = fold_x(0) + (z - paper_t / 2) * tan(pleat_alpha);
+flap_off = slot_w / (2 * cos(pleat_alpha));           // the slot's half, across, at a flap
+function flap_out_x(z) = flap_mid_x(z) - flap_off;
+half_wedge_z0 = paper_t / 2 + (2 * bead + flap_off - slot_w / 2) / tan(pleat_alpha);
+// The lower frame's rim along the long sides: from the side to the long tooth's inner flank, at the rim's top.
+rim_in = fold_x(1) + tooth_w / 2 + clamp_fold_gap * tan(pleat_alpha);
 
 // The Auto's bottom, its heat-set inserts made nuts. A plate screw's nut lies flat in a slot that opens one way,
 // its flats against the slot's sides; its back corner stops against the slot's closed end with the nut on the
@@ -146,6 +147,24 @@ pull_air_wall = min([for (s = auto_fan_screws) let(f = [0, abs(s[1] - fan_ys[0])
     norm([s[0], s[1]] - f) - hex_reach(atan2(f[1] - s[1], f[0] - s[0]), s[2], pull_way_ac) - auto_fan_air / 2 - meet]);
 pull_face_gap = min([for (s = auto_fan_screws) auto_post_wall - hex_reach(s[3] + 180, s[2], pull_way_ac)]);
 
+// The clamp's screws, M2, two at each end, from the upper end block's top into a nut pulled up into a seat in the
+// lower one, as the fans' are (scad-tools nuts.scad, pull_nut_pocket); its way open under the block. The halves
+// meet at clamp_split; each head sinks in a counterbore. The nut's flats face along the pleats.
+small_hole_d = 2 * (small_screw[0] / 2 + fdm_hole_comp);
+small_nut_slot_h = up_to_layer(small_nut[1] + 2 * nut_fit);
+small_seat_af = small_nut[0] + 2 * (fdm_hole_comp + pull_fit);
+small_way_af = small_nut[0] + 2 * (fdm_hole_comp + pull_way_fit);
+small_nut_wall = (clamp_blk - small_way_af) / 2;
+small_cb = [small_screw[1] + 2 * fdm_hole_comp + head_room, small_screw[2] + head_sink];   // a head's counterbore
+clamp_split = up_to_layer(cas_h / 2);
+clamp_nut_top = clamp_split - small_nut_roof;           // the seat's roof: the nut pulled up against it
+clamp_head_z = cas_h - small_cb[1];                     // where a head bears
+clamp_screw = [for (l = small_screw_lengths) if (l >= clamp_head_z - clamp_nut_top + small_nut[1] + screw_tip - 1e-9) l][0];
+clamp_screw_y = comb_y + clamp_blk / 2;
+clamp_way = clamp_nut_top - small_nut_slot_h + 1;      // each nut's way, down from its seat out through the bottom
+assert(!is_undef(clamp_screw), "no M2 screw in small_screw_lengths is long enough for the clamp");
+assert(clamp_head_z - clamp_screw > 0, "a clamp screw reaches out of the lower frame's bottom");
+
 // The sealed joints. Across a wall, out from the inside's outline: the groove's inner wall, the groove, a land, and
 // the collar's base, which is collar_top + collar_h in from the outside; the upper part's bottom edge is cut back
 // collar_play further, at 45 degrees, so it sits in the collar.
@@ -198,8 +217,10 @@ assert(bracket_slope <= 1 + 1e-9, str("a bracket overhangs more than 45 degrees:
 assert(!sealed || (bottom == "auto" || bottom == "bambu"), "a sealed stack needs a fan section");
 
 assert(wedge_w > 0 && tooth_w > 0, "the pleats are too narrow for the paper's slot: no channel is left to close");
-assert(pack_l > 2 * cap_wedge_l + 10, "the ring is too short for its caps' wedges");
-assert(hepa_ledge + ring_h < hepa_h - 1, "the paper is deeper than the HEPA holder is tall");
+assert(hepa_full, "the clamp is drawn for the HEPA holder's pocket cut out to the whole inside");
+assert(pack_l > 2 * clamp_wedge_l + 10, "the clamp is too short for its combs");
+assert(hepa_ledge + cas_h < hepa_h - 1, "the clamp is taller than the HEPA holder");
+assert(half_wedge_z0 < paper_depth - 3, "the half wedges outside the flaps come out shorter than 3 mm");
 
 assert(grid_t >= groove_h + 2 * fdm_layer_h, "the grid's rim must roof the groove in the section's bottom");
 assert(ledge_w > -groove_in, "the ledge must reach past the groove's inner face");
@@ -216,9 +237,10 @@ warns = [
     if (plenum_h < 3) str("only ", plenum_h, " mm of air above the sheet: the openings above will load it unevenly"),
     if (abs(pack_pitch / paper_pitch - 1) > 0.1)
         str("the paper is ", pack_pitch > paper_pitch ? "stretched" : "squeezed", " ", round(100 * abs(pack_pitch / paper_pitch - 1)),
-            " % to fill the ring: ", pack_n, " pleats in ", ring_in[0], " mm"),
-    if (wedge_w < 2 * bead - 1e-9) str("the caps' wedges are ", wedge_w, " mm wide at the top, under two beads: they may not print"),
-    if (slot_w > paper_t && slot_w < bead - 1e-9) str("the slots for the paper are ", slot_w, " mm, under a bead: they may print shut"),
+            " % to fill the clamp: ", pack_n, " pleats in ", cas[0], " mm"),
+    if (wedge_w < 2 * bead - 1e-9) str("the clamp's wedges are ", wedge_w, " mm wide at the top, under two beads: they may not print"),
+    if (clamp_slot > paper_t) str("the clamp's slot is wider than the paper: it holds the paper but does not pinch it"),
+    if (small_nut_wall < 2 * bead - 1e-9) str("the clamp's nut pockets leave ", small_nut_wall, " mm of the end blocks, under two beads"),
     if (nut_roof < 5 * fdm_layer_h - 1e-9) str("a fan screw's nut has ", nut_roof, " mm over it: the screw may pull it through"),
     if (pull_air_wall < 2 * bead - 1e-9) str("a fan nut's pocket is ", pull_air_wall, " mm from the fans' air, under two beads"),
     if (pull_face_gap < 0.1) str("a fan nut's pocket comes within ", pull_face_gap, " mm of its wall's face"),
