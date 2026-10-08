@@ -8,12 +8,13 @@ other. Two 40 mm fans in the fan case pull it down and blow it into the duct, wh
 side, at the floor. It is built for the two Delta EFB0412VHD this build has, 40 × 40 × 20 mm.
 
 **Its bottom is the BentoBox Auto's** (see *The bottom*): the same duct, its floor raised over a bay for the
-electronics, with a tube down to it for the wires, and nuts where the Auto had heat-set inserts.
+electronics, with a tube down to it for the wires, and nuts where the Auto had heat-set inserts. The bay is a
+tray of its own, screwed on underneath.
 
 **Its joints under suction are sealed** (see *The sealed joints*): a TPU bead in a groove at each, and four
 screws in tabs at the corners, where the original has magnets.
 
-![The stack pulled apart: the cover, the HEPA holder, the carbon housing with the C-MAG in it, the section, the fan section, the base, the plate under its bay; tabs at the corners of the three sealed joints](bentobox/exploded.png)
+![The stack pulled apart: the cover, the HEPA holder, the carbon housing with the C-MAG in it, the section, the fan section, the base, the tray under it; tabs at the corners of the three sealed joints](bentobox/exploded.png)
 
 **It takes its HEPA as a cartridge:** a bought one, 80 × 40 × 15 mm, rests on a ledge in its holder. Or
 the HEPA paper this build already has, pleated 20 mm deep, in the remix's frame (see *Your own HEPA
@@ -26,9 +27,9 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Section** | Goes between the carbon housing and the fan section, holding a flat filter sheet that stops carbon dust reaching the fans. Sealed at both its faces, with a pillar at each corner that the carbon housing's screws pass through. `sealed = false` builds it with the original's tongue, groove and magnets, to drop into any BentoBox v2.0 stack. | [`bentobox-section.scad`](../models/bentobox/bentobox-section.scad) |
 | **Paper clamp** | Two ASA frames, screwed together with a cut piece of pleated paper between them, standing on the HEPA holder's ledge in place of the cartridge: wedges from above and teeth from below pinch the paper's cut ends, and a bar from each its long edges. | [`bentobox-clamp-lower.scad`](../models/bentobox/bentobox-clamp-lower.scad), [`bentobox-clamp-upper.scad`](../models/bentobox/bentobox-clamp-upper.scad) |
 | **Clamp sample** | One end of each frame, on one plate: to try the pinch on an offcut before the whole clamp. | [`bentobox-clamp-sample.scad`](../models/bentobox/bentobox-clamp-sample.scad) |
-| **Base** | The Auto's, in place of the duct: the bay under it, the wires' tube, and six nuts where it had heat-set inserts: the fans' four pulled up into pockets, the plate's two in slots. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
+| **Base** | The Auto's, in place of the duct, cut off at its bay's roof: the wires' tube, the fans' four nuts pulled up into pockets where it had heat-set inserts, and four nuts in slots for the tray's screws. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
 | **Fan section** | The Auto's, in place of the fan case, its top remixed for the sealed joint. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
-| **Plate** | The Auto's outline, closing the bay: flush with the base's bottom, its two screws' heads sunk in it. | [`bentobox-auto-plate.scad`](../models/bentobox/bentobox-auto-plate.scad) |
+| **Tray** | The Auto's bay, split off its base: the floor, the walls, the cable port and the magnets' holes, screwed on under the base with four screws, their heads sunk in its bottom face. | [`bentobox-auto-tray.scad`](../models/bentobox/bentobox-auto-tray.scad) |
 | **Carbon housing** | ThrutheFrame's, remixed for the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
 | **HEPA holder** | ThrutheFrame's, its bottom remixed to sit sealed on the carbon housing, and its pocket cut out to the box's whole inside, for a bigger piece of paper. | [`bentobox-hepa.scad`](../models/bentobox/bentobox-hepa.scad) |
 | **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
@@ -75,8 +76,8 @@ The base and the fan section are Strangwooduk's, from the
 [BentoBox Auto VOC Sensor system](https://makerworld.com/en/models/1882240), a remix of ThrutheFrame's box.
 
 - **The base is ThrutheFrame's duct**, the same walls and the same curved floor, with the floor raised about
-  11 mm over a **bay for the electronics**: about 40 × 95 mm and 7 mm tall, closed by a plate on two screws.
-  The base is 46 mm tall where the duct is 52.
+  11 mm over a **bay for the electronics**, 40.8 × 82.8 mm and 5.5 mm deep. The Auto closes it with a plate on
+  two screws; here it is a tray (see *The tray*). Base and tray are 46 mm tall where the duct is 52.
 - **A tube carries the wires down**: a 6 mm hole in the fan section's floor between the fans, and a tube
   under it through the base to the bay. The two fans' leads go down it; a 4.5 mm bundle passes.
 - **The air leaves the same way**: out of the whole long side, 101 × 37 mm (3,700 mm²) where the duct's
@@ -93,29 +94,44 @@ controller in the bay. Neither is used here. This build's sensors (the same as t
 **in the base's outlet**, where they read the air after the carbon; the chamber's own monitor reads the air
 before it. Their mount is not drawn yet.
 
-![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's pocket under each post, the plate under its bay](bentobox/auto-bottom.png)
+![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's pocket under each post, the tray under it, and its four screws](bentobox/auto-bottom.png)
 
-**Nuts, not heat-set inserts.** The fans' nuts are pull nuts; the plate's lie flat in slots that open one way.
+**Nuts, not heat-set inserts.** The fans' nuts are pull nuts; the tray's lie flat in slots that open one way.
 
 - **The fans' four screws**, M3 × 30, come down through each fan and the fan section's floor into a pull
   nut, in a post. The Auto has a lug under each insert, hung from its wall: round at its end, its sides on
   fillets into the wall, straight down and then on a round into a 45° underside that meets the wall. Each post
-  is that lug made big enough for a nut, seamless with the wall and the base's top, and it holds the Auto's
-  lug inside it. A hex pocket runs up it on the screw's axis, open under the post, into a tight seat 2 mm under
-  the base's top; a screw from above pulls the nut up into the seat, and it stays there. Each pocket has a flat
-  5° off the nearer fan, so it keeps 0.9 mm of wall to the fan's air - the post is cut back clear of it - and
-  0.14 mm to its wall's face. The base's top is cut 0.05 mm down so the posts' tops are its own; the fan
-  section stands that much lower.
-- **The plate's two screws**, M3 × 8 socket head, come up through counterbores in the plate, their heads
-  sunk 0.2 mm inside the bottom face, into nuts in slots that open out through the end walls, so a nut goes
-  in from outside. The plate fills its recess, flush with the base's bottom, and each counterbore is in a
-  lobe that rises into a pocket in the base. The screws sit 1.6 mm nearer the end walls than the Auto's, where
-  the duct's floor stands high enough over them.
-- Each slot's roof, each nut pocket's, each counterbore's, and each lobe's pocket's starts with two bridging
-  layers, a channel and then a square, so the screw's hole prints over it without support.
+  is round, on the screw's axis, running into the wall on fillets as the lug does, seamless with the wall and
+  the base's top, and it holds the Auto's lug inside it. A hex pocket runs up it on the screw's axis, open
+  under the post, into a tight seat 2 mm under the base's top; a screw from above pulls the nut up into the
+  seat, and it stays there. Each pocket has a flat 5° off the nearer fan, so it keeps 0.9 mm of wall to the
+  fan's air, and 0.14 mm to its wall's face. Round, each post reaches 0.69 mm in under the edge of its fan's
+  opening in the fan section's floor, towards the fan's corner: about 2 mm² of the opening's 1,075. The base's
+  top is cut 0.05 mm down so the posts' tops are its own; the fan section stands that much lower.
+- Each nut pocket's roof, and each slot's, starts with two bridging layers, a channel and then a square, so the
+  screw's hole prints over it without support.
 
-**Putting it together:** a nut in each end wall's slot, then the plate on with its two screws. Then the
-fans' nuts, from the open top of the base: slide each nut in under its post, push it up the pocket, and pull
+**The tray.** The Auto's base prints standing on its bottom, and its bay's roof - the duct's floor - is then a
+bridge 41 mm across and 83 mm long. The remix splits the base there (Alon, 8 Oct 2026). The base prints standing
+on its floor, flat on the bed; the bay is a tray of its own - the floor that was the Auto's plate, the walls round
+the bay, and the ends' blocks, with the base's own outline, its cable port and its four magnet holes - and prints on
+its floor, open at the top.
+
+- **Its four screws**, M3 × 10 socket head, two at each end, come up through counterbores in the tray, their
+  heads sunk 0.2 mm inside its bottom face, into nuts in slots in the base's end walls, just over the bay's
+  roof. Each slot opens out through the end face: a nut goes in from outside and slides to the slot's end, on
+  its screw's axis. A slot has 0.8 mm under it, four layers, which the nut presses onto the tray's top; low like
+  that, its back keeps two beads under the end wall's fillet. The screws stand clear of the magnets' holes and,
+  at the -Y end, of the cable port.
+- **The cable port** is the Auto's, through the -Y end wall: a mouth 7.4 mm wide and then a 4.5 mm hole on to
+  the bay. In the tray both are open over the top, and the base's flat bottom closes them.
+- **The step.** Along the +X side, the Auto's bottom steps back 4 mm, up to 10 mm. In the tray the step's
+  ceiling is a 45° chamfer, so the tray prints with nothing overhanging; the room under the step is all still
+  there.
+
+**Putting it together:** a nut in each of the four slots in the end faces, pushed to the slot's end, then the
+tray under the base with its four screws; it comes off again from below, for the electronics. Then the fans'
+nuts, from the open top of the base: slide each nut in under its post, push it up the pocket, and pull
 it into the seat with a spare M3 screw from above; take the screw out, and the nut stays. The fans' leads down
 the tube; the fan section on the base, the fans in it, and their four screws down through them. The seat's
 fit is a first guess: try it on the joint sample first (see *The sealed joints*).
@@ -125,7 +141,7 @@ fit is a first guess: try it on the joint sample first (see *The sealed joints*)
 
 **Seal the wires' hole.** The hole in the fan section's floor opens above the floor, into the fans' intake,
 the lowest pressure in the box, about 97 Pa under the chamber's. The tube under it opens into the bay, and
-the bay is open to the chamber: the Auto's cable ports, the gap round the plate, the plate's nut slots. Air
+the bay is open to the chamber: the cable port, and the tray's joint. Air
 drawn in that way passes neither filter. Through the 6 mm hole with the fans' leads in it, as an orifice,
 that is up to about 0.09 L/s, a seventh of the flow. Seal it round the leads where they pass the floor: hot
 glue, or a TPU grommet. The LunchBox's wire hole had the same fault, and it let in a fifth of its air.
@@ -253,9 +269,9 @@ pinches it. Anything from 28 to 30 folds in 100 mm gives the same parts.
 ## Printing
 
 The cover and the C-MAG print as the author's project lays them out; the remix's parts print as their files
-draw them, standing on their bottoms - the section, the base, the fan section, the carbon housing
-and the HEPA holder - the clamp's lower frame on its rim and its upper frame turned over onto its band, the
-plate on its outer face, its lobes up, and a bead ring flat. No supports, no brim. Standing, the base's bay roof is a 41 mm bridge, as the Auto has it.
+draw them, standing on their bottoms - the section, the base on its floor, the tray, the fan section, the
+carbon housing and the HEPA holder - the clamp's lower frame on its rim and its upper frame turned over onto its
+band, and a bead ring flat. No supports, no brim.
 
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
@@ -263,9 +279,9 @@ plate on its outer face, its lobes up, and a bead ring flat. No supports, no bri
 | Clamp, lower frame | ASA | 1 | 1 h 32 m | 11 g |
 | Clamp, upper frame | ASA | 1 | 1 h 19 m | 9 g |
 | Clamp sample | ASA | 1 plate | 1 h 6 m | 7 g |
-| Base | ASA | 1 | 4 h 17 m | 44 g |
+| Base | ASA | 1 | 3 h 35 m | 37 g |
 | Fan section | ASA | 1 | 3 h 42 m | 36 g |
-| Plate | ASA | 1 | 37 m | 8 g |
+| Tray | ASA | 1 | 1 h 31 m | 17 g |
 | Carbon housing | ASA | 1 | 7 h 23 m | 71 g |
 | HEPA holder | ASA | 1 | 4 h 39 m | 45 g |
 | Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
@@ -280,9 +296,9 @@ For the bottom:
 
 | Quantity | Item |
 |---|---|
-| 6 | M3 hex nut, ISO 4032 |
+| 8 | M3 hex nut, ISO 4032 |
 | 4 | M3 × 30 socket head cap screw, ISO 4762: the fans |
-| 2 | M3 × 8 socket head cap screw, ISO 4762: the plate, their heads sunk |
+| 4 | M3 × 10 socket head cap screw, ISO 4762: the tray, their heads sunk |
 
 For the sealed joints:
 
@@ -409,10 +425,11 @@ holes. It runs the air's way from the housing's floor openings down through the 
 upper frame on the lower one - meeting only at the end blocks - lays a model of the paper, drawn from its own
 values at the slot's thickness, in the frames' zigzag, keeps the air's way down under the paper open, and
 runs the four screws through the end blocks and the nuts into their seats and down out of them. For the bottom it stands the fan
-section on the base and the plate in its recess, sets a nut in each slot and slides it out through the
-slot's mouth, and one in each fan screw's seat and draws it down its pocket and out under its post, runs each screw from its head to its tip, and the wires down the tube, and the fans' air
-down into the base past the posts. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 27 fits and
+section on the base and the base on the tray, sets a nut in each of the tray's slots and slides it out through
+the end face, and one in each fan screw's seat and draws it down its pocket and out under its post, keeps two
+beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
+the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 28 fits and
 35 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
@@ -421,7 +438,7 @@ by sectioning its STLs, and every setting of the section and of the paper's fram
 ## Credit and licence
 
 BentoBox v2.0 is © ThrutheFrame, under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-The BentoBox Auto VOC Sensor system, whose base, fan section and plate the bottom is, is © Strangwooduk,
+The BentoBox Auto VOC Sensor system, whose base and fan section the bottom is, is © Strangwooduk,
 under the same licence as a remix of it.
 The remix — the models in [`models/bentobox/`](../models/bentobox/) and the pictures in [`bentobox/`](bentobox/)
 — is under CC BY-NC-SA 4.0 too: free to use and share, not for sale.

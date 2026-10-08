@@ -218,19 +218,19 @@ module cmag_standing(z0) translate([cmag[2] / 2, -cmag[1] / 2, z0]) rotate([0, -
     for (f = cmag_stls) import(f, convexity = 10);
 
 // ------------------------------------------------------------------ the Auto's bottom
-// Strangwooduk's base, fan section and plate (scripts/bentobox-auto-stl.py writes them from the STEP), moved
-// into this frame. The base stands on Z = auto_base_z0, its top at duct_h, where the duct's is.
+// Strangwooduk's base and fan section (scripts/bentobox-auto-stl.py writes them from the STEP, and the plate, which
+// the tray replaces), moved into this frame. The base stands on Z = auto_base_z0, its top at duct_h, where the
+// duct's is.
 auto_base_stl  = str(orig_dir, "bentobox-auto-base.stl");
 auto_fans_stl  = str(orig_dir, "bentobox-auto-fans.stl");
-auto_plate_stl = str(orig_dir, "bentobox-auto-plate.stl");
 module auto_fans() orig(auto_fans_stl, auto_fans_dz);
 // The fan section the stack stands on, whichever bottom it has.
 module fan_section() if (bottom == "auto") auto_fans(); else orig(fans_stl);
 
 // A slot's own frame: X out towards its mouth, the screw's axis at the origin, Z = 0 at z.
 module slot_frame(s, z) translate([s[0], s[1], z]) rotate(s[2]) children();
-// A nut's slot (scad-tools nuts.scad), from behind the axis out through its mouth, nut_slot_out past the axis...
-module slot() nut_slot(nut_af, nut_slot_h, nut_slot_out, fdm_hole_comp + nut_fit);
+// A nut's slot (scad-tools nuts.scad), from behind the axis out through its mouth, `out` past the axis...
+module slot(out = nut_slot_out) nut_slot(nut_af, nut_slot_h, out, fdm_hole_comp + nut_fit);
 // ...and the screw's hole on up through its roof, l long, as a bridged hole (scad-tools fdm.scad): a channel as
 // wide as the hole across the slot, so the first layer is two bridges from side to side; the hole, square, so the
 // second is two bridges along the slot over the channel; then the round hole.
@@ -238,19 +238,15 @@ module roof_hole(l) translate([0, 0, nut_slot_h]) rotate(90) bridged_hole(nut_sl
 // The fan section's floor openings, carried down into the base: the fans' air.
 module fan_air(h, grow = 0) for (y = fan_ys) translate([0, y, duct_h - h]) cylinder(d = auto_fan_air + 2 * grow, h = h + 1);
 
-// A fan screw's post (seamless, Alon 8 Oct): the Auto's lug under its insert, made big enough for the nut, and
-// holding the lug inside it. Its frame: the screw's axis at the origin, X out of the post's wall into the room.
+// A fan screw's post (seamless, Alon 8 Oct): round on the screw's axis, big enough for the nut, and holding the
+// Auto's lug under its insert inside it. Its frame: the screw's axis at the origin, X out of the post's wall into the room.
 module post_frame(s) translate([s[0], s[1], 0]) rotate(s[3]) children();
-// From above: round at its end, its sides running into the wall on fillets; cut back clear of the fans' air, the
-// corners there rounded. The fillets are tangent to a line post_blend inside the wall's face, so the two cross at a
-// slant; the strip they come off runs 3 mm into the wall, inside the original.
-module post2d(s) offset(r = 1) offset(delta = -1) difference() {
-    offset(r = -post_fillet) offset(delta = post_fillet) post_frame(s) {
-        circle(r = post_r);
-        translate([-auto_post_wall - 3, -post_r]) square([auto_post_wall + 3, 2 * post_r]);
-        translate([-auto_post_wall - 3, -post_r - post_fillet - 0.5]) square([3 - post_blend, 2 * (post_r + post_fillet + 0.5)]);
-    }
-    if (post_clear_air) for (y = fan_ys) translate([0, y]) circle(d = auto_fan_air + 2 * meet);
+// From above: round, on the screw's axis, running into the wall on fillets (Alon, 8 Oct 2026). The fillets are
+// tangent to a line post_blend inside the wall's face, so the two cross at a slant; the strip they come off runs
+// 3 mm into the wall, inside the original. Round, it reaches a little way in under its fan's opening: post_air_bite.
+module post2d(s) offset(r = -post_fillet) offset(delta = post_fillet) post_frame(s) {
+    circle(r = post_r);
+    translate([-auto_post_wall - 3, -post_r - post_fillet - 0.5]) square([3 - post_blend, 2 * (post_r + post_fillet + 0.5)]);
 }
 // From the side, out of the wall (X) and up (Y): the post's underside - straight down, then a round into 45
 // degrees, which meets the wall's face at post_foot.
@@ -266,8 +262,6 @@ module pull_frame(s, z) translate([s[0], s[1], z]) rotate(s[2] - 30) children();
 // An insert's hole, filled: the screw's hole and the slot are cut through the fill.
 module fan_plug(s) translate([s[0], s[1], duct_h - auto_fan_insert[1] - 0.1])
     cylinder(d = auto_fan_insert[0] + 0.2, h = auto_fan_insert[1] + 0.1 - meet);
-module plate_plug(p) translate([p[0], p[1], auto_seat_z + meet])
-    cylinder(d = auto_plate_insert[0] + 0.2, h = auto_plate_insert[1] + 0.1 - meet);
 // A fan screw's way: its nut's pocket (scad-tools nuts.scad), up from its mouth under the post to the seat, the
 // seat a nut's height under the roof, and the screw's hole on up through the roof to the base's top, bridged
 // (scad-tools fdm.scad): a channel the hole's width from corner to corner, then the hole's square, then the round hole.
@@ -276,47 +270,69 @@ module pull_pocket(way) {
     bridged_hole(pull_ac, hole_d, duct_h - pull_top + 1, fdm_layer_h, eps);
 }
 module fan_screw_cut(s) pull_frame(s, pull_top) pull_pocket(pull_seat - pull_bot);
-// A plate screw's: the pocket its lobe rises into, its hole bridged up through the pocket's roof to its slot, the
-// roof over that, and on past its tip.
-module plate_screw_cut(s) {
-    translate([s[0], s[1], auto_base_z0 - 1]) cylinder(d = pocket_d, h = pocket_top - auto_base_z0 + 1);
-    translate([s[0], s[1], pocket_top]) bridged_hole(pocket_d, hole_d, plate_slot_bot - pocket_top + eps, fdm_layer_h, eps);
-    slot_frame(s, plate_slot_bot) { slot(); roof_hole(plate_tip_z + 0.5 - plate_slot_top); }
+// A tray screw's way in the base: its hole up from the base's bottom face through the floor to its slot, the slot
+// out through the end face, and the hole on up through the slot's roof, bridged, to past its tip.
+module tray_slot_cut(s) {
+    translate([s[0], s[1], auto_bay_top - 1]) cylinder(d = hole_d, h = tray_slot_bot - auto_bay_top + 1 + eps);
+    slot_frame(s, tray_slot_bot) { slot(s[3]); roof_hole(tray_tip_z + 0.5 - tray_slot_top); }
 }
-// The base, its top cut `meet` under the original's, so the posts' tops are its own: the fan section stands that
-// much lower on it.
+// The base: the Auto's, over the bay's roof, where it splits - the bay is the tray's - and its top cut `meet` under
+// the original's, so the posts' tops are its own: the fan section stands that much lower on it.
 module auto_base() intersection() {
     difference() {
         union() {
             orig(auto_base_stl);
             for (s = auto_fan_screws) { fan_post(s); fan_plug(s); }
-            for (p = auto_plate_inserts) plate_plug(p);
         }
         for (s = auto_fan_screws) fan_screw_cut(s);
-        for (s = auto_plate_screws) plate_screw_cut(s);
+        for (s = tray_screws) tray_slot_cut(s);
     }
+    above(auto_bay_top);
     below(duct_h - meet);
 }
-// The plate: the Auto's outline, its countersunk holes filled, as thick as its recess is deep, so it is flush with
-// the base's bottom face; a lobe on it for each screw, a counterbore up into the lobe for the screw's head, and the
-// screw's hole bridged up through the counterbore's roof.
-module plate_outline() union() {
-    projection() orig(auto_plate_stl, auto_plate_dz);
-    for (p = auto_plate_inserts) translate(p) circle(d = 7);
+
+// ------------------------------------------------------------------ the bay's tray (Alon, 8 Oct 2026)
+// The Auto's base under the bay's roof, made a part of its own: the floor that was its plate, the walls round the
+// bay and the ends' blocks, with the base's own outlines, the cable port and the magnets' holes. Drawn from the base
+// cut flat, not from its STL, so none of the tray's faces lies a hair from one of the base's.
+module base_cut(z) projection(cut = true) translate([0, 0, -z]) orig(auto_base_stl);
+// The outline from above, half a millimetre under the bay's roof, the cable port's mouth closed - a notch in it
+// there, 7.4 mm wide; and under the step, the same cut off at the step's face, so the two share every corner: from
+// two cuts, they would differ by a hair at the round corners, and make slivers where they meet.
+module tray_outline() offset(delta = -5) offset(delta = 5) fill() base_cut(auto_bay_top - 0.5);
+module tray_outline_lower() intersection() { tray_outline(); translate([-bb_w, -bb_l]) square([bb_w + auto_step[0], 2 * bb_l]); }
+// The bay, half a millimetre under its roof.
+module bay2d() let(z = auto_bay_top - 0.5) difference() { fill() base_cut(z); base_cut(z); }
+// The step's ceiling made a 45-degree chamfer, out from the step's face to the outline at the tray's top, so the
+// tray prints on its floor with nothing overhanging: the room under the step is all still there.
+module step_chamfer() let(x = auto_step[0], z = auto_step[1]) rotate([90, 0, 0]) linear_extrude(bb_l + 2, center = true)
+    polygon([[x, z], [x + 1, z - 1], [bb_w, z - 1], [bb_w, z + bb_w - x]]);
+// The cable port: its mouth through the -Y end wall, and the round hole on to the bay, both open over the top -
+// the base's flat bottom closes them.
+module tray_port() let(m = auto_port_mouth, h = auto_port_hole) {
+    translate([m[0], -bb_l / 2 - 1, m[2]]) cube([m[1] - m[0], bb_l / 2 + 1 - m[3], tray_top + 1 - m[2]]);
+    hull() for (z = [h[1], tray_top + 1]) translate([h[0], -m[3] - 0.5, z]) rotate([-90, 0, 0]) cylinder(d = h[2], h = m[3] + 0.5);
 }
-module auto_plate() difference() {
+// A tray screw's way in the tray: its head's counterbore up from the bottom face, and its hole bridged up through
+// the counterbore's roof and on through the tray.
+module tray_screw_cut(s) translate([s[0], s[1], 0]) {
+    translate([0, 0, auto_base_z0 - 1]) cylinder(d = m3_cb[0], h = m3_cb[1] + 1);
+    translate([0, 0, tray_head_z]) bridged_hole(m3_cb[0], hole_d, tray_top - tray_head_z + 1, fdm_layer_h, eps);
+}
+module auto_tray() difference() {
     union() {
-        translate([0, 0, auto_base_z0]) linear_extrude(plate_t) plate_outline();
-        for (s = auto_plate_screws) translate([s[0], s[1], auto_base_z0]) cylinder(d = lobe_d, h = lobe_top - auto_base_z0);
+        translate([0, 0, auto_base_z0]) linear_extrude(auto_step[1] - auto_base_z0) tray_outline_lower();
+        translate([0, 0, auto_step[1]]) linear_extrude(tray_top - auto_step[1]) tray_outline();
     }
-    for (s = auto_plate_screws) translate([s[0], s[1], 0]) {
-        translate([0, 0, auto_base_z0 - 1]) cylinder(d = plate_cb[0], h = plate_cb[1] + 1);
-        translate([0, 0, plate_head_z]) bridged_hole(plate_cb[0], hole_d, lobe_top - plate_head_z + 1, fdm_layer_h, eps);
-    }
+    translate([0, 0, auto_seat_z]) linear_extrude(tray_top - auto_seat_z + 1) bay2d();
+    step_chamfer();
+    tray_port();
+    for (m = auto_magnets, sy = [-1, 1]) translate([m[0], sy * m[1], auto_base_z0 - 1]) cylinder(d = auto_magnet[0], h = auto_magnet[1] + 1);
+    for (s = tray_screws) tray_screw_cut(s);
 }
-module say_auto_hardware() echo(str("auto: six M3 nuts, the fans' four pulled up into pockets; the fans' four screws M3 x ", fan_screw,
-    " socket head, through the fans; the plate's two M3 x ", plate_screw, " socket head, sunk ", head_sink,
-    " mm into the bottom face"));
+module say_auto_hardware() echo(str("auto: eight M3 nuts, the fans' four pulled up into pockets, the tray's four in slots; the fans' four screws M3 x ",
+    fan_screw, " socket head, through the fans; the tray's four M3 x ", tray_screw, " socket head, sunk ", head_sink,
+    " mm into its bottom face"));
 
 // ------------------------------------------------------------------ the sealed joints
 // See bentobox.params.scad. Each sealed part is cut to one outline, drawn here: the originals' outside is cut `meet`
@@ -452,7 +468,7 @@ module sealed_part(zb, zt, z0, z1) {
             chamfer_cut(zb);
             for (s = tab_screws) translate([s[0], s[1], zb - 1]) {
                 cylinder(d = hole_d, h = tab_upper_h + 2);
-                translate([0, 0, 1 + tab_upper_t]) cylinder(d = plate_cb[0], h = tab_upper_h);
+                translate([0, 0, 1 + tab_upper_t]) cylinder(d = m3_cb[0], h = tab_upper_h);
             }
         }
         if (low) {
@@ -538,8 +554,9 @@ if (draw_model) {
     else if (part == "clamp_lower") { clamp_low(); say_paper_cut(); }
     else if (part == "clamp_upper") { translate([0, 0, cas_h]) mirror([0, 0, 1]) clamp_up(); say_paper_cut(); }
     else if (part == "clamp_sample") { clamp_sample(); say_paper_cut(); }
-    // The Auto's parts as they print: the base and the fan section standing, the plate on its outer face.
-    else if (part == "auto_base") { translate([0, 0, -auto_base_z0]) auto_base(); say_auto_hardware(); }
+    // The Auto's parts as they print, standing: the base on its floor, the tray on its own.
+    else if (part == "auto_base") { translate([0, 0, -auto_bay_top]) auto_base(); say_auto_hardware(); }
+    else if (part == "auto_tray") { translate([0, 0, -auto_base_z0]) auto_tray(); say_auto_hardware(); }
     else if (part == "auto_fans") translate([0, 0, -duct_h]) if (sealed) fans_sealed(); else auto_fans();
     // The sealed stack's remixed originals and the bead ring, as they print: standing, the ring flat.
     else if (part == "carbon") { translate([0, 0, -sst[2]]) carbon_sealed(); say_seal_hardware(); }
@@ -548,6 +565,5 @@ if (draw_model) {
     // The joint sample's ASA plate, and its TPU bead.
     else if (part == "joint_sample") { joint_sample(); say_sample_hardware(); }
     else if (part == "joint_sample_bead") joint_sample_bead();
-    else if (part == "auto_plate") { translate([0, 0, -auto_base_z0]) auto_plate(); say_auto_hardware(); }
     else assert(false, str("unknown part: ", part));
 }

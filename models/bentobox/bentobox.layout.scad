@@ -120,29 +120,31 @@ post_round_z = post_reach - post_round + post_foot + post_round * sqrt(2);   // 
 fan_head_z = duct_h + auto_floor_t + fan_t;            // a fan screw's head, on the fan's top flange
 fan_screw = screw_for(fan_t + auto_floor_t + nut_roof + nut_h + screw_tip);
 fan_tip_z = fan_head_z - fan_screw;
-// A plate screw comes up through a counterbore in the plate, its head head_sink inside the base's bottom face, the
-// counterbore in a lobe that rises into a pocket in the base; its nut's slot is over the pocket.
-plate_t = auto_seat_z - auto_base_z0;                  // the plate: it fills its recess
-plate_cb = [plate_head[0] + 2 * fdm_hole_comp + head_room, plate_head[1] + head_sink];   // a head's counterbore, d and depth
-plate_head_z = auto_base_z0 + plate_cb[1];             // where a head bears, up in its lobe
-lobe_d = plate_cb[0] + 2 * perim3;
-lobe_top = plate_head_z + lobe_cap;
-pocket_d = lobe_d + 2 * lobe_play;
-pocket_top = lobe_top + lobe_play;
-plate_slot_bot = pocket_top + nut_floor;
-plate_slot_top = plate_slot_bot + nut_slot_h;
-plate_screw = screw_for(plate_slot_bot + nut_h + screw_tip - plate_head_z);
-plate_tip_z = plate_head_z + plate_screw;
+// A tray screw comes up through a counterbore in the tray, its head head_sink inside the tray's bottom face, on up
+// through the tray and the base's floor to its nut, in a slot that opens out through the end face.
+m3_cb = [m3_head[0] + 2 * fdm_hole_comp + head_room, m3_head[1] + head_sink];   // a head's counterbore, d and depth
+tray_top = auto_bay_top;                               // the tray's top: the base's bottom face
+tray_head_z = auto_base_z0 + m3_cb[1];                 // where a head bears, up in the tray
+tray_slot_bot = auto_bay_top + nut_floor;
+tray_slot_top = tray_slot_bot + nut_slot_h;
+tray_screw = screw_for(tray_slot_bot + nut_h + screw_tip - tray_head_z);
+tray_tip_z = tray_head_z + tray_screw;
+// Each: X, Y, the way out of its slot, through its end face, and how far past the axis the slot runs.
+tray_screws = [for (x = tray_screws_x, sy = [-1, 1]) [x, sy * tray_screw_y, sy > 0 ? 90 : 270, bb_l / 2 - tray_screw_y + tray_slot_past]];
+// What a counterbore leaves: to the cable port's mouth beside it, where the mouth's floor is under the head, and to
+// the magnets' holes.
+tray_port_wall = tray_head_z <= auto_port_mouth[2] ? 99 : min([for (x = tray_screws_x)
+    x < auto_port_mouth[0] ? auto_port_mouth[0] - x - m3_cb[0] / 2 : x > auto_port_mouth[1] ? x - auto_port_mouth[1] - m3_cb[0] / 2 : -1]);
+tray_magnet_wall = min([for (x = tray_screws_x, m = auto_magnets) norm([x, tray_screw_y] - m) - (m3_cb[0] + auto_magnet[0]) / 2]);
 
-assert(!is_undef(fan_screw) && !is_undef(plate_screw), "no screw in screw_lengths is long enough");
-assert(plate_tip_z + 0.5 < auto_plate_room - 2 * fdm_layer_h, "a plate screw's hole breaks into the duct over it");
-assert(head_sink >= 0, "a plate screw's head stands out of the base's bottom face");
+assert(!is_undef(fan_screw) && !is_undef(tray_screw), "no screw in screw_lengths is long enough");
+assert(head_sink >= 0, "a tray screw's head stands out of the tray's bottom face");
 assert(post_round_z < pull_seat, "a fan nut's seat must stand in its post's straight part, over the underside's round");
 assert(fan_tip_z > pull_bot && fan_tip_z < pull_top - nut_h - screw_tip + 1e-9, "a fan screw's tip must stand out of its nut, inside the pocket");
 assert(bottom == "auto" || bottom == "bambu", str("unknown bottom: ", bottom));
 // How far a hex reaches towards theta, ac across its corners, a flat facing `flat`.
 function hex_reach(theta, flat, ac) = let(d = ((theta - flat) % 60 + 60) % 60) ac / 2 * cos(30 - min(d, 60 - d));
-// The walls a fan nut's pocket keeps: to the fans' air, which the post is cut back from, and to its wall's face.
+// The walls a fan nut's pocket keeps: to the fans' air, and to its wall's face.
 pull_air_wall = min([for (s = auto_fan_screws) let(f = [0, abs(s[1] - fan_ys[0]) < abs(s[1] - fan_ys[1]) ? fan_ys[0] : fan_ys[1]])
     norm([s[0], s[1]] - f) - hex_reach(atan2(f[1] - s[1], f[0] - s[0]), s[2], pull_way_ac) - auto_fan_air / 2 - meet]);
 pull_face_gap = min([for (s = auto_fan_screws) auto_post_wall - hex_reach(s[3] + 180, s[2], pull_way_ac)]);
@@ -195,7 +197,7 @@ tab_zone_y = seal_yc - 1;                                                 // a t
 bracket_y0 = seal_y - tab_blend;
 bracket_l = tab_tip + tab_blend - bracket_y0;
 bracket_h = 3 * bracket_l;
-tab_upper_h = tab_upper_t + plate_cb[1];                                 // an upper part's tab, its screw's head sunk
+tab_upper_h = tab_upper_t + m3_cb[1];                                    // an upper part's tab, its screw's head sunk
 tab_screws = [for (sx = [-1, 1], sy = [-1, 1]) [sx * tab_sc[0], sy * tab_sc[1], sy > 0 ? 90 : 270]];
 // The screws: through the HEPA holder's tab into the carbon housing's nut; and through the carbon housing's tab and
 // the section's pillar into the fan section's nut. Each nut sits in the middle of its tab's height, pulled up
@@ -244,7 +246,10 @@ warns = [
     if (nut_roof < 5 * fdm_layer_h - 1e-9) str("a fan screw's nut has ", nut_roof, " mm over it: the screw may pull it through"),
     if (pull_air_wall < 2 * bead - 1e-9) str("a fan nut's pocket is ", pull_air_wall, " mm from the fans' air, under two beads"),
     if (pull_face_gap < 0.1) str("a fan nut's pocket comes within ", pull_face_gap, " mm of its wall's face"),
-    if (tab_boss_r - plate_cb[0] / 2 < 2 * bead - 1e-9) str("a tab's head counterbore leaves ", tab_boss_r - plate_cb[0] / 2, " mm of wall, under two beads"),
-    if (nut_floor < 5 * fdm_layer_h - 1e-9) str("a nut's slot has ", nut_floor, " mm under it"),
+    if (tab_boss_r - m3_cb[0] / 2 < 2 * bead - 1e-9) str("a tab's head counterbore leaves ", tab_boss_r - m3_cb[0] / 2, " mm of wall, under two beads"),
+    if (bb_l / 2 - tray_screw_y - m3_cb[0] / 2 < 2 * bead - 1e-9) str("a tray screw's counterbore leaves ", bb_l / 2 - tray_screw_y - m3_cb[0] / 2, " mm of the end face, under two beads"),
+    if (tray_port_wall < 2 * bead - 1e-9) str("a tray screw's counterbore leaves ", tray_port_wall, " mm to the cable port, under two beads"),
+    if (tray_magnet_wall < 2 * bead - 1e-9) str("a tray screw's counterbore leaves ", tray_magnet_wall, " mm to a magnet's hole, under two beads"),
+    if (nut_floor < 4 * fdm_layer_h - 1e-9) str("a tray nut's slot has ", nut_floor, " mm under it, under four layers"),
 ];
 for (w = warns) echo(str("WARNING: ", w));

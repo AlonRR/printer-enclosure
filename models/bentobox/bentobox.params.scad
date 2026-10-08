@@ -14,14 +14,14 @@ long side, at the floor. This remix adds:
   section   a section between the carbon housing and the fan case, holding a flat filter sheet that stops
             carbon dust reaching the fans. Its top is the fan case's tongue and its bottom the carbon
             housing's groove, and it has the same magnets, so it drops into any BentoBox v2.0 stack.
-  hepa_ring a frame for pleated HEPA paper off a roll, in place of the bought cartridge: a ring that stands
-  hepa_cap  on the HEPA holder's ledge, and two TPU caps, one at each end of a cut piece of paper, whose
-            wedges close the ends of the pleats that the dirty air comes into. Everything about it follows
-            from the paper's three values below, so other paper means changing those and exporting again.
+  clamp_*   a clamp for pleated HEPA paper off a roll, in place of the bought cartridge: two ASA frames
+            screwed together round a cut piece of paper, standing on the HEPA holder's ledge, their wedges and
+            teeth pinching the paper's cut ends. Everything about it follows from the paper's three values
+            below, so other paper means changing those and exporting again.
   auto_base the bottom from Strangwooduk's BentoBox Auto in place of the duct and the fan case: a base
-  auto_fans with a bay for the electronics under the duct and a tube for the wires down to it, its fan
-  auto_plate section, and the plate that closes the bay. Its heat-set inserts become nuts: pulled into
-            pockets for the fans' screws, in slots for the plate's.
+  auto_fans with a bay for the electronics under the duct and a tube for the wires down to it, and its fan
+  auto_tray section. The bay is a tray of its own, screwed on under the base. The Auto's heat-set inserts
+            become nuts: pulled into pockets for the fans' screws, in slots for the tray's.
 
 COORDINATES are the box as it stands: X across it, Y along it, Z up, with Z = 0 on the floor the duct
 stands on. X and Y are centred. The duct's outlet faces -X.
@@ -31,7 +31,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "auto_base", "auto_fans", "auto_plate", "carbon", "hepa", "bead_ring", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample" or "joint_sample_bead": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "bead_ring", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample" or "joint_sample_bead": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -118,7 +118,7 @@ small_screw_lengths = [6, 8, 12, 16, 20];   /* The M2 lengths HomeBox records, 8
 small_nut_roof = 1.6;           /* Over each nut, under the end block's split: eight layers. */
 
 /* [The bottom: Strangwooduk's BentoBox Auto, or ThrutheFrame's duct and fan case] */
-bottom = "auto";    /* "auto": the Auto's base, fan section and plate, its inserts made nuts. "bambu": ThrutheFrame's duct and fan case, as they come. The airflow simulation keeps the duct either way. */
+bottom = "auto";    /* "auto": the Auto's base, fan section and bay, its inserts made nuts. "bambu": ThrutheFrame's duct and fan case, as they come. The airflow simulation keeps the duct either way. */
 // The BentoBox Auto VOC Sensor system, by Strangwooduk (MakerWorld 1882240), comes as one STEP file;
 // scripts/bentobox-auto-stl.py writes its STLs into original/. MEASURED by sectioning them, 8 Oct 2026, in
 // this frame. The base is ThrutheFrame's duct with its floor raised over a bay for the electronics: 46 tall
@@ -126,17 +126,18 @@ bottom = "auto";    /* "auto": the Auto's base, fan section and plate, its inser
 // fan case's top exactly - tongue, inside and magnet holes, at four cuts - with each fan held by two screws
 // through its floor into the base, and a hole for the wires between the fans, down a tube to the bay.
 auto_fans_dz  = -30;    /* The fan section, from where the STEP has it, to the stack: its tongue is then the fan case's. */
-auto_plate_dz = 35.7;   /* The plate, from where the STEP has it, up into the base's recess: its ends against the seats' ceiling. */
 auto_floor_t  = 3;      /* The fan section's floor, which the fans' screws pass. */
-auto_fan_air  = 37;     /* The fan section's floor opening under each fan, at fan_ys. Nothing new may stand under one. */
+auto_fan_air  = 37;     /* The fan section's floor opening under each fan, at fan_ys. Nothing new may stand under one but the round posts' edges, post_air_bite in. */
 auto_fan_screws = [[-16, -46, 40, 90], [-16, 46, -40, 270], [16, -14, 230, 180], [16, 14, 130, 180]];   /* The fans' screws, X and Y; which way a flat of each nut's pocket faces, in degrees from +X - 5 off the nearer fan, towards the post's wall, so the pocket keeps a wall to both; and the way out of the post's wall into the room: the two at the end walls, the two at the long wall. */
 auto_fan_insert = [4.2, 4];     /* The heat-set inserts' holes the nuts replace, d and depth, down from the base's top. */
-auto_plate_screws = [[-1, -48, 270], [-1, 48, 90]];   /* The plate's two screws, X and Y, 1.6 mm nearer the end walls than the Auto's, where the end wall's fillet stands high enough over a sunk head's screw; their slots open out through the end walls, so a nut goes in from outside. */
-auto_plate_inserts = [[-1, -46.4], [-1, 46.4]];   /* The Auto's own plate screws: their inserts' holes in the base, filled, and their countersunk holes in the plate, filled. */
-auto_plate_insert = [3.8, 3.5]; /* ...those inserts' holes, d and depth, up from the seats' ceiling. */
 auto_base_z0  = 6;      /* The base's bottom face. */
-auto_seat_z   = 8.5;    /* The seats' ceiling, which the plate's ends press against, 2.5 mm up inside the base's bottom face. The Auto's plate is 1.8 thick; this remix's fills the recess, flush with the bottom face. */
-auto_plate_room = 18.8; /* Over each plate screw, Y +/-48, the end wall's fillet - the duct's floor - stands this high: the screw's hole stops under it. */
+auto_seat_z   = 8.5;    /* The bay's floor. The Auto closes the bay with a plate 1.8 thick, its top here, in a recess in the bottom face. */
+auto_bay_top  = 14;     /* The bay's roof: the underside of the duct's floor, where the base splits. Its STL, like every face of the Auto's, stands 0.001 higher - the STEP's frame, through 32-bit floats - so the base cut here has that much under its floor over the bay, which no slicer sees. */
+auto_step     = [22.4, 10];     /* The bottom's +X face stands back to X 22.4 up to Z 10, the whole length. */
+auto_port_mouth = [8, 15.4, 8.2, 49.1];   /* The cable port in the -Y end: its mouth X 8 to 15.4, from Z 8.2 up to the bay's roof, out through the end wall from Y -49.1... */
+auto_port_hole = [11.69, 11.1, 4.5];      /* ...and on from there to the bay, a round hole: X and Z of its axis, and its d. */
+auto_magnets  = [[-19.4, 49.4], [15.4, 49.4]];  /* Holes for 4 x 2 mm magnets in the bottom face, at these and their mirrors in Y... */
+auto_magnet   = [4.2, 2.2];     /* ...d and depth. */
 auto_conduit  = [16.38, 0, 6];  /* The wires' way down: X, Y and d - the floor's hole, and the tube under it to the bay. */
 auto_conduit_z = [16, 55];      /* ...from the bay's ceiling to the floor's top. */
 
@@ -149,12 +150,12 @@ screw_tip = 1.5;    /* A screw must stand this far out of its nut. */
 screw_lengths = [6, 8, 10, 12, 16, 20, 25, 30, 35, 40];   /* M3 lengths to choose from: the build has many. */
 fan_t     = 20;     /* The fans, 40 x 40 x 20: their screws pass through them, the heads on their top flanges. */
 nut_roof  = 2;      /* Over a fan screw's nut, under the base's top face: ten layers. */
-nut_floor = 1.5;    /* Under a plate screw's slot, over the seat. */
+nut_floor = 0.8;    /* Under a tray screw's slot, over the base's bottom face: four layers, which the nut presses onto the tray's top - nothing bridges there. Low, the slot's back stays two beads under the end wall's fillet. */
 post_beads = 3;     /* The new post round a fan screw's pocket, past its corners, in beads. */
-post_clear_air = true;   /* Cut the posts back clear of the fans' air: round, they would reach under the floor's openings. */
+post_air_bite = 0.75;    /* Round (Alon, 8 Oct 2026), each post reaches in under its fan's opening in the fan section's floor, at the opening's edge under the fan's corner: 0.69 mm at three beads. This is the most it may. */
 // The Auto has a lug under each insert: 7 mm wide, round at its end, its sides on 2 mm fillets into its wall, standing
 // 7 mm out of it; straight down to Z 47, then on a round into 45 degrees, which meets the wall at Z 38. MEASURED by
-// sectioning the base, 8 Oct 2026. Each fan screw's post is that lug made big enough for the nut, and holds it inside.
+// sectioning the base, 8 Oct 2026. Each fan screw's post is round, big enough for the nut, and holds the lug inside it.
 auto_post_wall = 3.4;    /* MEASURED: each fan screw's axis, this far from its wall's face: the end walls' at Y +-49.4, the long wall's at X 19.4. */
 post_fillet = 2;    /* A post's sides run into its wall on fillets this round, as the Auto's lugs do... */
 post_blend = 0.15;  /* ...tangent to a line this far inside the wall's face, so the fillet and the original's face cross at a slant, not tangent. */
@@ -167,11 +168,18 @@ nut_slot_out = 12;  /* How far past its screw each slot is cut towards its mouth
 pull_fit = 0.05;    /* A fan nut's seat, per side, on top of fdm_hole_comp: tighter than a slot, so a nut pulled up into it once, with a spare screw, stays there (D124)... */
 pull_way_fit = 0.1; /* ...and the pocket under it, up which the nut slides to the seat. */
 pull_rise = 0.8;    /* The pocket starts this far over its post's foot: there a nut slides in under the post, from the room, and goes up the pocket. */
-plate_head = [5.5, 3];  /* The plate's screws, M3 socket head, ISO 4762: the head's diameter and height. */
-head_sink = 0.2;    /* Each sunk head sits this far inside its face: the plate's screws' in the base's bottom face, the joints' in their tabs' tops... */
+m3_head = [5.5, 3];     /* The M3 socket head, ISO 4762: the head's diameter and height. */
+head_sink = 0.2;    /* Each sunk head sits this far inside its face: the tray's screws' in its bottom face, the joints' in their tabs' tops... */
 head_room = 0.4;    /* ...in a counterbore this much wider than the head, past fdm_hole_comp: room for the key. */
-lobe_cap = 1;       /* The plate over each head: the counterbore is in a lobe that rises from the plate into a pocket in the base... */
-lobe_play = 0.2;    /* ...with this much room round it and over it, so the plate's ends bear on the seats, not the lobes. */
+// Alon, 8 Oct 2026: the base split at the bay's roof, the bay a tray screwed on from below. The base then prints on
+// its floor, flat, where the Auto's bay roof is a 41 mm bridge; the tray prints on its floor, open at the top. Four
+// M3 screws come up through the tray's ends, their heads sunk in its bottom face, into nuts in slots in the base's
+// end walls, just over the bay's roof, that open out through the end faces: a nut goes in from outside and slides to
+// the slot's end, on its screw's axis. Out through the box's sides, the -X slots would break out of the end walls'
+// round tips, at the outlet.
+tray_screws_x = [-13, 3];   /* The tray's screws, X, at each end: clear of the magnets, and of the cable port at the -Y end... */
+tray_screw_y = 52.4;    /* ...and Y: in the end wall, as far out as the head's counterbore keeps two beads of the end face, so the slot's back keeps two beads under the fillet. */
+tray_slot_past = 1; /* Each tray nut's slot runs on this far past the end face: its mouth. */
 meet = 0.05;        /* A new face kept this far off an imported one it would otherwise share: the STL's float32 corners are not where the same number computed here is, and faces a hair apart make slivers the slicer removes. */
 
 /* [The sealed joints - Alon, 8 Oct 2026: D114, D116, D118, D119, D120; seamless tabs, flush heads] */

@@ -15,7 +15,7 @@ fit checks that scripts/bentobox-checks.py renders. Needs the originals in origi
   view = "clamp_print" the clamp's two frames as they print: the lower standing, the upper on its band
   view = "paper_cut"  flat, across the folds: the clamp at an end, through its combs, beside it at its middle,
                       each with the paper
-  view = "bottom"     the Auto's bottom pulled apart: the plate, the base with its nuts in their pockets and
+  view = "bottom"     the Auto's bottom pulled apart: the tray, the base with its nuts in their pockets and
                       slots, the fan section, and the screws
   view = "joints"     the sealed joints pulled apart: the fan section, the section, the carbon housing and the
                       HEPA holder, a bead ring over each lower part's groove, and the screws
@@ -43,7 +43,7 @@ module stack_magnets(ex) {
     st = stack(with_section);
     dz = st[2] - st[1];
     if (bottom == "auto") {
-        piece("dimgray") translate([0, 0, -ex]) auto_plate();
+        piece("dimgray") translate([0, 0, -ex]) auto_tray();
         piece("dimgray") auto_base();
     }
     else piece("dimgray") orig(duct_stl);
@@ -59,7 +59,7 @@ module stack_magnets(ex) {
 module stack_sealed(ex) {
     assert(with_section, "the sealed stack is built for the section: without it, the carbon housing's screws have no fan section's nuts to reach");
     if (bottom == "auto") {
-        piece("dimgray") translate([0, 0, -ex]) auto_plate();
+        piece("dimgray") translate([0, 0, -ex]) auto_tray();
         piece("dimgray") auto_base();
     }
     else piece("dimgray") orig(duct_stl);
@@ -77,7 +77,7 @@ module seal_beads(lift = 0) for (z = seal_faces) translate([0, 0, z - seal_groov
 module seal_screws() translate([screw_shift[0], screw_shift[1], 0]) for (s = tab_screws) {
     for (j = [[sst[3], j3_screw], [sst[2], j12_screw]]) translate([s[0], s[1], j[0] + tab_upper_t]) {
         translate([0, 0, -j[1]]) cylinder(d = screw_d, h = j[1]);
-        cylinder(d = plate_head[0], h = plate_head[1]);
+        cylinder(d = m3_head[0], h = m3_head[1]);
     }
 }
 module seal_nuts(way = 0) for (s = tab_screws, z = [sst[1], sst[3]])
@@ -85,7 +85,7 @@ module seal_nuts(way = 0) for (s = tab_screws, z = [sst[1], sst[3]])
 // Over each screw's head, from its tab's top - the head is sunk in it - as far up as the screw is long and 10 mm
 // more: the room to put it in and turn it.
 module seal_access() for (s = tab_screws, j = [[sst[3], j3_screw], [sst[2], j12_screw]])
-    translate([s[0], s[1], j[0] + tab_upper_h]) cylinder(d = plate_head[0] + 1, h = j[1] + 10);
+    translate([s[0], s[1], j[0] + tab_upper_h]) cylinder(d = m3_head[0] + 1, h = j[1] + 10);
 module seal_parts() { fans_sealed(); translate([0, 0, sst[1]]) section(); carbon_sealed(); hepa_sealed(); }
 module joints_exploded(ex) {
     color("steelblue") fans_sealed();
@@ -94,8 +94,8 @@ module joints_exploded(ex) {
     color("lightsteelblue") translate([0, 0, 3 * ex]) hepa_sealed();
     color("orange") for (i = [0 : 2]) translate([0, 0, seal_faces[i] - seal_groove[1] + (i + 0.5) * ex]) bead_ring();
     color("silver") for (s = tab_screws) {
-        translate([s[0], s[1], sst[3] + tab_upper_t + 3.5 * ex]) { translate([0, 0, -j3_screw]) cylinder(d = screw_d, h = j3_screw); cylinder(d = plate_head[0], h = plate_head[1]); }
-        translate([s[0], s[1], sst[2] + tab_upper_t + 2.5 * ex]) { translate([0, 0, -j12_screw]) cylinder(d = screw_d, h = j12_screw); cylinder(d = plate_head[0], h = plate_head[1]); }
+        translate([s[0], s[1], sst[3] + tab_upper_t + 3.5 * ex]) { translate([0, 0, -j3_screw]) cylinder(d = screw_d, h = j3_screw); cylinder(d = m3_head[0], h = m3_head[1]); }
+        translate([s[0], s[1], sst[2] + tab_upper_t + 2.5 * ex]) { translate([0, 0, -j12_screw]) cylinder(d = screw_d, h = j12_screw); cylinder(d = m3_head[0], h = m3_head[1]); }
     }
 }
 
@@ -115,7 +115,7 @@ module air_probe() for (sy = [-1, 1])
     translate([-floor_open[0], sy > 0 ? floor_open[1] : -floor_open[2], grid_t + eps])
         cube([2 * floor_open[0], floor_open[2] - floor_open[1], sec_h - grid_t - 2 * eps]);
 floor_open = [18, 2, 48];   /* MEASURED: the carbon housing's floor openings, X +/-18, Y 2 to 48 each side */
-// The Auto's bottom: the plate's nuts in their slots, centred in height, and the fans' pulled up against their
+// The Auto's bottom: the tray's nuts in their slots, centred in height, and the fans' pulled up against their
 // pockets' roofs, sep under them; each nut's way in - slid out through its slot's mouth, or down its pocket and
 // out under its post; the screws, head to tip; the wires' way down. Built from the screws' places, not the slots':
 // a control moves them (screw_shift, wire_shift) and leaves the holes where they are.
@@ -132,20 +132,34 @@ module auto_nuts(way = 0) {
             hull() for (z = [pull_top - sep - nut_h, pull_bot + sep]) pull_frame(s, z) hex_nut(nut_af, nut_h);
             hull() for (x = [0, way]) translate([x * cos(s[3]), x * sin(s[3]), 0]) pull_frame(s, pull_bot + sep) hex_nut(nut_af, nut_h);
         }
-    for (s = auto_plate_screws) hull() for (x = [0, way]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, plate_slot_bot);
+    // A tray nut on its screw's axis; its way in: along its slot and out through the end face.
+    for (s = tray_screws) hull() for (x = [0, way == 0 ? 0 : s[3] + 1]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, tray_slot_bot);
 }
 module auto_screws() translate([screw_shift[0], screw_shift[1], 0]) {
     for (s = auto_fan_screws) translate([s[0], s[1], fan_tip_z]) cylinder(d = screw_d, h = fan_screw);
-    for (s = auto_plate_screws) translate([s[0], s[1], plate_head_z]) {
-        cylinder(d = screw_d, h = plate_screw);
-        translate([0, 0, -plate_head[1]]) cylinder(d = plate_head[0], h = plate_head[1]);
+    for (s = tray_screws) translate([s[0], s[1], tray_head_z]) {
+        cylinder(d = screw_d, h = tray_screw);
+        translate([0, 0, -m3_head[1]]) cylinder(d = m3_head[0], h = m3_head[1]);
     }
+}
+// Round each tray screw's slot, two beads every way, and round its hole on to past the screw's tip: all inside the
+// original's end wall, nothing of it open to the duct. Grown by spheres, so a corner keeps two beads, not more.
+module tray_slot_walls() let(g = 2 * bead, f = fdm_hole_comp + nut_fit, ac = nut_af / cos(30)) for (s = tray_screws)
+    slot_frame(s, tray_slot_bot) {
+        hull() for (x = [-(ac / 2 + f), s[3]], y = [-1, 1] * (nut_af / 2 + f), z = [0, nut_slot_h]) translate([x, y, z]) sphere(r = g, $fn = 12);
+        hull() for (z = [0, tray_tip_z + 0.5 - tray_slot_bot]) translate([0, 0, z]) sphere(r = hole_d / 2 + g, $fn = 16);
+    }
+// The base's air: inside its outline - a millimetre in, clear of the slots' mouths in its end faces - from the bay's
+// roof to its top, where the original is not.
+module base_air() difference() {
+    translate([0, 0, auto_bay_top]) linear_extrude(duct_h - auto_bay_top) offset(delta = -1) tray_outline();
+    orig(auto_base_stl);
 }
 module wire_probe() translate([auto_conduit[0] + wire_shift, auto_conduit[1], auto_conduit_z[0] - 2])
     cylinder(d = wire_d, h = auto_conduit_z[1] - auto_conduit_z[0] + 3);
 // The bottom pulled apart along Z, the nuts and screws drawn in their places.
 module bottom_exploded(ex) {
-    color("dimgray") translate([0, 0, -ex]) auto_plate();
+    color("dimgray") translate([0, 0, -ex]) auto_tray();
     color("lightslategray") auto_base();
     color("gold") auto_nuts();
     color("silver") { auto_screws(); }
@@ -203,18 +217,20 @@ else if (view == "check_magnets_bottom") intersection() {
 }
 // The air from the housing's openings reaches the whole sheet.
 else if (view == "check_air") intersection() { section(); air_probe(); }
-// The Auto's bottom. The fan section stands on the base, and the plate is pulled up into its recess.
+// The Auto's bottom. The fan section stands on the base, and the tray is screwed on under it.
 else if (view == "check_auto_fans_base") intersection() { translate([0, 0, sep]) auto_fans(); auto_base(); }
-else if (view == "check_auto_plate") intersection() { translate([0, 0, -sep]) auto_plate(); auto_base(); }
+else if (view == "check_auto_tray") intersection() { translate([0, 0, -sep]) auto_tray(); auto_base(); }
+// The tray's nuts' slots, and their screws' holes, keep two beads of the end walls round them.
+else if (view == "check_tray_slot_walls") intersection() { tray_slot_walls(); base_air(); }
 // Each nut fits its slot, and slides in from outside.
 else if (view == "check_auto_nuts") intersection() { auto_base(); auto_nuts(); }
 else if (view == "check_auto_nut_ways") intersection() { auto_base(); auto_nuts(nut_way); }
-// Each screw passes the fan section's floor, the base and the plate to its nut, and its tip has room.
-else if (view == "check_auto_screws") intersection() { union() { auto_base(); auto_fans(); auto_plate(); } auto_screws(); }
+// Each screw passes the fan section's floor, the base and the tray to its nut, and its tip has room.
+else if (view == "check_auto_screws") intersection() { union() { auto_base(); auto_fans(); auto_tray(); } auto_screws(); }
 // The wires pass the floor's hole and the tube to the bay.
 else if (view == "check_auto_wires") intersection() { union() { auto_base(); auto_fans(); } wire_probe(); }
-// Nothing of the base stands under the fans' openings in the floor, its new posts included.
-else if (view == "check_auto_air") intersection() { auto_base(); fan_air(8); }
+// Nothing of the base stands under the fans' openings in the floor but the round posts' edges, post_air_bite in.
+else if (view == "check_auto_air") intersection() { auto_base(); fan_air(8, -post_air_bite); }
 else if (view == "bottom") bottom_exploded(explode);
 else if (view == "joints") joints_exploded(explode);
 // The sealed joints: each upper part on its lower one - flat on the land, its chamfer in the collar, tab on tab.
