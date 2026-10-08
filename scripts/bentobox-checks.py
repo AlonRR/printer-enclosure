@@ -37,7 +37,9 @@ BACKEND = ["--backend=manifold"]
 FITS = [("check_section_carbon", []), ("check_section_fans", []), ("check_magnets_top", []),
         ("check_magnets_bottom", []), ("check_air", []),
         ("check_ring_holder", []), ("check_ring_opening", []), ("check_wedges_paper", []),
-        ("check_ring_paper", []), ("check_caps_strips", [])]
+        ("check_ring_paper", []), ("check_caps_strips", []),
+        ("check_auto_fans_base", []), ("check_auto_plate", []), ("check_auto_nuts", []), ("check_auto_nut_ways", []),
+        ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", [])]
 
 # Each control breaks ONE side of its check's relationship - the section's feature against the original's
 # fixed mesh, or against a probe built from the original's measurements - never both, so that the check
@@ -56,9 +58,17 @@ CONTROLS = [
     ("check_wedges_paper", [("tooth_w", "4")], "the caps' teeth from below made wider than theirs"),
     ("check_ring_paper", [("ring_strip_h", "12")], "the ring's strips made taller than the channel beside each flap"),
     ("check_caps_strips", [("strip_notch", "-0.3")], "the caps' teeth not cut back for the strips"),
+    ("check_auto_fans_base", [("auto_fans_dz", "-30.5")], "the Auto's fan section set 0.5 mm down into its base"),
+    ("check_auto_plate", [("auto_plate_dz", "36.2")], "the plate set 0.5 mm up into the base's seats"),
+    ("check_auto_nuts", [("nut_fit", "-0.3")], "the nuts' slots made narrower and lower than a nut"),
+    ("check_auto_nut_ways", [("nut_slot_out", "1")], "the slots cut only 1 mm past their screws: no way in"),
+    ("check_auto_screws", [("screw_shift", "[1, 0]")], "the screws moved 1 mm off their holes"),
+    ("check_auto_wires", [("wire_shift", "1.5")], "the wires moved 1.5 mm off the tube"),
+    ("check_auto_air", [("post_clear_air", "false")], "the fan screws' posts left round, under the fans' openings"),
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.
     ("check_section_carbon", [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
     ("check_ring_holder", [("hepa_stl", '"original/missing.stl"')], "the holder's STL missing - must be reported, not passed"),
+    ("check_auto_fans_base", [("auto_base_stl", '"original/missing.stl"')], "the Auto base's STL missing - must be reported, not passed"),
 ]
 MISSING = "Can't open import file"
 

@@ -80,6 +80,36 @@ strip_notch = slot_play / 2;
 half_wedge_w = strip_x(ring_h) - slot_w / cos(pleat_alpha) + ring_in[0] / 2;   // at the top face
 half_wedge_z0 = paper_t / 2 + slot_w * (1 / cos(pleat_alpha) - 1) / (2 * tan(pleat_alpha));   // where it meets the wall
 
+// The Auto's bottom, its heat-set inserts made nuts. Each nut lies flat in a slot that opens one way, its
+// flats against the slot's sides; its back corner stops against the slot's closed end with the nut on the
+// screw's axis. A fan screw comes down through the fan, the fan section's floor and the base's top into its
+// nut, which it pulls up against the slot's roof; a plate screw comes up through the plate into its nut, which
+// it pulls down onto the slot's floor. Each screw is the shortest of screw_lengths that stands screw_tip out.
+function up_to_layer(z) = ceil(z / fdm_layer_h - 1e-9) * fdm_layer_h;
+function screw_for(need) = [for (l = screw_lengths) if (l >= need - 1e-9) l][0];
+hole_d = 2 * (screw_d / 2 + fdm_hole_comp);
+nut_ac = nut_af / cos(30);
+nut_slot_w = nut_af + 2 * (fdm_hole_comp + nut_fit);
+nut_slot_h = up_to_layer(nut_h + 2 * nut_fit);
+nut_back = nut_ac / 2 + fdm_hole_comp + nut_fit;       // the slot's closed end, behind the axis
+fan_slot_top = duct_h - nut_roof;
+fan_slot_bot = fan_slot_top - nut_slot_h;
+post_r = nut_slot_w / 2 + post_beads * bead;           // the post round a fan screw's slot...
+post_reach = nut_ac / 2;                               // ...running on this far towards its mouth, past the nut
+post_bot = fan_slot_bot - nut_floor;                   // ...its foot, with a 45-degree cone under it
+fan_head_z = duct_h + auto_floor_t + fan_t;            // a fan screw's head, on the fan's top flange
+fan_screw = screw_for(fan_t + auto_floor_t + nut_roof + nut_h + screw_tip);
+fan_tip_z = fan_head_z - fan_screw;
+plate_head_z = auto_seat_z - auto_plate_t;             // a plate screw's head, flush in the plate's countersink
+plate_slot_bot = auto_seat_z + nut_floor;
+plate_slot_top = plate_slot_bot + nut_slot_h;
+plate_screw = screw_for(auto_plate_t + nut_floor + nut_h + screw_tip);
+plate_tip_z = plate_head_z + plate_screw;
+
+assert(!is_undef(fan_screw) && !is_undef(plate_screw), "no screw in screw_lengths is long enough");
+assert(fan_tip_z - 0.5 > post_bot - post_r + hole_d / 2, "a fan screw's tip runs out of its post's cone");
+assert(bottom == "auto" || bottom == "bambu", str("unknown bottom: ", bottom));
+
 assert(wedge_w > 0 && tooth_w > 0, "the pleats are too narrow for the paper's slot: no channel is left to close");
 assert(pack_l > 2 * cap_wedge_l + 10, "the ring is too short for its caps' wedges");
 assert(hepa_ledge + ring_h < hepa_h - 1, "the paper is deeper than the HEPA holder is tall");
@@ -102,5 +132,7 @@ warns = [
             " % to fill the ring: ", pack_n, " pleats in ", ring_in[0], " mm"),
     if (wedge_w < 2 * bead - 1e-9) str("the caps' wedges are ", wedge_w, " mm wide at the top, under two beads: they may not print"),
     if (slot_w > paper_t && slot_w < bead - 1e-9) str("the slots for the paper are ", slot_w, " mm, under a bead: they may print shut"),
+    if (nut_roof < 5 * fdm_layer_h - 1e-9) str("a fan screw's nut has ", nut_roof, " mm over it: the screw may pull it through"),
+    if (nut_floor < 5 * fdm_layer_h - 1e-9) str("a nut's slot has ", nut_floor, " mm under it"),
 ];
 for (w = warns) echo(str("WARNING: ", w));

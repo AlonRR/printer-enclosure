@@ -13,6 +13,8 @@ fit checks that scripts/bentobox-checks.py renders. Needs the originals in origi
   view = "frame"      the frame for your own HEPA paper, pulled apart: the ring, the paper, the two caps
   view = "cap"        one cap, as it prints
   view = "paper_cut"  flat, across the folds: the ring's middle with the paper, beside a cap's face with it
+  view = "bottom"     the Auto's bottom pulled apart: the plate, the base with its nuts in their slots, the
+                      fan section, and the screws
   view = "check_..."  one fit check: a solid that must come out EMPTY. Each is an intersection of two
                       parts that should only touch; anything left is two parts in the same place.
 */
@@ -35,8 +37,12 @@ module piece(c) color(c) if (view == "cut")
 module stack(ex) {
     st = stack(with_section);
     dz = st[2] - st[1];
-    piece("dimgray") orig(duct_stl);
-    piece("steelblue") translate([0, 0, ex]) orig(fans_stl);
+    if (bottom == "auto") {
+        piece("dimgray") translate([0, 0, -ex]) auto_plate();
+        piece("dimgray") auto_base();
+    }
+    else piece("dimgray") orig(duct_stl);
+    piece("steelblue") translate([0, 0, ex]) fan_section();
     if (with_section) piece("seagreen") translate([0, 0, st[1] + 2 * ex]) section();
     piece("tan") translate([0, 0, 3 * ex]) orig(carbon_stl, dz);
     piece("sienna") translate([0, 0, 3 * ex]) cmag_standing(st[2] + cmag_z0);
@@ -60,6 +66,34 @@ module air_probe() for (sy = [-1, 1])
     translate([-floor_open[0], sy > 0 ? floor_open[1] : -floor_open[2], grid_t + eps])
         cube([2 * floor_open[0], floor_open[2] - floor_open[1], sec_h - grid_t - 2 * eps]);
 floor_open = [18, 2, 48];   /* MEASURED: the carbon housing's floor openings, X +/-18, Y 2 to 48 each side */
+// The Auto's bottom: the nuts in their slots, centred in height; each nut's way in, slid out through its
+// slot's mouth; the screws, head to tip; the wires' way down. Built from the screws' places, not the slots':
+// a control moves them (screw_shift, wire_shift) and leaves the holes where they are.
+nut_way = 10;           /* How far each nut is slid out of its slot, to show the way in is open. */
+screw_shift = [0, 0];   /* Controls only: the screws moved off their holes. */
+wire_shift = 0;         /* Controls only: the wires' probe moved off the tube, along X. */
+wire_d = 4.5;           /* The wires that must pass the floor's hole and the tube: the two fans' six leads, about 4 mm
+                           bundled. A 5 mm rod would graze the tube's exit, which turns 1.2 mm towards -X into the bay. */
+module nut_at(s, z) slot_frame(s, z + (nut_slot_h - nut_h) / 2) cylinder(r = nut_ac / 2, h = nut_h, $fn = 6);
+module auto_nuts(way = 0) {
+    for (s = auto_fan_screws) hull() for (x = [0, way]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, fan_slot_bot);
+    for (s = auto_plate_screws) hull() for (x = [0, way]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, plate_slot_bot);
+}
+module auto_screws() translate([screw_shift[0], screw_shift[1], 0]) {
+    for (s = auto_fan_screws) translate([s[0], s[1], fan_tip_z]) cylinder(d = screw_d, h = fan_screw);
+    for (s = auto_plate_screws) translate([s[0], s[1], plate_head_z]) cylinder(d = screw_d, h = plate_screw);
+}
+module wire_probe() translate([auto_conduit[0] + wire_shift, auto_conduit[1], auto_conduit_z[0] - 2])
+    cylinder(d = wire_d, h = auto_conduit_z[1] - auto_conduit_z[0] + 3);
+// The bottom pulled apart along Z, the nuts and screws drawn in their places.
+module bottom_exploded(ex) {
+    color("dimgray") translate([0, 0, -ex]) auto_plate();
+    color("lightslategray") auto_base();
+    color("gold") auto_nuts();
+    color("silver") { auto_screws(); }
+    color("steelblue", 0.85) translate([0, 0, ex]) auto_fans();
+}
+
 // The HEPA holder's ledge, with the section in the stack: where the frame's ring stands.
 ledge_z = st[3] + hepa_ledge;
 // The ledge's opening, from the original's measurement, carried up through the ring's height: the air's way
@@ -96,18 +130,31 @@ else if (view == "section") color("seagreen") section();
 // The section seats in the carbon housing: its tongue in the housing's groove, its magnets under the housing's.
 else if (view == "check_section_carbon") intersection() { section(); translate([0, 0, sec_h + sep - st[2]]) orig(carbon_stl, st[2] - st[1]); }
 // The fan case seats in the section the way it seats in the housing.
-else if (view == "check_section_fans") intersection() { translate([0, 0, st[1] + sep]) section(); orig(fans_stl); }
+else if (view == "check_section_fans") intersection() { translate([0, 0, st[1] + sep]) section(); fan_section(); }
 // Each magnet's hole in the section lines up with its partner's in the original.
 else if (view == "check_magnets_top") intersection() {
     union() { section(); translate([0, 0, sec_h + sep - st[2]]) orig(carbon_stl, st[2] - st[1]); }
     magnets_across(sec_h);
 }
 else if (view == "check_magnets_bottom") intersection() {
-    union() { translate([0, 0, st[1] + sep]) section(); orig(fans_stl); }
+    union() { translate([0, 0, st[1] + sep]) section(); fan_section(); }
     translate([0, 0, st[1]]) magnets_across(0);
 }
 // The air from the housing's openings reaches the whole sheet.
 else if (view == "check_air") intersection() { section(); air_probe(); }
+// The Auto's bottom. The fan section stands on the base, and the plate is pulled up into its recess.
+else if (view == "check_auto_fans_base") intersection() { translate([0, 0, sep]) auto_fans(); auto_base(); }
+else if (view == "check_auto_plate") intersection() { translate([0, 0, -sep]) auto_plate(); auto_base(); }
+// Each nut fits its slot, and slides in from outside.
+else if (view == "check_auto_nuts") intersection() { auto_base(); auto_nuts(); }
+else if (view == "check_auto_nut_ways") intersection() { auto_base(); auto_nuts(nut_way); }
+// Each screw passes the fan section's floor, the base and the plate to its nut, and its tip has room.
+else if (view == "check_auto_screws") intersection() { union() { auto_base(); auto_fans(); auto_plate(); } auto_screws(); }
+// The wires pass the floor's hole and the tube to the bay.
+else if (view == "check_auto_wires") intersection() { union() { auto_base(); auto_fans(); } wire_probe(); }
+// Nothing of the base stands under the fans' openings in the floor, its new posts included.
+else if (view == "check_auto_air") intersection() { auto_base(); fan_air(8); }
+else if (view == "bottom") bottom_exploded(explode);
 else if (view == "frame") frame_exploded(explode);
 else if (view == "cap") color("dimgray") hepa_cap();
 else if (view == "paper_cut") paper_cut();
@@ -128,6 +175,7 @@ if (show_axes && (view == "stack" || view == "exploded")) axes([-bb_w / 2 - 30, 
 axes_cam = [55, 0, 30];   // the picture's --camera angles, so the arrows' labels face it
 if (show_axes && view == "section") axes([-bb_w / 2 - 20, -bb_l / 2, 0], l = 15, cam = axes_cam);
 if (show_axes && view == "frame") axes([-ring_out[0] / 2 - 25, -ring_out[1] / 2 - explode, 0], l = 15, cam = axes_cam);
+if (show_axes && view == "bottom") axes([-bb_w / 2 - 25, -bb_l / 2, 0], l = 20, cam = axes_cam);
 if (show_axes && view == "cap") axes([-ring_in[0] / 2 - 15, -5, 0], l = 8, cam = axes_cam);
 // A flat view gets a flat key: an arrow across, labelled with the box's axis it shows, and +z up.
 module flat_key(across) color("black") {

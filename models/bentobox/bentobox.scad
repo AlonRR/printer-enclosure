@@ -173,6 +173,73 @@ module orig(file, dz = 0) translate([0, 0, dz] - stl_origin) import(file, convex
 module cmag_standing(z0) translate([cmag[2] / 2, -cmag[1] / 2, z0]) rotate([0, -90, 0])
     for (f = cmag_stls) import(f, convexity = 10);
 
+// ------------------------------------------------------------------ the Auto's bottom
+// Strangwooduk's base, fan section and plate (scripts/bentobox-auto-stl.py writes them from the STEP), moved
+// into this frame. The base stands on Z = auto_base_z0, its top at duct_h, where the duct's is.
+auto_base_stl  = str(orig_dir, "bentobox-auto-base.stl");
+auto_fans_stl  = str(orig_dir, "bentobox-auto-fans.stl");
+auto_plate_stl = str(orig_dir, "bentobox-auto-plate.stl");
+module auto_fans() orig(auto_fans_stl, auto_fans_dz);
+// The fan section the stack stands on, whichever bottom it has.
+module fan_section() if (bottom == "auto") auto_fans(); else orig(fans_stl);
+
+// A slot's own frame: X out towards its mouth, the screw's axis at the origin, Z = 0 at z.
+module slot_frame(s, z) translate([s[0], s[1], z]) rotate(s[2]) children();
+// A nut's slot, from its closed end behind the axis out through its mouth, nut_slot_out past the axis.
+module nut_slot() translate([-nut_back, -nut_slot_w / 2, 0]) cube([nut_back + nut_slot_out, nut_slot_w, nut_slot_h]);
+// The first two layers of a slot's roof, where a screw's hole goes on up through it (fdm-design-rules,
+// section 3c): a channel as wide as the hole across the slot, so the first layer is two bridges from side to
+// side; then the hole, square, so the second is two bridges along the slot over the channel; then the round hole.
+module roof_hole() {
+    translate([-hole_d / 2, -nut_slot_w / 2, -eps]) cube([hole_d, nut_slot_w, fdm_layer_h + eps]);
+    translate([-hole_d / 2, -hole_d / 2, -eps]) cube([hole_d, hole_d, 2 * fdm_layer_h + eps]);
+}
+// The fan section's floor openings, carried down into the base: the fans' air.
+module fan_air(h, grow = 0) for (y = fan_ys) translate([0, y, duct_h - h]) cylinder(d = auto_fan_air + 2 * grow, h = h + 1);
+
+// A fan screw's post: round its slot and on past the nut towards the mouth, on a 45-degree cone; cut back clear
+// of the fans' air. Its top stays `meet` under the base's.
+module fan_post(s) difference() {
+    slot_frame(s, 0) hull() for (x = [0, post_reach]) {
+        translate([x, 0, post_bot]) cylinder(r = post_r, h = duct_h - meet - post_bot);
+        translate([x, 0, post_bot - post_r]) cylinder(r = 0.01, h = 0.01);
+    }
+    if (post_clear_air) fan_air(duct_h, meet);
+}
+// An insert's hole, filled: the screw's hole and the slot are cut through the fill.
+module fan_plug(s) translate([s[0], s[1], duct_h - auto_fan_insert[1] - 0.1])
+    cylinder(d = auto_fan_insert[0] + 0.2, h = auto_fan_insert[1] + 0.1 - meet);
+module plate_plug(s) translate([s[0], s[1], auto_seat_z + meet])
+    cylinder(d = auto_plate_insert[0] + 0.2, h = auto_plate_insert[1] + 0.1 - meet);
+// A fan screw's way: its slot, the roof over it, and its hole, down from the base's top past its tip.
+module fan_screw_cut(s) {
+    slot_frame(s, fan_slot_bot) { nut_slot(); translate([0, 0, nut_slot_h]) roof_hole(); }
+    translate([s[0], s[1], fan_slot_top + 2 * fdm_layer_h - eps]) cylinder(d = hole_d, h = duct_h - fan_slot_top);
+    translate([s[0], s[1], fan_tip_z - 0.5]) cylinder(d = hole_d, h = fan_slot_bot - fan_tip_z + 0.5 + eps);
+}
+// A plate screw's: its hole, up from the seat, its slot, the roof over it, and on past its tip.
+module plate_screw_cut(s) {
+    translate([s[0], s[1], auto_seat_z - 1]) cylinder(d = hole_d, h = plate_slot_bot - auto_seat_z + 1 + eps);
+    slot_frame(s, plate_slot_bot) { nut_slot(); translate([0, 0, nut_slot_h]) roof_hole(); }
+    translate([s[0], s[1], plate_slot_top + 2 * fdm_layer_h - eps]) cylinder(d = hole_d, h = plate_tip_z + 0.5 - plate_slot_top - 2 * fdm_layer_h + eps);
+}
+module auto_base() difference() {
+    union() {
+        orig(auto_base_stl);
+        for (s = auto_fan_screws) { fan_post(s); fan_plug(s); }
+        for (s = auto_plate_screws) plate_plug(s);
+    }
+    for (s = auto_fan_screws) fan_screw_cut(s);
+    for (s = auto_plate_screws) plate_screw_cut(s);
+}
+// The plate, its two countersunk holes opened to M3.
+module auto_plate() difference() {
+    orig(auto_plate_stl, auto_plate_dz);
+    for (s = auto_plate_screws) translate([s[0], s[1], plate_head_z - 1]) cylinder(d = hole_d, h = auto_plate_t + 2);
+}
+module say_auto_hardware() echo(str("auto: six M3 nuts; the fans' four screws M3 x ", fan_screw,
+    " socket head, through the fans; the plate's two M3 x ", plate_screw, " countersunk"));
+
 // How to cut the paper for the frame, from the values above: what the build page quotes. Only the length is
 // measured; across the folds the piece is counted, since the ring sets its width.
 module say_paper_cut() echo(str("paper: cut a piece ", round(pack_l * 10) / 10, " mm long along the folds and ", pack_n,
@@ -187,5 +254,9 @@ if (draw_model) {
     if (part == "section") section();
     else if (part == "hepa_ring") { hepa_ring(); say_paper_cut(); }
     else if (part == "hepa_cap") { hepa_cap(); say_paper_cut(); }
+    // The Auto's parts as they print: the base and the fan section standing, the plate on its inner face.
+    else if (part == "auto_base") { translate([0, 0, -auto_base_z0]) auto_base(); say_auto_hardware(); }
+    else if (part == "auto_fans") translate([0, 0, -duct_h]) auto_fans();
+    else if (part == "auto_plate") { translate([0, 0, auto_seat_z]) rotate([180, 0, 0]) auto_plate(); say_auto_hardware(); }
     else assert(false, str("unknown part: ", part));
 }

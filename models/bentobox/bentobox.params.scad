@@ -18,6 +18,9 @@ long side, at the floor. This remix adds:
   hepa_cap  on the HEPA holder's ledge, and two TPU caps, one at each end of a cut piece of paper, whose
             wedges close the ends of the pleats that the dirty air comes into. Everything about it follows
             from the paper's three values below, so other paper means changing those and exporting again.
+  auto_base the bottom from Strangwooduk's BentoBox Auto in place of the duct and the fan case: a base
+  auto_fans with a bay for the electronics under the duct and a tube for the wires down to it, its fan
+  auto_plate section, and the plate that closes the bay. Its heat-set inserts become nuts in slots.
 
 COORDINATES are the box as it stands: X across it, Y along it, Z up, with Z = 0 on the floor the duct
 stands on. X and Y are centred. The duct's outlet faces -X.
@@ -27,7 +30,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "hepa_ring" or "hepa_cap": the parts the remix adds. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "hepa_ring", "hepa_cap", "auto_base", "auto_fans" or "auto_plate": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -106,6 +109,43 @@ cap_wedge_l = 4;    /* How far the wedges and teeth reach into the pack, along t
 cap_teeth_below = true;   /* The teeth from below. Without them each wedge fills its channel to the paper's faces, and the air's pressure pushes the paper away from it. */
 slot_play = 0.2;    /* The slots the paper sits in - the caps' zigzag, and the ring's along its long walls - are this much wider than the paper. They must print open: at least a bead wide. */
 cap_squeeze = 0.1;  /* Each cap is this much wider than the ring's inside, each side: TPU, pressed in, so its edges seal on the ring's walls. */
+
+/* [The bottom: Strangwooduk's BentoBox Auto, or ThrutheFrame's duct and fan case] */
+bottom = "auto";    /* "auto": the Auto's base, fan section and plate, its inserts made nuts. "bambu": ThrutheFrame's duct and fan case, as they come. The airflow simulation keeps the duct either way. */
+// The BentoBox Auto VOC Sensor system, by Strangwooduk (MakerWorld 1882240), comes as one STEP file;
+// scripts/bentobox-auto-stl.py writes its STLs into original/. MEASURED by sectioning them, 8 Oct 2026, in
+// this frame. The base is ThrutheFrame's duct with its floor raised over a bay for the electronics: 46 tall
+// where the duct is 52, its outlet the whole -X face between its end walls, 101 x 37. The fan section is the
+// fan case's top exactly - tongue, inside and magnet holes, at four cuts - with each fan held by two screws
+// through its floor into the base, and a hole for the wires between the fans, down a tube to the bay.
+auto_fans_dz  = -30;    /* The fan section, from where the STEP has it, to the stack: its tongue is then the fan case's. */
+auto_plate_dz = 35.7;   /* The plate, from where the STEP has it, up into the base's recess: its ends against the seats' ceiling. */
+auto_floor_t  = 3;      /* The fan section's floor, which the fans' screws pass. */
+auto_fan_air  = 37;     /* The fan section's floor opening under each fan, at fan_ys. Nothing new may stand under one. */
+auto_fan_screws = [[-16, -46, 180], [-16, 46, 180], [16, -14, 135], [16, 14, 225]];   /* The fans' screws, X and Y, and the way each nut's slot opens, in degrees from +X: the two at the end walls to the outlet, the two at the long wall between the fans, clear of their air. */
+auto_fan_insert = [4.2, 4];     /* The heat-set inserts' holes the nuts replace, d and depth, down from the base's top. */
+auto_plate_screws = [[-1, -46.4, 90], [-1, 46.4, 270]];   /* The plate's two screws, X and Y, their slots open to the bay. */
+auto_plate_insert = [3.8, 3.5]; /* ...their inserts' holes, up from the seats' ceiling. */
+auto_base_z0  = 6;      /* The base's bottom face. */
+auto_seat_z   = 8.5;    /* The seats' ceiling, which the plate's ends press against: the plate sits 0.7 mm up inside the base's bottom face. */
+auto_plate_t  = 1.8;    /* The plate. Its two holes are countersunk from below for flush heads; this remix opens them to M3. */
+auto_conduit  = [16.38, 0, 6];  /* The wires' way down: X, Y and d - the floor's hole, and the tube under it to the bay. */
+auto_conduit_z = [16, 55];      /* ...from the bay's ceiling to the floor's top. */
+
+/* [Nuts and screws, where the Auto had heat-set inserts] */
+screw_d   = 3.0;    /* M3. */
+nut_af    = 5.5;    /* The M3 hex nut, across its flats - ISO 4032... */
+nut_h     = 2.4;    /* ...and its height, the largest allowed. */
+nut_fit   = 0.15;   /* A nut's slot, per side, on top of fdm_hole_comp: the nut slides in and the screw holds it. */
+screw_tip = 1.5;    /* A screw must stand this far out of its nut. */
+screw_lengths = [8, 10, 12, 16, 20, 25, 30, 35, 40];   /* M3 lengths to choose from. */
+fan_t     = 20;     /* The fans, 40 x 40 x 20: their screws pass through them, the heads on their top flanges. */
+nut_roof  = 2;      /* Over a fan screw's nut, under the base's top face: ten layers. */
+nut_floor = 1.5;    /* Under a slot: a fan screw's, and a plate screw's over the seat. */
+post_beads = 3;     /* The new post round a fan screw's slot, each side of it, in beads. */
+post_clear_air = true;   /* Cut the posts back clear of the fans' air: round, they would reach 0.3 mm under the floor's openings. */
+nut_slot_out = 12;  /* How far past its screw each slot is cut towards its mouth: out into the open. */
+meet = 0.05;        /* A new face kept this far off an imported one it would otherwise share: the STL's float32 corners are not where the same number computed here is, and faces a hair apart make slivers the slicer removes. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;

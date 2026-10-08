@@ -21,3 +21,26 @@ The C-MAG's four grills (`net_infill x4.stl`) are not needed here. They are soli
 only the slicer settings in the project make them a mesh.
 
 BentoBox is © ThrutheFrame, under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+## The bottom from the BentoBox Auto
+
+The bottom the models use by default (`bottom = "auto"` in `bentobox.params.scad`) is from Strangwooduk's
+**BentoBox Auto VOC Sensor system**, <https://makerworld.com/en/models/1882240>, a remix of ThrutheFrame's.
+It comes as one STEP file: download it, put it here under the name it downloads with (`BentoBox+Auto.step`),
+and write its parts as STLs, from the repository's root:
+
+```sh
+uv run scripts/bentobox-auto-stl.py
+```
+
+| File it writes | What it is |
+|---|---|
+| `bentobox-auto-base.stl` | the base, in place of the duct: the same duct with its floor raised over a bay for the electronics, and a tube down to the bay for the wires |
+| `bentobox-auto-fans.stl` | its fan section: the fan case's top, with each fan screwed through the floor into the base, and a hole for the wires |
+| `bentobox-auto-plate.stl` | the plate that closes the bay |
+
+The STEP's fourth part, a spacer that holds a sensor between the HEPA holder and the carbon housing, is not
+used. Its parts were not exported in place; `bentobox.params.scad` says where each one goes.
+
+The BentoBox Auto is © Strangwooduk. MakerWorld lists it as BY-NC-SA, and as a remix of a
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) work, it is under that licence too.
