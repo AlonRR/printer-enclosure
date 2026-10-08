@@ -241,7 +241,7 @@ ring flat. No supports, no brim. Standing, the base's bay roof is a 41 mm bridge
 | Section | ASA | 1 | 1 h 57 m | 17 g |
 | Paper ring | ASA | 1 | 1 h 8 m | 8 g |
 | Paper cap | TPU 95A | 2 | 52 m each | 5 g each |
-| Base | ASA | 1 | 4 h 17 m | 44 g |
+| Base | ASA | 1 | 4 h 13 m | 44 g |
 | Fan section | ASA | 1 | 3 h 42 m | 36 g |
 | Plate | ASA | 1 | 37 m | 8 g |
 | Carbon housing | ASA | 1 | 7 h 23 m | 71 g |
