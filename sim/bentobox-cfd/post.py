@@ -18,7 +18,7 @@ the case's own results/pictures):
   summary.json      flows, pressures, and the same physics from cfd.py's lumped model
 
 Every number is read from the case's own output; nothing here is typed in. The same pictures and checks as
-sim/lunchbox-cfd/post.py, for this box's shape: here the air goes down, in at the top and out at the floor.
+archive/lunchbox/sim/lunchbox-cfd/post.py, for this box's shape: here the air goes down, in at the top and out at the floor.
 """
 import argparse
 import json

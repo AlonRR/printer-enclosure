@@ -11,6 +11,11 @@ path = [
   "models/**/README.md",
   "sim/**/README.md",
   "sim/**/uv.lock",
+  "archive/lunchbox/README.md",
+  "archive/lunchbox/docs/*.md",
+  "archive/**/original/README.md",
+  "archive/**/sim/**/README.md",
+  "archive/**/sim/**/uv.lock",
   "PROJECT.yml",
   ".gitignore",
   ".gitattributes",
@@ -25,7 +30,7 @@ SPDX-License-Identifier = "CC-BY-4.0"
 # The LunchBox remix's pictures render the remix, and with it GekoPrime's LunchBox, which is CC BY-SA 4.0:
 # they share its licence. A later annotation wins over an earlier one for the files both match.
 [[annotations]]
-path = "docs/lunchbox/**"
+path = "archive/lunchbox/docs/lunchbox/**"
 SPDX-FileCopyrightText = ["2026 Alon A. Rabinowitz", "GekoPrime (LunchBox, https://www.printables.com/model/468166)"]
 SPDX-License-Identifier = "CC-BY-SA-4.0"
 

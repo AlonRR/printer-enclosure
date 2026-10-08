@@ -4,10 +4,10 @@
 """Airflow through the LunchBox scrubber - an OpenFOAM case built from the OpenSCAD model. From the
 repository's root:
 
-  uv run --project sim/lunchbox-cfd sim/lunchbox-cfd/cfd.py case [--plain] [--fine] [--open-top] [--cores N]
-        render the geometry from models/lunchbox/lunchbox-cfd.scad, write the case into
-        sim/lunchbox-cfd/cases/<name>/, and print the command that runs it in WSL
-  uv run --project sim/lunchbox-cfd sim/lunchbox-cfd/cfd.py network
+  uv run --project archive/lunchbox/sim/lunchbox-cfd archive/lunchbox/sim/lunchbox-cfd/cfd.py case [--plain] [--fine] [--open-top] [--cores N]
+        render the geometry from archive/lunchbox/models/lunchbox/lunchbox-cfd.scad, write the case into
+        archive/lunchbox/sim/lunchbox-cfd/cases/<name>/, and print the command that runs it in WSL
+  uv run --project archive/lunchbox/sim/lunchbox-cfd archive/lunchbox/sim/lunchbox-cfd/cfd.py network
         the same physics as a lumped model: the fans' operating point, with and without the insert,
         across the HEPA grades it might be - the cross-check for the simulation's total flow
 
@@ -365,7 +365,7 @@ def make_case(with_insert, fine, cores, sealed=True):
     win = str(case.resolve())
     wsl = "/mnt/" + win[0].lower() + win[2:].replace("\\", "/")
     print(f"case written: {case.relative_to(ROOT)}")
-    print(f"run it:  wsl.exe -d Ubuntu -- bash -s -- {wsl} {name} < sim/lunchbox-cfd/run_case.sh")
+    print(f"run it:  wsl.exe -d Ubuntu -- bash -s -- {wsl} {name} < archive/lunchbox/sim/lunchbox-cfd/run_case.sh")
     return case
 
 

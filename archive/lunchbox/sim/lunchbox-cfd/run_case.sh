@@ -5,7 +5,7 @@
 # Mesh and solve one LunchBox case in WSL, then copy the results back beside the case. Fed on stdin, so no
 # shell between Windows and WSL parses it (cfd.py prints the exact command):
 #
-#   wsl.exe -d Ubuntu -- bash -s -- <case folder as /mnt/c/...> <name> < sim/lunchbox-cfd/run_case.sh
+#   wsl.exe -d Ubuntu -- bash -s -- <case folder as /mnt/c/...> <name> < archive/lunchbox/sim/lunchbox-cfd/run_case.sh
 #
 # Runs on WSL's own disk, ~/lunchbox-cfd/<name>: OpenFOAM writes thousands of small files, and /mnt/c is
 # slow at that. Needs OpenFOAM v2412 in the micromamba env "of" (README.md, "Setting up").

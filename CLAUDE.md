@@ -4,39 +4,40 @@ The Prusa MK3S+'s Lack enclosure: the chamber's sensors and firmware, the airflo
 recirculates the chamber's air. [README.md](README.md) is the map; read the doc for the part you touch
 before changing it.
 
-## The LunchBox scrubber - `models/lunchbox/`
+## Archived: the LunchBox - `archive/lunchbox/`
 
-GekoPrime's LunchBox (CC BY-SA 4.0), remixed for two 40 x 40 x 20 fans: a carbon-dust insert, TPU gaskets,
-a blank for the middle fan bay, and M3 tabs added to the originals.
-[docs/lunchbox-scrubber.md](docs/lunchbox-scrubber.md) is the build page.
+GekoPrime's LunchBox (CC BY-SA 4.0), remixed for two 40 x 40 x 20 fans. Archived 8 Oct 2026, not built: Alon
+chose the BentoBox remix (Q90). Its models, build page, checks and airflow case keep the repository's layout
+under `archive/lunchbox/` and still run; don't change it. When a scad-tools bump touches what it uses
+(`axes.scad`), run `uv run archive/lunchbox/scripts/lunchbox-checks.py all` with `OPENSCAD` set to the
+nightly. [archive/lunchbox/README.md](archive/lunchbox/README.md) says what is there.
 
-- **The original STLs are not in git.** `models/lunchbox/original/README.md` names the four files and their
-  page. Without them only the insert, the gaskets and the blank build; everything else fails loudly.
-- `lunchbox.params.scad` holds every value set - the original's, measured by sectioning its STLs and
-  tagged so, and the remix's. `lunchbox.layout.scad` derives the rest and holds the rules as asserts and
-  warnings. `lunchbox.scad` draws the parts in the box's frame; each `lunchbox-<part>.scad` pins one part
-  in its printing pose. `lunchbox-assembly.scad` holds the views and the fit checks.
-- **Before calling a change done**, with `OPENSCAD` set to an OpenSCAD nightly (its Manifold backend handles
-  the 8 MB body in seconds):
+## Every model
 
-  ```sh
-  uv run scripts/lunchbox-checks.py all              # every fit empty, every positive control caught
-  uv run scripts/lunchbox-checks.py figures --write  # the pictures in docs/lunchbox/, if a view changed
-  sh scad-tools/scripts/scad-check.sh models/lunchbox/lunchbox-<part>.scad
-  ```
-
-  Report results with their totals ("12 of 12"). A new fit check gets a positive control in the same
-  change: one that breaks one side of the fit, trips no assert, and must be caught.
-- To measure the original again: `uv run scad-tools/scripts/stl-inspect.py` (sections, bounds, the 3MF's
-  print orientation), from a scad-tools new enough to have it.
+- **The original STLs are not in git.** Each model's `original/README.md` names the files and their page.
+  Without them only the parts drawn from scratch build; everything else fails loudly.
+- `<box>.params.scad` holds every value set - the original's, measured by sectioning its STLs and tagged so,
+  and the remix's. `<box>.layout.scad` derives the rest and holds the rules as asserts and warnings.
+  `<box>.scad` draws the parts in the box's frame; each `<box>-<part>.scad` pins one part in its printing
+  pose. `<box>-assembly.scad` holds the views and the fit checks.
+- Report results with their totals ("12 of 12"). A new fit check gets a positive control in the same change:
+  one that breaks one side of the fit, trips no assert, and must be caught.
+- To measure an original again: `uv run scad-tools/scripts/stl-inspect.py` (sections, bounds, the 3MF's
+  print orientation).
 
 ## The BentoBox - `models/bentobox/`
 
-ThrutheFrame's BentoBox v2.0 (CC BY-NC-SA 4.0) with its C-MAG carbon magazine, weighed against the LunchBox
-from 7 Oct 2026, and a carbon-dust section for it. [docs/bentobox-scrubber.md](docs/bentobox-scrubber.md) is
-its page. It has the LunchBox's layout: the originals are not in git (`original/README.md`), every value is in
-`bentobox.params.scad`, and `uv run scripts/bentobox-checks.py all` runs its fit checks and controls - with
-`OPENSCAD` set to the nightly, as for the LunchBox: under the 2021.01 release every control reads BLIND.
+ThrutheFrame's BentoBox v2.0 (CC BY-NC-SA 4.0) with its C-MAG carbon magazine: the chamber's filter, the
+remix the build will print (Q90, 8 Oct 2026). [docs/bentobox-scrubber.md](docs/bentobox-scrubber.md) is its
+page. The originals are not in git (`original/README.md`), every value is in `bentobox.params.scad`, and
+**before calling a change done**, with `OPENSCAD` set to an OpenSCAD nightly (its Manifold backend handles
+the large meshes in seconds; under the 2021.01 release every control reads BLIND):
+
+```sh
+uv run scripts/bentobox-checks.py all              # every fit empty, every positive control caught
+uv run scripts/bentobox-checks.py figures --write  # the pictures in docs/bentobox/, if a view changed
+sh scad-tools/scripts/scad-check.sh models/bentobox/bentobox-<part>.scad
+```
 
 ## The airflow simulations - `sim/`
 

@@ -3,9 +3,9 @@
 # SPDX-License-Identifier: MPL-2.0
 """Pictures and numbers from a solved LunchBox case. From the repository's root:
 
-  uv run --project sim/lunchbox-cfd sim/lunchbox-cfd/post.py <case name> [--out docs/lunchbox/cfd]
+  uv run --project archive/lunchbox/sim/lunchbox-cfd archive/lunchbox/sim/lunchbox-cfd/post.py <case name> [--out archive/lunchbox/docs/lunchbox/cfd]
 
-Reads sim/lunchbox-cfd/cases/<name>/results (what run_case.sh copies back) and writes, into --out (default
+Reads archive/lunchbox/sim/lunchbox-cfd/cases/<name>/results (what run_case.sh copies back) and writes, into --out (default
 the case's own results/pictures):
 
   side-fan.png      a cut through the stack at one fan: speed, and where the air goes

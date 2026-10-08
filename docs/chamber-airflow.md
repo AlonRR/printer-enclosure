@@ -23,14 +23,14 @@ filters?"*
             ┌──────────── chamber ────────────┐
   makeup ──►│  (defined inlet, known area)    │
    air in   │   ┌──────────────────────────┐  │
-            └──►│ LunchBox: carbon + HEPA  │  │   recirculating scrubber
+            └──►│ BentoBox: carbon + HEPA  │  │   recirculating scrubber
                 │   2 × Delta 4020, 12 V   ├──┘   (all flow returns)
                 └──────────────────────────┘
             ┌────────────────────────────────┐
             └──► JUMPEAK 120 mm ──► duct ──► outside     the extraction
 ```
 
-The **scrubber** — GekoPrime's LunchBox, remixed: [lunchbox-scrubber.md](lunchbox-scrubber.md) —
+The **scrubber** — ThrutheFrame's BentoBox v2.0, remixed: [bentobox-scrubber.md](bentobox-scrubber.md) —
 scrubs continuously inside the chamber; the **JUMPEAK** pulls the bleed out through the duct. Two
 jobs, two fans, each sized for its own load.
 
@@ -52,8 +52,9 @@ both jobs.
    printed instead.~~ ⛔ **WRONG, found 6 Oct 2026: `ventobox/` is a 120 mm-fan design** — one
    120 mm fan, 105 mm hole spacing — so it never took the 40 mm fans. The 40 mm scrubber is now
    **GekoPrime's LunchBox**, which takes three 40 mm fans in a 124 × 60 mm stack, remixed for two:
-   [lunchbox-scrubber.md](lunchbox-scrubber.md). The reason itself stands: a 40 mm scrubber model
-   exists, and the fans are owned.
+   [lunchbox-scrubber.md](../archive/lunchbox/docs/lunchbox-scrubber.md). The reason itself stands: a 40 mm
+   scrubber model exists, and the fans are owned. **Since 8 Oct 2026 the scrubber is the BentoBox remix**
+   ([bentobox-scrubber.md](bentobox-scrubber.md)), also for two 40 mm fans; the LunchBox remix is archived.
 3. **The heavy restriction stops fighting the duct.** Carbon trays plus HEPA in series with a
    duct bleed is one fan doing two dissimilar loads. Separating them means neither is a
    compromise, and the *"do not PWM it down far"* constraint below applies only to the vent fan.
@@ -323,8 +324,9 @@ condition it exists for.
 2. **Measure the closed chamber temperature**, against the open-configuration baseline already
    recorded (31 °C ± 2, door open, 3 Sep 2026). This is the number that decides whether a chamber
    heater is ever needed — answer it before buying one.
-3. **Build the SCRUBBER** — the LunchBox remix ([lunchbox-scrubber.md](lunchbox-scrubber.md): the
-   body, the fan section with a blank in its middle bay, the carbon-dust insert, TPU gaskets, tabs),
+3. **Build the SCRUBBER** — the BentoBox remix ([bentobox-scrubber.md](bentobox-scrubber.md): the
+   Auto's base and fan section, the carbon-dust section, the carbon housing with the C-MAG, the HEPA holder
+   and the paper's frame, the cover, the sealed joints' bead rings),
    the HEPA paper, the ENVIROCARB pellets, and the **2 × 12 V Delta EFB0412VHD** fans on a **12 V**
    feed — ⛔ **never the printer's 24 V PSU**, which would destroy them. Run it as a pure
    recirculator inside the closed chamber and **verify it turns the chamber over** — see *The

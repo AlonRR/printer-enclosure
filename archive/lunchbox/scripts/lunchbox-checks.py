@@ -6,16 +6,16 @@
 # ///
 """The LunchBox remix's fit checks, against the original STLs. From the repository's root:
 
-  uv run scripts/lunchbox-checks.py fits       every fit check in models/lunchbox/lunchbox-assembly.scad
-  uv run scripts/lunchbox-checks.py controls   each check's positive control: one thing broken on purpose,
+  uv run archive/lunchbox/scripts/lunchbox-checks.py fits       every fit check in archive/lunchbox/models/lunchbox/lunchbox-assembly.scad
+  uv run archive/lunchbox/scripts/lunchbox-checks.py controls   each check's positive control: one thing broken on purpose,
                                                which its check must catch
-  uv run scripts/lunchbox-checks.py all        both
-  uv run scripts/lunchbox-checks.py figures [--write]
-                                               every picture in docs/lunchbox/, each render's output read
+  uv run archive/lunchbox/scripts/lunchbox-checks.py all        both
+  uv run archive/lunchbox/scripts/lunchbox-checks.py figures [--write]
+                                               every picture in archive/lunchbox/docs/lunchbox/, each render's output read
                                                for errors - rendered aside, or over docs/ with --write
 
 A fit check intersects two parts that may touch but must not overlap: OpenSCAD must write nothing, or a
-solid of no volume. The originals must be in models/lunchbox/original/ (its README says where from); a
+solid of no volume. The originals must be in archive/lunchbox/models/lunchbox/original/ (its README says where from); a
 missing one makes an import fail, which OpenSCAD reports only as a WARNING - so every render's output is
 read, never only its exit code.
 
@@ -27,10 +27,10 @@ import tempfile
 import uuid
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scad-tools" / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "scad-tools" / "scripts"))
 from scadtools import DEGENERATE, defines, describe, parallel, problems, render, stl_stats  # noqa: E402
 
-ASSEMBLY = "models/lunchbox/lunchbox-assembly.scad"
+ASSEMBLY = "archive/lunchbox/models/lunchbox/lunchbox-assembly.scad"
 BACKEND = ["--backend=manifold"]
 
 # Each fit check, both with the insert's tabs and without, where the tabs take part.
@@ -144,7 +144,7 @@ def figures(write, names):
     for name, (made, bad) in zip(chosen, results):
         verdict = "ok" if made and not bad else "FAIL  " + ("; ".join(bad) or "no picture")[:200]
         failed += verdict != "ok"
-        print(f"{name:15} {verdict}{'  -> docs/lunchbox/' + name + '.png' if write and verdict == 'ok' else ''}")
+        print(f"{name:15} {verdict}{'  -> archive/lunchbox/docs/lunchbox/' + name + '.png' if write and verdict == 'ok' else ''}")
     print(f"figures: {len(chosen) - failed} of {len(chosen)} rendered clean")
     return failed == 0
 

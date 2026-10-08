@@ -20,7 +20,7 @@ missing one makes an import fail, which OpenSCAD reports only as a WARNING - so 
 read, never only its exit code. OPENSCAD should name a build with the Manifold backend (the nightly).
 Exit status: 0 everything as expected, 1 anything else.
 
-The same checks as scripts/lunchbox-checks.py, for the other box; the two are kept apart so that each
+The same checks as archive/lunchbox/scripts/lunchbox-checks.py, for the archived box; the two are kept apart so that each
 reads on its own.
 """
 import sys

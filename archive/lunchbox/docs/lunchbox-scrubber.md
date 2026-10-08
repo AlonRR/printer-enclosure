@@ -1,5 +1,9 @@
 # The scrubber — LunchBox, remixed
 
+> **Archived 8 Oct 2026, not built.** The chamber's scrubber is the
+> [BentoBox remix](../../../docs/bentobox-scrubber.md). This page, its models, fit checks and airflow case are
+> kept as they were, and still run: [the archive's README](../README.md) says how.
+
 The chamber's recirculating filter is GekoPrime's [LunchBox](https://www.printables.com/model/468166):
 air comes in through the grid on the front, passes HEPA paper and a bed of carbon pellets, goes down a
 channel at the back, and the fans underneath blow it out at the front. It takes three 40 mm fans; this

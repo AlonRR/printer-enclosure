@@ -16,7 +16,7 @@ model. From the repository's root:
 instead of to the line its guide gives, four times the carbon; --fine meshes the box at 1 mm instead of
 2 mm; --cores sets the MPI ranks (14, or 7 each to run two cases side by side).
 
-Built the same way as sim/lunchbox-cfd/, whose README says how a case runs and what a result must pass
+Built the same way as archive/lunchbox/sim/lunchbox-cfd/, whose README says how a case runs and what a result must pass
 before it is quoted. The two are kept apart, so that one box's case can change without moving the other's
 results; what they share - the fans, the air, the filter media - is the same here, value for value.
 """
@@ -456,8 +456,8 @@ def network(dp_hepa_at_1=None, with_section=True, eps=None, layer_t=LAYER_T):
 
 
 def lunchbox():
-    """The LunchBox's own lumped model, from sim/lunchbox-cfd/, read as it is."""
-    spec = importlib.util.spec_from_file_location("lunchbox_cfd", HERE.parent / "lunchbox-cfd" / "cfd.py")
+    """The LunchBox's own lumped model, from archive/lunchbox/sim/lunchbox-cfd/, read as it is."""
+    spec = importlib.util.spec_from_file_location("lunchbox_cfd", HERE.parent.parent / "archive" / "lunchbox" / "sim" / "lunchbox-cfd" / "cfd.py")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod

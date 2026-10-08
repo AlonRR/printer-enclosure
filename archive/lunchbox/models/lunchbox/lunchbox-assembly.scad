@@ -14,7 +14,7 @@ fit checks that scripts/lunchbox-checks.py renders. Needs the originals in origi
                       parts that should only touch; anything left is two parts in the same place.
 */
 include <lunchbox.scad>
-use <../../scad-tools/lib/axes.scad>
+use <../../../../scad-tools/lib/axes.scad>
 draw_model = false;
 
 view = "stack";

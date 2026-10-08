@@ -3,7 +3,7 @@
 An OpenFOAM simulation of the air through [BentoBox v2.0 with its C-MAG](../../docs/bentobox-scrubber.md),
 with and without the remix's carbon-dust section, built from the OpenSCAD model the section is printed from.
 Beside it is a lumped model of the same physics, which also prints the LunchBox's on the same assumptions.
-It is built the way [`sim/lunchbox-cfd/`](../lunchbox-cfd/README.md) is, and that README's setup and checks
+It is built the way [`archive/lunchbox/sim/lunchbox-cfd/`](../../archive/lunchbox/sim/lunchbox-cfd/README.md) is, and that README's setup and checks
 apply here unchanged. This one says what differs. What it found is on the build page.
 
 ## What is modelled

@@ -1,7 +1,7 @@
 # The other scrubber — BentoBox v2.0, with the C-MAG
 
 ThrutheFrame's [BentoBox v2.0](https://www.printables.com/model/272525) is the other filter weighed for the
-chamber, against the [LunchBox](lunchbox-scrubber.md). It is a stack of parts, each held to the next by four
+chamber, against the [LunchBox](../archive/lunchbox/docs/lunchbox-scrubber.md), now archived. It is a stack of parts, each held to the next by four
 magnets and a tongue in a groove. Air comes in through the cover on top and passes a HEPA cartridge. Then it
 goes through the C-MAG, a cartridge that holds the carbon pellets in three thin trays, one above the
 other. Two 40 mm fans in the fan case pull it down and blow it into the duct, which turns it out of one long
@@ -291,7 +291,7 @@ For the joint sample, from the same stock: 3 M3 nuts, 2 M3 × 12 and 1 M3 × 8.
 ## The air through it
 
 An airflow simulation of the whole stack, standing on the chamber's floor with the chamber's air round it:
-OpenFOAM, the two Deltas on their published curve, the filters as resistances, on [the LunchBox's](lunchbox-scrubber.md#the-air-through-it)
+OpenFOAM, the two Deltas on their published curve, the filters as resistances, on [the LunchBox's](../archive/lunchbox/docs/lunchbox-scrubber.md#the-air-through-it)
 assumptions but one. The HEPA cartridge's grade is not known, and it sets the flow more than anything
 else: the numbers are for the LunchBox's mid-grade paper, folded into this cartridge's 15 mm pleats instead
 of 19 mm, which leaves it 15/19 of the paper and so 19/15 of the resistance - a judgement, not a

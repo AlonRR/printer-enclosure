@@ -6,7 +6,7 @@ check it against. What it found is on the build page; this folder is how to run 
 
 ## What is modelled
 
-- **The geometry** is `models/lunchbox/lunchbox-cfd.scad`: the assembled stack with its gaskets, the
+- **The geometry** is `archive/lunchbox/models/lunchbox/lunchbox-cfd.scad`: the assembled stack with its gaskets, the
   HEPA frame in its holder, the blank, and the two fans' frames and hubs, standing on the chamber's floor
   with the chamber's air in front of it. The model also echoes every zone below, so the case cannot
   disagree with it.
@@ -46,13 +46,13 @@ in parallel. The script links the one to the other, once.
 ## Running it
 
 From the repository's root, with `OPENSCAD` set to an OpenSCAD nightly and the original STLs in
-`models/lunchbox/original/`:
+`archive/lunchbox/models/lunchbox/original/`:
 
 ```sh
-uv run --project sim/lunchbox-cfd sim/lunchbox-cfd/cfd.py network          # the lumped model, seconds
-uv run --project sim/lunchbox-cfd sim/lunchbox-cfd/cfd.py case [--plain] [--fine] [--open-top] [--cores 7]
+uv run --project archive/lunchbox/sim/lunchbox-cfd archive/lunchbox/sim/lunchbox-cfd/cfd.py network          # the lumped model, seconds
+uv run --project archive/lunchbox/sim/lunchbox-cfd archive/lunchbox/sim/lunchbox-cfd/cfd.py case [--plain] [--fine] [--open-top] [--cores 7]
 #   ... then the wsl.exe command it prints: meshes and solves in WSL, copies the results back
-uv run --project sim/lunchbox-cfd sim/lunchbox-cfd/post.py insert [--out docs/lunchbox/cfd]
+uv run --project archive/lunchbox/sim/lunchbox-cfd archive/lunchbox/sim/lunchbox-cfd/post.py insert [--out archive/lunchbox/docs/lunchbox/cfd]
 ```
 
 - `--plain`: the stack without the insert. `--fine`: 1 mm cells inside the box instead of 2 mm.
@@ -62,7 +62,7 @@ uv run --project sim/lunchbox-cfd sim/lunchbox-cfd/post.py insert [--out docs/lu
 - `--cores`: the MPI ranks, 14 by default; 7 each runs two cases side by side.
 
 A 2 mm case solves in about 20 minutes. `cases/` holds the generated cases and their results and is not
-committed; the pictures and summaries the build page quotes are in `docs/lunchbox/cfd/`.
+committed; the pictures and summaries the build page quotes are in `archive/lunchbox/docs/lunchbox/cfd/`.
 
 ## What a result must pass before it is quoted
 
