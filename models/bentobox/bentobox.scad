@@ -5,6 +5,8 @@
 // The BentoBox remix: the section, and the originals placed in the box's frame. Settings in
 // bentobox.params.scad; bentobox-section.scad pins the part in its printing pose.
 include <bentobox.layout.scad>
+use <../../scad-tools/lib/fdm.scad>
+use <../../scad-tools/lib/nuts.scad>
 
 draw_model = true;   // a file that includes this one for its values sets it false after the include
 
@@ -185,15 +187,12 @@ module fan_section() if (bottom == "auto") auto_fans(); else orig(fans_stl);
 
 // A slot's own frame: X out towards its mouth, the screw's axis at the origin, Z = 0 at z.
 module slot_frame(s, z) translate([s[0], s[1], z]) rotate(s[2]) children();
-// A nut's slot, from its closed end behind the axis out through its mouth, nut_slot_out past the axis.
-module nut_slot() translate([-nut_back, -nut_slot_w / 2, 0]) cube([nut_back + nut_slot_out, nut_slot_w, nut_slot_h]);
-// The first two layers of a slot's roof, where a screw's hole goes on up through it (fdm-design-rules,
-// section 3c): a channel as wide as the hole across the slot, so the first layer is two bridges from side to
-// side; then the hole, square, so the second is two bridges along the slot over the channel; then the round hole.
-module roof_hole() {
-    translate([-hole_d / 2, -nut_slot_w / 2, -eps]) cube([hole_d, nut_slot_w, fdm_layer_h + eps]);
-    translate([-hole_d / 2, -hole_d / 2, -eps]) cube([hole_d, hole_d, 2 * fdm_layer_h + eps]);
-}
+// A nut's slot (scad-tools nuts.scad), from behind the axis out through its mouth, nut_slot_out past the axis...
+module slot() nut_slot(nut_af, nut_slot_h, nut_slot_out, fdm_hole_comp + nut_fit);
+// ...and the screw's hole on up through its roof, l long, as a bridged hole (scad-tools fdm.scad): a channel as
+// wide as the hole across the slot, so the first layer is two bridges from side to side; the hole, square, so the
+// second is two bridges along the slot over the channel; then the round hole.
+module roof_hole(l) translate([0, 0, nut_slot_h]) rotate(90) bridged_hole(nut_slot_w, hole_d, l, fdm_layer_h, eps);
 // The fan section's floor openings, carried down into the base: the fans' air.
 module fan_air(h, grow = 0) for (y = fan_ys) translate([0, y, duct_h - h]) cylinder(d = auto_fan_air + 2 * grow, h = h + 1);
 
@@ -213,15 +212,13 @@ module plate_plug(s) translate([s[0], s[1], auto_seat_z + meet])
     cylinder(d = auto_plate_insert[0] + 0.2, h = auto_plate_insert[1] + 0.1 - meet);
 // A fan screw's way: its slot, the roof over it, and its hole, down from the base's top past its tip.
 module fan_screw_cut(s) {
-    slot_frame(s, fan_slot_bot) { nut_slot(); translate([0, 0, nut_slot_h]) roof_hole(); }
-    translate([s[0], s[1], fan_slot_top + 2 * fdm_layer_h - eps]) cylinder(d = hole_d, h = duct_h - fan_slot_top);
+    slot_frame(s, fan_slot_bot) { slot(); roof_hole(duct_h - fan_slot_top + 1); }
     translate([s[0], s[1], fan_tip_z - 0.5]) cylinder(d = hole_d, h = fan_slot_bot - fan_tip_z + 0.5 + eps);
 }
 // A plate screw's: its hole, up from the seat, its slot, the roof over it, and on past its tip.
 module plate_screw_cut(s) {
     translate([s[0], s[1], auto_seat_z - 1]) cylinder(d = hole_d, h = plate_slot_bot - auto_seat_z + 1 + eps);
-    slot_frame(s, plate_slot_bot) { nut_slot(); translate([0, 0, nut_slot_h]) roof_hole(); }
-    translate([s[0], s[1], plate_slot_top + 2 * fdm_layer_h - eps]) cylinder(d = hole_d, h = plate_tip_z + 0.5 - plate_slot_top - 2 * fdm_layer_h + eps);
+    slot_frame(s, plate_slot_bot) { slot(); roof_hole(plate_tip_z + 0.5 - plate_slot_top); }
 }
 module auto_base() difference() {
     union() {

@@ -91,7 +91,6 @@ hole_d = 2 * (screw_d / 2 + fdm_hole_comp);
 nut_ac = nut_af / cos(30);
 nut_slot_w = nut_af + 2 * (fdm_hole_comp + nut_fit);
 nut_slot_h = up_to_layer(nut_h + 2 * nut_fit);
-nut_back = nut_ac / 2 + fdm_hole_comp + nut_fit;       // the slot's closed end, behind the axis
 fan_slot_top = duct_h - nut_roof;
 fan_slot_bot = fan_slot_top - nut_slot_h;
 post_r = nut_slot_w / 2 + post_beads * bead;           // the post round a fan screw's slot...

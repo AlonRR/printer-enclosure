@@ -74,7 +74,7 @@ screw_shift = [0, 0];   /* Controls only: the screws moved off their holes. */
 wire_shift = 0;         /* Controls only: the wires' probe moved off the tube, along X. */
 wire_d = 4.5;           /* The wires that must pass the floor's hole and the tube: the two fans' six leads, about 4 mm
                            bundled. A 5 mm rod would graze the tube's exit, which turns 1.2 mm towards -X into the bay. */
-module nut_at(s, z) slot_frame(s, z + (nut_slot_h - nut_h) / 2) cylinder(r = nut_ac / 2, h = nut_h, $fn = 6);
+module nut_at(s, z) slot_frame(s, z + (nut_slot_h - nut_h) / 2) hex_nut(nut_af, nut_h);
 module auto_nuts(way = 0) {
     for (s = auto_fan_screws) hull() for (x = [0, way]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, fan_slot_bot);
     for (s = auto_plate_screws) hull() for (x = [0, way]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, plate_slot_bot);
