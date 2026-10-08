@@ -136,14 +136,17 @@ housing are sealed:
 - **A bead in a groove.** A hollow TPU bead, 2 mm, its wall one perimeter, after
   [scad-tools' gasket](https://github.com/AlonRR/scad-tools/blob/main/lib/gasket.scad), lies in a groove
   2.5 × 1.6 mm in the lower part's top, round the inside. It stands 0.4 mm proud; the upper part's flat
-  bottom presses it down as the two faces meet, a fifth of its height.
+  bottom presses it down as the two faces meet, a fifth of its height. Its hollow is vented through its
+  inner wall, to the box's inside: a dead end, and the outer wall and the ridge seal. The bead's size is a
+  first choice, not yet tried in print.
 - **The upper part sits in the lower one.** A collar 1 mm tall runs round the lower part's top edge, its
   inner face at 45 degrees; the upper part's bottom edge is cut back at 45 degrees to sit in it, 0.2 mm
   clear. It centres the parts, and it is a second barrier outside the bead. Both print without support.
 - **Four tabs and screws, where the magnets were.** At each corner a tab stands 9.4 mm past the end wall,
   its outline a parabola leaving the wall and running on flush with the side face. Under each nut's tab, a
   bracket whose face is a cubic in its height: tangent to the wall at its foot, 45 degrees at the tab, so it
-  prints without support. Each nut slides in from the tab's end.
+  prints without support. The fan section is shorter than a bracket, so its brackets run down to its bottom
+  face. Each nut slides in from the tab's end.
 - **The screws.** Four M3 × 12 through the HEPA holder's tabs into nuts in the carbon housing's. Four
   M3 × 25 through the carbon housing's bottom tabs and pillars in the section into nuts in the fan
   section's: one screw at each corner holds both of the section's joints.
@@ -152,9 +155,10 @@ housing are sealed:
 
 **Putting it together:** a bead ring in the groove on the fan section, the section and the carbon housing;
 a nut in each tab of the fan section and the carbon housing; the section on the fan section, the carbon
-housing on the section, and the four M3 × 25 down through them. The carbon housing's own top tabs stand
-over those screws, 35 mm above their heads: turn them with an L-shaped key from the side. Then the HEPA
-holder on the carbon housing and its four M3 × 12, and the cover on its magnets.
+housing on the section, and the four M3 × 25 down through them. The carbon housing's own top tabs and
+brackets stand over those screws; the checks keep at least 35 mm clear above each head, room to set the
+screw in, but not for a long straight driver: turn them with a hex key. Then the HEPA holder on the carbon
+housing and its four M3 × 12, and the cover on its magnets.
 
 The sheet in the section, the C-MAG and the HEPA come out by the same screws. Only the cover's joint keeps
 magnets: four in the HEPA holder's top and four in the cover.
