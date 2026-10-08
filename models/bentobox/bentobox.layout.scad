@@ -46,8 +46,18 @@ cmag_layers = [for (i = [0 : 2]) cmag_grills[i] + cmag_grill_t / 2];
 // rests against the ring's wall; or, with paper_flaps, on a bottom fold, so each side keeps half a pleat more
 // as a flap whose cut end stands in a slot at the wall's foot.
 ring_wall = ring_beads * bead;
-ring_out = [in_w - 2 * ring_play, hepa_pocket_l - 2 * ring_play];   // X, Y
+// The HEPA holder's pocket and its ledge's opening: the original's, or cut out to the whole inside (hepa_full),
+// its ledge then cut `meet` under the original's.
+pocket_l = hepa_full ? in_l : hepa_pocket_l;
+ledge_top = hepa_ledge - (hepa_full ? meet : 0);             // over the original's floor
+// The ring's square corners stand ring_play clear of the pocket's corners, which are round once it is cut out.
+pocket_r = in_r + meet;
+ring_out = let(x = in_w / 2 - ring_play, c = [in_w / 2 + meet - pocket_r, in_l / 2 + meet - pocket_r])
+    [2 * x, hepa_full ? 2 * (c[1] + sqrt(pow(pocket_r - ring_play, 2) - pow(x - c[0], 2))) : pocket_l - 2 * ring_play];   // X, Y
 ring_in = ring_out - 2 * [ring_wall, ring_wall];
+// The ledge's opening, cut out with the pocket: hepa_ledge_w inside the walls across, and along to 0.2 inside
+// the ring, which stands on the ledge at its ends.
+open_wl = hepa_full ? [in_w - 2 * hepa_ledge_w, ring_in[1] - 0.4] : hepa_open;
 ring_h = paper_depth;
 slot_w = cap_teeth_below || paper_flaps ? paper_t + slot_play : paper_t;   // a slot the paper sits in
 pack_edge = paper_flaps ? ring_in[0] / 2 - slot_w / 2 : ring_in[0] / 2;   // the paper's middle at its long edges, +/- X

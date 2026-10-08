@@ -97,6 +97,8 @@ ledge_beads = 3;    /* A ledge round the inside at the grid's level: the ribs en
 // teeth and closes the slot. Along the long sides the paper runs on half a pleat past its last top fold,
 // down to the foot of the ring's wall, into a slot between the wall and a strip moulded onto it: the dirty
 // air between that flap and the wall presses it onto the strip, the whole length.
+hepa_full = true;   /* Cut the HEPA holder's pocket out to the box's whole inside, in_w x in_l, from its ledge up, and the ledge's opening to hepa_ledge_w inside that (Alon, 8 Oct 2026: "enlarge the HEPA area"). The original's ends are solid funnels round its 80 mm cartridge. */
+hepa_ledge_w = 2;   /* MEASURED: the ledge round the original's opening; the enlarged opening keeps it. */
 paper_depth = 20;   /* The pleats' depth, fold to fold: the pack's thickness. The listing's "folds 20mm". <<CONFIRM with a ruler>> */
 paper_pitch = 100 / 30;   /* One pleat, top fold to top fold. DERIVED, not measured: 1200 mm of paper in 20 mm folds packs into 100 mm, so about 30 pleats. <<CONFIRM by counting the folds>> Only the whole number of pleats in the ring follows from it: 28 to 30 folds in 100 mm all give the same parts. */
 paper_t = 0.3;      /* The paper's thickness - an estimate. <<CONFIRM with calipers>> The slots are slot_play wider than this: paper thicker than a slot will not go in, thinner sits loose in it, and the air presses it onto the teeth and the strips. */

@@ -174,6 +174,16 @@ cmag_stls  = [str(orig_dir, "CMag Case 01 v5.stl"), str(orig_dir, "CMag Case 02 
 
 // An original, moved up by dz: the parts above the section stand sec_h higher with it.
 module orig(file, dz = 0) translate([0, 0, dz] - stl_origin) import(file, convexity = 10);
+// The HEPA holder, moved up by dz. With hepa_full its pocket is cut out to the box's whole inside, `meet` past its
+// walls' faces, from `meet` under its ledge up through its top; and its ledge's opening to hepa_ledge_w inside
+// that, `meet` past the original's sides. The original's ends were solid funnels round an 80 mm cartridge.
+module hepa_body(dz = 0) let(f = duct_h + fans_h + carbon_h + dz) difference() {
+    orig(hepa_stl, dz);
+    if (hepa_full) {
+        translate([0, 0, f + ledge_top]) linear_extrude(hepa_h) inside_offset(meet);
+        translate([0, 0, f - 1]) linear_extrude(hepa_ledge + 2) offset(delta = meet) rrect(open_wl[0], open_wl[1], hepa_open_r);
+    }
+}
 // The C-MAG, from its own frame (L along X, W along Y, T along Z) to standing on end in the housing.
 module cmag_standing(z0) translate([cmag[2] / 2, -cmag[1] / 2, z0]) rotate([0, -90, 0])
     for (f = cmag_stls) import(f, convexity = 10);
@@ -453,7 +463,7 @@ carbon_dz = sst[2] - meet - (duct_h + fans_h);
 hepa_dz = sst[3] - meet - (duct_h + fans_h + carbon_h);
 module fans_sealed() sealed_part(undef, sst[1], duct_h, duct_h + fans_h) fan_section();
 module carbon_sealed() sealed_part(sst[2], sst[3], sst[2] - meet, sst[2] - meet + carbon_h) orig(carbon_stl, carbon_dz);
-module hepa_sealed() sealed_part(sst[3], undef, sst[3] - meet, sst[3] - meet + hepa_h) orig(hepa_stl, hepa_dz);
+module hepa_sealed() sealed_part(sst[3], undef, sst[3] - meet, sst[3] - meet + hepa_h) hepa_body(hepa_dz);
 module say_seal_hardware() echo(str("sealed joints: three TPU bead rings, ", seal_bead[0], " mm; four M3 x ", j3_screw,
     " socket head into nuts, HEPA holder to carbon housing; four M3 x ", j12_screw,
     " through the carbon housing's tabs and the section's pillars into the fan section's nuts; eight M3 nuts; every head sunk in its tab"));

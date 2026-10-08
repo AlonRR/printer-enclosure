@@ -30,7 +30,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Fan section** | The Auto's, in place of the fan case, its top remixed for the sealed joint. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
 | **Plate** | The Auto's outline, closing the bay: flush with the base's bottom, its two screws' heads sunk in it. | [`bentobox-auto-plate.scad`](../models/bentobox/bentobox-auto-plate.scad) |
 | **Carbon housing** | ThrutheFrame's, remixed for the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
-| **HEPA holder** | ThrutheFrame's, its bottom remixed to sit sealed on the carbon housing. | [`bentobox-hepa.scad`](../models/bentobox/bentobox-hepa.scad) |
+| **HEPA holder** | ThrutheFrame's, its bottom remixed to sit sealed on the carbon housing, and its pocket cut out to the box's whole inside, for a bigger piece of paper. | [`bentobox-hepa.scad`](../models/bentobox/bentobox-hepa.scad) |
 | **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
 | **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
 
@@ -192,10 +192,13 @@ the original has it: magnets, a tongue on each top, a groove under each bottom.
 
 ## Your own HEPA paper
 
-Pleated HEPA paper off a roll can take the bought cartridge's place. The holder's pocket is 82 × 40.8 mm,
-straight for 15.6 mm above the ledge, its ends flaring out above that, so a pack 20 mm deep stands in it.
-A ring holds the paper there, with a slot along the foot of each long wall for the paper's edge, and a
-TPU cap on each end closes its pleats' ends.
+Pleated HEPA paper off a roll can take the bought cartridge's place. The original holder's pocket is
+82 × 40.8 mm, sized for the 80 mm cartridge: its ends are solid, flaring out only 15.6 mm above the ledge. The
+remix cuts the pocket out to the box's whole inside, 100.8 × 40.8 mm with its rounded corners, from the
+ledge up, and the ledge's opening with it, to 90.2 × 36.8 mm (78 × 36.8 on the original). A ring holds the
+paper there, with a slot along the foot of each long wall for the paper's edge, and a TPU cap on each end
+closes its pleats' ends. The ring's corners are square, so it stops where the pocket's corners begin to
+round: 93.3 mm long, and the paper in it 87.4, where it was 75.7 - 15 % more paper.
 
 ![The frame pulled apart: the ring, the cut paper above it with its folds running end to end, a cap drawn back from each end](bentobox/paper-frame.png)
 
@@ -215,7 +218,7 @@ TPU cap on each end closes its pleats' ends.
 
   ![Across the folds, flat: on the left the ring's middle, its walls and the strips at their feet, each flap down in its slot; on the right a cap's face, its wedges and teeth round the paper, notched where the strips pass](bentobox/paper-cut.png)
 - **Cutting the paper.** For this build's paper, 20 mm deep with about 3.3 mm between top folds: a piece
-  **75.7 mm long along the folds, and 10 pleats across with half a pleat more each side** - both long
+  **87.4 mm long along the folds, and 10 pleats across with half a pleat more each side** - both long
   edges cut along a bottom fold. Count the pleats rather than measuring the width: folded, that is about
   36.7 mm, and the ring spreads it to 37.2. The roll's 300 × 100 mm pack gives six pieces.
 - **Putting it together.** Push a cap onto each end of the piece, with its wedges at the top, where the
@@ -254,13 +257,13 @@ ring flat. No supports, no brim. Standing, the base's bay roof is a 41 mm bridge
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
 | Section | ASA | 1 | 1 h 57 m | 17 g |
-| Paper ring | ASA | 1 | 1 h 8 m | 8 g |
+| Paper ring | ASA | 1 | 1 h 14 m | 9 g |
 | Paper cap | TPU 95A | 2 | 52 m each | 5 g each |
 | Base | ASA | 1 | 4 h 17 m | 44 g |
 | Fan section | ASA | 1 | 3 h 42 m | 36 g |
 | Plate | ASA | 1 | 37 m | 8 g |
 | Carbon housing | ASA | 1 | 7 h 23 m | 71 g |
-| HEPA holder | ASA | 1 | 4 h 43 m | 48 g |
+| HEPA holder | ASA | 1 | 4 h 39 m | 45 g |
 | Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
 | Joint sample | ASA | 1 plate | 1 h 16 m | 12 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
@@ -310,7 +313,8 @@ measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](.
 | The chamber's 180 L through it every | 4.4 min | 4.5 min | 5.2 min |
 
 - **The HEPA cartridge sets the flow.** It takes about nine tenths of what the fans can give. Its paper sees
-  only the 78 × 37 mm opening of its ledge, where the LunchBox's paper sees 70 cm², more than twice as
+  only the 78 × 37 mm opening of the original's ledge (the remix's is 90 × 37, for a bigger piece of paper;
+  these numbers are for the original), where the LunchBox's paper sees 70 cm², more than twice as
   much. So the BentoBox moves about half the LunchBox's air (1.3 to 1.5 L/s with its leaks sealed), and
   turns the chamber over every 4.5 minutes where the LunchBox does it every 2 to 2.5. Without the
   19/15 for its shallower pleats - the very same resistance per face as the LunchBox's paper - the lumped

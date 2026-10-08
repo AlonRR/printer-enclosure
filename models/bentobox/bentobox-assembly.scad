@@ -49,7 +49,7 @@ module stack_magnets(ex) {
     if (with_section) piece("seagreen") translate([0, 0, st[1] + 2 * ex]) section();
     piece("tan") translate([0, 0, 3 * ex]) orig(carbon_stl, dz);
     piece("sienna") translate([0, 0, 3 * ex]) cmag_standing(st[2] + cmag_z0);
-    piece("lightsteelblue") translate([0, 0, 4 * ex]) orig(hepa_stl, dz);
+    piece("lightsteelblue") translate([0, 0, 4 * ex]) hepa_body(dz);
     piece("darkslategray") translate([0, 0, 5 * ex]) orig(cover_stl, dz);
 }
 
@@ -151,10 +151,10 @@ module bottom_exploded(ex) {
 }
 
 // The HEPA holder's ledge, with the section in the stack: where the frame's ring stands.
-ledge_z = st[3] + hepa_ledge;
+ledge_z = st[3] + ledge_top;
 // The ledge's opening, from the original's measurement, carried up through the ring's height: the air's way
 // down, which the ring must leave open.
-module opening_probe() translate([0, 0, -1]) linear_extrude(ring_h + 2) rrect(hepa_open[0], hepa_open[1], hepa_open_r);
+module opening_probe() translate([0, 0, -1]) linear_extrude(ring_h + 2) rrect(open_wl[0], open_wl[1], hepa_open_r);
 // The frame pulled apart: the paper lifted out of the ring, the caps drawn back off its ends.
 module frame_exploded(ex) {
     color("orange") hepa_ring();
@@ -234,7 +234,7 @@ else if (view == "frame") frame_exploded(explode);
 else if (view == "cap") color("dimgray") hepa_cap();
 else if (view == "paper_cut") paper_cut();
 // The ring stands in the HEPA holder's pocket, on its ledge.
-else if (view == "check_ring_holder") intersection() { translate([0, 0, ledge_z + sep]) hepa_ring(); orig(hepa_stl, st[2] - st[1]); }
+else if (view == "check_ring_holder") intersection() { translate([0, 0, ledge_z + sep]) hepa_ring(); hepa_body(st[2] - st[1]); }
 // The ring's walls stand on the ledge, clear of its opening. The strips reach over it on purpose.
 else if (view == "check_ring_opening") intersection() { hepa_ring_walls(); opening_probe(); }
 // The caps' wedges and teeth stand in the paper's channels without cutting into it: the paper is drawn from
