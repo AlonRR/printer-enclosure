@@ -114,8 +114,8 @@ module air_probe() for (sy = [-1, 1])
         cube([2 * floor_open[0], floor_open[2] - floor_open[1], sec_h - grid_t - 2 * eps]);
 floor_open = [18, 2, 48];   /* MEASURED: the carbon housing's floor openings, X +/-18, Y 2 to 48 each side */
 // The Auto's bottom: the plate's nuts in their slots, centred in height, and the fans' pulled up against their
-// pockets' roofs, sep under them; each nut's way in - slid out through its slot's mouth, or down out of its
-// pocket; the screws, head to tip; the wires' way down. Built from the screws' places, not the slots':
+// pockets' roofs, sep under them; each nut's way in - slid out through its slot's mouth, or down its pocket and
+// out under its post; the screws, head to tip; the wires' way down. Built from the screws' places, not the slots':
 // a control moves them (screw_shift, wire_shift) and leaves the holes where they are.
 nut_way = 10;           /* How far each nut is slid out of its slot or pocket, to show the way in is open. */
 screw_shift = [0, 0];   /* Controls only: the screws moved off their holes. */
@@ -124,7 +124,12 @@ wire_d = 4.5;           /* The wires that must pass the floor's hole and the tub
                            bundled. A 5 mm rod would graze the tube's exit, which turns 1.2 mm towards -X into the bay. */
 module nut_at(s, z) slot_frame(s, z + (nut_slot_h - nut_h) / 2) hex_nut(nut_af, nut_h);
 module auto_nuts(way = 0) {
-    for (s = auto_fan_screws) hull() for (z = [0, way]) pull_frame(s, pull_top - sep - nut_h - z) hex_nut(nut_af, nut_h);
+    // A fan nut, pulled up into its seat; its way in: down its pocket to the mouth, and out under the post into the room.
+    for (s = auto_fan_screws) if (way == 0) pull_frame(s, pull_top - sep - nut_h) hex_nut(nut_af, nut_h);
+        else {
+            hull() for (z = [pull_top - sep - nut_h, pull_bot + sep]) pull_frame(s, z) hex_nut(nut_af, nut_h);
+            hull() for (x = [0, way]) translate([x * cos(s[3]), x * sin(s[3]), 0]) pull_frame(s, pull_bot + sep) hex_nut(nut_af, nut_h);
+        }
     for (s = auto_plate_screws) hull() for (x = [0, way]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, plate_slot_bot);
 }
 module auto_screws() translate([screw_shift[0], screw_shift[1], 0]) {

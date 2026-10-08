@@ -123,7 +123,7 @@ auto_fans_dz  = -30;    /* The fan section, from where the STEP has it, to the s
 auto_plate_dz = 35.7;   /* The plate, from where the STEP has it, up into the base's recess: its ends against the seats' ceiling. */
 auto_floor_t  = 3;      /* The fan section's floor, which the fans' screws pass. */
 auto_fan_air  = 37;     /* The fan section's floor opening under each fan, at fan_ys. Nothing new may stand under one. */
-auto_fan_screws = [[-16, -46, 45], [-16, 46, -45], [16, -14, 225], [16, 14, 135]];   /* The fans' screws, X and Y, and which way a flat of each nut's pocket faces, in degrees from +X: towards the nearer fan, whose air the post is cut back from, so the pocket's thinnest wall is a flat's, not a corner's. */
+auto_fan_screws = [[-16, -46, 40, 90], [-16, 46, -40, 270], [16, -14, 230, 180], [16, 14, 130, 180]];   /* The fans' screws, X and Y; which way a flat of each nut's pocket faces, in degrees from +X - 5 off the nearer fan, towards the post's wall, so the pocket keeps a wall to both; and the way out of the post's wall into the room: the two at the end walls, the two at the long wall. */
 auto_fan_insert = [4.2, 4];     /* The heat-set inserts' holes the nuts replace, d and depth, down from the base's top. */
 auto_plate_screws = [[-1, -48, 270], [-1, 48, 90]];   /* The plate's two screws, X and Y, 1.6 mm nearer the end walls than the Auto's, where the end wall's fillet stands high enough over a sunk head's screw; their slots open out through the end walls, so a nut goes in from outside. */
 auto_plate_inserts = [[-1, -46.4], [-1, 46.4]];   /* The Auto's own plate screws: their inserts' holes in the base, filled, and their countersunk holes in the plate, filled. */
@@ -146,10 +146,21 @@ nut_roof  = 2;      /* Over a fan screw's nut, under the base's top face: ten la
 nut_floor = 1.5;    /* Under a plate screw's slot, over the seat. */
 post_beads = 3;     /* The new post round a fan screw's pocket, past its corners, in beads. */
 post_clear_air = true;   /* Cut the posts back clear of the fans' air: round, they would reach under the floor's openings. */
+// The Auto has a lug under each insert: 7 mm wide, round at its end, its sides on 2 mm fillets into its wall, standing
+// 7 mm out of it; straight down to Z 47, then on a round into 45 degrees, which meets the wall at Z 38. MEASURED by
+// sectioning the base, 8 Oct 2026. Each fan screw's post is that lug made big enough for the nut, and holds it inside.
+auto_post_wall = 3.4;    /* MEASURED: each fan screw's axis, this far from its wall's face: the end walls' at Y +-49.4, the long wall's at X 19.4. */
+post_fillet = 2;    /* A post's sides run into its wall on fillets this round, as the Auto's lugs do... */
+post_blend = 0.15;  /* ...tangent to a line this far inside the wall's face, so the fillet and the original's face cross at a slant, not tangent. */
+post_round = 2;     /* Under a post, the round from its straight side into its 45-degree underside. */
+post_foot = 37.7;   /* Where a post's 45-degree underside meets its wall: 0.3 under the Auto's lug's, so it holds the lug inside it. */
 nut_slot_out = 12;  /* How far past its screw each slot is cut towards its mouth: out into the open. */
-// Alon, 8 Oct 2026 (D123): the fans' screws take pull nuts. Each nut goes into a hex pocket under its post, on the
-// screw's axis, open downwards; the screw, from above, pulls it up into the pocket against the roof.
-pull_way = 12.5;    /* How far each pocket runs down from its roof: out through its post's cone and, at the end walls, through the Auto's own boss under its insert, into the duct. */
+// Alon, 8 Oct 2026 (D123, D124): the fans' screws take pull nuts. Each nut goes up a hex pocket under its post, on
+// the screw's axis, open downwards, into a tight seat under the roof; a screw from above pulls it up into the seat,
+// and it stays there. Do it with a spare screw before the fan section goes on.
+pull_fit = 0.05;    /* A fan nut's seat, per side, on top of fdm_hole_comp: tighter than a slot, so a nut pulled up into it once, with a spare screw, stays there (D124)... */
+pull_way_fit = 0.1; /* ...and the pocket under it, up which the nut slides to the seat. */
+pull_rise = 0.8;    /* The pocket starts this far over its post's foot: there a nut slides in under the post, from the room, and goes up the pocket. */
 plate_head = [5.5, 3];  /* The plate's screws, M3 socket head, ISO 4762: the head's diameter and height. */
 head_sink = 0.2;    /* Each sunk head sits this far inside its face: the plate's screws' in the base's bottom face, the joints' in their tabs' tops... */
 head_room = 0.4;    /* ...in a counterbore this much wider than the head, past fdm_hole_comp: room for the key. */

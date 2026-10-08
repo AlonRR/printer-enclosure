@@ -97,10 +97,14 @@ before it. Their mount is not drawn yet.
 **Nuts, not heat-set inserts.** The fans' nuts are pull nuts; the plate's lie flat in slots that open one way.
 
 - **The fans' four screws**, M3 × 30, come down through each fan and the fan section's floor into a pull
-  nut: a hex pocket under a post on a 45° cone, on the screw's axis, open downwards, its roof 2 mm under the
-  base's top. The nut goes up into the pocket from below, and the screw pulls it up against the roof. Each
-  pocket has a flat towards the nearer fan, and each post is cut back clear of the fans' air, which leaves
-  1 mm of wall there. At the end walls the pockets run on down through the Auto's own bosses, 12.5 mm in all.
+  nut, in a post. The Auto has a lug under each insert, hung from its wall: round at its end, its sides on
+  fillets into the wall, straight down and then on a round into a 45° underside that meets the wall. Each post
+  is that lug made big enough for a nut, seamless with the wall and the base's top, and it holds the Auto's
+  lug inside it. A hex pocket runs up it on the screw's axis, open under the post, into a tight seat 2 mm under
+  the base's top; a screw from above pulls the nut up into the seat, and it stays there. Each pocket has a flat
+  5° off the nearer fan, so it keeps 0.9 mm of wall to the fan's air - the post is cut back clear of it - and
+  0.14 mm to its wall's face. The base's top is cut 0.05 mm down so the posts' tops are its own; the fan
+  section stands that much lower.
 - **The plate's two screws**, M3 × 8 socket head, come up through counterbores in the plate, their heads
   sunk 0.2 mm inside the bottom face, into nuts in slots that open out through the end walls, so a nut goes
   in from outside. The plate fills its recess, flush with the base's bottom, and each counterbore is in a
@@ -109,10 +113,11 @@ before it. Their mount is not drawn yet.
 - Each slot's roof, each nut pocket's, each counterbore's, and each lobe's pocket's starts with two bridging
   layers, a channel and then a square, so the screw's hole prints over it without support.
 
-**Putting it together:** a nut in each end wall's slot, then the plate on with its two screws; the fans'
-leads down the tube; the fan section on the base, the fans in it. Then each fan screw: hold its nut up in its
-pocket from inside the duct, reaching in through the outlet, and drive the screw down through the fan until
-it catches; tightening pulls the nut up against the pocket's roof.
+**Putting it together:** a nut in each end wall's slot, then the plate on with its two screws. Then the
+fans' nuts, from the open top of the base: slide each nut in under its post, push it up the pocket, and pull
+it into the seat with a spare M3 screw from above; take the screw out, and the nut stays. The fans' leads down
+the tube; the fan section on the base, the fans in it, and their four screws down through them. The seat's
+fit is a first guess.
 
 **Magnets:** none at the fan section's top, whose joint is sealed. The base's underside has four holes for
 4 × 2 mm magnets, from the Auto; magnets there would hold the box to a steel floor. They are optional.
@@ -241,7 +246,7 @@ ring flat. No supports, no brim. Standing, the base's bay roof is a 41 mm bridge
 | Section | ASA | 1 | 1 h 57 m | 17 g |
 | Paper ring | ASA | 1 | 1 h 8 m | 8 g |
 | Paper cap | TPU 95A | 2 | 52 m each | 5 g each |
-| Base | ASA | 1 | 4 h 13 m | 44 g |
+| Base | ASA | 1 | 4 h 17 m | 44 g |
 | Fan section | ASA | 1 | 3 h 42 m | 36 g |
 | Plate | ASA | 1 | 37 m | 8 g |
 | Carbon housing | ASA | 1 | 7 h 23 m | 71 g |
