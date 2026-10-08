@@ -15,7 +15,7 @@ Beside it, this writes:
 
   bentobox-auto-base.stl    the base: the duct, the wires' tube, and the bay for the electronics under it
   bentobox-auto-fans.stl    the fan section
-  bentobox-auto-plate.stl   the plate that closes the bay
+  bentobox-auto-plate.stl   the plate that closes the bay - not used: the remix's tray replaces it
 
 The STEP's fourth solid, a spacer for a sensor between the HEPA holder and the carbon housing, is not used.
 Each solid is found by its height, not by its place in the file, and written in the STEP's own frame;

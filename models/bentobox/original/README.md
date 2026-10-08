@@ -37,7 +37,7 @@ uv run scripts/bentobox-auto-stl.py
 |---|---|
 | `bentobox-auto-base.stl` | the base, in place of the duct: the same duct with its floor raised over a bay for the electronics, and a tube down to the bay for the wires |
 | `bentobox-auto-fans.stl` | its fan section: the fan case's top, with each fan screwed through the floor into the base, and a hole for the wires |
-| `bentobox-auto-plate.stl` | the plate that closes the bay |
+| `bentobox-auto-plate.stl` | the plate that closes the bay: not used, the remix's tray replaces it |
 
 The STEP's fourth part, a spacer that holds a sensor between the HEPA holder and the carbon housing, is not
 used. Its parts were not exported in place; `bentobox.params.scad` says where each one goes.
