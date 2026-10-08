@@ -171,11 +171,11 @@ else if (view == "check_ring_paper") intersection() { paper_pack(); hepa_ring();
 else if (view == "check_caps_strips") intersection() { caps_in_place(); hepa_ring_strips(); }
 else assert(false, str("unknown view: ", view));
 
-if (show_axes && (view == "stack" || view == "exploded")) axes([-bb_w / 2 - 30, -bb_l / 2, 0], l = 25);
+if (show_axes && (view == "stack" || view == "exploded")) axes([-bb_w / 2 - 40, -bb_l / 2, 0], l = 25);
 axes_cam = [55, 0, 30];   // the picture's --camera angles, so the arrows' labels face it
 if (show_axes && view == "section") axes([-bb_w / 2 - 20, -bb_l / 2, 0], l = 15, cam = axes_cam);
 if (show_axes && view == "frame") axes([-ring_out[0] / 2 - 25, -ring_out[1] / 2 - explode, 0], l = 15, cam = axes_cam);
-if (show_axes && view == "bottom") axes([-bb_w / 2 - 25, -bb_l / 2, 0], l = 20, cam = axes_cam);
+if (show_axes && view == "bottom") axes([bb_w / 2 + 15, bb_l / 2, 0], l = 20, cam = axes_cam);
 if (show_axes && view == "cap") axes([-ring_in[0] / 2 - 15, -5, 0], l = 8, cam = axes_cam);
 // A flat view gets a flat key: an arrow across, labelled with the box's axis it shows, and +z up.
 module flat_key(across) color("black") {

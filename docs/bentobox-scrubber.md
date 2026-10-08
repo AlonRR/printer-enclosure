@@ -7,19 +7,25 @@ goes through the C-MAG, a cartridge that holds the carbon pellets in three thin 
 other. Two 40 mm fans in the fan case pull it down and blow it into the duct, which turns it out of one long
 side, at the floor. It is built for the two Delta EFB0412VHD this build has, 40 × 40 × 20 mm.
 
-![The stack pulled apart: the cover, the HEPA holder, the carbon housing with the C-MAG in it, the section, the fan case, the duct](bentobox/exploded.png)
+**Its bottom is the BentoBox Auto's** (see *The bottom*): the same duct, its floor raised over a bay for the
+electronics, with a tube down to it for the wires, and nuts where the Auto had heat-set inserts.
+
+![The stack pulled apart: the cover, the HEPA holder, the carbon housing with the C-MAG in it, the section, the fan section, the base, the plate under its bay](bentobox/exploded.png)
 
 **It takes its HEPA as a cartridge:** a bought one, 80 × 40 × 15 mm, rests on a ledge in its holder. Or
 the HEPA paper this build already has, pleated 20 mm deep, in the remix's frame (see *Your own HEPA
 paper*).
 
-The remix adds three parts, and changes nothing of the original:
+The remix adds three parts, and takes its bottom from the BentoBox Auto, with nuts for its inserts:
 
 | | What it does | File |
 |---|---|---|
 | **Section** | Goes between the carbon housing and the fan case, holding a flat filter sheet that stops carbon dust reaching the fans. Its top is the fan case's tongue and its bottom the housing's groove, with the same magnets, so it drops into any BentoBox v2.0 stack. | [`bentobox-section.scad`](../models/bentobox/bentobox-section.scad) |
 | **Paper ring** | Stands on the HEPA holder's ledge in place of the cartridge and holds a cut piece of pleated paper. | [`bentobox-hepa-ring.scad`](../models/bentobox/bentobox-hepa-ring.scad) |
 | **Paper cap** | Two, in TPU, one on each end of the paper: wedges from above and teeth from below hold the paper's cut end in a zigzag slot, closing its pleats' ends. | [`bentobox-hepa-cap.scad`](../models/bentobox/bentobox-hepa-cap.scad) |
+| **Base** | The Auto's, in place of the duct: the bay under it, the wires' tube, and six nuts in slots where it had heat-set inserts. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
+| **Fan section** | The Auto's, as it comes, in place of the fan case. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
+| **Plate** | The Auto's, closing the bay, its two holes opened to M3. | [`bentobox-auto-plate.scad`](../models/bentobox/bentobox-auto-plate.scad) |
 
 **Not printed yet.** Every fit is checked against the original's STLs (see *Checking it*), not yet against
 printed parts.
@@ -59,6 +65,51 @@ neighbour the way the two of them met.
 
 The groove is 1 mm from each magnet hole, and so it is in every BentoBox part. The section copies that
 joint rather than changing it.
+
+## The bottom
+
+The base and the fan section are Strangwooduk's, from the
+[BentoBox Auto VOC Sensor system](https://makerworld.com/en/models/1882240), a remix of ThrutheFrame's box.
+
+- **The base is ThrutheFrame's duct**, the same walls and the same curved floor, with the floor raised about
+  11 mm over a **bay for the electronics**: about 40 × 95 mm and 7 mm tall, closed by a plate on two screws.
+  The base is 46 mm tall where the duct is 52.
+- **A tube carries the wires down**: a 6 mm hole in the fan section's floor between the fans, and a tube
+  under it through the base to the bay. The two fans' leads go down it; a 4.5 mm bundle passes.
+- **The air leaves the same way**: out of the whole long side, 101 × 37 mm (3,700 mm²) where the duct's
+  opening is 74 × 46 (3,400 mm²). Both are larger than the fans' own two 37 mm openings, and the HEPA, not
+  the duct, sets the flow, so the airflow below, simulated with the duct, should hold within a few per cent.
+  The simulation will be run again with this base before the remix is published.
+- **The fan section is the fan case's top exactly**: its tongue, its inside and its magnet holes, so the
+  section and everything above sit on it unchanged. Each fan is held by two screws, at opposite corners,
+  down through the fan section's floor into the base.
+
+The Auto also has a spacer for a sensor between the HEPA holder and the carbon housing, and a 24 V
+controller in the bay. Neither is used here. This build's sensors (the same as the
+[air-quality monitor's](https://github.com/AlonRR/air-quality-monitor), an SPS30 and an SGP41) will go
+**in the base's outlet**, where they read the air after the carbon; the chamber's own monitor reads the air
+before it. Their mount is not drawn yet.
+
+![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's slot in each post, the plate under its bay](bentobox/auto-bottom.png)
+
+**Nuts, not heat-set inserts.** Each nut lies flat in a slot that opens one way, and the screw holds it there.
+
+- **The fans' four screws**, M3 × 30, come down through each fan and the fan section's floor into a nut
+  2 mm under the base's top, in a post on a 45° cone. The two posts at the end walls open to the outlet, so a
+  nut goes in, or back in, from outside. The two beside the wires' tube open between the fans. All four are
+  cut back clear of the fans' air.
+- **The plate's two screws**, M3 × 8 countersunk, come up through the plate into nuts slid into slots from
+  the bay, before the plate goes on.
+- Each slot's roof starts with two bridging layers, a channel and then a square, so the screw's hole
+  prints over the slot without support.
+
+**Putting it together:** a nut in each of the plate's slots, then the plate on with its two screws; a nut
+in each of the four posts; the fans' leads down the tube; the fan section on the base, the fans in it, and
+their four screws down through them.
+
+**Magnets:** the fan section's top keeps its four, as the fan case has, for the section above it. The
+base's underside has four holes for 4 × 2 mm magnets too, from the Auto; magnets there would hold the box
+to a steel floor. They are optional.
 
 ## Your own HEPA paper
 
@@ -117,17 +168,30 @@ the slot. Anything from 28 to 30 folds in 100 mm gives the same parts.
 ## Printing
 
 Every original part prints as the author's project lays it out; the remix's print as their files draw
-them, the section and the ring bottom down, a cap with its plate on the bed. No supports, no brim.
+them, the section and the ring bottom down, a cap with its plate on the bed. The base stands on its bottom
+face, the fan section on its floor, and the plate on its inner face, its countersinks up. No supports, no
+brim. Standing, the base's bay roof is a 41 mm bridge, as the Auto has it.
 
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
 | Section | ASA | 1 | 1 h 43 m | 16 g |
 | Paper ring | ASA | 1 | 1 h 8 m | 8 g |
 | Paper cap | TPU 95A | 2 | 52 m each | 5 g each |
+| Base | ASA | 1 | 4 h 15 m | 44 g |
+| Fan section | ASA | 1 | 3 h 21 m | 33 g |
+| Plate | ASA | 1 | 29 m | 7 g |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
 brim, no crossing perimeter`, as [`scad-check.sh`](https://github.com/AlonRR/scad-tools) slices them, with
 `Inslogic TPU 95A` for the caps.
+
+For the bottom:
+
+| Quantity | Item |
+|---|---|
+| 6 | M3 hex nut, ISO 4032 |
+| 4 | M3 × 30 socket head cap screw, ISO 4762: the fans |
+| 2 | M3 × 8 countersunk screw, ISO 10642: the plate |
 
 ## The air through it
 
@@ -165,6 +229,7 @@ measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](.
 - **Filling the C-MAG's trays full costs a seventh of the flow and quadruples the carbon**: 222 cm³ instead
   of 55, more than the LunchBox's 150, and the air spends nearly five times as long in it. The carbon is
   not what limits this box's flow, so carbon here is cheap.
+- **Simulated with ThrutheFrame's duct**, not the Auto's base (see *The bottom*).
 - **No leaks.** The air in at the cover and out at the duct agree to within 2 %, and to 1 % on every plane
   between them, and nothing gets round the C-MAG. Unlike the LunchBox, there is nothing to seal.
 - **Checked on a finer mesh** (1 mm instead of 2, with the section): the air through the filters comes out
@@ -216,9 +281,10 @@ billion, but they weigh micrograms.
 
 The model's rules are asserts and warnings in [`bentobox.layout.scad`](../models/bentobox/bentobox.layout.scad).
 The fits are checked against the original's STLs, which have to be in
-[`models/bentobox/original/`](../models/bentobox/original/):
+[`models/bentobox/original/`](../models/bentobox/original/), with the Auto's written there from its STEP:
 
 ```sh
+uv run scripts/bentobox-auto-stl.py                                # the Auto's STLs, from its STEP
 OPENSCAD="<the OpenSCAD nightly>" uv run scripts/bentobox-checks.py all
 ```
 
@@ -226,9 +292,12 @@ It intersects the section with the carbon housing above it and the fan case belo
 each joint through both parts' holes, and runs the air's way from the housing's floor openings down through
 the section. For the paper's frame it stands the ring in the original HEPA holder, runs the ledge's opening
 up through the ring's walls, sets the caps' wedges and teeth and the ring's strips in a model of the paper
-drawn from the paper's own values, and the caps against the strips. Each must come out empty. Every check
-has a positive control, something broken on purpose that it must catch, and the run fails if one passes
-unnoticed: 10 fits and 13 controls.
+drawn from the paper's own values, and the caps against the strips. For the bottom it stands the fan
+section on the base and the plate in its recess, sets a nut in each slot and slides it out through the
+slot's mouth, runs each screw from its head to its tip, and the wires down the tube, and the fans' air
+down into the base past the posts. Each must come out empty. Every check has a positive control,
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 17 fits and
+21 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.
@@ -236,5 +305,7 @@ by sectioning its STLs, and every setting of the section and of the paper's fram
 ## Credit and licence
 
 BentoBox v2.0 is © ThrutheFrame, under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+The BentoBox Auto VOC Sensor system, whose base, fan section and plate the bottom is, is © Strangwooduk,
+under the same licence as a remix of it.
 The remix — the models in [`models/bentobox/`](../models/bentobox/) and the pictures in [`bentobox/`](bentobox/)
 — is under CC BY-NC-SA 4.0 too: free to use and share, not for sale.

@@ -128,7 +128,7 @@ FIGURES = {
     "exploded": [("view", '"exploded"')], "cut": [("view", '"cut"'), ("cut_x", "0")],
     "section-top": [("view", '"section"')], "section-bottom": [("view", '"section"'), ("axes_cam", "[235, 0, 30]")],
     "paper-frame": [("view", '"frame"'), ("explode", "25")], "paper-cap": [("view", '"cap"')],
-    "paper-cut": [("view", '"paper_cut"')],
+    "paper-cut": [("view", '"paper_cut"')], "auto-bottom": [("view", '"bottom"'), ("explode", "28"), ("axes_cam", "[50, 0, 215]")],
 }
 CAMERAS = {
     "exploded": ["--imgsize=1200,1900", "--viewall", "--autocenter", "--camera=0,0,0,70,0,320,0"],
@@ -138,6 +138,7 @@ CAMERAS = {
     "paper-frame": ["--imgsize=1400,1100", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
     "paper-cap": ["--imgsize=1200,800", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
     "paper-cut": ["--imgsize=1800,560", "--projection=o", "--camera=-8,11,0,0,0,0,118"],
+    "auto-bottom": ["--imgsize=1400,1300", "--viewall", "--autocenter", "--camera=0,0,0,50,0,215,0"],
 }
 
 
