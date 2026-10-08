@@ -32,6 +32,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Carbon housing** | ThrutheFrame's, remixed for the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
 | **HEPA holder** | ThrutheFrame's, its bottom remixed to sit sealed on the carbon housing. | [`bentobox-hepa.scad`](../models/bentobox/bentobox-hepa.scad) |
 | **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
+| **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
 
 **Not printed yet.** Every fit is checked against the original's STLs (see *Checking it*), not yet against
 printed parts.
@@ -117,7 +118,7 @@ before it. Their mount is not drawn yet.
 fans' nuts, from the open top of the base: slide each nut in under its post, push it up the pocket, and pull
 it into the seat with a spare M3 screw from above; take the screw out, and the nut stays. The fans' leads down
 the tube; the fan section on the base, the fans in it, and their four screws down through them. The seat's
-fit is a first guess.
+fit is a first guess: try it on the joint sample first (see *The sealed joints*).
 
 **Magnets:** none at the fan section's top, whose joint is sealed. The base's underside has four holes for
 4 × 2 mm magnets, from the Auto; magnets there would hold the box to a steel floor. They are optional.
@@ -176,6 +177,15 @@ housing and its four M3 × 12, and the cover on its magnets.
 
 The sheet in the section, the C-MAG and the HEPA come out by the same screws. Only the cover's joint keeps
 magnets: four in the HEPA holder's top and four in the cover.
+
+**Try one end first.** The bead's size and the seat's fit are first guesses, and the carbon housing is a
+7-hour print. The joint sample is one end of the joint between the carbon housing and the HEPA holder, sliced
+off the parts themselves: the carbon housing's top 12 mm, with its two nut tabs, and the HEPA holder's bottom
+10 mm, with its two counterbored tabs, 30 mm in from the end wall. With them on the plate is a block holding
+one fan nut's pocket as the base has it. Lay the TPU bead in the lower piece's groove, a nut in each tab, set
+the upper piece on in its collar and drive the two M3 × 12: the faces should come together on the bead,
+pressing it down, the chamfer should sit in the collar, and each head should end flush. Pull a nut into the
+block's seat with an M3 × 8 and take the screw out: the nut should stay.
 
 `sealed = false` in [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) builds every part as
 the original has it: magnets, a tongue on each top, a groove under each bottom.
@@ -252,6 +262,8 @@ ring flat. No supports, no brim. Standing, the base's bay roof is a 41 mm bridge
 | Carbon housing | ASA | 1 | 7 h 23 m | 71 g |
 | HEPA holder | ASA | 1 | 4 h 43 m | 48 g |
 | Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
+| Joint sample | ASA | 1 plate | 1 h 16 m | 12 g |
+| Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
 brim, no crossing perimeter`, as [`scad-check.sh`](https://github.com/AlonRR/scad-tools) slices them, with
@@ -273,6 +285,8 @@ For the sealed joints:
 | 4 | M3 × 25 socket head cap screw, ISO 4762: the carbon housing and the section to the fan section |
 | 4 | M3 × 12 socket head cap screw, ISO 4762: the HEPA holder to the carbon housing |
 | 8 | 4 × 2 mm magnet: the cover's joint, four in the HEPA holder and four in the cover |
+
+For the joint sample, from the same stock: 3 M3 nuts, 2 M3 × 12 and 1 M3 × 8.
 
 ## The air through it
 

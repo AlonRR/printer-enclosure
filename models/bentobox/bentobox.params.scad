@@ -31,7 +31,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "hepa_ring", "hepa_cap", "auto_base", "auto_fans", "auto_plate", "carbon", "hepa" or "bead_ring": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "hepa_ring", "hepa_cap", "auto_base", "auto_fans", "auto_plate", "carbon", "hepa", "bead_ring", "joint_sample" or "joint_sample_bead": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -195,6 +195,15 @@ tab_blend = 0.05;   /* A bracket's face starts this far inside the wall and the 
 tab_corner_t = [0.1, 0.5];  /* Up a bracket, from its foot (0) to the tab (1): between these it fills the rounded corner under the tab, smoothly, so the side face runs on into the bracket's side. */
 tab_lower_t = 6;    /* The lower part's tab, with the nut in it. */
 tab_upper_t = 5;    /* The upper part's tab under the screw's head; the tab stands a head's counterbore higher, so the head sinks flush. */
+
+/* [The joint sample - Alon, 8 Oct 2026: D121] */
+// Before the 7-hour carbon housing, one end of a sealed joint to try: sliced off the parts themselves, the carbon
+// housing's top end with its two nut tabs and the HEPA holder's bottom end with its two head tabs, and a block with
+// one fan nut's pocket, to try its seat (D124) - on one plate, in ASA - and in TPU, a short bead for that end's groove.
+sample_l = 30;      /* How far in from the end wall the pieces run. */
+sample_low_h = 12;  /* The carbon housing's piece: this much under its top face, its two nut tabs and their brackets' tops. */
+sample_up_h = 10;   /* The HEPA holder's piece: this much over its floor, its two tabs with the heads' counterbores. */
+sample_gap = 8;     /* Between the pieces on the plate. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;

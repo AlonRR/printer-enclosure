@@ -461,6 +461,34 @@ module say_seal_hardware() echo(str("sealed joints: three TPU bead rings, ", sea
     " socket head into nuts, HEPA holder to carbon housing; four M3 x ", j12_screw,
     " through the carbon housing's tabs and the section's pillars into the fan section's nuts; eight M3 nuts; every head sunk in its tab"));
 
+// ------------------------------------------------------------------ the joint sample (D121)
+// See bentobox.params.scad. Everything past sample_l in from the +Y end wall, sliced off the sealed parts.
+module _sample_end(z0, z1) translate([-50, seal_y - sample_l, z0]) cube([100, tab_tip - seal_y + sample_l + 5, z1 - z0]);
+// The carbon housing's top end, standing on its cut, its collar and nut tabs up; the HEPA holder's bottom end, on
+// its floor, its tabs' counterbores up. Both laid out along X, Y from 0.
+module sample_low() translate([0, sample_l - seal_y, sample_low_h - sst[3]])
+    intersection() { carbon_sealed(); _sample_end(sst[3] - sample_low_h, sst[3] + 5); }
+module sample_up() translate([0, sample_l - seal_y, -sst[3]])
+    intersection() { hepa_sealed(); _sample_end(sst[3] - 1, sst[3] + sample_up_h); }
+// A fan nut's pocket as the base has it, open under it: 3 mm of its way up, the seat, and the roof with the screw's
+// hole bridged through it - for a nut pulled in with a M3 x 8 from above.
+pull_block = [16, 16];
+module sample_pull() let(h = 3 + nut_slot_h + nut_roof) difference() {
+    linear_extrude(h) offset(r = 2) square(pull_block - [4, 4], center = true);
+    pull_frame([0, 0, 0], -eps) cylinder(r = pull_way_ac / 2, h = 3 + 2 * eps, $fn = 6);
+    pull_frame([0, 0, 0], 3) cylinder(r = pull_ac / 2, h = nut_slot_h, $fn = 6);
+    pull_frame([0, 0, 0], 3 + nut_slot_h) bridged_hole(pull_ac, hole_d, nut_roof + 1, fdm_layer_h, eps);
+}
+module joint_sample() {
+    w = bb_w + sample_gap;
+    translate([-w / 2, 0, 0]) sample_low();
+    translate([w / 2, 0, 0]) sample_up();
+    translate([0, -pull_block[1] / 2 - sample_gap, 0]) sample_pull();
+}
+// The bead for that end, in TPU, flat: the ring's run past the slice, open at both ends.
+module joint_sample_bead() translate([0, sample_l - seal_y, 0]) intersection() { bead_ring(); _sample_end(-1, 10); }
+module say_sample_hardware() echo(str("joint sample: two M3 x ", j3_screw, " socket head and two M3 nuts for the joint, one M3 nut and an M3 x 8 for the pocket's seat"));
+
 // How to cut the paper for the frame, from the values above: what the build page quotes. Only the length is
 // measured; across the folds the piece is counted, since the ring sets its width.
 module say_paper_cut() echo(str("paper: cut a piece ", round(pack_l * 10) / 10, " mm long along the folds and ", pack_n,
@@ -482,6 +510,9 @@ if (draw_model) {
     else if (part == "carbon") { translate([0, 0, -sst[2]]) carbon_sealed(); say_seal_hardware(); }
     else if (part == "hepa") { translate([0, 0, -sst[3]]) hepa_sealed(); say_seal_hardware(); }
     else if (part == "bead_ring") bead_ring();
+    // The joint sample's ASA plate, and its TPU bead.
+    else if (part == "joint_sample") { joint_sample(); say_sample_hardware(); }
+    else if (part == "joint_sample_bead") joint_sample_bead();
     else if (part == "auto_plate") { translate([0, 0, -auto_base_z0]) auto_plate(); say_auto_hardware(); }
     else assert(false, str("unknown part: ", part));
 }
