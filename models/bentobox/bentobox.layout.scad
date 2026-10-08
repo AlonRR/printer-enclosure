@@ -15,16 +15,17 @@ sec_h = grid_t + sheet_t + plenum_h;
 ledge_w = ledge_beads * bead;
 rib_w = grid_beads * bead;
 
-// The stack, bottom up: the Z of each part's bottom face, with the section or without. Sealed, a lower part's top
-// is cut `meet` under its imported face (bentobox.scad, sealed joints), and what stands on it is that much lower;
-// the section's own faces are exact. The airflow simulation asks for the originals' stack.
+// The stack, bottom up: the Z of each part's bottom face, with the section or without. Sealed, an original is cut
+// `meet` inside its own face at each sealed joint (bentobox.scad, sealed joints) - a lower part's top down, an upper
+// part's floor up - and everything over the cut stands that much lower; the section's own faces are exact. The
+// airflow simulation asks for the originals' stack.
 function stack(with_section, seal = false) = let(
     drop = seal ? meet : 0,
     fans_z = duct_h,
     sec_z = fans_z + fans_h - drop,
     carbon_z = sec_z + (with_section ? sec_h : 0),
-    hepa_z = carbon_z + carbon_h - drop
-) [fans_z, sec_z, carbon_z, hepa_z, hepa_z + hepa_h + cover_top];
+    hepa_z = carbon_z + carbon_h - 2 * drop
+) [fans_z, sec_z, carbon_z, hepa_z, hepa_z + hepa_h - drop + cover_top];
 // [fan case, section, carbon housing, HEPA holder, the cover's top]
 
 // The C-MAG's three trays, standing: each tray's pellets fall onto the grill below them and spread over the
@@ -136,17 +137,28 @@ seal_gc = seal_inner + seal_groove[0] / 2;                               // its 
 collar_base = collar_top + collar_h;                                     // the collar at its foot, in from the outside
 chamfer_in = collar_base + collar_play;                                  // the upper part's bottom edge, in from the outside
 seal_ring = [[for (sx = [1, -1], sy = [1, -1]) [sx * (in_w / 2 + seal_gc), sx * sy * (in_l / 2 + seal_gc)]], in_r + seal_gc];
-// The tabs, at the corners: the screw tab_out past the end wall, its boss tangent to the side face; the outline
-// leaves the end wall at tab_x0 along the parabola y = ye + tab_c (x - tab_x0)^2, which meets the boss's round end
-// at tab_a0, tangent to it.
-tab_ye = bb_l / 2;
-tab_sc = [bb_w / 2 - tab_side_in - tab_boss_r, tab_ye + tab_out];
-tab_l = tab_out + tab_boss_r;                                            // how far a tab stands out
+// The sealed parts' outline, `meet` inside the originals': its side faces at +-seal_x, its end walls at +-seal_y,
+// its corners seal_r round [+-seal_xc, +-seal_yc]. The tabs, at the corners: the screw tab_out past the original's
+// end wall, its boss tangent to the side face; the outline runs up the side face onto the boss, round it to tab_a0,
+// and down the parabola y = seal_y + tab_c (x - tab_x0)^2 into the end wall, tangent to both.
+seal_x = bb_w / 2 - meet;
+seal_y = bb_l / 2 - meet;
+seal_r = bb_r - meet;
+seal_xc = bb_w / 2 - bb_r;
+seal_yc = bb_l / 2 - bb_r;
+tab_sc = [seal_x - tab_boss_r, bb_l / 2 + tab_out];
+tab_tip = tab_sc[1] + tab_boss_r;                                         // how far out a tab reaches
 tab_p = tab_sc + tab_boss_r * [cos(tab_a0), sin(tab_a0)];
 tab_m = -cos(tab_a0) / sin(tab_a0);                                      // the round end's slope there
-tab_x0 = tab_p[0] - 2 * (tab_p[1] - tab_ye + tab_dip) / tab_m;
+tab_x0 = tab_p[0] - 2 * (tab_p[1] - seal_y) / tab_m;
 tab_c = tab_m / (2 * (tab_p[0] - tab_x0));
-bracket_h = 3 * (tab_l + bracket_in);   // under a nut's tab: y = ye - bracket_in + (tab_l + bracket_in) ((z - foot) / bracket_h)^3, 45 degrees at the tab
+tab_zone_y = seal_yc - 1;                                                 // a tab's zone: X past tab_x0, Y past this
+// Under a nut's tab, a bracket: its face from tab_blend inside the end wall at its foot out to tab_blend past the
+// tab's tip, a cubic in the height, 45 degrees at the tab (bentobox.scad, bracket_f).
+bracket_y0 = seal_y - tab_blend;
+bracket_l = tab_tip + tab_blend - bracket_y0;
+bracket_h = 3 * bracket_l;
+tab_upper_h = tab_upper_t + plate_cb[1];                                 // an upper part's tab, its screw's head sunk
 tab_screws = [for (sx = [-1, 1], sy = [-1, 1]) [sx * tab_sc[0], sy * tab_sc[1], sy > 0 ? 90 : 270]];
 // The screws: through the HEPA holder's tab into the carbon housing's nut; and through the carbon housing's tab and
 // the section's pillar into the fan section's nut. Each nut sits in the middle of its tab's height, pulled up
@@ -155,10 +167,16 @@ seal_slot_bot = -tab_lower_t / 2 - nut_slot_h / 2;                      // a nut
 j3_screw = screw_for(tab_upper_t - (seal_slot_bot + nut_slot_h) + nut_h + screw_tip);
 j12_screw = screw_for(tab_upper_t + sec_h - (seal_slot_bot + nut_slot_h) + nut_h + screw_tip);
 
-assert(seal_inner + seal_groove[0] + bead_land <= wall - chamfer_in + 1e-9,
+assert(seal_inner + seal_groove[0] + bead_land <= wall - meet - chamfer_in + 1e-9,
     str("the groove, ", seal_groove[0], " mm, does not fit between the inside and the collar"));
 assert(seal_bead[1] > seal_groove[1], "the bead must stand proud of its groove");
-assert(tab_x0 > 0 && tab_x0 < tab_sc[0], "the tab's parabola must leave the end wall between the middle and the screw");
+assert(tab_x0 > 0 && tab_x0 < seal_xc, "the tab's parabola must leave the end wall's straight, between the middle and the corner");
+assert(tab_corner_t[0] >= 0 && tab_corner_t[0] < tab_corner_t[1] && tab_corner_t[1] <= 1, "tab_corner_t: two fractions of a bracket's height, rising");
+// A bracket's face rises at most this steeply, dy/dz: 1 at the tab, and while it fills the corner, the corner's
+// smoothstep at its steepest over the cubic at its top: 1 or under, so nowhere overhangs more than 45 degrees.
+bracket_slope = max(3 * bracket_l, (seal_r - tab_blend + 0.5) * 1.5 / (tab_corner_t[1] - tab_corner_t[0])
+    + 3 * bracket_l * pow(tab_corner_t[1], 2)) / bracket_h;
+assert(bracket_slope <= 1 + 1e-9, str("a bracket overhangs more than 45 degrees: dy/dz up to ", bracket_slope));
 assert(!sealed || (bottom == "auto" || bottom == "bambu"), "a sealed stack needs a fan section");
 
 assert(wedge_w > 0 && tooth_w > 0, "the pleats are too narrow for the paper's slot: no channel is left to close");
@@ -185,6 +203,7 @@ warns = [
     if (slot_w > paper_t && slot_w < bead - 1e-9) str("the slots for the paper are ", slot_w, " mm, under a bead: they may print shut"),
     if (nut_roof < 5 * fdm_layer_h - 1e-9) str("a fan screw's nut has ", nut_roof, " mm over it: the screw may pull it through"),
     if (pull_air_wall < 2 * bead - 1e-9) str("a fan nut's pocket is ", pull_air_wall, " mm from the fans' air, under two beads"),
+    if (tab_boss_r - plate_cb[0] / 2 < 2 * bead - 1e-9) str("a tab's head counterbore leaves ", tab_boss_r - plate_cb[0] / 2, " mm of wall, under two beads"),
     if (nut_floor < 5 * fdm_layer_h - 1e-9) str("a nut's slot has ", nut_floor, " mm under it"),
 ];
 for (w = warns) echo(str("WARNING: ", w));

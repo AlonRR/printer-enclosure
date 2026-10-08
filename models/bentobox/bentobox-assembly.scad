@@ -64,7 +64,7 @@ module stack_sealed(ex) {
     piece("steelblue") translate([0, 0, ex]) fans_sealed();
     piece("seagreen") translate([0, 0, sst[1] + 2 * ex]) section();
     piece("tan") translate([0, 0, 3 * ex]) carbon_sealed();
-    piece("sienna") translate([0, 0, 3 * ex]) cmag_standing(sst[2] + cmag_z0);
+    piece("sienna") translate([0, 0, 3 * ex]) cmag_standing(sst[2] - meet + cmag_z0);
     piece("lightsteelblue") translate([0, 0, 4 * ex]) hepa_sealed();
     piece("darkslategray") translate([0, 0, 4 * ex]) orig(cover_stl, hepa_dz);
 }
@@ -80,9 +80,10 @@ module seal_screws() translate([screw_shift[0], screw_shift[1], 0]) for (s = tab
 }
 module seal_nuts(way = 0) for (s = tab_screws, z = [sst[1], sst[3]])
     hull() for (x = [0, way]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, z + seal_slot_bot);
-// Over each screw's head, as far up as the screw is long and 10 mm more: the room to put it in and turn it.
+// Over each screw's head, from its tab's top - the head is sunk in it - as far up as the screw is long and 10 mm
+// more: the room to put it in and turn it.
 module seal_access() for (s = tab_screws, j = [[sst[3], j3_screw], [sst[2], j12_screw]])
-    translate([s[0], s[1], j[0] + tab_upper_t + plate_head[1]]) cylinder(d = plate_head[0] + 1, h = j[1] + 10);
+    translate([s[0], s[1], j[0] + tab_upper_h]) cylinder(d = plate_head[0] + 1, h = j[1] + 10);
 module seal_parts() { fans_sealed(); translate([0, 0, sst[1]]) section(); carbon_sealed(); hepa_sealed(); }
 module joints_exploded(ex) {
     color("steelblue") fans_sealed();
@@ -141,7 +142,7 @@ module bottom_exploded(ex) {
     color("lightslategray") auto_base();
     color("gold") auto_nuts();
     color("silver") { auto_screws(); }
-    color("steelblue", 0.85) translate([0, 0, ex]) auto_fans();
+    color("steelblue", 0.85) translate([0, 0, ex]) if (sealed) fans_sealed(); else auto_fans();
 }
 
 // The HEPA holder's ledge, with the section in the stack: where the frame's ring stands.

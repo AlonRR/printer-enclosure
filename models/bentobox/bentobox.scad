@@ -259,128 +259,187 @@ module say_auto_hardware() echo(str("auto: six M3 nuts, the fans' four pulled up
     " mm into the bottom face"));
 
 // ------------------------------------------------------------------ the sealed joints
-// See bentobox.params.scad. A lower part's top: its tongue cut away `meet` under its face (the STL's float32 face
-// is not where the same number computed here is), its magnets' holes filled, a collar round its edge, the bead's
-// groove, and four tabs with a nut in each, on cubic brackets. An upper part's bottom: its groove and its magnets'
-// holes filled, its edge cut back at 45 degrees to sit in the collar, and four tabs under the screws' heads.
+// See bentobox.params.scad. Each sealed part is cut to one outline, drawn here: the originals' outside is cut `meet`
+// inside their own faces (an STL's float32 face is not where the same number computed here is, and faces a hair
+// apart make slivers), and the tabs, the brackets and the section's pillars belong to that same outline, so their
+// faces run on from the walls' with no seam. Where a part meets a sealed joint it is cut there too: a lower part's
+// top, an upper part's floor. A lower part's top: its magnets' holes filled, a collar round its edge, the bead's
+// groove, and a nut in each tab, on a bracket. An upper part's floor: its groove and magnets' holes filled, its edge
+// cut back at 45 degrees to sit in the collar, and each screw's head sunk in its tab.
 module outline_in(d) offset(delta = -d) rrect(bb_w, bb_l, bb_r);
-// One tab's outline from above, at the +X, +Y corner: from the end wall along the parabola, round the screw's
-// boss, down the side face's line into the body.
-function _tab_pts() = concat(
-    [for (i = [0 : 24]) let(x = tab_x0 + (tab_p[0] - tab_x0) * i / 24) [x, tab_ye - tab_dip + tab_c * pow(x - tab_x0, 2)]],
-    [for (a = [tab_a0 - 5 : -5 : 0]) tab_sc + tab_boss_r * [cos(a), sin(a)]],
-    [[tab_sc[0] + tab_boss_r, tab_ye - bb_r - 1], [tab_x0, tab_ye - bb_r - 1]]);
-module tabs2d() for (mx = [0, 1], my = [0, 1]) mirror([mx, 0, 0]) mirror([0, my, 0]) polygon(_tab_pts());
-// Under a nut's tab, its bottom at zt: a bracket whose face is a cubic in its height, from bracket_in inside the end
-// wall at its foot, crossing the wall's face at a slant, to the tab's tip at 45 degrees. Not below the part's bottom, z0.
-module brackets(zt, z0) {
-    foot = zt - bracket_h;
-    zs = max(foot, z0 + 0.2);
-    n = 24;
-    face = [for (i = [0 : n]) let(z = zs + (zt - zs) * i / n)
-        [tab_ye - bracket_in + (tab_l + bracket_in) * pow((z - foot) / bracket_h, 3), z]];
-    // It reaches 1 mm up into the tab, which has the same outline, so no face of it lies a hair from the tab's.
-    intersection() {
-        translate([0, 0, zs]) linear_extrude(zt - zs + 1) tabs2d();
-        for (my = [0, 1]) mirror([0, my, 0]) rotate([90, 0, 90]) translate([0, 0, -bb_w])
-            linear_extrude(2 * bb_w) polygon(concat([[tab_ye - 1, zs], [tab_ye - 1, zt + 1], [tab_ye + tab_l + 1, zt + 1]],
-                [for (i = [n : -1 : 0]) face[i]]));
-    }
+// The outline from above, as points, anticlockwise: the side faces at +-seal_x, the end walls at +-seal_y. Each is
+// built from its +X +Y corner by exact reflections, and every point where a curve meets a straight face is written
+// with that face's own number, so the two outlines below share their faces exactly.
+function _mx(ps) = [for (p = ps) [-p[0], p[1]]];
+function _my(ps) = [for (p = ps) [p[0], -p[1]]];
+function _rev(ps) = [for (i = [len(ps) - 1 : -1 : 0]) ps[i]];
+function _round(c) = concat(c, _rev(_mx(c)), _mx(_my(c)), _rev(_my(c)));
+// The plain outline, its corners round.
+function _corner_pts() = concat([[seal_x, seal_yc]],
+    [for (i = [1 : 15]) [seal_xc, seal_yc] + seal_r * [cos(90 * i / 16), sin(90 * i / 16)]], [[seal_xc, seal_y]]);
+function outline_pts() = _round(_corner_pts());
+// With the tabs: up the side face onto the screw's boss, round it to tab_a0, and down the parabola into the end wall.
+function _tab_pts() = concat([[seal_x, tab_sc[1]]],
+    [for (a = [5 : 5 : tab_a0 - 1]) tab_sc + tab_boss_r * [cos(a), sin(a)]],
+    [for (i = [0 : 24]) let(x = tab_p[0] - (tab_p[0] - tab_x0) * i / 24) [x, seal_y + tab_c * pow(x - tab_x0, 2)]]);
+function plan_pts() = _round(_tab_pts());
+// Each tab's zone: the tabs' material comes in only there.
+module tab_zone2d() for (mx = [0, 1], my = [0, 1]) mirror([mx, 0, 0]) mirror([0, my, 0])
+    translate([tab_x0, tab_zone_y]) square([seal_x + 20 - tab_x0, tab_tip + 20 - tab_zone_y]);
+// Material for the tabs: the outline grown by g, so the cut to the outline sets every face; in the tabs' zones only.
+module tab_stuff2d(g) intersection() { offset(delta = g) polygon(plan_pts()); tab_zone2d(); }
+// Everything below z, or above it, with its face exactly at z.
+module below(z) translate([-100, -100, z]) mirror([0, 0, 1]) cube([200, 200, 400]);
+module above(z) translate([-100, -100, z]) cube([200, 200, 400]);
+
+// Under a nut's tab, its bottom at zt: a bracket whose face is y = F(x, z), 45 degrees at the tab, tangent to the wall
+// at its foot. Along the end wall F is a cubic in the height, from tab_blend inside the wall out past the tab's tip.
+// In the rounded corner it starts tab_blend inside the round and, between tab_corner_t, fills the corner out to the
+// end wall's line, smoothly - so the side face runs on into the bracket's side.
+function _corner_y(x) = x <= seal_xc ? bracket_y0
+    : x <= seal_xc + seal_r - tab_blend ? seal_yc + sqrt(max(0, pow(seal_r - tab_blend, 2) - pow(x - seal_xc, 2)))
+    : tab_zone_y + 0.5;
+function _smooth(u) = let(v = min(1, max(0, u))) v * v * (3 - 2 * v);
+function bracket_f(x, z, zt) = let(t = min(1, max(0, (z - zt) / bracket_h + 1)), y0 = _corner_y(x))
+    y0 + (bracket_y0 - y0) * _smooth((t - tab_corner_t[0]) / (tab_corner_t[1] - tab_corner_t[0])) + bracket_l * pow(t, 3);
+// The solid behind that face at the +X +Y corner, grown by g: X from before the parabola's start to past the side
+// face, Y from inside the wall out to the face, Z from z0 to 1 mm up into the tab. The columns in the corner follow
+// its round; one beyond the side face, where the corner has ended, starts the face back inside the side wall.
+module bracket_block(zt, z0, g) {
+    xs = concat([tab_x0 - 1], [for (i = [0 : 16]) seal_xc + (seal_r - tab_blend) * sin(90 * i / 16)], [seal_x + 1]);
+    zs = concat([for (j = [0 : 36]) z0 + (zt - z0) * j / 36], [zt + 1]);
+    nx = len(xs);
+    nz = len(zs);
+    pts = concat([for (x = xs, z = zs) [x, bracket_f(x, z, zt) + g, z]], [for (x = xs, z = zs) [x, tab_zone_y - 0.5, z]]);
+    b = nx * nz;   // the back's points follow the face's
+    polyhedron(pts, concat(
+        [for (i = [0 : nx - 2], j = [0 : nz - 2]) each [
+            [i * nz + j, (i + 1) * nz + j, (i + 1) * nz + j + 1], [i * nz + j, (i + 1) * nz + j + 1, i * nz + j + 1],
+            [b + i * nz + j, b + (i + 1) * nz + j + 1, b + (i + 1) * nz + j], [b + i * nz + j, b + i * nz + j + 1, b + (i + 1) * nz + j + 1]]],
+        [concat([for (j = [0 : nz - 1]) j], [for (j = [nz - 1 : -1 : 0]) b + j])],
+        [concat([for (j = [0 : nz - 1]) b + (nx - 1) * nz + j], [for (j = [nz - 1 : -1 : 0]) (nx - 1) * nz + j])],
+        [concat([for (i = [0 : nx - 1]) b + i * nz], [for (i = [nx - 1 : -1 : 0]) i * nz])],
+        [concat([for (i = [0 : nx - 1]) i * nz + nz - 1], [for (i = [nx - 1 : -1 : 0]) b + i * nz + nz - 1])]));
 }
-// The collar on a lower part's top, its face at z: its outside meet in from the outline, its inside at 45 degrees,
-// none where the tabs are. Its rounded corners have their own number of facets: with the part's 64, its slant met
-// the section's wall at the wall's own corners, and left degenerate slivers there.
-module collar(z, $fn = 97) difference() {
-    translate([0, 0, z - 0.5]) linear_extrude(collar_h + 0.5) outline_in(meet);
-    hull() {
-        translate([0, 0, z - 0.5 - eps]) linear_extrude(eps) outline_in(collar_base + 0.5);
-        translate([0, 0, z + collar_h]) linear_extrude(eps) outline_in(collar_top);
-    }
-    translate([0, 0, z - 1]) linear_extrude(collar_h + 2) offset(delta = collar_play) tabs2d();
+// The four brackets: g = 0, the shape; g > 0, the material for it, grown and in the tabs' zones only.
+module brackets(zt, z0, g = 0) intersection() {
+    for (mx = [0, 1], my = [0, 1]) mirror([mx, 0, 0]) mirror([0, my, 0]) bracket_block(zt, z0, g);
+    translate([0, 0, z0 - 1]) linear_extrude(zt - z0 + 3) if (g > 0) tab_stuff2d(g); else polygon(plan_pts());
 }
-// What an upper part's bottom edge loses, its face at z: everything outside a 45-degree face from chamfer_in in at
-// the face to the outline itself; it stops just past the outline, so it meets none of the part's faces.
-module chamfer_cut(z, $fn = 97) difference() {
-    translate([0, 0, z - 1]) linear_extrude(chamfer_in + 1 + meet) offset(delta = 5) outline_in(0);
-    hull() {
-        translate([0, 0, z - 1 - eps]) linear_extrude(eps) outline_in(chamfer_in + 1);
-        translate([0, 0, z + chamfer_in + meet]) linear_extrude(eps) outline_in(-meet);
-    }
+// Inside a 45-degree face over the outline with its tabs: at z, the outline inset by d, and 1 mm less inset for
+// every 1 mm up, for rise. It is Minkowski's sum of the inset outline and a cone, which is exact where the outline
+// turns no tighter than d - here nowhere: the tabs' bosses are tab_boss_r round, and the corners are the tabs'.
+// The cone's facets are odd in number, so its slant never runs onto the outline's own vertices.
+module slant_in(z, d, rise, $fn = 23) minkowski() {
+    translate([0, 0, z]) linear_extrude(eps) offset(delta = -d) polygon(plan_pts());
+    cylinder(r1 = 0, r2 = rise, h = rise);
+}
+// The collar on a lower part's top, its face at z: round the whole outline, tabs and all; its outside the outline's,
+// its inside at 45 degrees, collar_base in at its foot.
+module collar(z) difference() {
+    translate([0, 0, z - 0.5]) linear_extrude(collar_h + 0.5) polygon(plan_pts());
+    slant_in(z - 0.5 - eps, collar_base + 0.5 + eps, collar_base + 0.5 - collar_top + 2 * eps);
+}
+// What an upper part's bottom edge loses, its face at z, round the whole outline, tabs and all: everything outside a
+// 45-degree face from chamfer_in in at the face to just past the outline.
+module chamfer_cut(z) difference() {
+    translate([0, 0, z - 1]) linear_extrude(chamfer_in + 1 + meet) offset(delta = 5) polygon(plan_pts());
+    slant_in(z - 1 - eps, chamfer_in + 1 + eps, chamfer_in + 1 + 2 * meet);
 }
 module seal_groove_cut(z) translate([0, 0, z - seal_groove[1]]) linear_extrude(seal_groove[1] + 1)
     gasket_groove_2d(seal_ring[0], seal_ring[1], seal_groove[0]);
 module bead_ring() gasket_ring(seal_ring[0], seal_ring[1], seal_bead);
 module magnet_fill(z0, z1) for (sx = [-1, 1], sy = [-1, 1]) translate([sx * mag_xy[0], sy * mag_xy[1], z0]) cylinder(d = mag_d + 0.2, h = z1 - z0);
-// A lower part's top. zf: its imported face; z0: its bottom. The new face is zf - meet.
-module lower_face(zf, z0) let(z = zf - meet) difference() {
-    union() {
-        difference() {
-            union() {
-                children();
-                magnet_fill(zf - mag_h - 0.1, zf + 1);
-                translate([0, 0, z - tab_lower_t]) linear_extrude(tab_lower_t + 1) tabs2d();
-                brackets(z - tab_lower_t + eps, z0);
+// The material grown past the outline for the tabs, g: a hair, so that the cut to the outline sets every face.
+tab_g = 0.02;
+// A sealed original, its STL the child. zb: its floor's cut, at the joint under it (an upper part's), or undef;
+// zt: its top's cut, at the joint over it (a lower part's), or undef. z0, z1: its STL's bottom and top faces.
+module sealed_part(zb, zt, z0, z1) {
+    up = !is_undef(zb);
+    low = !is_undef(zt);
+    ztab = low ? zt - tab_lower_t : undef;                                // a nut's tab's bottom
+    zbr = low ? max(ztab - bracket_h, z0 + bb_chamfer + 0.1) : undef;     // its bracket's foot, over any bottom chamfer
+    difference() {
+        union() {
+            intersection() {
+                union() {
+                    children();
+                    if (up) {
+                        translate([0, 0, zb - 1]) linear_extrude(1 - meet + groove_h + 0.1)
+                            difference() { inside_offset(groove_out + 0.1); inside_offset(-0.2); }
+                        magnet_fill(zb - 1, zb - meet + mag_h + 0.1);
+                        translate([0, 0, zb - 1]) linear_extrude(1 + tab_upper_h + tab_g) tab_stuff2d(tab_g);
+                    }
+                    if (low) {
+                        magnet_fill(zt + meet - mag_h - 0.1, zt + 1);
+                        translate([0, 0, ztab]) linear_extrude(tab_lower_t + 1) tab_stuff2d(tab_g);
+                        brackets(ztab, zbr, tab_g);
+                    }
+                }
+                // The shape: the outline, the tabs, the brackets, cut at the joints' faces.
+                intersection() {
+                    union() {
+                        translate([0, 0, z0 - 1]) linear_extrude(z1 - z0 + 2) polygon(outline_pts());
+                        if (up) translate([0, 0, zb - 1]) linear_extrude(1 + tab_upper_h) polygon(plan_pts());
+                        if (low) {
+                            translate([0, 0, ztab]) linear_extrude(tab_lower_t + 1) polygon(plan_pts());
+                            brackets(ztab, zbr);
+                        }
+                    }
+                    if (up) above(zb);
+                    if (low) below(zt);
+                }
             }
-            translate([0, 0, z]) linear_extrude(10) offset(delta = 20) outline_in(0);
+            if (low) collar(zt);
         }
-        collar(z);
-    }
-    seal_groove_cut(z);
-    for (s = tab_screws) {
-        slot_frame(s, z + seal_slot_bot) { slot(); roof_hole(-(seal_slot_bot + nut_slot_h) + 1); }
-        translate([s[0], s[1], z - 9]) cylinder(d = hole_d, h = 9 + seal_slot_bot + eps);
+        if (up) {
+            chamfer_cut(zb);
+            for (s = tab_screws) translate([s[0], s[1], zb - 1]) {
+                cylinder(d = hole_d, h = tab_upper_h + 2);
+                translate([0, 0, 1 + tab_upper_t]) cylinder(d = plate_cb[0], h = tab_upper_h);
+            }
+        }
+        if (low) {
+            seal_groove_cut(zt);
+            for (s = tab_screws) {
+                slot_frame(s, zt + seal_slot_bot) { slot(); roof_hole(-(seal_slot_bot + nut_slot_h) + 1); }
+                translate([s[0], s[1], zt - 9]) cylinder(d = hole_d, h = 9 + seal_slot_bot + eps);
+            }
+        }
     }
 }
-// An upper part's bottom, its face at z.
-module upper_face(z) difference() {
-    union() {
-        difference() {
-            union() {
-                children();
-                translate([0, 0, z + meet]) linear_extrude(groove_h + 0.1)
-                    difference() { inside_offset(groove_out + 0.1); inside_offset(-0.2); }
-                magnet_fill(z + meet, z + mag_h + 0.1);
-            }
-            chamfer_cut(z);
-        }
-        translate([0, 0, z + meet]) linear_extrude(tab_upper_t - meet) tabs2d();
-    }
-    for (s = tab_screws) translate([s[0], s[1], z - 1]) cylinder(d = hole_d, h = tab_upper_t + 2);
-}
-// The section, sealed: flat underneath, chamfered to sit in the fan section's collar; a collar and the bead's
-// groove on top; a pillar at each corner, which the screw from the carbon housing passes through; no magnets. Its
-// outside is one hull with the chamfer in it: cut afterwards, the slant met the wall at the corner's first facet.
+// The section, sealed: the outline with its tabs, the inside cut out, the grid; its edge chamfered underneath to sit
+// in the fan section's collar, a collar and the bead's groove on top. Its tabs are pillars, which the screws from
+// the carbon housing pass through; no magnets.
 module section_sealed() difference() {
     union() {
-        difference() {
+        intersection() {
             union() {
                 difference() {
-                    hull() {
-                        linear_extrude(eps) outline_in(chamfer_in);
-                        translate([0, 0, chamfer_in]) linear_extrude(sec_h - chamfer_in - bb_chamfer) outline_in(0);
-                        translate([0, 0, sec_h - eps]) linear_extrude(eps) outline_in(bb_chamfer);
-                    }
-                    translate([0, 0, -1]) linear_extrude(sec_h + 2) inside_offset(0);
+                    linear_extrude(sec_h + 1) polygon(plan_pts());
+                    translate([0, 0, -1]) linear_extrude(sec_h + 3) inside_offset(0);
                 }
                 grid();
             }
+            below(sec_h);
         }
-        linear_extrude(sec_h) tabs2d();
         collar(sec_h);
     }
+    chamfer_cut(0);
     seal_groove_cut(sec_h);
     for (s = tab_screws) translate([s[0], s[1], -1]) cylinder(d = hole_d, h = sec_h + 2);
 }
-// The sealed stack's parts in place: the fan section, the carbon housing, the HEPA holder.
+// The sealed stack's parts in place: the fan section, the carbon housing, the HEPA holder. Each original stands
+// `meet` lower than its joint's face, whose cut takes that much off its floor.
 sst = stack(true, true);
-carbon_dz = sst[2] - (duct_h + fans_h);
-hepa_dz = sst[3] - (duct_h + fans_h + carbon_h);
-module fans_sealed() lower_face(duct_h + fans_h, duct_h) fan_section();
-module carbon_sealed() lower_face(duct_h + fans_h + carbon_h + carbon_dz, sst[2]) upper_face(sst[2]) orig(carbon_stl, carbon_dz);
-module hepa_sealed() upper_face(sst[3]) orig(hepa_stl, hepa_dz);
+carbon_dz = sst[2] - meet - (duct_h + fans_h);
+hepa_dz = sst[3] - meet - (duct_h + fans_h + carbon_h);
+module fans_sealed() sealed_part(undef, sst[1], duct_h, duct_h + fans_h) fan_section();
+module carbon_sealed() sealed_part(sst[2], sst[3], sst[2] - meet, sst[2] - meet + carbon_h) orig(carbon_stl, carbon_dz);
+module hepa_sealed() sealed_part(sst[3], undef, sst[3] - meet, sst[3] - meet + hepa_h) orig(hepa_stl, hepa_dz);
 module say_seal_hardware() echo(str("sealed joints: three TPU bead rings, ", seal_bead[0], " mm; four M3 x ", j3_screw,
     " socket head into nuts, HEPA holder to carbon housing; four M3 x ", j12_screw,
-    " through the carbon housing's tabs and the section's pillars into the fan section's nuts; eight M3 nuts"));
+    " through the carbon housing's tabs and the section's pillars into the fan section's nuts; eight M3 nuts; every head sunk in its tab"));
 
 // How to cut the paper for the frame, from the values above: what the build page quotes. Only the length is
 // measured; across the folds the piece is counted, since the ring sets its width.

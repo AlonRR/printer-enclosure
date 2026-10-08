@@ -141,17 +141,24 @@ housing are sealed:
   bottom presses it down as the two faces meet, a fifth of its height. Its hollow is vented through its
   inner wall, to the box's inside: a dead end, and the outer wall and the ridge seal. The bead's size is a
   first choice, not yet tried in print.
-- **The upper part sits in the lower one.** A collar 1 mm tall runs round the lower part's top edge, its
-  inner face at 45 degrees; the upper part's bottom edge is cut back at 45 degrees to sit in it, 0.2 mm
-  clear. It centres the parts, and it is a second barrier outside the bead. Both print without support.
-- **Four tabs and screws, where the magnets were.** At each corner a tab stands 9.4 mm past the end wall,
-  its outline a parabola leaving the wall and running on flush with the side face. Under each nut's tab, a
-  bracket whose face is a cubic in its height: tangent to the wall at its foot, 45 degrees at the tab, so it
-  prints without support. The fan section is shorter than a bracket, so its brackets run down to its bottom
-  face. Each nut slides in from the tab's end.
+- **The upper part sits in the lower one.** A collar 1 mm tall runs round the lower part's top edge, round
+  the tabs too, its inner face at 45 degrees; the upper part's bottom edge, tabs and all, is cut back at 45
+  degrees to sit in it, 0.2 mm clear. It centres the parts, and it is a second barrier outside the bead. Both
+  print without support.
+- **Four tabs and screws, where the magnets were.** At each corner a tab stands 9.4 mm past the end wall.
+  The tabs are seamless with the walls and floors: each part's outline is one shape, tabs and all, so a
+  tab's side runs straight on from the side face, its outline leaves the end wall along a parabola, tangent
+  to it, and its floor or top is the part's own. For that the originals' outsides are cut 0.05 mm inside
+  their own faces, a quarter of a layer, and their floors and tops at a sealed joint likewise. Under each
+  nut's tab, a bracket whose face is a cubic in its height: tangent to the wall at its foot, 45 degrees at
+  the tab, so it prints without support. In the rounded corner under the tab it fills the corner smoothly,
+  so the side face runs on into the bracket's side. The fan section is shorter than a bracket, so its
+  brackets run down to its bottom. Each nut slides in from the tab's end.
 - **The screws.** Four M3 × 12 through the HEPA holder's tabs into nuts in the carbon housing's. Four
   M3 × 25 through the carbon housing's bottom tabs and pillars in the section into nuts in the fan
-  section's: one screw at each corner holds both of the section's joints.
+  section's: one screw at each corner holds both of the section's joints. Each head sinks flush into a
+  counterbore in its tab, 0.2 mm under the top: the upper parts' tabs stand 8.2 mm, 5 mm of it under the
+  head.
 
 ![The sealed joints pulled apart: the fan section, the section, the carbon housing and the HEPA holder, a bead ring over each lower part's groove, the screws](bentobox/joints.png)
 
@@ -231,14 +238,14 @@ ring flat. No supports, no brim. Standing, the base's bay roof is a 41 mm bridge
 
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
-| Section | ASA | 1 | 1 h 59 m | 17 g |
+| Section | ASA | 1 | 1 h 57 m | 17 g |
 | Paper ring | ASA | 1 | 1 h 8 m | 8 g |
 | Paper cap | TPU 95A | 2 | 52 m each | 5 g each |
 | Base | ASA | 1 | 4 h 17 m | 44 g |
-| Fan section | ASA | 1 | 3 h 43 m | 36 g |
+| Fan section | ASA | 1 | 3 h 42 m | 36 g |
 | Plate | ASA | 1 | 37 m | 8 g |
-| Carbon housing | ASA | 1 | 7 h 25 m | 71 g |
-| HEPA holder | ASA | 1 | 4 h 41 m | 48 g |
+| Carbon housing | ASA | 1 | 7 h 23 m | 71 g |
+| HEPA holder | ASA | 1 | 4 h 43 m | 48 g |
 | Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
@@ -371,7 +378,7 @@ section on the base and the plate in its recess, sets a nut in each slot and sli
 slot's mouth, and one in each fan screw's pocket and draws it 10 mm down out of it, runs each screw from its head to its tip, and the wires down the tube, and the fans' air
 down into the base past the posts. Each must come out empty. Every check has a positive control,
 something broken on purpose that it must catch, and the run fails if one passes unnoticed: 25 fits and
-30 controls.
+31 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.

@@ -151,13 +151,13 @@ nut_slot_out = 12;  /* How far past its screw each slot is cut towards its mouth
 // screw's axis, open downwards; the screw, from above, pulls it up into the pocket against the roof.
 pull_way = 12.5;    /* How far each pocket runs down from its roof: out through its post's cone and, at the end walls, through the Auto's own boss under its insert, into the duct. */
 plate_head = [5.5, 3];  /* The plate's screws, M3 socket head, ISO 4762: the head's diameter and height. */
-head_sink = 0.2;    /* Each head sits this far up inside the base's bottom face... */
+head_sink = 0.2;    /* Each sunk head sits this far inside its face: the plate's screws' in the base's bottom face, the joints' in their tabs' tops... */
 head_room = 0.4;    /* ...in a counterbore this much wider than the head, past fdm_hole_comp: room for the key. */
 lobe_cap = 1;       /* The plate over each head: the counterbore is in a lobe that rises from the plate into a pocket in the base... */
 lobe_play = 0.2;    /* ...with this much room round it and over it, so the plate's ends bear on the seats, not the lobes. */
 meet = 0.05;        /* A new face kept this far off an imported one it would otherwise share: the STL's float32 corners are not where the same number computed here is, and faces a hair apart make slivers the slicer removes. */
 
-/* [The sealed joints - Alon, 8 Oct 2026: D114, D116, D118, D119, D120] */
+/* [The sealed joints - Alon, 8 Oct 2026: D114, D116, D118, D119, D120; seamless tabs, flush heads] */
 // The three joints under suction - the section on the fan section, the carbon housing on the section, the HEPA
 // holder on the carbon housing - are sealed. A TPU bead lies in a groove in the lower part's top; the upper part's
 // flat bottom presses it, nested in a collar round the lower part's top edge, whose inner face is at 45 degrees as
@@ -165,7 +165,9 @@ meet = 0.05;        /* A new face kept this far off an imported one it would oth
 // The tabs stand out past the end walls, their outline a parabola leaving the end wall and flush with the side
 // face; under a nut's tab, a bracket whose face is a cubic, tangent to the wall. One screw at each corner holds
 // both of the section's joints: from the carbon housing's tab, through a pillar in the section, into the fan
-// section's nut.
+// section's nut. The tabs are seamless with the walls and floors (Alon, 8 Oct): each sealed part's outside is the
+// one outline, tabs and all, drawn here - the originals' own faces are cut `meet` inside it - and each part's
+// floor and top at a joint are cut there too. A screw's head sinks flush into its tab (Alon, 8 Oct).
 sealed = true;      /* false: the originals' magnets, tongue and groove, as they come. */
 seal_bead = [2, 2, 0.45];   /* The bead: its width, its height free, its wall. */
 bead_squeeze = 0.2; /* The upper part presses it this fraction of its height, as the faces meet. */
@@ -178,11 +180,10 @@ collar_play = 0.2;  /* ...and the gap to the upper part's chamfer, which sits in
 tab_out = 5;        /* A tab's screw stands this far out past the end wall... */
 tab_boss_r = 4.4;   /* ...the tab round it: the nut's slot and three beads each side. */
 tab_a0 = 150;       /* Where the tab's parabola meets its round end, in degrees round the screw: it leaves the end wall nearer the middle for a smaller angle. */
-tab_side_in = 0.3;  /* The tab's outer side, this far in from the side face: nearer, it crosses the original's rounded corner too shallowly to mesh cleanly. */
-tab_dip = 0.15;     /* The parabola's vertex, this far inside the end wall, so it leaves the wall at a slant, not tangent. */
-bracket_in = 0.3;   /* A bracket's cubic starts this far inside the end wall, for the same reason. */
+tab_blend = 0.05;   /* A bracket's face starts this far inside the wall and the corner it leaves, so the two cross at a slant, under a degree, not tangent. */
+tab_corner_t = [0.1, 0.5];  /* Up a bracket, from its foot (0) to the tab (1): between these it fills the rounded corner under the tab, smoothly, so the side face runs on into the bracket's side. */
 tab_lower_t = 6;    /* The lower part's tab, with the nut in it. */
-tab_upper_t = 5;    /* The upper part's tab, under the screw's head. */
+tab_upper_t = 5;    /* The upper part's tab under the screw's head; the tab stands a head's counterbore higher, so the head sinks flush. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;
