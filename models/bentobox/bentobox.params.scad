@@ -49,10 +49,19 @@ duct_h   = 52;      /* The duct, from the floor to the fan case. */
 fans_h   = 33;      /* The fan case, from the duct to the carbon housing. */
 fans_floor = 2;     /* The fan case's floor; the fans stand on it, blowing down through a 37 mm hole each. */
 fan_ys   = [-30, 30];   /* The two fans' centres, along Y, on X = 0. Their screws are on a 32 mm square. */
-carbon_h = 77.6;    /* The carbon housing, from the fan case to the HEPA holder. */
+carbon_h = 77.6;    /* MEASURED: the original carbon housing, from the fan case to the HEPA holder; the remix's is housing_h. */
 carbon_floor = 4;   /* Its floor, with an opening over each fan: X +/-18, Y 2 to 48 each side of the middle... */
 carbon_open = [18, 2, 48, 4];   /* ...the +Y opening: half its width, and from and to in Y; its far end round; at the middle, its +X corner rounded 4 and its -X corner round with the far end's radius. The -Y opening is it turned round. */
 carbon_chamfer = 0.6;   /* The openings' edges under the floor, and the inside's edge on the floor, chamfered this much. */
+// The carbon (Alon, 9 Oct 2026: D146): poured into the carbon housing, a bed on its floor - a honeycomb across its
+// whole inside - and the housing only as tall as the bed and the air over it need; or held in the C-MAG, standing in a
+// housing of the original's height. Spread over the housing's whole inside, the same carbon takes more air through,
+// and 45 mm of it holds three times the C-MAG's line (sim/bentobox-cfd/pleat.py; the build page, The carbon).
+carbon = "bed";     /* "bed", or "cmag": the C-MAG and the original's housing. */
+bed_depth = 45;     /* The bed, from the floor up: 184 cm3 of pellets. A mark on each inside wall shows where to fill to. */
+bed_head = 28.6;    /* Air over the bed, under the HEPA holder: the air comes down through the holder's ledge, 36.8 x 87.5, and spreads over the whole bed, 40.8 x 100.8, before it goes in. 6 is enough - the section's plenum over its sheet is 5 - and would make the housing 55 tall, 22.6 lower; but then the brackets under its top tabs come down over the joint's lower screws' heads, which stand under the same tabs (check_seal_access). Until that is settled (D147), it keeps the original's 77.6. */
+bed_mesh = [3.2, 2, 2];     /* The floor's honeycomb: holes this far across their flats - a pellet stays on one even across its corners - with webs this many beads wide, all of them this far inside the inside's outline, clear of its chamfer, so the floor is solid round the edge and under the joint's bead. */
+bed_mark = [10, 1.4, 0.4];  /* The fill marks: long, tall and proud, their edges at 45 degrees, their middle at the bed's top. */
 hepa_h   = 50;      /* The HEPA holder. */
 hepa_ledge = 4;     /* The ledge the cartridge rests on, at the holder's bottom. */
 hepa_open = [36.8, 78];     /* The ledge's opening, X and Y, its corners rounded 2 mm: the air's way down. */
@@ -129,7 +138,7 @@ ledge_beads = 3;    /* A ledge round the inside at the grid's level: the ribs en
 hepa_full = true;   /* Cut the HEPA holder's pocket out to the box's whole inside, in_w x in_l, from its ledge up, and the ledge's opening with it (Alon, 8 Oct 2026: "enlarge the HEPA area"). The original's ends are solid funnels round its 80 mm cartridge. The clamp is drawn for this pocket. */
 hepa_ledge_w = 2;   /* MEASURED: the ledge round the original's opening; the enlarged opening keeps it. */
 paper_depth = 20.2; /* MEASURED (Alon, 9 Oct 2026: Q95): the pleats' depth, fold to fold - the pack's thickness. */
-paper_pitch = 100 / 30;   /* One pleat, top fold to top fold, as the clamp holds it: a choice, not the paper's. The paper squeezes up tight - 31 folds stack to about 26 mm (Alon, Q95) - and spreads to any pitch; 30 pleats in 100 mm is the listing's packing. Only the whole number that fills the clamp matters. */
+paper_pitch = 2.12; /* One pleat, top fold to top fold, as the clamp holds it: a choice, not the paper's, which squeezes up tight - 31 folds stack to about 26 mm (Alon, Q95) - and spreads to any pitch. 18 pleats across the clamp (Alon, 9 Oct 2026: D143): the most the clamp builds, within 3 % of the most air at every grade of paper (sim/bentobox-cfd/pleat.py). Only the whole number that fills the clamp matters. */
 paper_t = 0.4;      /* MEASURED (Alon, 9 Oct 2026: Q95): the paper's thickness. */
 paper_flaps = true; /* The long edges cut on a bottom fold, so each side keeps half a pleat more, as a flap the clamp pinches. false: cut on a top fold. */
 clamp_slot = 0.2;   /* The zigzag slot between the frames' wedges and teeth, screwed together: under the paper's thickness, so the screws pinch it. The two sides are separate parts, so it need not print open. A first guess, for the sample to try. */

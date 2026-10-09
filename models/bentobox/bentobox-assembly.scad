@@ -68,7 +68,8 @@ module stack_sealed(ex) {
     piece("steelblue") translate([0, 0, ex]) fans_sealed();
     piece("seagreen") translate([0, 0, sst[1] + 2 * ex]) section();
     piece("tan") translate([0, 0, 3 * ex]) carbon_sealed();
-    piece("sienna") translate([0, 0, 3 * ex]) cmag_placed();
+    if (carbon == "cmag") piece("sienna") translate([0, 0, 3 * ex]) cmag_placed();
+    else piece("#303030") translate([0, 0, 3 * ex]) bed_pellets();
     piece("lightsteelblue") translate([0, 0, 4 * ex]) hepa_sealed();
     piece("darkslategray") translate([0, 0, 4 * ex]) cover_placed();
 }
@@ -114,19 +115,25 @@ module cover_placed() translate([cover_shift[0], cover_shift[1], 0]) cover_drawn
 cmag_shift = [0, 0, 0];
 cmag_lid_move = [0, 0, 0];
 module cmag_placed(lift = 0) translate(cmag_shift) cmag_stood(sst[2] - meet + cmag_z0 + lift) cmag_drawn();
+// The bed of pellets on the housing's floor, for the pictures.
+module bed_pellets() translate([0, 0, sst[2] - meet + carbon_floor]) linear_extrude(bed_depth) inside_offset(-0.3);
 // A magnet in each of the tray's holes, standing into the lid's across the joint, in the C-MAG's frame.
 module cmag_magnets_across() cmag_corners() translate([cmag_boss[0], cmag_boss[1], cmag_split - mag_h + 0.1]) cylinder(d = 4, h = 2 * mag_h - 0.2);
 // A magnet in each of the section's holes, standing into the original's hole across the joint: if the two
 // holes line up, it touches neither part. Built from the section's own holes - the original's stay put.
 module magnets_across(z) for (sx = [-1, 1], sy = [-1, 1])
     translate([sx * mag_xy[0], sy * mag_xy[1], z - mag_h + 0.1]) cylinder(d = 4, h = 2 * mag_h - 0.2);
-// The air's way through the section, from the ORIGINAL's measurements only: the carbon housing's two floor
-// openings, carried down through the plenum and the sheet's space to the grid. Nothing of the section may
-// stand in it.
-module air_probe() for (sy = [-1, 1])
-    translate([-floor_open[0], sy > 0 ? floor_open[1] : -floor_open[2], grid_t + eps])
-        cube([2 * floor_open[0], floor_open[2] - floor_open[1], sec_h - grid_t - 2 * eps]);
+// The air's way through the section, from numbers kept apart from the ones that draw it: where the carbon housing's
+// floor lets the air down, carried down through the plenum and the sheet's space to the grid. Nothing of the section
+// may stand in it. With the C-MAG, the original's two floor openings; with the bed, the floor's honeycomb, which
+// spans the whole inside but for bed_mesh[2] round its edge.
+module air_probe() if (carbon == "bed") translate([-floor_mesh[0], -floor_mesh[1], grid_t + eps])
+        cube([2 * floor_mesh[0], 2 * floor_mesh[1], sec_h - grid_t - 2 * eps]);
+    else for (sy = [-1, 1])
+        translate([-floor_open[0], sy > 0 ? floor_open[1] : -floor_open[2], grid_t + eps])
+            cube([2 * floor_open[0], floor_open[2] - floor_open[1], sec_h - grid_t - 2 * eps]);
 floor_open = [18, 2, 48];   /* MEASURED: the carbon housing's floor openings, X +/-18, Y 2 to 48 each side: kept apart from carbon_open, which draws them, so the check reads the original's measurement */
+floor_mesh = [18.4, 48.4];  /* The bed's floor honeycomb's reach, X and Y +/-: in_w / 2 and in_l / 2 less bed_mesh[2], written out so a control that narrows the inside cannot move it */
 // The Auto's bottom: the tray's nuts in their slots, centred in height, and the fans' pulled up against their
 // pockets' roofs, sep under them; each nut's way in - slid out through its slot's mouth, or down its pocket and
 // out under its post; the screws, head to tip; the wires' way down. Built from the screws' places, not the slots':

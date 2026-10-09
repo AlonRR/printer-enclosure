@@ -15,7 +15,10 @@ underneath.
 **Its joints under suction are sealed** (see *The sealed joints*): a TPU bead in a groove at each, and four
 screws in tabs at the corners, where the original has magnets.
 
-![The stack pulled apart: the cover, the HEPA holder, the carbon housing with the C-MAG in it, the section, the fan section, the base, the tray under it; tabs at the corners of the three sealed joints](bentobox/exploded.png)
+**Its carbon is a bed in the housing** (see *The carbon*): the pellets poured onto the housing's floor, a
+honeycomb across its whole inside, 45 mm deep. The C-MAG stays an option.
+
+![The stack pulled apart: the cover, the HEPA holder, the carbon housing with its bed of pellets, the section, the fan section, the base, the tray under it; tabs at the corners of the three sealed joints](bentobox/exploded.png)
 
 **It takes its HEPA as a cartridge:** a bought one, 80 × 40 × 15 mm, rests on a ledge in its holder. Or
 the HEPA paper this build already has, pleated 20.2 mm deep, in the remix's frame (see *Your own HEPA
@@ -26,7 +29,7 @@ originals' measurements, read by sectioning their STLs: the base, the tray and t
 the carbon housing, the HEPA holder, the cover and the C-MAG after ThrutheFrame's. Sectioned both ways against the
 originals, each matches them to a few hundredths of a millimetre where it keeps their shape; the text moulded into
 the originals is left off. The cover's hemp-leaf pattern is drawn from its lattice, and the C-MAG's grills with
-their honeycomb, which the author's project left to the slicer (see *The C-MAG*). None of the remix's parts needs
+their honeycomb, which the author's project left to the slicer (see *The carbon*). None of the remix's parts needs
 the author's files to build.
 
 The remix adds four parts, takes its bottom from the BentoBox Auto, and seals the joints under suction:
@@ -39,10 +42,10 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Base** | In place of the duct, drawn to the Auto's: the duct over the bay's roof, the wires' tube, the fans' four nuts pulled up into pockets in posts, and four nuts in slots for the tray's screws. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
 | **Fan section** | In place of the fan case, drawn to the Auto's: its floor with the fans' openings and screws' holes, its top the sealed joint's, and its wires' hole opened out for the grommet. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
 | **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with four screws, their heads sunk in its bottom face. | [`bentobox-auto-tray.scad`](../models/bentobox/bentobox-auto-tray.scad) |
-| **Carbon housing** | Drawn to ThrutheFrame's, with the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
+| **Carbon housing** | Drawn to ThrutheFrame's, with the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. Its floor is a honeycomb across the whole inside, and the pellets lie on it, 45 mm deep, to a mark on each inside wall (D146); with `carbon = "cmag"`, the original's two openings, for the C-MAG. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
 | **HEPA holder** | Drawn to ThrutheFrame's, its bottom sealed on the carbon housing, its pocket the box's whole inside, for a bigger piece of paper, and its top the original cover's, with its magnets. | [`bentobox-hepa.scad`](../models/bentobox/bentobox-hepa.scad) |
 | **Cover** | Drawn to ThrutheFrame's hemp-leaf cover: its plate on the HEPA holder, the plug into the holder's top, the magnets' holes, and the window's pattern, drawn from its lattice of triangles. | [`bentobox-cover.scad`](../models/bentobox/bentobox-cover.scad) |
-| **C-MAG** | Drawn to ThrutheFrame's: the tray and the lid, with the grills' slots and rails, the fill line and the magnets' bosses; and its four grills, with a honeycomb of holes the 4 mm pellets cannot pass. | [`bentobox-cmag-tray.scad`](../models/bentobox/bentobox-cmag-tray.scad), [`bentobox-cmag-lid.scad`](../models/bentobox/bentobox-cmag-lid.scad), [`bentobox-cmag-grills.scad`](../models/bentobox/bentobox-cmag-grills.scad) |
+| **C-MAG** | An option, with `carbon = "cmag"`, in place of the bed. Drawn to ThrutheFrame's: the tray and the lid, with the grills' slots and rails, the fill line and the magnets' bosses; and its four grills, with a honeycomb of holes the 4 mm pellets cannot pass. | [`bentobox-cmag-tray.scad`](../models/bentobox/bentobox-cmag-tray.scad), [`bentobox-cmag-lid.scad`](../models/bentobox/bentobox-cmag-lid.scad), [`bentobox-cmag-grills.scad`](../models/bentobox/bentobox-cmag-grills.scad) |
 | **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
 | **Grommet** | Two identical TPU halves that close round the fans' leads and click into the fan section's floor, sealing the wires' hole. | [`bentobox-grommet.scad`](../models/bentobox/bentobox-grommet.scad) |
 | **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
@@ -51,9 +54,42 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 
 **Not printed yet.** Every fit is checked in the model (see *Checking it*), not yet against printed parts.
 
-## The C-MAG
+## The carbon
 
-The carbon goes in the C-MAG, not loose in the housing. The C-MAG is two halves that close on four grills.
+**The pellets lie in the carbon housing** (Alon, 9 Oct 2026: D146), on its floor: a honeycomb across its whole
+inside, 221 holes 3.2 mm across their flats, so 3.7 mm across their corners, under the 4 mm pellets, the webs two
+beads wide, and 2 mm of solid floor round the edge, where the joint's bead presses. Pour them in with the HEPA
+holder off, 45 mm deep, to the mark in the middle of each inside wall - 184 cm³, three times the C-MAG's line - and
+level them: the air takes the thinner side of a bed. To change them, the housing comes off the stack, its four
+M3 × 25 out, and tips out.
+
+**The housing keeps its height for now.** 6 mm of air over the bed is enough for the air from the HEPA holder's
+ledge to spread over it, which would make the housing 55 mm tall instead of 77.6 and the box 22.6 mm lower. But the
+joint's lower screws stand under the housing's own top tabs, and the brackets under those come down over their
+heads: lower, there is no room left to turn them (D147, open).
+
+**Why not the C-MAG.** The same airflow models as for the paper's pleats (see *How many pleats*), with the clamp at
+18 pleats and the middle grade:
+
+| The carbon | How much | Air through the box | ASA print hours until it is spent |
+|---|---|---|---|
+| C-MAG, filled to its line | 55 cm³ | 0.77 L/s | about 800 |
+| C-MAG, trays full | 222 cm³ | 0.65 L/s | about 3,400 |
+| No C-MAG: the housing filled 35 mm deep on a grid | 143 cm³ | 0.74 L/s | about 2,100 |
+| **...45 mm deep: the remix** | **184 cm³** | **0.72 L/s** | **about 2,700** |
+| ...55 mm deep | 225 cm³ | 0.70 L/s | about 3,400 |
+
+- **A bed over the housing's whole inside does more with the same carbon.** Standing, the C-MAG's three trays are
+  three layers one above the other, and they resist as one layer of their total depth would; its walls and the
+  gap round it leave the pellets 35 cm² of the housing's 41. Spread over all 41, the carbon of a full C-MAG takes
+  7 % more air through, and 45 mm of it holds more than three times the C-MAG's line for 7 % less air. Every grade
+  of paper orders them the same way.
+- **What the C-MAG gives instead is handling.** It lifts out of the housing once the HEPA holder is off, and it
+  holds its pellets in place whichever way the box is turned.
+- How long the carbon lasts is `scripts/carbon-life.py`'s estimate at 1.5 mg/h (see *How long the carbon lasts*).
+
+**With the C-MAG** (`carbon = "cmag"`): the housing is the original's height, with the original's two openings in
+its floor, and the C-MAG stands in it. The C-MAG is two halves that close on four grills.
 Lying open, the grills stand across it and make three trays; the user guide says to fill each to a line
 moulded inside it, 9 mm deep. Closed and stood on end in the housing, each tray's pellets fall onto the grill
 below them and spread over the whole of the C-MAG's inside. That makes three layers, each about **5.35 mm
@@ -68,29 +104,6 @@ flats, so 3.7 mm across their corners, under the 4 mm pellets; the webs between 
 rim six beads wide goes round them, of which the rails hide the outer 2.1 mm. That leaves 46 % of a grill open.
 The author's grills are solid plates in their STL, which the slicer settings in his project turn into a
 honeycomb about half open; the drawn ones print the same in any slicer.
-
-**Without the C-MAG** (D146, 9 Oct 2026; Alon asked whether the housing could be filled on a grid instead). The
-same airflow models, with the paper clamp at 18 pleats and the middle grade:
-
-| The carbon | How much | Air through the box | ASA print hours until it is spent |
-|---|---|---|---|
-| C-MAG, filled to its line | 55 cm³ | 0.77 L/s | about 800 |
-| C-MAG, trays full | 222 cm³ | 0.65 L/s | about 3,400 |
-| No C-MAG: the housing filled 35 mm deep on a grid | 143 cm³ | 0.74 L/s | about 2,100 |
-| ...45 mm deep | 184 cm³ | 0.72 L/s | about 2,700 |
-| ...55 mm deep | 225 cm³ | 0.70 L/s | about 3,400 |
-
-- **A bed over the housing's whole inside does more with the same carbon.** Standing, the C-MAG's three trays are
-  three layers one above the other, and they resist as one layer of their total depth would; its walls and the
-  gap round it leave the pellets 35 cm² of the housing's 41. Spread over all 41, the carbon of a full C-MAG takes
-  7 % more air through, and 45 mm of it holds more than three times the C-MAG's line for 7 % less air. Every grade
-  of paper orders them the same way.
-- **What the C-MAG gives instead is handling.** It lifts out of the housing once the HEPA holder is off, and it
-  holds its pellets in place whichever way the box is turned. Loose in the housing, the pellets come out by
-  taking the housing off the stack too and tipping it, and the bed must be level: air takes the thinner side.
-  A grid would be the housing's own floor, drawn as the grills' honeycomb across the whole inside, in place of
-  its two openings.
-- How long the carbon lasts is `scripts/carbon-life.py`'s estimate at 1.5 mg/h (see *How long the carbon lasts*).
 
 ## The section
 
@@ -253,7 +266,7 @@ brackets stand over those screws; the checks keep at least 35 mm clear above eac
 screw in, but not for a long straight driver: turn them with a hex key. Then the HEPA holder on the carbon
 housing and its four M3 × 12, and the cover on its magnets.
 
-The sheet in the section, the C-MAG and the HEPA come out by the same screws. Only the cover's joint keeps
+The sheet in the section, the carbon and the HEPA come out by the same screws. Only the cover's joint keeps
 magnets: four in the HEPA holder's top and four in the cover.
 
 **Try one end first.** The bead's size and the seat's fit are first guesses, and the carbon housing is a
@@ -276,8 +289,8 @@ remix cuts the pocket out to the box's whole inside, 100.8 × 40.8 mm with its r
 up, and the ledge's opening with it, to 87.5 × 36.8 mm (78 × 36.8 on the original).
 
 A clamp holds the paper there: two ASA frames with a cut piece of paper between them, screwed together into a
-cassette that stands on the ledge, 100.5 × 40.5 mm. It takes a piece 87.1 mm long and 40.3 mm across - 11
-pleats and a half each side - where the bought cartridge is 80 × 40 and the original's pocket took 75.7 ×
+cassette that stands on the ledge, 100.5 × 40.5 mm. It takes a piece 87.1 mm long and 40.3 mm across - 18
+pleats and a half each side (D143) - where the bought cartridge is 80 × 40 and the original's pocket took 75.7 ×
 37.2 of this paper: 25 % more paper than that.
 
 ![The clamp pulled apart: the lower frame with its teeth, the cut paper over it with its folds running end to end, the upper frame with its wedges, and its four screws](bentobox/paper-frame.png)
@@ -288,7 +301,7 @@ pleats and a half each side - where the bought cartridge is 80 × 40 and the ori
   frame has a wedge in every channel open at the top, and the lower frame a tooth in every channel open at
   the bottom, 4 mm into the paper. Screwed together they leave a zigzag slot 0.2 mm wide for 0.4 mm paper:
   the four screws pinch the paper's cut end between the wedges and the teeth. The pleats' walls lean only
-  5° from upright, so the last millimetre of the screws' travel closes the slot.
+  3° from upright, so the last millimetre of the screws' travel closes the slot.
 - **The long sides.** The paper runs on half a pleat past its last top fold, down to the lower frame's rim,
   as a flap. The upper frame's half wedge runs down outside it, the whole length, and the lower frame's tooth
   under the last top fold inside it: the screws pinch the flap between them too.
@@ -301,10 +314,10 @@ pleats and a half each side - where the bought cartridge is 80 × 40 and the ori
   frame, into M2 nuts pulled up into seats in the lower frame, as the fans' nuts are in the base. M2, not the
   M2.5 first drawn: an end block is 6.5 mm along the pleats, and an M2.5 nut's pocket leaves it under two
   beads of wall.
-- **Cutting the paper.** For this build's paper, 20.2 mm deep, held about 3.4 mm between top folds: a piece
-  **87.1 mm long along the folds, and 11 pleats across with half a pleat more each side** - both long edges
+- **Cutting the paper.** For this build's paper, 20.2 mm deep, held 2.1 mm between top folds: a piece
+  **87.1 mm long along the folds, and 18 pleats across with half a pleat more each side** - both long edges
   cut along a bottom fold. Count the pleats rather than measuring the width: the paper squeezes up tight or
-  spreads out, and the clamp spreads it to 40.3. The roll's 300 × 100 mm pack gives six pieces.
+  spreads out, and the clamp spreads it to 40.3. The sheet's 31 pleats make one piece across, and its 300 mm three along: three pieces.
 - **Putting it together.** Pull an M2 nut into each of the lower frame's four seats with a spare M2 screw from
   above, and take the screw out: the nut stays. Lay the lower frame down, teeth up, and the paper on it, its
   channels open at the bottom over the teeth at each end and each flap's cut end on the rim outside the long
@@ -325,11 +338,11 @@ match; rendering either frame echoes the new cut. `paper_flaps = false` cuts the
 instead.
 
 **Measured** for this build's paper (Alon, 9 Oct 2026, Q95): it is 0.4 mm thick and its folds are 20.2 mm deep;
-31 folds squeeze up to about 26 mm. The 3.4 mm between top folds is the clamp's, not the paper's: pleated paper
-spreads to any pitch, and `paper_pitch`, 30 pleats in 100 mm, is the roll's listing's packing. Anything from 29
-to 31 in 100 mm gives the same 11 pleats.
+31 folds squeeze up to about 26 mm. The 2.1 mm between top folds is the clamp's, not the paper's: pleated paper
+spreads to any pitch, and `paper_pitch`, 2.12 mm, is chosen for 18 pleats (see *How many pleats*). Anything from
+2.07 to 2.17 mm gives the same 18.
 
-**How many pleats** (D143, 9 Oct 2026; not applied yet, the clamp still holds 11). An airflow model of one pleat of
+**How many pleats** (Alon, 9 Oct 2026: D143, 18). An airflow model of one pleat of
 this paper, run for each count the clamp might hold and put into the box's model of the fans and its other
 filters ([`sim/bentobox-cfd/pleat.py`](../sim/bentobox-cfd/README.md#one-pleat-of-your-own-paper-how-many-pleats-the-clamp-should-hold)):
 
@@ -340,7 +353,7 @@ filters ([`sim/bentobox-cfd/pleat.py`](../sim/bentobox-cfd/README.md#one-pleat-o
   paper's depth as the pleats close up, and the channels between them narrow; past 22 those cost more than the
   added paper gives.
 - **The clamp builds up to 18**: at 19 its half wedges along the long sides come out under 3 mm. At 18 the box
-  moves 15 to 25 % more air than at today's 11 - 0.77 L/s instead of 0.63 on the middle grade. Against the bought
+  moves 15 to 25 % more air than at the 11 it held before - 0.77 L/s instead of 0.63 on the middle grade. Against the bought
   cartridge, as the box's simulation takes it, the grade decides: 18 % more air on the middle grade, less on the
   300 Pa one.
 - **18 pleats take 19 of the sheet's 31** with the half pleats each side, so the sheet gives three pieces; at 14
@@ -370,33 +383,30 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
 ## Printing
 
 Every part prints as its file draws it, standing on its bottom - the section, the base on its floor, the tray,
-the fan section, the carbon housing, the HEPA holder and the C-MAG's tray - the cover and the C-MAG's lid on their
-top faces, the clamp's lower frame on its rim and its upper frame turned over onto its band, and the grills and a
-bead ring flat. No supports, no brim. `sh scripts/bentobox-print.sh` builds every one, checks it and slices
+the fan section, the carbon housing and the HEPA holder - the cover on its top face, the clamp's lower frame on its
+rim and its upper frame turned over onto its band, and a bead ring flat. With the C-MAG, its parts print from their
+own files: the tray on its floor, the lid on its top face, the grills flat. No supports, no brim. `sh scripts/bentobox-print.sh` builds every one, checks it and slices
 it, and puts its STL and G-code in `models/bentobox/print/`; name parts to build only those - `samples-asa
 samples-tpu` for the two sample plates.
 
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
 | Section | ASA | 1 | 1 h 57 m | 17 g |
-| Clamp, lower frame | ASA | 1 | 1 h 32 m | 11 g |
-| Clamp, upper frame | ASA | 1 | 1 h 19 m | 9 g |
-| Clamp sample | ASA | 1 plate | 1 h 6 m | 7 g |
+| Clamp, lower frame | ASA | 1 | 1 h 28 m | 10 g |
+| Clamp, upper frame | ASA | 1 | 1 h 11 m | 8 g |
+| Clamp sample | ASA | 1 plate | 1 h 7 m | 7 g |
 | Base | ASA | 1 | 3 h 25 m | 36 g |
 | Fan section | ASA | 1 | 3 h 42 m | 36 g |
 | Tray | ASA | 1 | 1 h 47 m | 20 g |
-| Carbon housing | ASA | 1 | 7 h 25 m | 71 g |
+| Carbon housing | ASA | 1 | 8 h 26 m | 76 g |
 | HEPA holder | ASA | 1 | 4 h 39 m | 45 g |
 | Cover | ASA | 1 | 1 h 53 m | 13 g |
-| C-MAG, tray | ASA | 1 | 2 h 16 m | 25 g |
-| C-MAG, lid | ASA | 1 | 1 h 49 m | 21 g |
-| C-MAG, grills | ASA | 4, on 1 plate | 1 h 51 m | 11 g |
 | Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
-| Joint sample | ASA | 1 plate | 1 h 14 m | 11 g |
+| Joint sample | ASA | 1 plate | 1 h 15 m | 11 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
 | Grommet | TPU 95A | 2 halves | 2 m | under 1 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
-| Samples, ASA | ASA | 1 plate | 3 h 11 m | 26 g |
+| Samples, ASA | ASA | 1 plate | 3 h 12 m | 26 g |
 | Samples, TPU | TPU 95A | 1 plate | 5 m | under 1 g |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
@@ -420,7 +430,8 @@ For the sealed joints:
 | 4 | M3 × 12 socket head cap screw, ISO 4762: the HEPA holder to the carbon housing |
 | 8 | 4 × 2 mm magnet: the cover's joint, four in the HEPA holder and four in the cover |
 
-For the C-MAG, as the original: 8 more 4 × 2 mm magnets, four in each half.
+With the C-MAG: 8 more 4 × 2 mm magnets, four in each half. Its parts, in ASA: the tray 2 h 16 m and 25 g, the
+lid 1 h 49 m and 21 g, the four grills on one plate 1 h 51 m and 11 g.
 
 For the joint sample, from the same stock: 3 M3 nuts, 2 M3 × 12 and 1 M3 × 8. For the bottom sample: 2 M3 nuts,
 2 M3 × 12 and the USB-C trigger board.
@@ -434,7 +445,8 @@ For the paper's clamp:
 
 ## The air through it
 
-An airflow simulation of the whole stack, standing on the chamber's floor with the chamber's air round it:
+This is the original's stack, with the C-MAG and the bought cartridge; the remix's paper and its bed of carbon are
+compared under *How many pleats* and *The carbon*. An airflow simulation of the whole stack, standing on the chamber's floor with the chamber's air round it:
 OpenFOAM, the two Deltas on their published curve, the filters as resistances, on [the LunchBox's](../archive/lunchbox/docs/lunchbox-scrubber.md#the-air-through-it)
 assumptions but one. The HEPA cartridge's grade is not known, and it sets the flow more than anything
 else: the numbers are for the LunchBox's mid-grade paper, folded into this cartridge's 15 mm pleats instead
@@ -510,6 +522,7 @@ as concentrated, and each gram of its carbon holds a little more.
 | LunchBox | 150 cm³, 68 g | about 1,850 | 1,000 to 3,900 |
 | BentoBox, the C-MAG filled to its line | 55 cm³, 25 g | about 850 | 460 to 1,800 |
 | BentoBox, its trays filled full | 222 cm³, 100 g | about 3,500 | 1,900 to 7,500 |
+| The remix: a 45 mm bed, with the paper clamp | 184 cm³, 83 g | about 2,700 | 1,500 to 5,800 |
 
 "Spent" is the carbon in equilibrium with the chamber's air. It lets more through well before then, so
 change it sooner: when the smell comes back during a print. Damp air shortens it too - the carbon sits at
@@ -535,8 +548,10 @@ collar, tab on tab - lays each bead in its groove, runs each screw from its head
 and the section's pillars, sets a nut in each slot and slides it out through the tab's end, and keeps the
 room over each screw's head clear. With `sealed=false` it checks the original's joints: the section against
 the carbon housing above it and the fan section below it, a magnet across each joint through both parts'
-holes. It runs the air's way from the housing's floor openings down through the section. It stands the cover on the HEPA holder, its plug in the holder's top, a magnet across the joint
-at each corner. It stands the C-MAG in the carbon housing, clear of its walls and of the HEPA holder, closes its lid
+holes. It runs the air's way from the housing's floor - its honeycomb, or with the C-MAG its two openings - down through
+the section. It stands the cover on the HEPA holder, its plug in the holder's top, a magnet across the joint
+at each corner. With `carbon = "cmag"` it stands the C-MAG in the carbon housing, clear of its walls and of the HEPA holder; and
+it closes the C-MAG's lid
 on its tray, a magnet across their joint at each corner, and sets the four grills in their slots. For the paper's clamp it stands the cassette in the cut-out HEPA holder, sets the
 upper frame on the lower one - meeting only at the end blocks - lays a model of the paper, drawn from its own
 values at the slot's thickness, in the frames' zigzag, keeps the air's way down under the paper open, and

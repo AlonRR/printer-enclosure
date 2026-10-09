@@ -50,6 +50,9 @@ BOXES = {
     "LunchBox": (150.0, 1.30),
     "BentoBox, to the line": (55.5, 0.68),
     "BentoBox, trays full": (222.0, 0.58),
+    # The remix (Alon, 9 Oct 2026: D146): no C-MAG, a 45 mm bed over the housing's whole inside, 40.8 x 100.8 less its
+    # rounded corners, with the paper clamp at 18 pleats - its flow by sim/bentobox-cfd/pleat.py, on the middle grade.
+    "BentoBox remix, a 45 mm bed": (184.3, 0.72),
 }
 EMISSIONS = (0.5, 1.5, 3.5)             # mg/h
 

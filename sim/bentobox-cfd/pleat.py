@@ -448,12 +448,14 @@ def chart(summary, c, path):
     ax.axhline(summary["cartridge"]["flow_line_L_s"], color="grey", ls="--", lw=1,
                label="the bought cartridge, as the box's simulation takes it")
     ax.axvspan(CLAMP_MAX + 0.5, max(COUNTS) + 0.5, color="0.9", zorder=0)
-    ax.axvline(c["n_now"], color="0.4", lw=1, ls=":")
+    n_now = clamp()["n_now"]                                 # what the model holds now, not when the cases were written
+    ax.axvline(n_now, color="0.4", lw=1, ls=":")
     lo, hi = ax.get_ylim()
     ax.set_ylim(lo - 0.25 * (hi - lo), hi)                 # room under the curves for the legend
     ax.text(CLAMP_MAX + 0.8, 0.27, "past what the clamp builds", fontsize=8, color="0.3",
             transform=ax.get_xaxis_transform())               # x in pleats, y in the axes: between curves and legend
-    ax.text(c["n_now"] + 0.15, hi - 0.04 * (hi - lo), f"now: {c['n_now']}", fontsize=8, color="0.3", va="top")
+    ax.text(n_now - 0.15, 0.27, f"the clamp: {n_now}", fontsize=8, color="0.3", ha="right",
+            transform=ax.get_xaxis_transform())
     ax.set_xlabel(f"pleats across the clamp's {c['width']:.1f} mm")
     ax.set_ylabel("air through the box, L/s")
     ax.set_xlim(min(COUNTS) - 0.5, max(COUNTS) + 0.5)

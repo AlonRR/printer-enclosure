@@ -18,14 +18,18 @@ rib_w = grid_beads * bead;
 // The stack, bottom up: the Z of each part's bottom face, with the section or without. Sealed, an original is cut
 // `meet` inside its own face at each sealed joint (bentobox.scad, sealed joints) - a lower part's top down, an upper
 // part's floor up - and everything over the cut stands that much lower; the section's own faces are exact. The
-// airflow simulation asks for the originals' stack.
+// airflow simulation asks for the originals' stack. Sealed, it is the remix's, its carbon housing housing_h tall.
 function stack(with_section, seal = false) = let(
     drop = seal ? meet : 0,
     fans_z = duct_h,
     sec_z = fans_z + fans_h - drop,
     carbon_z = sec_z + (with_section ? sec_h : 0),
-    hepa_z = carbon_z + carbon_h - 2 * drop
+    hepa_z = carbon_z + (seal ? housing_h : carbon_h) - 2 * drop
 ) [fans_z, sec_z, carbon_z, hepa_z, hepa_z + hepa_h - drop + cover_top];
+// The remix's carbon housing: as tall as its floor, the bed and the air over it, or the original's for the C-MAG.
+housing_h = carbon == "bed" ? carbon_floor + bed_depth + bed_head : carbon_h;
+bed_web = bed_mesh[1] * fdm_extrusion_w;
+bed_hole_ac = bed_mesh[0] / cos(30);
 // [fan case, section, carbon housing, HEPA holder, the cover's top]
 
 // The C-MAG's three trays, standing: each tray's pellets fall onto the grill below them and spread over the
@@ -262,7 +266,11 @@ assert(half_wedge_z0 < paper_depth - 3, "the half wedges outside the flaps come 
 
 assert(grid_t >= groove_h + 2 * fdm_layer_h, "the grid's rim must roof the groove in the section's bottom");
 assert(ledge_w > -groove_in, "the ledge must reach past the groove's inner face");
+assert(carbon == "bed" || carbon == "cmag", "carbon is \"bed\" or \"cmag\"");
 assert(cmag[0] < carbon_h - carbon_floor, "the C-MAG must stand inside the carbon housing");
+assert(bed_hole_ac < cmag_pellet, "the floor's holes must be smaller than a pellet, even across their corners");
+assert(bed_mesh[2] >= carbon_chamfer + 2 * bead - 1e-9, "the floor's honeycomb must stay clear of the inside's chamfer, two beads of floor past it");
+assert(bed_head > 0, "the bed needs air over it, under the HEPA holder");
 assert(cmag_hole_ac < cmag_pellet, "the grills' holes must be smaller than a pellet, even across their corners");
 assert(cmag_rail[1] > cmag_rail[2] && cmag_rail[2] <= cmag_fillet, "a rail's tray side drops less deep than the rail, and no deeper than the inside's fillets");
 

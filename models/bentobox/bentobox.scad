@@ -547,39 +547,56 @@ module section_sealed() difference() {
     seal_groove_cut(sec_h);
     for (s = tab_screws) translate([s[0], s[1], -1]) cylinder(d = hole_d, h = sec_h + 2);
 }
-// The sealed stack's parts in place: the fan section, the carbon housing, the HEPA holder. Each original stands
+// The sealed stack's parts in place: the fan section, the carbon housing, the HEPA holder. Each part's body stands
 // `meet` lower than its joint's face, whose cut takes that much off its floor.
 sst = stack(true, true);
-carbon_dz = sst[2] - meet - (duct_h + fans_h);
-hepa_dz = sst[3] - meet - (duct_h + fans_h + carbon_h);
 module fans_sealed() difference() {
     sealed_part(undef, sst[1], duct_h, duct_h + fans_h) if (bottom == "auto") fans_drawn(); else fan_section();
     translate([grommet_x, auto_conduit[1], duct_h]) grommet_hole();
 }
-// The carbon housing drawn (Alon, 9 Oct 2026), to its STL's measurements, from Z = z0: the outline, its edges
-// chamfered; the inside over the floor, its edge on the floor chamfered; and the floor's two openings, chamfered
-// underneath. Its two faces are the sealed joints' (sealed_part cuts them). The original's text on its -X face is
-// left off.
+// The carbon housing drawn (Alon, 9 Oct 2026), to its STL's measurements, from Z = z0, housing_h tall: the outline,
+// its edges chamfered; the inside over the floor, its edge on the floor chamfered; and through the floor, for the bed
+// a honeycomb across the whole inside (D146), for the C-MAG the original's two openings, chamfered underneath, and a
+// fill mark on each inside wall for the bed. Its two faces are the sealed joints' (sealed_part cuts them). The
+// original's text on its -X face is left off.
 module carbon_open2d() let(o = carbon_open) hull() {
     translate([0, o[2] - o[0]]) circle(r = o[0], $fn = 96);
     translate([o[0] - o[3], o[1] + o[3]]) circle(r = o[3], $fn = 32);
     intersection() { translate([0, o[1] + o[0]]) circle(r = o[0], $fn = 96); translate([-o[0], o[1]]) square(o[0]); }
 }
-module carbon_drawn(z0) let(c = carbon_chamfer, f = carbon_floor) difference() {
-    translate([0, 0, z0]) outline_solid(carbon_h);
-    hull() {
-        translate([0, 0, z0 + f]) linear_extrude(eps) inside_offset(-c);
-        translate([0, 0, z0 + f + c]) linear_extrude(carbon_h) inside_offset(0);
-    }
-    for (r = [0, 180]) rotate(r) {
+// The floor's honeycomb: whole holes inside the inside's outline, bed_mesh[2] in, its rounded corners included.
+function in_rrect(c, size, r, margin) = let(dx = max(abs(c[0]) - (size[0] / 2 - r), 0), dy = max(abs(c[1]) - (size[1] / 2 - r), 0))
+    norm([dx, dy]) <= r - margin + 1e-9;
+function bed_holes() = let(size = [in_w - 2 * bed_mesh[2], in_l - 2 * bed_mesh[2]], r = max(in_r - bed_mesh[2], 0.01))
+    [for (c = mesh_holes(size, bed_mesh[0], bed_web)) if (in_rrect(c, size, r, bed_hole_ac / 2)) c];
+module bed_holes2d() for (c = bed_holes()) translate(c) rotate(90) circle(d = bed_hole_ac, $fn = 6);
+// A fill mark at the origin, on a wall in the XZ plane, standing out towards +Y: a slot's shape, its edges at 45
+// degrees; it starts 0.05 inside the wall, so it joins it. One in the middle of each inside wall, at the bed's top.
+module bed_mark1() let(l = bed_mark, k = bed_mark[2] + 0.05) translate([0, -0.05, 0]) rotate([-90, 0, 0])
+    hull() for (s = [[l[0], l[1], 0], [l[0] - 2 * k, l[1] - 2 * k, k - eps]]) translate([0, 0, s[2]]) linear_extrude(eps)
+        hull() for (sx = [-1, 1]) translate([sx * (s[0] - s[1]) / 2, 0]) circle(d = s[1], $fn = 32);
+module bed_marks(z0) let(z = z0 + carbon_floor + bed_depth)
+    for (w = [[0, -in_l / 2, 0], [0, in_l / 2, 180], [in_w / 2, 0, 90], [-in_w / 2, 0, -90]])
+        translate([w[0], w[1], z]) rotate(w[2]) bed_mark1();
+module carbon_drawn(z0) let(c = carbon_chamfer, f = carbon_floor, h = housing_h) union() {
+    difference() {
+        translate([0, 0, z0]) outline_solid(h);
         hull() {
-            translate([0, 0, z0 - 1]) linear_extrude(1 + eps) offset(delta = c) carbon_open2d();
-            translate([0, 0, z0 + c]) linear_extrude(eps) carbon_open2d();
+            translate([0, 0, z0 + f]) linear_extrude(eps) inside_offset(-c);
+            translate([0, 0, z0 + f + c]) linear_extrude(h) inside_offset(0);
         }
-        translate([0, 0, z0 + c]) linear_extrude(f) carbon_open2d();
+        if (carbon == "bed") translate([0, 0, z0 - 1]) linear_extrude(f + 2, convexity = 10) bed_holes2d();
+        else for (r = [0, 180]) rotate(r) {
+            hull() {
+                translate([0, 0, z0 - 1]) linear_extrude(1 + eps) offset(delta = c) carbon_open2d();
+                translate([0, 0, z0 + c]) linear_extrude(eps) carbon_open2d();
+            }
+            translate([0, 0, z0 + c]) linear_extrude(f) carbon_open2d();
+        }
     }
+    if (carbon == "bed") bed_marks(z0);
 }
-module carbon_sealed() sealed_part(sst[2], sst[3], sst[2] - meet, sst[2] - meet + carbon_h) carbon_drawn(sst[2] - meet);
+module carbon_sealed() sealed_part(sst[2], sst[3], sst[2] - meet, sst[2] - meet + housing_h) carbon_drawn(sst[2] - meet);
 // The HEPA holder drawn (Alon, 9 Oct 2026), to its STL's measurements, from Z = z0: the outline, its top edge
 // chamfered; the pocket - the whole inside - over the ledge; the ledge's opening; and the magnets' holes in its top,
 // where the original cover sits on it. Drawn as the cut-out original was, the pocket and the opening `meet` past its
@@ -682,12 +699,16 @@ module cmag_body() difference() {
 }
 module cmag_tray_drawn() intersection() { cmag_body(); translate([-1, -1, -1]) cube([cmag[0] + 2, cmag[1] + 2, cmag_split + 1]); }
 module cmag_lid_drawn() intersection() { cmag_body(); translate([-1, -1, cmag_split]) cube([cmag[0] + 2, cmag[1] + 2, cmag[2]]); }
-// A grill, flat: the plate, and a honeycomb of whole holes inside its rim, their flats facing along W. Rows of holes
-// run along W, an even number of them across T, which fits the most whole holes in.
-function cmag_mesh_holes() = let(p = cmag_mesh[0] + cmag_web, dy = p * sqrt(3) / 2, R = cmag_hole_ac / 2,
-    hw = cmag_grill[0] / 2 - cmag_rim, ht = cmag_grill[1] / 2 - cmag_rim, m = ceil(ht / dy) + 1, k = ceil(hw / p) + 2)
+// A honeycomb of whole hexagonal holes inside the rectangle `size`, centred: holes `hole` across their flats, `web`
+// between every two neighbours, their flats facing along X. Rows run along X, an even number of them across Y, which
+// fits the most whole holes into a grill. (scad-tools lib/patterns.scad has it as honeycomb_centres; this copy stays
+// until the scad-tools pin moves past it.)
+function mesh_holes(size, hole, web) = let(p = hole + web, dy = p * sqrt(3) / 2, R = hole / sqrt(3),
+    hx = size[0] / 2, hy = size[1] / 2, m = ceil(hy / dy) + 1, k = ceil(hx / p) + 2)
     [for (i = [-m : m], j = [-k : k]) let(c = [(j + (i % 2 == 0 ? 0 : 0.5)) * p, (i + 0.5) * dy])
-        if (abs(c[0]) + cmag_mesh[0] / 2 <= hw + 1e-9 && abs(c[1]) + R <= ht + 1e-9) c];
+        if (abs(c[0]) + hole / 2 <= hx + 1e-9 && abs(c[1]) + R <= hy + 1e-9) c];
+// A grill, flat: the plate, and a honeycomb of whole holes inside its rim, their flats facing along W.
+function cmag_mesh_holes() = mesh_holes([cmag_grill[0] - 2 * cmag_rim, cmag_grill[1] - 2 * cmag_rim], cmag_mesh[0], cmag_web);
 module cmag_grill2d() difference() {
     rrect(cmag_grill[0], cmag_grill[1], cmag_grill[2]);
     for (c = cmag_mesh_holes()) translate(c) rotate(90) circle(d = cmag_hole_ac, $fn = 6);
