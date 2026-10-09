@@ -59,7 +59,7 @@ carbon_chamfer = 0.6;   /* The openings' edges under the floor, and the inside's
 // and 45 mm of it holds three times the C-MAG's line (sim/bentobox-cfd/pleat.py; the build page, The carbon).
 carbon = "bed";     /* "bed", or "cmag": the C-MAG and the original's housing. */
 bed_depth = 45;     /* The bed, from the floor up: 184 cm3 of pellets. A mark on each inside wall shows where to fill to. */
-bed_head = 28.6;    /* Air over the bed, under the HEPA holder: the air comes down through the holder's ledge, 36.8 x 87.5, and spreads over the whole bed, 40.8 x 100.8, before it goes in. 6 is enough - the section's plenum over its sheet is 5 - and would make the housing 55 tall, 22.6 lower; but then the brackets under its top tabs come down over the joint's lower screws' heads, which stand under the same tabs (check_seal_access). Until that is settled (D147), it keeps the original's 77.6. */
+bed_head = 6;       /* Air over the bed, under the HEPA holder: the air comes down through the holder's ledge, 36.8 x 87.5, and spreads over the whole bed, 40.8 x 100.8, before it goes in; the section's plenum over its sheet is 5. The housing is 55 tall, the original's 77.6 (Alon, 9 Oct 2026); it can be, now the top joint's tabs stand clear of the lower screws (D147). */
 bed_mesh = [3.2, 2, 2];     /* The floor's honeycomb: holes this far across their flats - a pellet stays on one even across its corners - with webs this many beads wide, all of them this far inside the inside's outline, clear of its chamfer, so the floor is solid round the edge and under the joint's bead. */
 bed_mark = [10, 1.4, 0.4];  /* The fill marks: long, tall and proud, their edges at 45 degrees, their middle at the bed's top. */
 hepa_h   = 50;      /* The HEPA holder. */
@@ -265,10 +265,12 @@ tab_blend = 0.05;   /* A bracket's face starts this far inside the wall and the 
 tab_corner_t = [0.1, 0.5];  /* Up a bracket, from its foot (0) to the tab (1): between these it fills the rounded corner under the tab, smoothly, so the side face runs on into the bracket's side. */
 tab_lower_t = 6;    /* The lower part's tab, with the nut in it. */
 tab_upper_t = 5;    /* The upper part's tab under the screw's head; the tab stands a head's counterbore higher, so the head sinks flush. */
+top_tabs = "middle";    /* The top joint's tabs, the HEPA holder on the carbon housing (Alon, 9 Oct 2026: D147): "middle", one screw in the middle of each end, so nothing stands over the lower joints' screws at the corners, which go in first; "corners", four, over them, as the lower joints'. */
+driver = [4, 75, 30];   /* The screws are driven with a hex screwdriver (Alon, 9 Oct 2026: Q148), 2.5 mm for the M3 socket heads: the room its blade needs, the blade's length, and the handle's diameter. Nothing may stand in its way to any screw's head. */
 
 /* [The joint sample - Alon, 8 Oct 2026: D121] */
-// Before the 7-hour carbon housing, one end of a sealed joint to try: sliced off the parts themselves, the carbon
-// housing's top end with its two nut tabs and the HEPA holder's bottom end with its two head tabs, and a block with
+// Before the 6-hour carbon housing, one end of a sealed joint to try: sliced off the parts themselves, the carbon
+// housing's top end with its nut tab and the HEPA holder's bottom end with its head tab, and a block with
 // one fan nut's pocket, to try its seat (D124) - on one plate, in ASA - and in TPU, a short bead for that end's groove.
 sample_l = 30;      /* How far in from the end wall the pieces run. */
 sample_low_h = 12;  /* The carbon housing's piece: this much under its top face, its two nut tabs and their brackets' tops. */

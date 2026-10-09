@@ -86,7 +86,8 @@ CONTROLS = [
     ("check_auto_wires", [("wire_shift", "1.5")], "the wires moved 1.5 mm off the tube"),
     ("check_auto_air", [("post_clear_air", "false")], "the fan screws' posts left round, under the fans' openings"),
     # The sealed joints. collar_play narrows the upper parts' chamfers, not the collars; bead_side the grooves,
-    # not the beads; bracket_h reaches the carbon housing's top brackets down over the section's screws.
+    # not the beads. The top joint's tabs back at the corners stand over the lower joints' screws; a short blade
+    # brings the driver's handle down against the HEPA holder.
     ("check_seal_j1", [("collar_play", "-0.4")], "the section's chamfer cut back less than the fan section's collar"),
     ("check_seal_j2", [("collar_play", "-0.4")], "the carbon housing's chamfer, against the section's collar"),
     ("check_seal_j3", [("collar_play", "-0.4")], "the HEPA holder's chamfer, against the carbon housing's collar"),
@@ -94,7 +95,8 @@ CONTROLS = [
     ("check_seal_screws", [("screw_shift", "[1, 0]")], "the joints' screws moved 1 mm off their holes"),
     ("check_seal_nuts", [("nut_fit", "-0.3")], "the joints' nut slots made narrower and lower than a nut"),
     ("check_seal_nut_ways", [("nut_slot_out", "1")], "the joints' nut slots cut short of the tabs' ends"),
-    ("check_seal_access", [("bracket_h", "80")], "the carbon housing's brackets reaching down over the section's screws"),
+    ("check_seal_access", [("top_tabs", '"corners"')], "the top joint's tabs back at the corners, over the lower screws' heads"),
+    ("check_seal_access", [("driver", "[4, 30, 30]")], "a 30 mm blade: the driver's handle down against the HEPA holder"),
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.
     ("check_section_carbon", UNSEALED + [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
     ("check_cover_holder", [("hepa_in_grow", "-0.5")], "the HEPA holder's inside made narrower than the cover's plug"),

@@ -404,12 +404,26 @@ function outline_pts() = _round(_corner_pts());
 function _tab_pts() = concat([[seal_x, tab_sc[1]]],
     [for (a = [5 : 5 : tab_a0 - 1]) tab_sc + tab_boss_r * [cos(a), sin(a)]],
     [for (i = [0 : 24]) let(x = tab_p[0] - (tab_p[0] - tab_x0) * i / 24) [x, seal_y + tab_c * pow(x - tab_x0, 2)]]);
-function plan_pts() = _round(_tab_pts());
+// With a tab in the middle of each end wall instead (style "middle", the top joint's - D147): round the corner,
+// along the end wall to the parabola's foot, up it onto the boss, and round the boss to just short of the middle, so
+// that its mirror image repeats no point.
+function _mid_pts() = let(xb = tab_sc[0] - tab_p[0], xf = tab_mx0) concat(_corner_pts(),
+    [for (i = [0 : 24]) let(x = xf - (xf - xb) * i / 24) [x, seal_y + tab_c * pow(x - xf, 2)]],
+    [for (a = [35 : 5 : 85]) [0, tab_sc[1]] + tab_boss_r * [cos(a), sin(a)]]);
+// A joint's outline with its tabs: "corners", or "middle".
+function plan_pts(style = "corners") = style == "middle" ? _round(_mid_pts()) : _round(_tab_pts());
 // Each tab's zone: the tabs' material comes in only there.
-module tab_zone2d() for (mx = [0, 1], my = [0, 1]) mirror([mx, 0, 0]) mirror([0, my, 0])
-    translate([tab_x0, tab_zone_y]) square([seal_x + 20 - tab_x0, tab_tip + 20 - tab_zone_y]);
+module tab_zone2d(style = "corners") if (style == "middle") for (my = [0, 1]) mirror([0, my, 0])
+        translate([-tab_mx0, tab_zone_y]) square([2 * tab_mx0, tab_tip + 20 - tab_zone_y]);
+    else for (mx = [0, 1], my = [0, 1]) mirror([mx, 0, 0]) mirror([0, my, 0])
+        translate([tab_x0, tab_zone_y]) square([seal_x + 20 - tab_x0, tab_tip + 20 - tab_zone_y]);
+// The outline in a tabs' band, where the part's own outline prism already stands: with corner tabs the whole outline;
+// with middle tabs only the tabs' zones - the whole outline there would lay the plain corners' round over the
+// part's own, face on face, and leave slivers along each of its points.
+module tab_band2d(style) if (style == "middle") intersection() { polygon(plan_pts(style)); tab_zone2d(style); }
+    else polygon(plan_pts(style));
 // Material for the tabs: the outline grown by g, so the cut to the outline sets every face; in the tabs' zones only.
-module tab_stuff2d(g) intersection() { offset(delta = g) polygon(plan_pts()); tab_zone2d(); }
+module tab_stuff2d(g, style = "corners") intersection() { offset(delta = g) polygon(plan_pts(style)); tab_zone2d(style); }
 // Everything below z, or above it, with its face exactly at z.
 module below(z) translate([-100, -100, z]) mirror([0, 0, 1]) cube([200, 200, 400]);
 module above(z) translate([-100, -100, z]) cube([200, 200, 400]);
@@ -443,26 +457,32 @@ module bracket_block(zt, z0, g) {
         [concat([for (i = [0 : nx - 1]) b + i * nz], [for (i = [nx - 1 : -1 : 0]) i * nz])],
         [concat([for (i = [0 : nx - 1]) i * nz + nz - 1], [for (i = [nx - 1 : -1 : 0]) b + i * nz + nz - 1])]));
 }
-// The four brackets: g = 0, the shape; g > 0, the material for it, grown and in the tabs' zones only.
-module brackets(zt, z0, g = 0) intersection() {
-    for (mx = [0, 1], my = [0, 1]) mirror([mx, 0, 0]) mirror([0, my, 0]) bracket_block(zt, z0, g);
-    translate([0, 0, z0 - 1]) linear_extrude(zt - z0 + 3) if (g > 0) tab_stuff2d(g); else polygon(plan_pts());
+// Under a tab in the middle of the end wall, nothing turns a corner: the bracket's face is the same cubic all along X,
+// a profile across the wall extruded along it.
+module bracket_mid(zt, z0, g) let(zs = [for (j = [0 : 36]) z0 + (zt - z0) * j / 36], x = tab_mx0 + 1)
+    for (my = [0, 1]) mirror([0, my, 0]) along_x(-x, x) polygon(concat([[tab_zone_y - 0.5, z0]],
+        [for (z = zs) [bracket_f(0, z, zt) + g, z]], [[bracket_f(0, zt, zt) + g, zt + 1], [tab_zone_y - 0.5, zt + 1]]));
+// The brackets: g = 0, the shape; g > 0, the material for it, grown and in the tabs' zones only.
+module brackets(zt, z0, g = 0, style = "corners") intersection() {
+    if (style == "middle") bracket_mid(zt, z0, g);
+    else for (mx = [0, 1], my = [0, 1]) mirror([mx, 0, 0]) mirror([0, my, 0]) bracket_block(zt, z0, g);
+    translate([0, 0, z0 - 1]) linear_extrude(zt - z0 + 3) if (g > 0) tab_stuff2d(g, style); else polygon(plan_pts(style));
 }
 // Inside a 45-degree face over the outline with its tabs: at z, the outline inset by d, and 1 mm less inset for
 // every 1 mm up, for rise (scad-tools shapes.scad, slant). It is exact where the outline turns no tighter than d -
 // here nowhere: the tabs' bosses are tab_boss_r round, and the corners are the tabs'.
-module slant_in(z, d, rise) translate([0, 0, z]) slant(d, rise, 23, eps) polygon(plan_pts());
+module slant_in(z, d, rise, style = "corners") translate([0, 0, z]) slant(d, rise, 23, eps) polygon(plan_pts(style));
 // The collar on a lower part's top, its face at z: round the whole outline, tabs and all; its outside the outline's,
 // its inside at 45 degrees, collar_base in at its foot.
-module collar(z) difference() {
-    translate([0, 0, z - 0.5]) linear_extrude(collar_h + 0.5) polygon(plan_pts());
-    slant_in(z - 0.5 - eps, collar_base + 0.5 + eps, collar_base + 0.5 - collar_top + 2 * eps);
+module collar(z, style = "corners") difference() {
+    translate([0, 0, z - 0.5]) linear_extrude(collar_h + 0.5) polygon(plan_pts(style));
+    slant_in(z - 0.5 - eps, collar_base + 0.5 + eps, collar_base + 0.5 - collar_top + 2 * eps, style);
 }
 // What an upper part's bottom edge loses, its face at z, round the whole outline, tabs and all: everything outside a
 // 45-degree face from chamfer_in in at the face to just past the outline.
-module chamfer_cut(z) difference() {
-    translate([0, 0, z - 1]) linear_extrude(chamfer_in + 1 + meet) offset(delta = 5) polygon(plan_pts());
-    slant_in(z - 1 - eps, chamfer_in + 1 + eps, chamfer_in + 1 + 2 * meet);
+module chamfer_cut(z, style = "corners") difference() {
+    translate([0, 0, z - 1]) linear_extrude(chamfer_in + 1 + meet) offset(delta = 5) polygon(plan_pts(style));
+    slant_in(z - 1 - eps, chamfer_in + 1 + eps, chamfer_in + 1 + 2 * meet, style);
 }
 module seal_groove_cut(z) translate([0, 0, z - seal_groove[1]]) linear_extrude(seal_groove[1] + 1)
     gasket_groove_2d(seal_ring[0], seal_ring[1], seal_groove[0]);
@@ -471,8 +491,9 @@ module magnet_fill(z0, z1) for (sx = [-1, 1], sy = [-1, 1]) translate([sx * mag_
 // The material grown past the outline for the tabs, g: a hair, so that the cut to the outline sets every face.
 tab_g = 0.02;
 // A sealed original, its STL the child. zb: its floor's cut, at the joint under it (an upper part's), or undef;
-// zt: its top's cut, at the joint over it (a lower part's), or undef. z0, z1: its STL's bottom and top faces.
-module sealed_part(zb, zt, z0, z1) {
+// zt: its top's cut, at the joint over it (a lower part's), or undef. z0, z1: its STL's bottom and top faces. sb, st:
+// the tabs at its bottom's joint and at its top's, "corners" or "middle".
+module sealed_part(zb, zt, z0, z1, sb = "corners", st = "corners") {
     up = !is_undef(zb);
     low = !is_undef(zt);
     ztab = low ? zt - tab_lower_t : undef;                                // a nut's tab's bottom
@@ -486,40 +507,46 @@ module sealed_part(zb, zt, z0, z1) {
                         translate([0, 0, zb - 1]) linear_extrude(1 - meet + groove_h + 0.1)
                             difference() { inside_offset(groove_out + 0.1); inside_offset(-0.2); }
                         magnet_fill(zb - 1, zb - meet + mag_h + 0.1);
-                        translate([0, 0, zb - 1]) linear_extrude(1 + tab_upper_h + tab_g) tab_stuff2d(tab_g);
+                        translate([0, 0, zb - 1]) linear_extrude(1 + tab_upper_h + tab_g) tab_stuff2d(tab_g, sb);
                     }
                     if (low) {
                         magnet_fill(zt + meet - mag_h - 0.1, zt + 1);
-                        translate([0, 0, ztab]) linear_extrude(tab_lower_t + 1) tab_stuff2d(tab_g);
-                        brackets(ztab, zbr, tab_g);
+                        translate([0, 0, ztab]) linear_extrude(tab_lower_t + 1) tab_stuff2d(tab_g, st);
+                        brackets(ztab, zbr, tab_g, st);
                     }
                 }
                 // The shape: the outline, the tabs, the brackets, cut at the joints' faces.
                 intersection() {
                     union() {
-                        translate([0, 0, z0 - 1]) linear_extrude(z1 - z0 + 2) polygon(outline_pts());
-                        if (up) translate([0, 0, zb - 1]) linear_extrude(1 + tab_upper_h) polygon(plan_pts());
+                        // With middle tabs on top, the collar's corners are the outline's own round, point for
+                        // point: the outline's prism stops where the collar starts, so its faces meet the collar's at
+                        // the same points rather than running past them and leaving a sliver at each.
+                        if (low && st == "middle") {
+                            translate([0, 0, z0 - 1]) linear_extrude(zt - 0.5 - z0 + 1) polygon(outline_pts());
+                            translate([0, 0, zt - 0.5]) linear_extrude(z1 - zt + 1.5) polygon(outline_pts());
+                        } else translate([0, 0, z0 - 1]) linear_extrude(z1 - z0 + 2) polygon(outline_pts());
+                        if (up) translate([0, 0, zb - 1]) linear_extrude(1 + tab_upper_h) tab_band2d(sb);
                         if (low) {
-                            translate([0, 0, ztab]) linear_extrude(tab_lower_t + 1) polygon(plan_pts());
-                            brackets(ztab, zbr);
+                            translate([0, 0, ztab]) linear_extrude(tab_lower_t + 1) tab_band2d(st);
+                            brackets(ztab, zbr, 0, st);
                         }
                     }
                     if (up) above(zb);
                     if (low) below(zt);
                 }
             }
-            if (low) collar(zt);
+            if (low) collar(zt, st);
         }
         if (up) {
-            chamfer_cut(zb);
-            for (s = tab_screws) translate([s[0], s[1], zb - 1]) {
+            chamfer_cut(zb, sb);
+            for (s = joint_screws(sb)) translate([s[0], s[1], zb - 1]) {
                 cylinder(d = hole_d, h = tab_upper_h + 2);
                 translate([0, 0, 1 + tab_upper_t]) cylinder(d = m3_cb[0], h = tab_upper_h);
             }
         }
         if (low) {
             seal_groove_cut(zt);
-            for (s = tab_screws) {
+            for (s = joint_screws(st)) {
                 slot_frame(s, zt + seal_slot_bot) { slot(); roof_hole(-(seal_slot_bot + nut_slot_h) + 1); }
                 translate([s[0], s[1], zt - 9]) cylinder(d = hole_d, h = 9 + seal_slot_bot + eps);
             }
@@ -578,14 +605,16 @@ module bed_mark1() let(l = bed_mark, k = bed_mark[2] + 0.05) translate([0, -0.05
 module bed_marks(z0) let(z = z0 + carbon_floor + bed_depth)
     for (w = [[0, -in_l / 2, 0], [0, in_l / 2, 180], [in_w / 2, 0, 90], [-in_w / 2, 0, -90]])
         translate([w[0], w[1], z]) rotate(w[2]) bed_mark1();
+// Its outside runs 1 mm past both ends: each end is a sealed joint, which cuts it there, and the outline's own
+// chamfers, left inside the cut, crossed the joint's outline under the collar and made slivers.
 module carbon_drawn(z0) let(c = carbon_chamfer, f = carbon_floor, h = housing_h) union() {
     difference() {
-        translate([0, 0, z0]) outline_solid(h);
+        translate([0, 0, z0 - 1]) outline_solid(h + 2);
         hull() {
             translate([0, 0, z0 + f]) linear_extrude(eps) inside_offset(-c);
             translate([0, 0, z0 + f + c]) linear_extrude(h) inside_offset(0);
         }
-        if (carbon == "bed") translate([0, 0, z0 - 1]) linear_extrude(f + 2, convexity = 10) bed_holes2d();
+        if (carbon == "bed") translate([0, 0, z0 - 2]) linear_extrude(f + 3, convexity = 10) bed_holes2d();
         else for (r = [0, 180]) rotate(r) {
             hull() {
                 translate([0, 0, z0 - 1]) linear_extrude(1 + eps) offset(delta = c) carbon_open2d();
@@ -596,7 +625,7 @@ module carbon_drawn(z0) let(c = carbon_chamfer, f = carbon_floor, h = housing_h)
     }
     if (carbon == "bed") bed_marks(z0);
 }
-module carbon_sealed() sealed_part(sst[2], sst[3], sst[2] - meet, sst[2] - meet + housing_h) carbon_drawn(sst[2] - meet);
+module carbon_sealed() sealed_part(sst[2], sst[3], sst[2] - meet, sst[2] - meet + housing_h, "corners", top_tabs) carbon_drawn(sst[2] - meet);
 // The HEPA holder drawn (Alon, 9 Oct 2026), to its STL's measurements, from Z = z0: the outline, its top edge
 // chamfered; the pocket - the whole inside - over the ledge; the ledge's opening; and the magnets' holes in its top,
 // where the original cover sits on it. Drawn as the cut-out original was, the pocket and the opening `meet` past its
@@ -612,7 +641,7 @@ module hepa_drawn(z0) let(c = bb_chamfer, t = z0 + hepa_h) difference() {
     translate([0, 0, z0 - 1]) linear_extrude(hepa_ledge + 2) offset(delta = meet) rrect(open_wl[0], open_wl[1], hepa_open_r);
     magnet_holes(z0 + hepa_h, false);
 }
-module hepa_sealed() sealed_part(sst[3], undef, sst[3] - meet, sst[3] - meet + hepa_h) hepa_drawn(sst[3] - meet);
+module hepa_sealed() sealed_part(sst[3], undef, sst[3] - meet, sst[3] - meet + hepa_h, top_tabs) hepa_drawn(sst[3] - meet);
 // The cover drawn (Alon, 9 Oct 2026: D142), to ThrutheFrame's cover_hemp, its plate's underside on Z = z0, the
 // holder's top: the plate, its bottom edge chamfered and its top edge rounded, then chamfered at 45 degrees as it
 // prints, top face down; the plug under it; the magnets' holes in the plate's underside; and the window, filled
@@ -719,9 +748,11 @@ module cmag_drawn() { cmag_tray_drawn(); cmag_lid_drawn(); cmag_grills_drawn(); 
 module say_cmag() let(n = len(cmag_mesh_holes()), open = n * 3 * sqrt(3) / 8 * pow(cmag_hole_ac, 2))
     echo(str("C-MAG grills: ", n, " holes each, ", cmag_mesh[0], " mm across their flats, ", cmag_hole_ac, " across their corners, ",
         "for ", cmag_pellet, " mm pellets; ", round(open), " mm2 open, ", round(100 * open / (cmag_grill[0] * cmag_grill[1])), " % of a grill"));
-module say_seal_hardware() echo(str("sealed joints: three TPU bead rings, ", seal_bead[0], " mm; four M3 x ", j3_screw,
-    " socket head into nuts, HEPA holder to carbon housing; four M3 x ", j12_screw,
-    " through the carbon housing's tabs and the section's pillars into the fan section's nuts; eight M3 nuts; every head sunk in its tab"));
+function _count(n) = n == 1 ? "one" : n == 2 ? "two" : n == 4 ? "four" : n == 6 ? "six" : n == 8 ? "eight" : str(n);
+module say_seal_hardware() echo(str("sealed joints: three TPU bead rings, ", seal_bead[0], " mm; ", _count(len(top_screws)),
+    " M3 x ", j3_screw, " socket head into nuts, HEPA holder to carbon housing; four M3 x ", j12_screw,
+    " through the carbon housing's tabs and the section's pillars into the fan section's nuts; ",
+    _count(len(tab_screws) + len(top_screws)), " M3 nuts; every head sunk in its tab, turned with a 2.5 mm hex screwdriver"));
 
 // ------------------------------------------------------------------ the joint sample (D121)
 // See bentobox.params.scad. Everything past sample_l in from the +Y end wall, sliced off the sealed parts.
@@ -808,7 +839,8 @@ module samples_tpu() {
     joint_sample_bead();                                // Y 0 .. 27.2
     translate([0, -10, 0]) grommets_printing();
 }
-module say_sample_hardware() echo(str("joint sample: two M3 x ", j3_screw, " socket head and two M3 nuts for the joint, one M3 nut and an M3 x 8 for the pocket's seat"));
+module say_sample_hardware() let(n = _count(len(top_screws) / 2)) echo(str("joint sample: ", n, " M3 x ", j3_screw,
+    " socket head and ", n, len(top_screws) == 2 ? " M3 nut" : " M3 nuts", " for the joint, one M3 nut and an M3 x 8 for the pocket's seat"));
 
 // How to cut the paper for the clamp, from the values above: what the build page quotes. Only the length is
 // measured; across the folds the piece is counted, since the clamp sets its width.

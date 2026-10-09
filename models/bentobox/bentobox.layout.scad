@@ -239,6 +239,11 @@ bracket_l = tab_tip + tab_blend - bracket_y0;
 bracket_h = 3 * bracket_l;
 tab_upper_h = tab_upper_t + m3_cb[1];                                    // an upper part's tab, its screw's head sunk
 tab_screws = [for (sx = [-1, 1], sy = [-1, 1]) [sx * tab_sc[0], sy * tab_sc[1], sy > 0 ? 90 : 270]];
+// A tab in the middle of an end wall (top_tabs = "middle"): the corner tab's boss and parabola, moved to X = 0, the
+// parabola run down into the end wall on both sides, its feet at +-tab_mx0.
+tab_mx0 = tab_sc[0] - tab_x0;
+function joint_screws(style) = style == "middle" ? [for (sy = [-1, 1]) [0, sy * tab_sc[1], sy > 0 ? 90 : 270]] : tab_screws;
+top_screws = joint_screws(top_tabs);                                   // the top joint's, the HEPA holder's
 // The screws: through the HEPA holder's tab into the carbon housing's nut; and through the carbon housing's tab and
 // the section's pillar into the fan section's nut. Each nut sits in the middle of its tab's height, pulled up
 // against its slot's roof.
@@ -266,6 +271,7 @@ assert(half_wedge_z0 < paper_depth - 3, "the half wedges outside the flaps come 
 
 assert(grid_t >= groove_h + 2 * fdm_layer_h, "the grid's rim must roof the groove in the section's bottom");
 assert(ledge_w > -groove_in, "the ledge must reach past the groove's inner face");
+assert(top_tabs == "middle" || top_tabs == "corners", "top_tabs is \"middle\" or \"corners\"");
 assert(carbon == "bed" || carbon == "cmag", "carbon is \"bed\" or \"cmag\"");
 assert(cmag[0] < carbon_h - carbon_floor, "the C-MAG must stand inside the carbon housing");
 assert(bed_hole_ac < cmag_pellet, "the floor's holes must be smaller than a pellet, even across their corners");

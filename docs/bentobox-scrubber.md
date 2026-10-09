@@ -12,8 +12,9 @@ the electronics, drawn from scratch to the Auto's measurements, with a tube down
 where the Auto has heat-set inserts, and a USB-C socket for its 12 V. The bay is a tray of its own, screwed on
 underneath.
 
-**Its joints under suction are sealed** (see *The sealed joints*): a TPU bead in a groove at each, and four
-screws in tabs at the corners, where the original has magnets.
+**Its joints under suction are sealed** (see *The sealed joints*): a TPU bead in a groove at each, and screws
+in tabs where the original has magnets - four at the corners for each of the two lower joints, one in the middle of
+each end for the top one - all turned with a hex screwdriver.
 
 **Its carbon is a bed in the housing** (see *The carbon*): the pellets poured onto the housing's floor, a
 honeycomb across its whole inside, 45 mm deep. The C-MAG stays an option.
@@ -63,10 +64,9 @@ holder off, 45 mm deep, to the mark in the middle of each inside wall - 184 cm³
 level them: the air takes the thinner side of a bed. To change them, the housing comes off the stack, its four
 M3 × 25 out, and tips out.
 
-**The housing keeps its height for now.** 6 mm of air over the bed is enough for the air from the HEPA holder's
-ledge to spread over it, which would make the housing 55 mm tall instead of 77.6 and the box 22.6 mm lower. But the
-joint's lower screws stand under the housing's own top tabs, and the brackets under those come down over their
-heads: lower, there is no room left to turn them (D147, open).
+**The housing is 55 mm tall**, where the original's is 77.6, so the box stands 22.6 mm lower: 6 mm of air over
+the bed is enough for the air from the HEPA holder's ledge to spread over it. It can be, because the top joint's
+screws are in the middle of each end (D147), clear of the lower joints' screws at the corners.
 
 **Why not the C-MAG.** The same airflow models as for the paper's pleats (see *How many pleats*), with the clamp at
 18 pleats and the middle grade:
@@ -242,39 +242,41 @@ housing are sealed:
   the tabs too, its inner face at 45 degrees; the upper part's bottom edge, tabs and all, is cut back at 45
   degrees to sit in it, 0.2 mm clear. It centres the parts, and it is a second barrier outside the bead. Both
   print without support.
-- **Four tabs and screws, where the magnets were.** At each corner a tab stands 9.4 mm past the end wall.
+- **Tabs and screws, where the magnets were.** The two lower joints have a tab at each corner; the top joint,
+  the HEPA holder on the carbon housing, one in the middle of each end (Alon, 9 Oct 2026: D147), so nothing stands
+  over the lower joints' screws, which go in first. Each tab stands 9.4 mm past the end wall.
   The tabs are seamless with the walls and floors: each part's outline is one shape, tabs and all, so a
-  tab's side runs straight on from the side face, its outline leaves the end wall along a parabola, tangent
-  to it, and its floor or top is the part's own. For that the originals' outsides are cut 0.05 mm inside
+  corner tab's side runs straight on from the side face, a tab's outline leaves the end wall along a parabola,
+  tangent to it - on both sides of a middle tab - and its floor or top is the part's own. For that the originals' outsides are cut 0.05 mm inside
   their own faces, a quarter of a layer, and their floors and tops at a sealed joint likewise. Under each
   nut's tab, a bracket whose face is a cubic in its height: tangent to the wall at its foot, 45 degrees at
-  the tab, so it prints without support. In the rounded corner under the tab it fills the corner smoothly,
-  so the side face runs on into the bracket's side. The fan section is shorter than a bracket, so its
+  the tab, so it prints without support. In the rounded corner under a corner tab it fills the corner
+  smoothly, so the side face runs on into the bracket's side. The fan section is shorter than a bracket, so its
   brackets run down to its bottom. Each nut slides in from the tab's end.
-- **The screws.** Four M3 × 12 through the HEPA holder's tabs into nuts in the carbon housing's. Four
+- **The screws.** Two M3 × 12 through the HEPA holder's tabs into nuts in the carbon housing's. Four
   M3 × 25 through the carbon housing's bottom tabs and pillars in the section into nuts in the fan
   section's: one screw at each corner holds both of the section's joints. Each head sinks flush into a
   counterbore in its tab, 0.2 mm under the top: the upper parts' tabs stand 8.2 mm, 5 mm of it under the
-  head.
+  head. They are socket heads, turned with a 2.5 mm hex screwdriver (Q148).
 
 ![The sealed joints pulled apart: the fan section, the section, the carbon housing and the HEPA holder, a bead ring over each lower part's groove, the screws](bentobox/joints.png)
 
 **Putting it together:** a bead ring in the groove on the fan section, the section and the carbon housing;
 a nut in each tab of the fan section and the carbon housing; the section on the fan section, the carbon
-housing on the section, and the four M3 × 25 down through them. The carbon housing's own top tabs and
-brackets stand over those screws; the checks keep at least 35 mm clear above each head, room to set the
-screw in, but not for a long straight driver: turn them with a hex key. Then the HEPA holder on the carbon
-housing and its four M3 × 12, and the cover on its magnets.
+housing on the section, and the four M3 × 25 down through them, with a 2.5 mm hex screwdriver, straight down:
+nothing stands over them. Then the HEPA holder on the carbon housing and its two M3 × 12, and the cover on its
+magnets. The checks stand a screwdriver with a 75 mm blade and a 30 mm handle on every head, straight up, the lower
+screws' before the HEPA holder is on, and find nothing in its way.
 
 The sheet in the section, the carbon and the HEPA come out by the same screws. Only the cover's joint keeps
 magnets: four in the HEPA holder's top and four in the cover.
 
 **Try one end first.** The bead's size and the seat's fit are first guesses, and the carbon housing is a
-7-hour print. The joint sample is one end of the joint between the carbon housing and the HEPA holder, sliced
-off the parts themselves: the carbon housing's top 12 mm, with its two nut tabs, and the HEPA holder's bottom
-10 mm, with its two counterbored tabs, 30 mm in from the end wall. With them on the plate is a block holding
-one fan nut's pocket as the base has it. Lay the TPU bead in the lower piece's groove, a nut in each tab, set
-the upper piece on in its collar and drive the two M3 × 12: the faces should come together on the bead,
+6-hour print. The joint sample is one end of the joint between the carbon housing and the HEPA holder, sliced
+off the parts themselves: the carbon housing's top 12 mm, with its nut tab, and the HEPA holder's bottom
+10 mm, with its counterbored tab, 30 mm in from the end wall. With them on the plate is a block holding
+one fan nut's pocket as the base has it. Lay the TPU bead in the lower piece's groove, the nut in its tab, set
+the upper piece on in its collar and drive the M3 × 12: the faces should come together on the bead,
 pressing it down, the chamfer should sit in the collar, and each head should end flush. Pull a nut into the
 block's seat with an M3 × 8 and take the screw out: the nut should stay.
 
@@ -398,15 +400,15 @@ samples-tpu` for the two sample plates.
 | Base | ASA | 1 | 3 h 25 m | 36 g |
 | Fan section | ASA | 1 | 3 h 42 m | 36 g |
 | Tray | ASA | 1 | 1 h 47 m | 20 g |
-| Carbon housing | ASA | 1 | 8 h 26 m | 76 g |
-| HEPA holder | ASA | 1 | 4 h 39 m | 45 g |
+| Carbon housing | ASA | 1 | 6 h 22 m | 57 g |
+| HEPA holder | ASA | 1 | 4 h 32 m | 44 g |
 | Cover | ASA | 1 | 1 h 53 m | 13 g |
 | Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
-| Joint sample | ASA | 1 plate | 1 h 15 m | 11 g |
+| Joint sample | ASA | 1 plate | 1 h 7 m | 10 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
 | Grommet | TPU 95A | 2 halves | 2 m | under 1 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
-| Samples, ASA | ASA | 1 plate | 3 h 12 m | 26 g |
+| Samples, ASA | ASA | 1 plate | 3 h 5 m | 25 g |
 | Samples, TPU | TPU 95A | 1 plate | 5 m | under 1 g |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
@@ -425,15 +427,16 @@ For the sealed joints:
 
 | Quantity | Item |
 |---|---|
-| 8 | M3 hex nut, ISO 4032 |
+| 6 | M3 hex nut, ISO 4032 |
 | 4 | M3 × 25 socket head cap screw, ISO 4762: the carbon housing and the section to the fan section |
-| 4 | M3 × 12 socket head cap screw, ISO 4762: the HEPA holder to the carbon housing |
+| 2 | M3 × 12 socket head cap screw, ISO 4762: the HEPA holder to the carbon housing |
 | 8 | 4 × 2 mm magnet: the cover's joint, four in the HEPA holder and four in the cover |
 
 With the C-MAG: 8 more 4 × 2 mm magnets, four in each half. Its parts, in ASA: the tray 2 h 16 m and 25 g, the
 lid 1 h 49 m and 21 g, the four grills on one plate 1 h 51 m and 11 g.
 
-For the joint sample, from the same stock: 3 M3 nuts, 2 M3 × 12 and 1 M3 × 8. For the bottom sample: 2 M3 nuts,
+For the joint sample, from the same stock: 2 M3 nuts, 1 M3 × 12 and 1 M3 × 8. Every screw is turned with a
+2.5 mm hex screwdriver, its blade 75 mm or longer. For the bottom sample: 2 M3 nuts,
 2 M3 × 12 and the USB-C trigger board.
 
 For the paper's clamp:
@@ -545,8 +548,8 @@ OPENSCAD="<the OpenSCAD nightly>" uv run scripts/bentobox-checks.py all
 
 For the sealed joints it stands each upper part on its lower one - flat on the land, its chamfer in the
 collar, tab on tab - lays each bead in its groove, runs each screw from its head to its tip through the tabs
-and the section's pillars, sets a nut in each slot and slides it out through the tab's end, and keeps the
-room over each screw's head clear. With `sealed=false` it checks the original's joints: the section against
+and the section's pillars, sets a nut in each slot and slides it out through the tab's end, and stands a hex
+screwdriver on each screw's head, straight up, with nothing in its way. With `sealed=false` it checks the original's joints: the section against
 the carbon housing above it and the fan section below it, a magnet across each joint through both parts'
 holes. It runs the air's way from the housing's floor - its honeycomb, or with the C-MAG its two openings - down through
 the section. It stands the cover on the HEPA holder, its plug in the holder's top, a magnet across the joint
@@ -563,7 +566,7 @@ the end face, and one in each fan screw's seat and draws it down its pocket and 
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
 the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
 something broken on purpose that it must catch, and the run fails if one passes unnoticed: 37 fits and
-45 controls.
+46 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.

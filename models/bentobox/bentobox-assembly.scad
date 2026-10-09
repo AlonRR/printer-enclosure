@@ -77,18 +77,23 @@ module stack_sealed(ex) {
 // top, J2 the section's, J3 the carbon housing's.
 seal_faces = [sst[1], sst[2], sst[3]];
 module seal_beads(lift = 0) for (z = seal_faces) translate([0, 0, z - seal_groove[1] + lift]) bead_ring();
-module seal_screws() translate([screw_shift[0], screw_shift[1], 0]) for (s = tab_screws) {
-    for (j = [[sst[3], j3_screw], [sst[2], j12_screw]]) translate([s[0], s[1], j[0] + tab_upper_t]) {
-        translate([0, 0, -j[1]]) cylinder(d = screw_d, h = j[1]);
+// Each joint's screws: [x, y, which way its nut's slot opens, the joint's face, the screw's length]. The top joint's,
+// through the HEPA holder into the carbon housing; the lower two's, through the carbon housing and the section's
+// pillars into the fan section.
+seal_screw_list = concat([for (s = top_screws) [s[0], s[1], s[2], sst[3], j3_screw]],
+    [for (s = tab_screws) [s[0], s[1], s[2], sst[2], j12_screw]]);
+module seal_screws() translate([screw_shift[0], screw_shift[1], 0]) for (s = seal_screw_list)
+    translate([s[0], s[1], s[3] + tab_upper_t]) {
+        translate([0, 0, -s[4]]) cylinder(d = screw_d, h = s[4]);
         cylinder(d = m3_head[0], h = m3_head[1]);
     }
+module seal_nuts(way = 0) for (n = concat([for (s = tab_screws) [s, sst[1]]], [for (s = top_screws) [s, sst[3]]]))
+    hull() for (x = [0, way]) translate([x * cos(n[0][2]), x * sin(n[0][2]), 0]) nut_at(n[0], n[1] + seal_slot_bot);
+// The hex screwdriver on a screw's head, from its tab's top - the head is sunk in it: its blade, then its handle.
+module hex_driver(s) translate([s[0], s[1], s[3] + tab_upper_h]) {
+    cylinder(d = driver[0], h = driver[1]);
+    translate([0, 0, driver[1]]) cylinder(d = driver[2], h = 100);
 }
-module seal_nuts(way = 0) for (s = tab_screws, z = [sst[1], sst[3]])
-    hull() for (x = [0, way]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, z + seal_slot_bot);
-// Over each screw's head, from its tab's top - the head is sunk in it - as far up as the screw is long and 10 mm
-// more: the room to put it in and turn it.
-module seal_access() for (s = tab_screws, j = [[sst[3], j3_screw], [sst[2], j12_screw]])
-    translate([s[0], s[1], j[0] + tab_upper_h]) cylinder(d = m3_head[0] + 1, h = j[1] + 10);
 module seal_parts() { fans_sealed(); translate([0, 0, sst[1]]) section(); carbon_sealed(); hepa_sealed(); }
 module joints_exploded(ex) {
     color("steelblue") fans_sealed();
@@ -96,10 +101,11 @@ module joints_exploded(ex) {
     color("tan") translate([0, 0, 2 * ex]) carbon_sealed();
     color("lightsteelblue") translate([0, 0, 3 * ex]) hepa_sealed();
     color("orange") for (i = [0 : 2]) translate([0, 0, seal_faces[i] - seal_groove[1] + (i + 0.5) * ex]) bead_ring();
-    color("silver") for (s = tab_screws) {
-        translate([s[0], s[1], sst[3] + tab_upper_t + 3.5 * ex]) { translate([0, 0, -j3_screw]) cylinder(d = screw_d, h = j3_screw); cylinder(d = m3_head[0], h = m3_head[1]); }
-        translate([s[0], s[1], sst[2] + tab_upper_t + 2.5 * ex]) { translate([0, 0, -j12_screw]) cylinder(d = screw_d, h = j12_screw); cylinder(d = m3_head[0], h = m3_head[1]); }
-    }
+    color("silver") for (s = seal_screw_list)
+        translate([s[0], s[1], s[3] + tab_upper_t + (s[3] == sst[3] ? 3.5 : 2.5) * ex]) {
+            translate([0, 0, -s[4]]) cylinder(d = screw_d, h = s[4]);
+            cylinder(d = m3_head[0], h = m3_head[1]);
+        }
 }
 
 // Parts that meet face to face are checked sep apart along the joint, so that touching leaves nothing at all
@@ -289,8 +295,13 @@ else if (view == "check_seal_screws") intersection() { seal_parts(); seal_screws
 // The nuts in their slots, and their way in from the tabs' ends.
 else if (view == "check_seal_nuts") intersection() { seal_parts(); seal_nuts(); }
 else if (view == "check_seal_nut_ways") intersection() { seal_parts(); seal_nuts(nut_way); }
-// Room over each head to put the screw in and turn it: nothing of the stack above it.
-else if (view == "check_seal_access") intersection() { seal_parts(); seal_access(); }
+// A hex screwdriver on each screw's head, straight up, nothing in its way: the lower joints' screws go in first,
+// before the HEPA holder is on; the top joint's last, with everything on but the cover.
+else if (view == "check_seal_access") union() {
+    intersection() { union() { fans_sealed(); translate([0, 0, sst[1]]) section(); carbon_sealed(); }
+        for (s = seal_screw_list) if (s[3] == sst[2]) hex_driver(s); }
+    intersection() { seal_parts(); for (s = seal_screw_list) if (s[3] == sst[3]) hex_driver(s); }
+}
 else if (view == "frame") frame_exploded(explode);
 else if (view == "clamp_print") color("orange") clamp_frames_printing();
 else if (view == "paper_cut") paper_cut();
