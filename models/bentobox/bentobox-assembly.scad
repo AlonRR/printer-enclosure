@@ -114,7 +114,7 @@ module magnets_across(z) for (sx = [-1, 1], sy = [-1, 1])
 module air_probe() for (sy = [-1, 1])
     translate([-floor_open[0], sy > 0 ? floor_open[1] : -floor_open[2], grid_t + eps])
         cube([2 * floor_open[0], floor_open[2] - floor_open[1], sec_h - grid_t - 2 * eps]);
-floor_open = [18, 2, 48];   /* MEASURED: the carbon housing's floor openings, X +/-18, Y 2 to 48 each side */
+floor_open = [18, 2, 48];   /* MEASURED: the carbon housing's floor openings, X +/-18, Y 2 to 48 each side: kept apart from carbon_open, which draws them, so the check reads the original's measurement */
 // The Auto's bottom: the tray's nuts in their slots, centred in height, and the fans' pulled up against their
 // pockets' roofs, sep under them; each nut's way in - slid out through its slot's mouth, or down its pocket and
 // out under its post; the screws, head to tip; the wires' way down. Built from the screws' places, not the slots':
@@ -157,6 +157,7 @@ module base_air() intersection() {
 // The USB-C board as Alon measured it: the board, the socket on it standing past its edge, and its parts - held sep
 // off the wall in front of it and the pocket's floor, as it sits. A control moves it (usb_shift).
 usb_shift = [0, 0, 0];  /* Controls only: the board moved in its pocket. */
+fans_drop = 0;          /* Controls only: the fan section set this much down onto its base. */
 module usb_board_model() translate(usb_shift + [usb_x, 0, 0]) {
     translate([-usb_board[1] / 2, usb_pcb_y0 + sep, usb_pcb_z + sep]) cube([usb_board[1], usb_board[0] - usb_socket[2], usb_board[2]]);
     hull() for (s = [-1, 1]) translate([s * (usb_socket[0] - usb_socket[1]) / 2, -bb_l / 2 + sep, usb_axis_z + sep])
@@ -226,7 +227,7 @@ else if (view == "check_magnets_bottom") intersection() {
 // The air from the housing's openings reaches the whole sheet.
 else if (view == "check_air") intersection() { section(); air_probe(); }
 // The Auto's bottom. The fan section stands on the base, and the tray is screwed on under it.
-else if (view == "check_auto_fans_base") intersection() { translate([0, 0, sep]) auto_fans(); auto_base(); }
+else if (view == "check_auto_fans_base") intersection() { translate([0, 0, sep - fans_drop]) fans_printed(); auto_base(); }
 else if (view == "check_auto_tray") intersection() { translate([0, 0, -sep]) auto_tray(); auto_base(); }
 // The grommet's halves lock together, key in slot; the pair sits in the fan section's floor, lip in groove. The
 // hole is cut a hole's compensation larger than the grommet's outside, and the grommet drawn only its squeeze larger,
@@ -241,9 +242,9 @@ else if (view == "check_tray_slot_walls") intersection() { tray_slot_walls(); ba
 else if (view == "check_auto_nuts") intersection() { auto_base(); auto_nuts(); }
 else if (view == "check_auto_nut_ways") intersection() { auto_base(); auto_nuts(nut_way); }
 // Each screw passes the fan section's floor, the base and the tray to its nut, and its tip has room.
-else if (view == "check_auto_screws") intersection() { union() { auto_base(); auto_fans(); auto_tray(); } auto_screws(); }
+else if (view == "check_auto_screws") intersection() { union() { auto_base(); fans_printed(); auto_tray(); } auto_screws(); }
 // The wires pass the floor's hole and the tube to the bay.
-else if (view == "check_auto_wires") intersection() { union() { auto_base(); auto_fans(); } wire_probe(); }
+else if (view == "check_auto_wires") intersection() { union() { auto_base(); fans_printed(); } wire_probe(); }
 // Nothing of the base stands under the fans' openings in the floor, its posts included.
 else if (view == "check_auto_air") intersection() { auto_base(); fan_air(8); }
 else if (view == "bottom") bottom_exploded(explode);

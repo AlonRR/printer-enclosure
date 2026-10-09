@@ -224,8 +224,24 @@ module cmag_standing(z0) translate([cmag[2] / 2, -cmag[1] / 2, z0]) rotate([0, -
 // base's top is at duct_h, where the duct's is.
 auto_fans_stl  = str(orig_dir, "bentobox-auto-fans.stl");
 module auto_fans() orig(auto_fans_stl, auto_fans_dz);
-// The fan section the stack stands on, whichever bottom it has.
+// The fan section the stack stands on, whichever bottom it has, as it comes - its tongue and magnets on top, for the
+// original joints' checks.
 module fan_section() if (bottom == "auto") auto_fans(); else orig(fans_stl);
+// The Auto's fan section drawn (Alon, 9 Oct 2026: "rebuild all the parts that are not currently scad"), to its STL's
+// measurements: the box's outline and inside, its top edge chamfered bb_chamfer outside; the floor auto_floor_t,
+// with each fan's opening and its two screws' holes. Its top is the sealed joint's (sealed_part cuts it there), and
+// the wires' hole is the grommet's (fans_sealed cuts it).
+module fans_drawn() let(z0 = duct_h, z1 = duct_h + fans_h, c = bb_chamfer) difference() {
+    hull() {
+        translate([0, 0, z0]) linear_extrude(z1 - z0 - c) rrect(bb_w, bb_l, bb_r);
+        translate([0, 0, z1 - eps]) linear_extrude(eps) rrect(bb_w - 2 * c, bb_l - 2 * c, bb_r - c);
+    }
+    translate([0, 0, z0 + auto_floor_t]) linear_extrude(z1 - z0) inside_offset(0);
+    for (y = fan_ys) translate([0, y, z0 - 1]) cylinder(d = auto_fan_air, h = auto_floor_t + 2, $fn = 96);
+    for (s = auto_fan_screws) translate([s[0], s[1], z0 - 1]) cylinder(d = auto_fan_hole, h = auto_floor_t + 2);
+}
+// The fan section as it prints: drawn and sealed, with the bottom; the Auto's own, with the bambu bottom unsealed.
+module fans_printed() if (sealed && bottom == "auto") fans_sealed(); else fan_section();
 
 // A slot's own frame: X out towards its mouth, the screw's axis at the origin, Z = 0 at z.
 module slot_frame(s, z) translate([s[0], s[1], z]) rotate(s[2]) children();
@@ -536,10 +552,33 @@ sst = stack(true, true);
 carbon_dz = sst[2] - meet - (duct_h + fans_h);
 hepa_dz = sst[3] - meet - (duct_h + fans_h + carbon_h);
 module fans_sealed() difference() {
-    sealed_part(undef, sst[1], duct_h, duct_h + fans_h) fan_section();
+    sealed_part(undef, sst[1], duct_h, duct_h + fans_h) if (bottom == "auto") fans_drawn(); else fan_section();
     translate([grommet_x, auto_conduit[1], duct_h]) grommet_hole();
 }
-module carbon_sealed() sealed_part(sst[2], sst[3], sst[2] - meet, sst[2] - meet + carbon_h) orig(carbon_stl, carbon_dz);
+// The carbon housing drawn (Alon, 9 Oct 2026), to its STL's measurements, from Z = z0: the outline, its edges
+// chamfered; the inside over the floor, its edge on the floor chamfered; and the floor's two openings, chamfered
+// underneath. Its two faces are the sealed joints' (sealed_part cuts them). The original's text on its -X face is
+// left off.
+module carbon_open2d() let(o = carbon_open) hull() {
+    translate([0, o[2] - o[0]]) circle(r = o[0], $fn = 96);
+    translate([o[0] - o[3], o[1] + o[3]]) circle(r = o[3], $fn = 32);
+    intersection() { translate([0, o[1] + o[0]]) circle(r = o[0], $fn = 96); translate([-o[0], o[1]]) square(o[0]); }
+}
+module carbon_drawn(z0) let(c = carbon_chamfer, f = carbon_floor) difference() {
+    translate([0, 0, z0]) outline_solid(carbon_h);
+    hull() {
+        translate([0, 0, z0 + f]) linear_extrude(eps) inside_offset(-c);
+        translate([0, 0, z0 + f + c]) linear_extrude(carbon_h) inside_offset(0);
+    }
+    for (r = [0, 180]) rotate(r) {
+        hull() {
+            translate([0, 0, z0 - 1]) linear_extrude(1 + eps) offset(delta = c) carbon_open2d();
+            translate([0, 0, z0 + c]) linear_extrude(eps) carbon_open2d();
+        }
+        translate([0, 0, z0 + c]) linear_extrude(f) carbon_open2d();
+    }
+}
+module carbon_sealed() sealed_part(sst[2], sst[3], sst[2] - meet, sst[2] - meet + carbon_h) carbon_drawn(sst[2] - meet);
 module hepa_sealed() sealed_part(sst[3], undef, sst[3] - meet, sst[3] - meet + hepa_h) hepa_body(hepa_dz);
 module say_seal_hardware() echo(str("sealed joints: three TPU bead rings, ", seal_bead[0], " mm; four M3 x ", j3_screw,
     " socket head into nuts, HEPA holder to carbon housing; four M3 x ", j12_screw,

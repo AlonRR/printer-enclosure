@@ -67,7 +67,7 @@ CONTROLS = [
     ("check_clamp_paper", [("wedge_w", "4")], "the clamp's wedges made wider than the paper's channels"),
     ("check_clamp_paper", [("tooth_w", "4")], "the clamp's teeth made wider than theirs"),
     ("check_clamp_paper", [("flap_off", "0")], "the half wedges' faces moved in onto the flaps' middles"),
-    ("check_auto_fans_base", [("auto_fans_dz", "-30.5")], "the Auto's fan section set 0.5 mm down into its base"),
+    ("check_auto_fans_base", [("fans_drop", "0.5")], "the fan section set 0.5 mm down into its base"),
     ("check_auto_tray", [("tray_top", "14.3")], "the tray made 0.3 mm taller than the bay's roof"),
     ("check_tray_slot_walls", [("tray_screw_y", "51.4")], "the tray's screws moved 1 mm in, their slots' backs under the end walls' fillets"),
     ("check_usb_board", [("usb_shift", "[0, -1, 0]")], "the USB-C board moved 1 mm out, into the wall in front of it"),
@@ -95,7 +95,7 @@ CONTROLS = [
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.
     ("check_section_carbon", UNSEALED + [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
     ("check_clamp_holder", [("hepa_stl", '"original/missing.stl"')], "the holder's STL missing - must be reported, not passed"),
-    ("check_auto_fans_base", [("auto_fans_stl", '"original/missing.stl"')], "the Auto fan section's STL missing - must be reported, not passed"),
+    ("check_section_fans", UNSEALED + [("auto_fans_stl", '"original/missing.stl"')], "the Auto fan section's STL missing - must be reported, not passed"),
 ]
 MISSING = "Can't open import file"
 
