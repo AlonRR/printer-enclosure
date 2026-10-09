@@ -68,7 +68,7 @@ module stack_sealed(ex) {
     piece("tan") translate([0, 0, 3 * ex]) carbon_sealed();
     piece("sienna") translate([0, 0, 3 * ex]) cmag_standing(sst[2] - meet + cmag_z0);
     piece("lightsteelblue") translate([0, 0, 4 * ex]) hepa_sealed();
-    piece("darkslategray") translate([0, 0, 4 * ex]) orig(cover_stl, hepa_dz);
+    piece("darkslategray") translate([0, 0, 4 * ex]) cover_placed();
 }
 // Where the sealed joints' parts are, and what goes in them. A lower part's face, sealed: J1 the fan section's
 // top, J2 the section's, J3 the carbon housing's.
@@ -104,6 +104,9 @@ module joints_exploded(ex) {
 // Manifold backend's floats turn into a few hundredths of a mm3 - enough to hide a small collision in.
 sep = 0.01;
 st = stack(true);
+// The drawn cover on the HEPA holder, moved by cover_shift: [0, 0] but in a check's positive control.
+cover_shift = [0, 0];
+module cover_placed() translate([cover_shift[0], cover_shift[1], 0]) cover_drawn(cover_z0);
 // A magnet in each of the section's holes, standing into the original's hole across the joint: if the two
 // holes line up, it touches neither part. Built from the section's own holes - the original's stay put.
 module magnets_across(z) for (sx = [-1, 1], sy = [-1, 1])
@@ -272,10 +275,10 @@ else if (view == "clamp_print") color("orange") clamp_frames_printing();
 else if (view == "paper_cut") paper_cut();
 // The clamp stands in the HEPA holder's pocket, on its ledge.
 else if (view == "check_clamp_holder") intersection() { translate([0, 0, sst[3] - meet + ledge_top + sep]) clamp_cassette(); hepa_sealed(); }
-// The original cover on the drawn HEPA holder: its plug in the holder's top, flat on the top face; and a magnet
-// across the joint at each corner, in both parts' holes.
-else if (view == "check_cover_holder") intersection() { hepa_sealed(); translate([0, 0, sep]) orig(cover_stl, hepa_dz); }
-else if (view == "check_cover_magnets") intersection() { union() { hepa_sealed(); orig(cover_stl, hepa_dz); } magnets_across(sst[3] - meet + hepa_h); }
+// The cover on the HEPA holder: its plug in the holder's top, flat on the top face; and a magnet across the joint
+// at each corner, in both parts' holes.
+else if (view == "check_cover_holder") intersection() { hepa_sealed(); translate([0, 0, sep]) cover_placed(); }
+else if (view == "check_cover_magnets") intersection() { union() { hepa_sealed(); cover_placed(); } magnets_across(sst[3] - meet + hepa_h); }
 // The frames meet only where the end blocks' halves do - the one hard stop - held sep apart.
 else if (view == "check_clamp_frames") intersection() { clamp_low(); translate([0, 0, sep]) clamp_up(); }
 // The paper, drawn from its own values at the slot's thickness less sep each side, stands in the frames'

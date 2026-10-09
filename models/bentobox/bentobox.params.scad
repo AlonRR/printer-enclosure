@@ -32,7 +32,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "bead_ring", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "bottom_sample", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "bead_ring", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "bottom_sample", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -82,6 +82,14 @@ cmag_fill = 9;      /* The pellets fill each tray this deep with the C-MAG lying
 hepa_cart = [80, 40, 15];   /* The HEPA cartridge, bought: L x W x H. */
 duct_out = [-49.4, 49.4, 6, 52];   /* The duct's outlet, the whole -X face between its end walls: Y and Z. */
 cover_win = [18, 48];       /* The cover's window, X and Y +/-: the pattern's bars span it. */
+// The cover, drawn (Alon, 9 Oct 2026: D142) to ThrutheFrame's cover_hemp: a plate cover_top thick on the holder's
+// top, with the box's outline, a plug under it down into the holder's inside, and the window, filled with the
+// hemp-leaf pattern. It prints top face down.
+cover_plug = [40, 100, 4, 1];   /* The plug: X, Y, its corners' radius, and how deep it goes into the holder. */
+cover_win_r = 2;    /* The window's corners' radius. */
+cover_round = 1;    /* The plate's top edge, rounded this much as far as 45 degrees and then chamfered at 45 degrees, into the top face this far in from the outline. Its bottom edge is chamfered bb_chamfer. */
+cover_tile = 18.94; /* The hemp-leaf pattern: a lattice of triangles this long a side, one corner at the window's centre and a side along X... */
+cover_bar = 1.2;    /* ...its bars this wide: each triangle's sides, and a spoke from its centre to each corner. */
 
 /* [The section and its filter sheet] */
 grid_t   = 3;       /* The grid the sheet lies on. The groove under it is groove_h deep, so the grid's rim roofs it. */

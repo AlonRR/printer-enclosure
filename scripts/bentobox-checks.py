@@ -94,9 +94,9 @@ CONTROLS = [
     ("check_seal_access", [("bracket_h", "80")], "the carbon housing's brackets reaching down over the section's screws"),
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.
     ("check_section_carbon", UNSEALED + [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
-    ("check_cover_holder", [("cover_stl", '"original/missing.stl"')], "the cover's STL missing - must be reported, not passed"),
     ("check_cover_holder", [("hepa_in_grow", "-0.5")], "the HEPA holder's inside made narrower than the cover's plug"),
-    ("check_cover_magnets", [("mag_xy", "[22.5, 53]")], "the holder's magnet holes moved 0.5 mm off the cover's"),
+    # The cover is drawn from the same mag_xy as the holder: moving it would move both. The cover is moved instead.
+    ("check_cover_magnets", [("cover_shift", "[0, 0.5]")], "the cover moved 0.5 mm along, its magnet holes off the holder's"),
     ("check_section_fans", UNSEALED + [("auto_fans_stl", '"original/missing.stl"')], "the Auto fan section's STL missing - must be reported, not passed"),
 ]
 MISSING = "Can't open import file"

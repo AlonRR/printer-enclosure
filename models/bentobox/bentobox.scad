@@ -595,6 +595,31 @@ module hepa_drawn(z0) let(c = bb_chamfer, t = z0 + hepa_h) difference() {
     magnet_holes(z0 + hepa_h, false);
 }
 module hepa_sealed() sealed_part(sst[3], undef, sst[3] - meet, sst[3] - meet + hepa_h) hepa_drawn(sst[3] - meet);
+// The cover drawn (Alon, 9 Oct 2026: D142), to ThrutheFrame's cover_hemp, its plate's underside on Z = z0, the
+// holder's top: the plate, its bottom edge chamfered and its top edge rounded, then chamfered at 45 degrees as it
+// prints, top face down; the plug under it; the magnets' holes in the plate's underside; and the window, filled
+// with the hemp-leaf pattern.
+module cover_plate(z0) let(r = cover_round, c = bb_chamfer, t = z0 + cover_top, zc = t - r * sqrt(2))
+    hull() for (s = concat([[z0, c], [z0 + c, 0]], [for (a = [0 : 9 : 45]) [zc + r * sin(a), r - r * cos(a)]], [[t - eps, r]]))
+        translate([0, 0, s[0]]) linear_extrude(eps) rrect(bb_w - 2 * s[1], bb_l - 2 * s[1], bb_r - s[1]);
+// The pattern's holes: each triangle of the lattice split in three by its spokes, each third shrunk by half a bar.
+// Its corners stand in rows cover_tile * sqrt(3) / 2 apart in Y, every other row moved half a side along X.
+function hemp_corner(k, j) = [(j + (k % 2 == 0 ? 0 : 0.5)) * cover_tile, k * cover_tile * sqrt(3) / 2];
+module hemp_holes2d() let(a = cover_tile, h = a * sqrt(3) / 2, n = ceil(cover_win[0] / a) + 1, m = ceil(cover_win[1] / h) + 1)
+    for (k = [-m : m - 1], j = [-n : n], up = [0, 1])
+        let(p = hemp_corner(up == 1 ? k : k + 1, j), q = p + [a, 0], o = (p + q) / 2 + [0, up == 1 ? h : -h], c = (p + q + o) / 3)
+            for (e = [[p, q], [q, o], [o, p]]) offset(delta = -cover_bar / 2) polygon([c, e[0], e[1]]);
+module cover_drawn(z0) difference() {
+    union() {
+        cover_plate(z0);
+        translate([0, 0, z0 - cover_plug[3]]) linear_extrude(cover_plug[3] + eps) rrect(cover_plug[0], cover_plug[1], cover_plug[2]);
+    }
+    translate([0, 0, z0 - cover_plug[3] - 1]) linear_extrude(cover_plug[3] + cover_top + 2)
+        intersection() { rrect(2 * cover_win[0], 2 * cover_win[1], cover_win_r); hemp_holes2d(); }
+    for (sx = [-1, 1], sy = [-1, 1]) translate([sx * mag_xy[0], sy * mag_xy[1], z0 - 1]) cylinder(d = mag_d, h = 1 + mag_h);
+}
+// The cover on the sealed stack's HEPA holder.
+cover_z0 = sst[3] - meet + hepa_h;
 module say_seal_hardware() echo(str("sealed joints: three TPU bead rings, ", seal_bead[0], " mm; four M3 x ", j3_screw,
     " socket head into nuts, HEPA holder to carbon housing; four M3 x ", j12_screw,
     " through the carbon housing's tabs and the section's pillars into the fan section's nuts; eight M3 nuts; every head sunk in its tab"));
@@ -708,6 +733,7 @@ if (draw_model) {
     // The sealed stack's remixed originals and the bead ring, as they print: standing, the ring flat.
     else if (part == "carbon") { translate([0, 0, -sst[2]]) carbon_sealed(); say_seal_hardware(); }
     else if (part == "hepa") { translate([0, 0, -sst[3]]) hepa_sealed(); say_seal_hardware(); }
+    else if (part == "cover") translate([0, 0, cover_top]) mirror([0, 0, 1]) cover_drawn(0);
     else if (part == "bead_ring") bead_ring();
     // The joint sample's ASA plate, and its TPU bead.
     else if (part == "joint_sample") { joint_sample(); say_sample_hardware(); }
