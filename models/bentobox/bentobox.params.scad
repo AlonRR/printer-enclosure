@@ -255,6 +255,7 @@ grommet_lip = 0.5;  /* How far the lip stands out, at the floor's mid-height, it
 grommet_key = [1, 0.35];    /* The key at the split face: its width, and how far it stands out; with 45-degree sides its top is 0.3 wide. */
 grommet_play = 0.1; /* Round the key in its slot, and round the lip in its groove. */
 grommet_chamfer = 0.5;  /* The floor's hole is chamfered this much at its top, so the lip goes in. */
+grommet_skin = 2;   /* A thin skin across the leads' hole at the grommet's foot, in layers (Alon, 9 Oct 2026): closed, the two halves' skins pinch the leads between them. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;

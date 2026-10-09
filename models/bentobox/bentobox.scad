@@ -581,9 +581,10 @@ module joint_sample_bead() translate([0, sample_l - seal_y, 0]) intersection() {
 // grommet, a groove round it at mid-height with 45-degree sides, and a chamfer at its top for the lip.
 module grommet_hole() let(r = grommet_hole_r, g = grommet_groove, c = grommet_chamfer, h = auto_floor_t, m = grommet_mid)
     rotate_extrude($fn = 64) polygon([[0, -1], [r, -1], [r, m - g], [r + g, m], [r, m + g], [r, h - c], [r + c + 1, h + 1], [0, h + 1]]);
-// The grommet whole: a ring through the floor, the lip round it at mid-height, a small chamfer at its foot.
-module grommet_body() let(r = grommet_r, i = grommet_in_r, l = grommet_lip, h = auto_floor_t, m = grommet_mid)
-    rotate_extrude($fn = 64) polygon([[i, 0], [r - 0.3, 0], [r, 0.3], [r, m - l], [r + l, m], [r, m + l], [r, h], [i, h]]);
+// The grommet whole: a ring through the floor, the lip round it at mid-height, a small chamfer at its foot, and a
+// thin skin across the leads' hole there, printed on the bed.
+module grommet_body() let(r = grommet_r, i = grommet_in_r, l = grommet_lip, h = auto_floor_t, m = grommet_mid, s = grommet_skin * fdm_layer_h)
+    rotate_extrude($fn = 64) polygon([[0, 0], [r - 0.3, 0], [r, 0.3], [r, m - l], [r + l, m], [r, m + l], [r, h], [i, h], [i, s], [0, s]]);
 // The key, from above: on the split face (Y = 0) at the middle of the +X side, standing out into -Y.
 module grommet_key2d(grow = 0) let(w = grommet_key[0], k = grommet_key[1]) offset(delta = grow)
     polygon([[grommet_key_x - w / 2, 0.01], [grommet_key_x + w / 2, 0.01], [grommet_key_x + w / 2 - k, -k], [grommet_key_x - w / 2 + k, -k]]);

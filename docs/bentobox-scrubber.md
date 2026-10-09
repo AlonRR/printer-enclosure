@@ -161,6 +161,8 @@ fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026
 - **Two identical TPU halves**, split through the hole for the leads, 4 mm across, which squeezes the leads'
   4.5 mm bundle. On each half's split face, beside the leads, is a small key with 45° sides and a flat top on one
   side and the matching slot on the other: turn one half round and the two lock together round the leads.
+  Across the leads' hole, at the grommet's foot, is a thin skin, two layers: closed, the two halves' skins
+  pinch the leads between them.
 - **The floor's hole is opened out to 7.6 mm** for it, 0.8 mm off the tube's axis towards -X so it stays clear of
   the fan section's +X wall, with a groove round it at mid-height, 45° each side, and a chamfer at the top. Round
   the grommet, a lip with 45° sides clicks into the groove. The grommet is 0.1 mm proud of the hole all round, so
