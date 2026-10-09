@@ -25,6 +25,9 @@ auto-fans 1 ASA
 carbon 1 ASA
 hepa 1 ASA
 cover 1 ASA
+cmag-tray 1 ASA
+cmag-lid 1 ASA
+cmag-grills 4 ASA
 clamp-lower 1 ASA
 clamp-upper 1 ASA
 bead-ring 1 TPU

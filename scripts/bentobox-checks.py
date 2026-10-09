@@ -39,7 +39,8 @@ BACKEND = ["--backend=manifold"]
 UNSEALED = [("sealed", "false")]
 FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("check_magnets_top", UNSEALED),
         ("check_magnets_bottom", UNSEALED), ("check_air", []),
-        ("check_clamp_holder", []), ("check_cover_holder", []), ("check_cover_magnets", []), ("check_clamp_frames", []), ("check_clamp_paper", []),
+        ("check_clamp_holder", []), ("check_cover_holder", []), ("check_cover_magnets", []),
+        ("check_cmag_housing", []), ("check_cmag_halves", []), ("check_cmag_magnets", []), ("check_cmag_grills", []), ("check_clamp_frames", []), ("check_clamp_paper", []),
         ("check_clamp_opening", []), ("check_clamp_screws", []), ("check_clamp_nuts", []), ("check_clamp_nut_ways", []),
         ("check_auto_fans_base", []), ("check_auto_tray", []), ("check_tray_slot_walls", []), ("check_usb_board", []),
         ("check_grommet_halves", []), ("check_grommet_hole", []), ("check_auto_nuts", []), ("check_auto_nut_ways", []),
@@ -97,6 +98,11 @@ CONTROLS = [
     ("check_cover_holder", [("hepa_in_grow", "-0.5")], "the HEPA holder's inside made narrower than the cover's plug"),
     # The cover is drawn from the same mag_xy as the holder: moving it would move both. The cover is moved instead.
     ("check_cover_magnets", [("cover_shift", "[0, 0.5]")], "the cover moved 0.5 mm along, its magnet holes off the holder's"),
+    ("check_cmag_housing", [("cmag_shift", "[0.5, 0, 0]")], "the C-MAG moved 0.5 mm across, into the housing's wall"),
+    # Both halves are cut from one body at cmag_split, and their magnets' holes share cmag_boss: the lid is moved.
+    ("check_cmag_halves", [("cmag_lid_move", "[0, 0, -0.3]")], "the lid set 0.3 mm down into the tray"),
+    ("check_cmag_magnets", [("cmag_lid_move", "[0.5, 0, 0]")], "the lid moved 0.5 mm along, its magnet holes off the tray's"),
+    ("check_cmag_grills", [("cmag_grill_t", "1.7")], "the grills made thicker than their slots"),
     ("check_section_fans", UNSEALED + [("auto_fans_stl", '"original/missing.stl"')], "the Auto fan section's STL missing - must be reported, not passed"),
 ]
 MISSING = "Can't open import file"

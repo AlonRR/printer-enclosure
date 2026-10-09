@@ -38,6 +38,11 @@ cmag_layer = cmag_tray * cmag_fill / cmag_in[1];               // its pellets' d
 cmag_z0 = carbon_floor;                                         // the C-MAG's bottom, on the housing's floor
 // Each layer's bottom: the top face of the grill under it, from the C-MAG's bottom.
 cmag_layers = [for (i = [0 : 2]) cmag_grills[i] + cmag_grill_t / 2];
+// The C-MAG drawn: its walls' thickness; the grills' honeycomb - its webs, its rim, a hole across its corners.
+cmag_wall = cmag_round - cmag_fillet;
+cmag_web = cmag_mesh[1] * fdm_extrusion_w;
+cmag_rim = cmag_mesh[2] * fdm_extrusion_w;
+cmag_hole_ac = cmag_mesh[0] / cos(30);
 
 // The frame for your own HEPA paper. The ring stands on the HEPA holder's ledge, in its pocket; the paper
 // fills it with its folds along Y, and a cap closes each end. Across, the piece holds a whole number of
@@ -258,6 +263,8 @@ assert(half_wedge_z0 < paper_depth - 3, "the half wedges outside the flaps come 
 assert(grid_t >= groove_h + 2 * fdm_layer_h, "the grid's rim must roof the groove in the section's bottom");
 assert(ledge_w > -groove_in, "the ledge must reach past the groove's inner face");
 assert(cmag[0] < carbon_h - carbon_floor, "the C-MAG must stand inside the carbon housing");
+assert(cmag_hole_ac < cmag_pellet, "the grills' holes must be smaller than a pellet, even across their corners");
+assert(cmag_rail[1] > cmag_rail[2] && cmag_rail[2] <= cmag_fillet, "a rail's tray side drops less deep than the rail, and no deeper than the inside's fillets");
 
 // Wall between a magnet's hole and the joint's tongue or groove, whichever reaches further out. The originals
 // have the same holes at the same places: 1.0 mm, so the section has what every BentoBox part has.

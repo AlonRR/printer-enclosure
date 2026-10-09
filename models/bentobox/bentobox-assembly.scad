@@ -3,13 +3,15 @@
 // A remix of BentoBox v2.0 by ThrutheFrame (https://www.printables.com/model/272525), CC BY-NC-SA 4.0.
 
 /*
-The BentoBox stack, put together from the original STLs and the remix's section - for pictures, and for the
-fit checks that scripts/bentobox-checks.py renders. Needs the originals in original/.
+The BentoBox stack, put together from the remix's parts - for pictures, and for the fit checks that
+scripts/bentobox-checks.py renders. The sealed stack needs no original; sealed = false, which stacks the
+originals as they come, and the bambu bottom need them in original/.
 
   view = "stack"      the box as it stands, with the section
   view = "exploded"   the same, pulled apart along Z
   view = "cut"        the stack cut open at X = cut_x, seen from the side
-  view = "section"    the section alone, as it prints - the one view that needs no original
+  view = "section"    the section alone, as it prints
+  view = "cmag"       the C-MAG pulled apart: the tray, the four grills, the lid
   view = "frame"      the clamp for your own HEPA paper, pulled apart: the lower frame, the paper, the upper
                       frame, and the screws
   view = "clamp_print" the clamp's two frames as they print: the lower standing, the upper on its band
@@ -66,7 +68,7 @@ module stack_sealed(ex) {
     piece("steelblue") translate([0, 0, ex]) fans_sealed();
     piece("seagreen") translate([0, 0, sst[1] + 2 * ex]) section();
     piece("tan") translate([0, 0, 3 * ex]) carbon_sealed();
-    piece("sienna") translate([0, 0, 3 * ex]) cmag_standing(sst[2] - meet + cmag_z0);
+    piece("sienna") translate([0, 0, 3 * ex]) cmag_placed();
     piece("lightsteelblue") translate([0, 0, 4 * ex]) hepa_sealed();
     piece("darkslategray") translate([0, 0, 4 * ex]) cover_placed();
 }
@@ -107,6 +109,13 @@ st = stack(true);
 // The drawn cover on the HEPA holder, moved by cover_shift: [0, 0] but in a check's positive control.
 cover_shift = [0, 0];
 module cover_placed() translate([cover_shift[0], cover_shift[1], 0]) cover_drawn(cover_z0);
+// The drawn C-MAG standing in the sealed stack's carbon housing, moved by cmag_shift; and its lid on its tray, moved
+// by cmag_lid_move. Both are zero but in a check's positive control.
+cmag_shift = [0, 0, 0];
+cmag_lid_move = [0, 0, 0];
+module cmag_placed(lift = 0) translate(cmag_shift) cmag_stood(sst[2] - meet + cmag_z0 + lift) cmag_drawn();
+// A magnet in each of the tray's holes, standing into the lid's across the joint, in the C-MAG's frame.
+module cmag_magnets_across() cmag_corners() translate([cmag_boss[0], cmag_boss[1], cmag_split - mag_h + 0.1]) cylinder(d = 4, h = 2 * mag_h - 0.2);
 // A magnet in each of the section's holes, standing into the original's hole across the joint: if the two
 // holes line up, it touches neither part. Built from the section's own holes - the original's stay put.
 module magnets_across(z) for (sx = [-1, 1], sy = [-1, 1])
@@ -214,6 +223,11 @@ if (view == "stack") stack(0);
 else if (view == "exploded") stack(explode);
 else if (view == "cut") stack(0);
 else if (view == "section") color("seagreen") section();
+else if (view == "cmag") {
+    color("sienna") cmag_tray_drawn();
+    color("dimgray") translate([0, 0, explode]) cmag_grills_drawn();
+    color("sienna") translate([0, 0, 2 * explode]) cmag_lid_drawn();
+}
 // The section seats in the carbon housing: its tongue in the housing's groove, its magnets under the housing's.
 else if (view == "check_section_carbon") intersection() { section(); translate([0, 0, sec_h + sep - st[2]]) orig(carbon_stl, st[2] - st[1]); }
 // The fan case seats in the section the way it seats in the housing.
@@ -279,6 +293,13 @@ else if (view == "check_clamp_holder") intersection() { translate([0, 0, sst[3] 
 // at each corner, in both parts' holes.
 else if (view == "check_cover_holder") intersection() { hepa_sealed(); translate([0, 0, sep]) cover_placed(); }
 else if (view == "check_cover_magnets") intersection() { union() { hepa_sealed(); cover_placed(); } magnets_across(sst[3] - meet + hepa_h); }
+// The C-MAG standing in the carbon housing, sep over its floor, clear of its walls and of the HEPA holder above.
+else if (view == "check_cmag_housing") intersection() { union() { carbon_sealed(); hepa_sealed(); } cmag_placed(sep); }
+// The C-MAG's halves meet face to face at the joint, held sep apart; a magnet across the joint in both halves' holes;
+// and the grills in their slots, touching neither half.
+else if (view == "check_cmag_halves") intersection() { cmag_tray_drawn(); translate(cmag_lid_move + [0, 0, sep]) cmag_lid_drawn(); }
+else if (view == "check_cmag_magnets") intersection() { union() { cmag_tray_drawn(); translate(cmag_lid_move) cmag_lid_drawn(); } cmag_magnets_across(); }
+else if (view == "check_cmag_grills") intersection() { union() { cmag_tray_drawn(); cmag_lid_drawn(); } cmag_grills_drawn(); }
 // The frames meet only where the end blocks' halves do - the one hard stop - held sep apart.
 else if (view == "check_clamp_frames") intersection() { clamp_low(); translate([0, 0, sep]) clamp_up(); }
 // The paper, drawn from its own values at the slot's thickness less sep each side, stands in the frames'

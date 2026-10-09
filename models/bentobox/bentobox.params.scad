@@ -32,7 +32,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "bead_ring", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "bottom_sample", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "bottom_sample", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -79,6 +79,23 @@ cmag     = [72, 100, 40];   /* L, W, T: its outside. Its walls are 2 mm; its end
 cmag_grills = [1.8, 24.6, 47.4, 70.2];   /* The four grills' slots, along L. The grills are 1.4 mm thick, in 1.6 mm slots. */
 cmag_grill_t = 1.4;
 cmag_fill = 9;      /* The pellets fill each tray this deep with the C-MAG lying open on its side: the line moulded inside it (the user guide: "to the indicator line"), 9 mm above its floor. */
+// The C-MAG drawn (Alon, 9 Oct 2026: D142), to the measurements of its two STLs, in its own frame: the tray from
+// T = 0, the lid on it from cmag_split. It is the same turned end over end: corner A at the tray's -Y edge and the
+// lid's +Y, corner B at the other two. The grills are drawn too: plates with a honeycomb of holes, where the
+// author's project had the slicer make the honeycomb.
+cmag_split = 26;        /* MEASURED: the halves meet this far up from the tray's bottom face. */
+cmag_round = 4;         /* MEASURED: the outside's long edges, rounded this much and then a tangent face into the bottom or top face. The walls and floors are cmag_round - cmag_fillet thick. */
+cmag_fillet = 2;        /* MEASURED: the inside's fillets. */
+cmag_corner = [[5.8, 5.71, 4.0], [5.71, 5.80, 4.2]];   /* MEASURED, corners A and B: the round's centre from its face; the inside's fillet's centre from the outside; and where the tangent face meets the face, from the outside. */
+cmag_end_chamfer = 1;   /* MEASURED: the open ends' outside edges. */
+cmag_slot = 1.6;        /* MEASURED: each grill's slot, at cmag_grills. */
+cmag_rail = [1, 2.6, 2];    /* MEASURED: the rails each side of a slot: wide, and deep from the inside's faces; on its tray's side a rail drops to the third, then slopes to the faces over another 1 mm. */
+cmag_boss = [9.6, 3.2, 3.3];    /* MEASURED: the magnets' bosses, at the joint near each corner: X and Y from the corner, and radius. A 4 x 2 mm magnet sits in each half's. */
+cmag_boss_under = [0.68, 4.67]; /* MEASURED: a boss's underside. Across the wall it runs up from the wall at 45 degrees, then rounds into the boss's front about a centre this far from the joint; each slice along the wall is half an ellipse this deep. */
+cmag_line = [6.4, 1.4, 0.4];    /* MEASURED: the fill line in the middle of each tray, on the -Y wall, its middle cmag_fill above the floor: long, tall and proud, its edges at 45 degrees. */
+cmag_grill = [95, 35, 3.5];     /* MEASURED: a grill, along W and T, and its corners' radius; it is cmag_grill_t thick. */
+cmag_pellet = 4;        /* The carbon's pellets: AP4-60, 4 mm across. */
+cmag_mesh = [3.2, 2, 6];    /* The grills' honeycomb: holes this far across their flats - a pellet stays on one even across its corners - with webs this many beads wide, inside a rim this many beads wide, whose outer 2.1 mm the rails hide. */
 hepa_cart = [80, 40, 15];   /* The HEPA cartridge, bought: L x W x H. */
 duct_out = [-49.4, 49.4, 6, 52];   /* The duct's outlet, the whole -X face between its end walls: Y and Z. */
 cover_win = [18, 48];       /* The cover's window, X and Y +/-: the pattern's bars span it. */

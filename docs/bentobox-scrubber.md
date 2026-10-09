@@ -21,11 +21,13 @@ screws in tabs at the corners, where the original has magnets.
 the HEPA paper this build already has, pleated 20 mm deep, in the remix's frame (see *Your own HEPA
 paper*).
 
-**Every part the remix prints is drawn here** (Alon, 9 Oct 2026), to the originals' measurements, read by
-sectioning their STLs: the base, the tray and the fan section after the Auto's, the carbon housing and the HEPA
-holder after ThrutheFrame's. Sectioned both ways against the originals, each matches them to a few hundredths of a
-millimetre where it keeps their shape; the text moulded into the originals' sides is left off. Only the cover and
-the C-MAG print from the author's project as they come.
+**Every part the remix prints is drawn here** (Alon, 9 Oct 2026; the cover and the C-MAG too, D142), to the
+originals' measurements, read by sectioning their STLs: the base, the tray and the fan section after the Auto's;
+the carbon housing, the HEPA holder, the cover and the C-MAG after ThrutheFrame's. Sectioned both ways against the
+originals, each matches them to a few hundredths of a millimetre where it keeps their shape; the text moulded into
+the originals is left off. The cover's hemp-leaf pattern is drawn from its lattice, and the C-MAG's grills with
+their honeycomb, which the author's project left to the slicer (see *The C-MAG*). None of the remix's parts needs
+the author's files to build.
 
 The remix adds four parts, takes its bottom from the BentoBox Auto, and seals the joints under suction:
 
@@ -39,14 +41,15 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with four screws, their heads sunk in its bottom face. | [`bentobox-auto-tray.scad`](../models/bentobox/bentobox-auto-tray.scad) |
 | **Carbon housing** | Drawn to ThrutheFrame's, with the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
 | **HEPA holder** | Drawn to ThrutheFrame's, its bottom sealed on the carbon housing, its pocket the box's whole inside, for a bigger piece of paper, and its top the original cover's, with its magnets. | [`bentobox-hepa.scad`](../models/bentobox/bentobox-hepa.scad) |
+| **Cover** | Drawn to ThrutheFrame's hemp-leaf cover: its plate on the HEPA holder, the plug into the holder's top, the magnets' holes, and the window's pattern, drawn from its lattice of triangles. | [`bentobox-cover.scad`](../models/bentobox/bentobox-cover.scad) |
+| **C-MAG** | Drawn to ThrutheFrame's: the tray and the lid, with the grills' slots and rails, the fill line and the magnets' bosses; and its four grills, with a honeycomb of holes the 4 mm pellets cannot pass. | [`bentobox-cmag-tray.scad`](../models/bentobox/bentobox-cmag-tray.scad), [`bentobox-cmag-lid.scad`](../models/bentobox/bentobox-cmag-lid.scad), [`bentobox-cmag-grills.scad`](../models/bentobox/bentobox-cmag-grills.scad) |
 | **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
 | **Grommet** | Two identical TPU halves that close round the fans' leads and click into the fan section's floor, sealing the wires' hole. | [`bentobox-grommet.scad`](../models/bentobox/bentobox-grommet.scad) |
 | **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
 | **Bottom sample** | To print first: the tray's -Y end with the USB-C board's pocket, and the base's floor over it with the tray's nut slots - one ASA plate. | [`bentobox-bottom-sample.scad`](../models/bentobox/bentobox-bottom-sample.scad) |
 | **Sample plates** | Every sample on two plates, one ASA and one TPU (see *The samples*). | [`bentobox-samples-asa.scad`](../models/bentobox/bentobox-samples-asa.scad), [`bentobox-samples-tpu.scad`](../models/bentobox/bentobox-samples-tpu.scad) |
 
-**Not printed yet.** Every fit is checked against the original's STLs (see *Checking it*), not yet against
-printed parts.
+**Not printed yet.** Every fit is checked in the model (see *Checking it*), not yet against printed parts.
 
 ## The C-MAG
 
@@ -60,8 +63,11 @@ deep, one above the other**: about 55 cm³ of carbon in all. The LunchBox's bed 
 seventh of the flow (see *The air through it*). The author fills it thin for the airflow; here the HEPA
 cartridge, not the carbon, is what holds the air back.
 
-The grills are solid plates in their STL; the slicer settings in the author's project turn them into a
-honeycomb (the project's plate 3). Print them from the project, not from the STL alone.
+**The grills are drawn with their honeycomb** (D142): 1.4 mm plates, each with 172 holes 3.2 mm across their
+flats, so 3.7 mm across their corners, under the 4 mm pellets; the webs between them are two beads wide, and a
+rim six beads wide goes round them, of which the rails hide the outer 2.1 mm. That leaves 46 % of a grill open.
+The author's grills are solid plates in their STL, which the slicer settings in his project turn into a
+honeycomb about half open; the drawn ones print the same in any slicer.
 
 ## The section
 
@@ -318,10 +324,10 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
 
 ## Printing
 
-The cover and the C-MAG print as the author's project lays them out; the remix's parts print as their files
-draw them, standing on their bottoms - the section, the base on its floor, the tray, the fan section, the
-carbon housing and the HEPA holder - the clamp's lower frame on its rim and its upper frame turned over onto its
-band, and a bead ring flat. No supports, no brim. `sh scripts/bentobox-print.sh` builds every one, checks it and slices
+Every part prints as its file draws it, standing on its bottom - the section, the base on its floor, the tray,
+the fan section, the carbon housing, the HEPA holder and the C-MAG's tray - the cover and the C-MAG's lid on their
+top faces, the clamp's lower frame on its rim and its upper frame turned over onto its band, and the grills and a
+bead ring flat. No supports, no brim. `sh scripts/bentobox-print.sh` builds every one, checks it and slices
 it, and puts its STL and G-code in `models/bentobox/print/`; name parts to build only those - `samples-asa
 samples-tpu` for the two sample plates.
 
@@ -336,6 +342,10 @@ samples-tpu` for the two sample plates.
 | Tray | ASA | 1 | 1 h 47 m | 20 g |
 | Carbon housing | ASA | 1 | 7 h 25 m | 71 g |
 | HEPA holder | ASA | 1 | 4 h 39 m | 45 g |
+| Cover | ASA | 1 | 1 h 53 m | 13 g |
+| C-MAG, tray | ASA | 1 | 2 h 16 m | 25 g |
+| C-MAG, lid | ASA | 1 | 1 h 49 m | 21 g |
+| C-MAG, grills | ASA | 4, on 1 plate | 1 h 51 m | 11 g |
 | Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
 | Joint sample | ASA | 1 plate | 1 h 14 m | 11 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
@@ -364,6 +374,8 @@ For the sealed joints:
 | 4 | M3 × 25 socket head cap screw, ISO 4762: the carbon housing and the section to the fan section |
 | 4 | M3 × 12 socket head cap screw, ISO 4762: the HEPA holder to the carbon housing |
 | 8 | 4 × 2 mm magnet: the cover's joint, four in the HEPA holder and four in the cover |
+
+For the C-MAG, as the original: 8 more 4 × 2 mm magnets, four in each half.
 
 For the joint sample, from the same stock: 3 M3 nuts, 2 M3 × 12 and 1 M3 × 8. For the bottom sample: 2 M3 nuts,
 2 M3 × 12 and the USB-C trigger board.
@@ -478,8 +490,9 @@ collar, tab on tab - lays each bead in its groove, runs each screw from its head
 and the section's pillars, sets a nut in each slot and slides it out through the tab's end, and keeps the
 room over each screw's head clear. With `sealed=false` it checks the original's joints: the section against
 the carbon housing above it and the fan section below it, a magnet across each joint through both parts'
-holes. It runs the air's way from the housing's floor openings down through the section. It stands the original cover on the drawn HEPA holder, its plug in the holder's top, a magnet across the joint
-at each corner. For the paper's clamp it stands the cassette in the cut-out HEPA holder, sets the
+holes. It runs the air's way from the housing's floor openings down through the section. It stands the cover on the HEPA holder, its plug in the holder's top, a magnet across the joint
+at each corner. It stands the C-MAG in the carbon housing, clear of its walls and of the HEPA holder, closes its lid
+on its tray, a magnet across their joint at each corner, and sets the four grills in their slots. For the paper's clamp it stands the cassette in the cut-out HEPA holder, sets the
 upper frame on the lower one - meeting only at the end blocks - lays a model of the paper, drawn from its own
 values at the slot's thickness, in the frames' zigzag, keeps the air's way down under the paper open, and
 runs the four screws through the end blocks and the nuts into their seats and down out of them. It closes the
@@ -489,8 +502,8 @@ flush with the end face - sets a nut in each of the tray's slots and slides it o
 the end face, and one in each fan screw's seat and draws it down its pocket and out under its post, keeps two
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
 the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 33 fits and
-42 controls.
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 37 fits and
+45 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.
