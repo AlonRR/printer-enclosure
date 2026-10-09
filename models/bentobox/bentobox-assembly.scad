@@ -228,6 +228,11 @@ else if (view == "check_air") intersection() { section(); air_probe(); }
 // The Auto's bottom. The fan section stands on the base, and the tray is screwed on under it.
 else if (view == "check_auto_fans_base") intersection() { translate([0, 0, sep]) auto_fans(); auto_base(); }
 else if (view == "check_auto_tray") intersection() { translate([0, 0, -sep]) auto_tray(); auto_base(); }
+// The grommet's halves lock together, key in slot; the pair sits in the fan section's floor, lip in groove. The
+// hole is cut a hole's compensation larger than the grommet's outside, and the grommet drawn only its squeeze larger,
+// so in the model the two stand apart.
+else if (view == "check_grommet_halves") intersection() { grommet_half(); rotate(180) grommet_half(); }
+else if (view == "check_grommet_hole") intersection() { fans_sealed(); translate([grommet_x, auto_conduit[1], duct_h]) grommet_pair(); }
 // The USB-C board sits in its pocket, the socket through its notch, flush with the end face.
 else if (view == "check_usb_board") intersection() { union() { auto_tray(); auto_base(); } usb_board_model(); }
 // The tray's nuts' slots, and their screws' holes, keep two beads of the end walls round them.

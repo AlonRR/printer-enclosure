@@ -41,7 +41,8 @@ FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("
         ("check_magnets_bottom", UNSEALED), ("check_air", []),
         ("check_clamp_holder", []), ("check_clamp_frames", []), ("check_clamp_paper", []),
         ("check_clamp_opening", []), ("check_clamp_screws", []), ("check_clamp_nuts", []), ("check_clamp_nut_ways", []),
-        ("check_auto_fans_base", []), ("check_auto_tray", []), ("check_tray_slot_walls", []), ("check_usb_board", []), ("check_auto_nuts", []), ("check_auto_nut_ways", []),
+        ("check_auto_fans_base", []), ("check_auto_tray", []), ("check_tray_slot_walls", []), ("check_usb_board", []),
+        ("check_grommet_halves", []), ("check_grommet_hole", []), ("check_auto_nuts", []), ("check_auto_nut_ways", []),
         ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", []),
         ("check_seal_j1", []), ("check_seal_j2", []), ("check_seal_j3", []), ("check_seal_beads", []),
         ("check_seal_screws", []), ("check_seal_nuts", []), ("check_seal_nut_ways", []), ("check_seal_access", [])]
@@ -72,6 +73,8 @@ CONTROLS = [
     ("check_usb_board", [("usb_shift", "[0, -1, 0]")], "the USB-C board moved 1 mm out, into the wall in front of it"),
     ("check_usb_board", [("usb_notch_w", "8.5")], "the socket's notch made narrower than the socket"),
     ("check_usb_board", [("usb_notch_r", "1.2")], "the socket's notch made lower than the socket"),
+    ("check_grommet_halves", [("grommet_play", "-0.2")], "the grommet's key slot made smaller than its key"),
+    ("check_grommet_hole", [("grommet_groove", "0.3")], "the floor's groove made shallower than the grommet's lip"),
     ("check_auto_nuts", [("nut_fit", "-0.3")], "the nuts' slots and pockets made narrower than a nut"),
     ("check_auto_nut_ways", [("tray_slot_past", "-3")], "the tray's nut slots stopped 3 mm inside the end faces: no way in"),
     ("check_auto_nut_ways", [("pull_rise", "3")], "the fans' nut pockets started 3 mm up their posts' undersides: no way in"),

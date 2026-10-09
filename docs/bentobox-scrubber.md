@@ -29,12 +29,15 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Paper clamp** | Two ASA frames, screwed together with a cut piece of pleated paper between them, standing on the HEPA holder's ledge in place of the cartridge: wedges from above and teeth from below pinch the paper's cut ends, and a bar from each its long edges. | [`bentobox-clamp-lower.scad`](../models/bentobox/bentobox-clamp-lower.scad), [`bentobox-clamp-upper.scad`](../models/bentobox/bentobox-clamp-upper.scad) |
 | **Clamp sample** | One end of each frame, on one plate: to try the pinch on an offcut before the whole clamp. | [`bentobox-clamp-sample.scad`](../models/bentobox/bentobox-clamp-sample.scad) |
 | **Base** | In place of the duct, drawn to the Auto's: the duct over the bay's roof, the wires' tube, the fans' four nuts pulled up into pockets in posts, and four nuts in slots for the tray's screws. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
-| **Fan section** | The Auto's, in place of the fan case, its top remixed for the sealed joint. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
+| **Fan section** | The Auto's, in place of the fan case, its top remixed for the sealed joint and its wires' hole opened out for the grommet. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
 | **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with four screws, their heads sunk in its bottom face. | [`bentobox-auto-tray.scad`](../models/bentobox/bentobox-auto-tray.scad) |
 | **Carbon housing** | ThrutheFrame's, remixed for the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
 | **HEPA holder** | ThrutheFrame's, its bottom remixed to sit sealed on the carbon housing, and its pocket cut out to the box's whole inside, for a bigger piece of paper. | [`bentobox-hepa.scad`](../models/bentobox/bentobox-hepa.scad) |
 | **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
+| **Grommet** | Two identical TPU halves that close round the fans' leads and click into the fan section's floor, sealing the wires' hole. | [`bentobox-grommet.scad`](../models/bentobox/bentobox-grommet.scad) |
 | **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
+| **Bottom sample** | To print first: the tray's -Y end with the USB-C board's pocket, and the base's floor over it with the tray's nut slots - one ASA plate. | [`bentobox-bottom-sample.scad`](../models/bentobox/bentobox-bottom-sample.scad) |
+| **Sample plates** | Every sample on two plates, one ASA and one TPU (see *The samples*). | [`bentobox-samples-asa.scad`](../models/bentobox/bentobox-samples-asa.scad), [`bentobox-samples-tpu.scad`](../models/bentobox/bentobox-samples-tpu.scad) |
 
 **Not printed yet.** Every fit is checked against the original's STLs (see *Checking it*), not yet against
 printed parts.
@@ -152,8 +155,18 @@ fit is a first guess: try it on the joint sample first (see *The sealed joints*)
 the lowest pressure in the box, about 97 Pa under the chamber's. The tube under it opens into the bay, and
 the bay is open to the chamber at the tray's joint, round the USB-C socket, and wherever wires leave it. Air
 drawn in that way passes neither filter. Through the 6 mm hole with the fans' leads in it, as an orifice,
-that is up to about 0.09 L/s, a seventh of the flow. Seal it round the leads where they pass the floor: hot
-glue, or a TPU grommet. The LunchBox's wire hole had the same fault, and it let in a fifth of its air.
+that is up to about 0.09 L/s, a seventh of the flow. The LunchBox's wire hole had the same fault, and it let in a
+fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026):
+
+- **Two identical TPU halves**, split through the hole for the leads, 4 mm across, which squeezes the leads'
+  4.5 mm bundle. On each half's split face, beside the leads, is a small key with 45° sides and a flat top on one
+  side and the matching slot on the other: turn one half round and the two lock together round the leads.
+- **The floor's hole is opened out to 7.6 mm** for it, 0.8 mm off the tube's axis towards -X so it stays clear of
+  the fan section's +X wall, with a groove round it at mid-height, 45° each side, and a chamfer at the top. Round
+  the grommet, a lip with 45° sides clicks into the groove. The grommet is 0.1 mm proud of the hole all round, so
+  it seals, and as thick as the floor, 3 mm, so it sits flush both sides.
+- **Putting it in:** the fans' leads down the tube; the two halves closed round them, key in slot; the pair
+  pushed down into the floor's hole from inside the fan section until the lip clicks into the groove.
 
 ## The sealed joints
 
@@ -275,12 +288,32 @@ instead.
 folded into 100, not counted, and the 0.3 mm thickness is an estimate - the one that matters, since the slot
 pinches it. Anything from 28 to 30 folds in 100 mm gives the same parts.
 
+## The samples
+
+Some of the remix's fits are first guesses, and its big parts are long prints, so the samples come first: every
+one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bentobox-samples-asa.scad) and
+[`bentobox-samples-tpu.scad`](../models/bentobox/bentobox-samples-tpu.scad) (each sample has its own file too).
+
+- **The joint sample** and its TPU bead - one end of a sealed joint, and a fan nut's seat (see *The sealed
+  joints*).
+- **The clamp sample** - one end of each of the paper clamp's frames (see *Your own HEPA paper*).
+- **The bottom sample** - the tray's -Y end, 18 mm of it, and the base's floor over it, 7 mm. Drop the USB-C
+  trigger board into its pocket: its socket's face should sit flush with the end face, and a USB-C plug should go
+  all the way in, the stop behind the board taking the push. Slide a nut into each of the two slots in the base's
+  piece, from the end face, set it on the tray's piece and drive the two M3 × 12 up from below: the pieces should
+  pull together, the heads ending flush, and the base's flat bottom closing the socket's notch.
+- **The grommet's coupon and halves** - a 3 mm square of the fan section's floor with its grommet hole, in ASA,
+  and the grommet's two halves, in TPU. Close the halves round a few spare leads, key in slot, and push the pair
+  into the coupon's hole until it clicks: it should sit flush and hold, and the leads should not slide easily.
+
 ## Printing
 
 The cover and the C-MAG print as the author's project lays them out; the remix's parts print as their files
 draw them, standing on their bottoms - the section, the base on its floor, the tray, the fan section, the
 carbon housing and the HEPA holder - the clamp's lower frame on its rim and its upper frame turned over onto its
-band, and a bead ring flat. No supports, no brim.
+band, and a bead ring flat. No supports, no brim. `sh scripts/bentobox-print.sh` builds every one, checks it and slices
+it, and puts its STL and G-code in `models/bentobox/print/`; name parts to build only those - `samples-asa
+samples-tpu` for the two sample plates.
 
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
@@ -289,13 +322,17 @@ band, and a bead ring flat. No supports, no brim.
 | Clamp, upper frame | ASA | 1 | 1 h 19 m | 9 g |
 | Clamp sample | ASA | 1 plate | 1 h 6 m | 7 g |
 | Base | ASA | 1 | 3 h 25 m | 36 g |
-| Fan section | ASA | 1 | 3 h 42 m | 36 g |
+| Fan section | ASA | 1 | 3 h 41 m | 36 g |
 | Tray | ASA | 1 | 1 h 47 m | 20 g |
 | Carbon housing | ASA | 1 | 7 h 23 m | 71 g |
 | HEPA holder | ASA | 1 | 4 h 39 m | 45 g |
 | Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
 | Joint sample | ASA | 1 plate | 1 h 16 m | 12 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
+| Grommet | TPU 95A | 2 halves | 2 m | under 1 g |
+| Bottom sample | ASA | 1 plate | 45 m | 7 g |
+| Samples, ASA | ASA | 1 plate | 3 h 11 m | 26 g |
+| Samples, TPU | TPU 95A | 1 plate | 5 m | under 1 g |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
 brim, no crossing perimeter`, as [`scad-check.sh`](https://github.com/AlonRR/scad-tools) slices them, with
@@ -318,7 +355,8 @@ For the sealed joints:
 | 4 | M3 × 12 socket head cap screw, ISO 4762: the HEPA holder to the carbon housing |
 | 8 | 4 × 2 mm magnet: the cover's joint, four in the HEPA holder and four in the cover |
 
-For the joint sample, from the same stock: 3 M3 nuts, 2 M3 × 12 and 1 M3 × 8.
+For the joint sample, from the same stock: 3 M3 nuts, 2 M3 × 12 and 1 M3 × 8. For the bottom sample: 2 M3 nuts,
+2 M3 × 12 and the USB-C trigger board.
 
 For the paper's clamp:
 
@@ -433,14 +471,15 @@ the carbon housing above it and the fan section below it, a magnet across each j
 holes. It runs the air's way from the housing's floor openings down through the section. For the paper's clamp it stands the cassette in the cut-out HEPA holder, sets the
 upper frame on the lower one - meeting only at the end blocks - lays a model of the paper, drawn from its own
 values at the slot's thickness, in the frames' zigzag, keeps the air's way down under the paper open, and
-runs the four screws through the end blocks and the nuts into their seats and down out of them. For the bottom it stands the fan
+runs the four screws through the end blocks and the nuts into their seats and down out of them. It closes the
+grommet's two halves on each other, key in slot, and sets the pair in the fan section's floor, lip in groove. For the bottom it stands the fan
 section on the base and the base on the tray, lays the USB-C board in its pocket - its socket through its notch,
 flush with the end face - sets a nut in each of the tray's slots and slides it out through
 the end face, and one in each fan screw's seat and draws it down its pocket and out under its post, keeps two
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
 the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 29 fits and
-38 controls.
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 31 fits and
+40 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.

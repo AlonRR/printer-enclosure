@@ -535,7 +535,10 @@ module section_sealed() difference() {
 sst = stack(true, true);
 carbon_dz = sst[2] - meet - (duct_h + fans_h);
 hepa_dz = sst[3] - meet - (duct_h + fans_h + carbon_h);
-module fans_sealed() sealed_part(undef, sst[1], duct_h, duct_h + fans_h) fan_section();
+module fans_sealed() difference() {
+    sealed_part(undef, sst[1], duct_h, duct_h + fans_h) fan_section();
+    translate([grommet_x, auto_conduit[1], duct_h]) grommet_hole();
+}
 module carbon_sealed() sealed_part(sst[2], sst[3], sst[2] - meet, sst[2] - meet + carbon_h) orig(carbon_stl, carbon_dz);
 module hepa_sealed() sealed_part(sst[3], undef, sst[3] - meet, sst[3] - meet + hepa_h) hepa_body(hepa_dz);
 module say_seal_hardware() echo(str("sealed joints: three TPU bead rings, ", seal_bead[0], " mm; four M3 x ", j3_screw,
@@ -564,8 +567,59 @@ module joint_sample() {
     translate([w / 2, 0, 0]) sample_up();
     translate([0, -pull_block[1] / 2 - sample_gap, 0]) sample_pull();
 }
+// The bottom sample (A140): the tray's -Y end, with the USB-C board's pocket and its stop, and the base's floor over
+// it, with the tray's nut slots - side by side, as they print.
+module _bottom_end(z0, z1) translate([-bb_w, -bb_l / 2 - 1, z0]) cube([2 * bb_w, bottom_sample_l + 1, z1 - z0]);
+module bottom_sample() let(w = bb_w + sample_gap) {
+    translate([-w / 2, 0, -auto_base_z0]) intersection() { auto_tray(); _bottom_end(auto_base_z0 - 1, tray_top + 1); }
+    translate([w / 2, 0, -auto_bay_top]) intersection() { auto_base(); _bottom_end(auto_bay_top - 1, auto_bay_top + bottom_sample_h); }
+}
 // The bead for that end, in TPU, flat: the ring's run past the slice, open at both ends.
 module joint_sample_bead() translate([0, sample_l - seal_y, 0]) intersection() { bead_ring(); _sample_end(-1, 10); }
+// ------------------------------------------------------------------ the wires' grommet (D117)
+// See bentobox.params.scad. Drawn on its axis, Z = 0 at the floor's underside. The floor's hole: opened out to the
+// grommet, a groove round it at mid-height with 45-degree sides, and a chamfer at its top for the lip.
+module grommet_hole() let(r = grommet_hole_r, g = grommet_groove, c = grommet_chamfer, h = auto_floor_t, m = grommet_mid)
+    rotate_extrude($fn = 64) polygon([[0, -1], [r, -1], [r, m - g], [r + g, m], [r, m + g], [r, h - c], [r + c + 1, h + 1], [0, h + 1]]);
+// The grommet whole: a ring through the floor, the lip round it at mid-height, a small chamfer at its foot.
+module grommet_body() let(r = grommet_r, i = grommet_in_r, l = grommet_lip, h = auto_floor_t, m = grommet_mid)
+    rotate_extrude($fn = 64) polygon([[i, 0], [r - 0.3, 0], [r, 0.3], [r, m - l], [r + l, m], [r, m + l], [r, h], [i, h]]);
+// The key, from above: on the split face (Y = 0) at the middle of the +X side, standing out into -Y.
+module grommet_key2d(grow = 0) let(w = grommet_key[0], k = grommet_key[1]) offset(delta = grow)
+    polygon([[grommet_key_x - w / 2, 0.01], [grommet_key_x + w / 2, 0.01], [grommet_key_x + w / 2 - k, -k], [grommet_key_x - w / 2 + k, -k]]);
+// One half: the body's +Y half, the key on its +X side, and the slot for the other half's key on its -X side - the
+// key turned round the axis, grown by grommet_play.
+module grommet_half() let(h = auto_floor_t) difference() {
+    union() {
+        intersection() { grommet_body(); translate([-10, 0, -1]) cube([20, 10, h + 2]); }
+        translate([0, 0, 0.3]) linear_extrude(h - 0.6) grommet_key2d();
+    }
+    translate([0, 0, 0.3 - grommet_play]) linear_extrude(h - 0.6 + 2 * grommet_play) rotate(180) grommet_key2d(grommet_play);
+}
+// The two halves as they go in, closed round the leads: one turned round on the other.
+module grommet_pair() { grommet_half(); rotate(180) grommet_half(); }
+// The two halves as they print, standing, side by side.
+module grommets_printing() for (s = [-1, 1]) translate([s * (grommet_r + grommet_lip + 2), 0, 0]) rotate(s > 0 ? 180 : 0) grommet_half();
+// The floor's hole on a coupon of the floor, to try the grommet in before the fan section: 3 mm, in ASA.
+module grommet_coupon() difference() {
+    translate([-10, -10, 0]) cube([20, 20, auto_floor_t]);
+    grommet_hole();
+}
+
+// ------------------------------------------------------------------ the sample plates (T131)
+// All the samples, as they print: ASA - the joint sample, the clamp sample, the bottom sample and the grommet's
+// coupon; TPU - the joint sample's bead and the grommet's two halves. Placed by their footprints, measured from
+// their renders; scad-check counts the bodies, so two that touched would show.
+module samples_asa() {
+    joint_sample();                                     // Y -24 .. 39.5
+    translate([0, 20, 0]) clamp_sample();               // Y 54 .. 70
+    bottom_sample();                                    // Y -56.4 .. -38.4
+    translate([75, 0, 0]) grommet_coupon();
+}
+module samples_tpu() {
+    joint_sample_bead();                                // Y 0 .. 27.2
+    translate([0, -10, 0]) grommets_printing();
+}
 module say_sample_hardware() echo(str("joint sample: two M3 x ", j3_screw, " socket head and two M3 nuts for the joint, one M3 nut and an M3 x 8 for the pocket's seat"));
 
 // How to cut the paper for the clamp, from the values above: what the build page quotes. Only the length is
@@ -594,5 +648,10 @@ if (draw_model) {
     // The joint sample's ASA plate, and its TPU bead.
     else if (part == "joint_sample") { joint_sample(); say_sample_hardware(); }
     else if (part == "joint_sample_bead") joint_sample_bead();
+    // The wires' grommet, its two halves, in TPU; the bottom sample; and every sample on its plate.
+    else if (part == "grommet") grommets_printing();
+    else if (part == "bottom_sample") { bottom_sample(); say_auto_hardware(); say_usb(); }
+    else if (part == "samples_asa") { samples_asa(); say_sample_hardware(); say_auto_hardware(); }
+    else if (part == "samples_tpu") samples_tpu();
     else assert(false, str("unknown part: ", part));
 }

@@ -32,7 +32,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "bead_ring", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample" or "joint_sample_bead": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "bead_ring", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "bottom_sample", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -131,6 +131,7 @@ bottom = "auto";    /* "auto": the remix's base and tray, after the Auto's, and 
 // down a tube to the bay.
 auto_fans_dz  = -30;    /* The fan section, from where the STEP has it, to the stack: its tongue is then the fan case's. */
 auto_floor_t  = 3;      /* The fan section's floor, which the fans' screws pass. */
+auto_fans_in_x = 20.4;  /* The fan section's chamber's +X face, over its floor: the wires' hole stands next to it. */
 auto_fan_air  = 37;     /* The fan section's floor opening under each fan, at fan_ys. Nothing new may stand under one. */
 auto_fan_screws = [[-16, -46, 40, 90], [-16, 46, -40, 270], [16, -14, 230, 180], [16, 14, 130, 180]];   /* The fans' screws, X and Y; which way a flat of each nut's pocket faces, in degrees from +X - 5 off the nearer fan, towards the post's wall, so the pocket keeps a wall to both; and the way out of the post's wall into the room: the two at the end walls, the two at the long wall. */
 base_wall     = 7;      /* The end walls and the +X wall: the duct's faces at Y +-49.4 and X 19.4. */
@@ -236,6 +237,24 @@ sample_l = 30;      /* How far in from the end wall the pieces run. */
 sample_low_h = 12;  /* The carbon housing's piece: this much under its top face, its two nut tabs and their brackets' tops. */
 sample_up_h = 10;   /* The HEPA holder's piece: this much over its floor, its two tabs with the heads' counterbores. */
 sample_gap = 8;     /* Between the pieces on the plate. */
+// Alon, 9 Oct 2026 (A140): and a sample of the bottom - the tray's -Y end with the USB-C board's pocket, and the
+// base's floor over it with the tray's nut slots - to try the board, the plug, the slots and their screws. All the
+// samples go on two plates, one ASA and one TPU (T131).
+bottom_sample_l = 18;   /* The bottom sample: this much of the tray's -Y end, past the board's stop... */
+bottom_sample_h = 7;    /* ...and this much of the base over it, from the bay's roof: the nut slots and the screws' tips. */
+
+/* [The wires' grommet - Alon, 9 Oct 2026 (D117)] */
+// The fans' leads pass the fan section's floor in a TPU grommet: two identical halves, split through the wires'
+// hole, that clamp round the leads. On each half's split face is a key with 45-degree sides and a flat top on one
+// side of the wires, and its matching slot on the other, so one half turned round locks onto the other. Round the
+// outside, a lip with 45-degree sides clicks into a matching groove in the floor's hole, which is opened out for it.
+grommet_d = [7.6, 4];       /* The grommet's outside - the floor's hole as it prints - and the hole for the leads, about 4.5 mm bundled: squeezed. */
+grommet_x = 15.6;   /* Its axis, X: 0.78 mm towards -X off the tube's, so its hole stays under the fan section's chamber, clear of its +X wall, and still takes the old hole in. */
+grommet_squeeze = 0.1;  /* The grommet stands this much proud of the floor's hole, each side, so it seals. */
+grommet_lip = 0.5;  /* How far the lip stands out, at the floor's mid-height, its sides at 45 degrees. */
+grommet_key = [1, 0.35];    /* The key at the split face: its width, and how far it stands out; with 45-degree sides its top is 0.3 wide. */
+grommet_play = 0.1; /* Round the key in its slot, and round the lip in its groove. */
+grommet_chamfer = 0.5;  /* The floor's hole is chamfered this much at its top, so the lip goes in. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;
