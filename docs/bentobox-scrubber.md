@@ -243,7 +243,7 @@ fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026
 **The fans' plug mate** (Alon, 9 Oct 2026). Each fan keeps its own 3-pin plug and pushes it onto a printed block in
 the fan section, so a fan comes out by unplugging it.
 
-![The plug mate with both fans' plugs lifted off it: the pins, the bared ends of the wires, standing out of the block; the wall behind, with a key for each plug; a + in front of each red pin](bentobox/fan-mate.png)
+![The plug mate with both fans' plugs lifted off it: the pins, the bared ends of the wires, standing out of the block; the walls round each plug, open at the front, with a key on the back one; a + in front of each red pin](bentobox/fan-mate.png)
 
 - **The pins are the wires.** 22 AWG solid wire (owned, the 5-colour UL1007): its bare core is 0.64 mm, a
   header pin's size. Bare each wire 7.5 mm, push it up through the block from below until its insulation stops
@@ -251,8 +251,9 @@ the fan section, so a fan comes out by unplugging it.
   Under the block, bend each wire over into the groove to the back edge. Once the block is fixed down, that bend
   stops a pin being pushed down when a plug goes on; until then, a drop of glue in the slot does it.
 - **One way on.** A wall stands behind each plug's ribbed face, and a key on it goes between the plug's two ribs,
-  so the plug only goes on with its text face to the front. A **+** in front of each plug marks the red wire's
-  pin; the plug's own moulded arrow lands over it.
+  so the plug only goes on with its text face to the front. A wall at each end of the block and one between the
+  plugs (Alon, 9 Oct 2026: "the mate needs sides and back") guide each plug on square; the front stays open. A
+  **+** in front of each plug marks the red wire's pin; the plug's own moulded arrow lands over it.
 - **From the plug as measured** (Alon, 9 Oct 2026): 8.0 mm across its pins, 5.2 thick over a 0.3 mm lip across its open end (4.9 behind it), 6.67 over its ribs, the
   ribs 1.1 wide with 5.2 between them, its holes 1.45 mm and their nearer walls 2.55 mm from the text face. The
   key is 4.7 wide, 0.25 mm of play each side of the plug.
@@ -452,7 +453,7 @@ samples-tpu` for the two sample plates.
 | Joint sample | ASA | 1 plate | 1 h 7 m | 10 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
 | Grommet | TPU 95A | 1 | 2 m | under 1 g |
-| Fans' plug mate | ASA | 1 | 16 m | 1 g |
+| Fans' plug mate | ASA | 1 | 16 m | 1.4 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
 | Samples, ASA | ASA | 1 plate | 3 h 5 m | 25 g |
 | Samples, TPU | TPU 95A | 1 plate | 5 m | under 1 g |
@@ -612,7 +613,7 @@ upper frame on the lower one - meeting only at the end blocks - lays a model of 
 values at the slot's thickness, in the frames' zigzag, keeps the air's way down under the paper open, and
 runs the four screws through the end blocks and the nuts into their seats and down out of them. It sets the
 grommet in the fan section's floor, lip in groove. It seats the fans' plugs, drawn from their measurements, on
-their mate, ribs either side of each key and clear of the wall, and runs the wires' cores up through the block
+their mate, ribs either side of each key and clear of the walls, and runs the wires' cores up through the block
 into the plugs' holes. For the bottom it stands the fan
 section on the base and the base on the tray, lays the USB-C board in its pocket - its socket through its notch,
 flush with the end face - sets a nut in each of the tray's slots and slides it out through
@@ -620,7 +621,7 @@ the end face, and one in each fan screw's seat and draws it down its pocket and 
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
 the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
 something broken on purpose that it must catch, and the run fails if one passes unnoticed: 39 fits and
-52 controls.
+53 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.

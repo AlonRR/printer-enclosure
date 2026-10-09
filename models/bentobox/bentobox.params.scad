@@ -314,7 +314,8 @@ fan_mate_pin = 6;       /* How far each pin stands above the block: a header's m
 fan_mate_play = 0.25;   /* Round the plug: to the wall, to the key and between its ribs. */
 fan_mate_base = [5, 1.5];   /* The block under the plug: its height, and how much of it at the top holds the core alone - below, a slot takes the insulation. */
 fan_mate_wall = [1.8, 6];   /* The wall behind the plug: its thickness, and how far it stands above the block. */
-fan_mate_gap = 2;       /* Between two plugs side by side. */
+fan_mate_side = 1.35;   /* A wall at each end of the block too (Alon, 9 Oct 2026: "the mate needs sides and back"), three lines thick and as tall as the back one; between two plugs a wall of what fan_mate_gap leaves. The front, the plugs' text faces' side, stays open. */
+fan_mate_gap = 2;       /* Between two plugs side by side: the wall between them is this less the play either side, 1.5 mm. */
 fan_mate_front = 2.5;   /* The block runs on this far past the plug's text face, for the red pin's mark. */
 fan_mate_at = [-2, 0];  /* Where the mate stands on the fan section's floor: its middle's X and Y, between the two fans and beside the grommet (Alon, 9 Oct 2026: D162). Its back, where the leads come out, faces -Y. */
 

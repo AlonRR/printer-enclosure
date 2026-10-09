@@ -823,13 +823,16 @@ module fan_mate_key(x) let(h = fan_mate_base[0], wh = fan_mate_wall[1] - 0.5, d 
         cube([fm_key_w, d + e, wh - d - e + 0.01]);
         cube([fm_key_w, 0.01, wh + 0.01]);
     }
-// The block and the wall are one L-shaped profile along X: two boxes sharing the back face would meet it in a line
+// The block and its walls - the back one, one at each end and one between the plugs (Alon, 9 Oct 2026) - are one
+// prism of the whole outline with each plug's pocket cut down to the block: boxes sharing faces would meet in lines
 // of T-junctions. The groove is a little wider than the slot, so its sides are not tangent to the slot's round ends.
 module fan_mate() let(h = fan_mate_base[0], c = fan_mate_base[1], wh = fan_mate_wall[1], s = 2 * fan_pitch + fm_ins_d + 0.4)
     difference() {
         union() {
-            translate([fm_x0, 0, 0]) rotate([90, 0, 90]) linear_extrude(fm_x1 - fm_x0)
-                polygon([[fm_y0, 0], [fm_y1, 0], [fm_y1, h], [fm_wall_y, h], [fm_wall_y, h + wh], [fm_y0, h + wh]]);
+            difference() {
+                translate([fm_x0, fm_y0, 0]) cube([fm_x1 - fm_x0, fm_y1 - fm_y0, h + wh]);
+                for (x = fm_xs) translate([x - fm_px, fm_wall_y, h]) cube([2 * fm_px, fm_y1 - fm_wall_y + 1, wh + 1]);
+            }
             for (x = fm_xs) fan_mate_key(x);
         }
         for (x = fm_xs) {

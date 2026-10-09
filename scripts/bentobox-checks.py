@@ -82,6 +82,7 @@ CONTROLS = [
     ("check_fan_mate", [("fm_key_w", "5.6")], "the mate's key made wider than the gap between the plug's ribs"),
     ("check_fan_mate", [("fm_wall_y", "-3.2")], "the mate's wall moved in onto the plug's ribs"),
     ("check_fan_mate", [("fm_key_y", "-1.7")], "the key's face moved in onto the plug's ribbed face"),
+    ("check_fan_mate", [("fm_px", "3.8")], "the mate's end walls and the wall between the plugs moved in onto their ends"),
     ("check_fan_mate_pins", [("fan_pitch", "3.3")], "the mate's pins spread to 3.3 mm, off the plug's holes"),
     ("check_fan_mate_pins", [("fm_core_d", "0.5")], "the block's holes made narrower than the wire's core"),
     ("check_fan_mate_place", [("fan_mate_at", "[4, 0]")], "the mate moved 6 mm towards the grommet"),
