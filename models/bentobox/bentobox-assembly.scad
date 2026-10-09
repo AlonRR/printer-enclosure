@@ -338,12 +338,12 @@ else assert(false, str("unknown view: ", view));
 
 if (show_axes && (view == "stack" || view == "exploded")) axes([-bb_w / 2 - 40, -bb_l / 2, 0], l = 25);
 axes_cam = [55, 0, 30];   // the picture's --camera angles, so the arrows' labels face it
-if (show_axes && view == "section") axes([-bb_w / 2 - 20, -bb_l / 2, 0], l = 15, cam = axes_cam);
+if (show_axes && view == "section") axes([-bb_w / 2 - 32, -bb_l / 2, 0], l = 15, cam = axes_cam);
 if (show_axes && view == "frame") axes([-cas[0] / 2 - 25, -cas[1] / 2, 0], l = 15, cam = axes_cam);
 if (show_axes && view == "joints") axes([bb_w / 2 + 20, bb_l / 2, sst[0] + 30], l = 20, cam = axes_cam);
 if (show_axes && view == "bottom") axes([bb_w / 2 + 15, bb_l / 2, 0], l = 20, cam = axes_cam);
 if (show_axes && view == "grommet") axes([-13, -5, 0], l = 3.5, cam = axes_cam);
-if (show_axes && view == "clamp_print") axes([-cas[0] - 20, -cas[1] / 2, 0], l = 15, cam = axes_cam);
+if (show_axes && view == "clamp_print") axes([-cas[0] - 32, -cas[1] / 2, 0], l = 15, cam = axes_cam);
 // A flat view gets a flat key: an arrow across, labelled with the box's axis it shows, and +z up.
 module flat_key(across) color("black") {
     translate([0, -0.6]) square([16, 1.2]);

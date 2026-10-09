@@ -181,11 +181,18 @@ CAMERAS = {
     "joints": ["--imgsize=1300,1800", "--viewall", "--autocenter", "--camera=0,0,0,62,0,30,0"],
     "grommet": ["--imgsize=1100,560", "--viewall", "--autocenter", "--camera=0,0,0,50,0,20,0"],
 }
+# The flat drawings - cuts through parts, already computed geometry - keep their parts' colours only as a preview:
+# rendered, every 2D part takes one colour and the union fills the gaps between them (paper-cut's zigzag went solid).
+FLAT = {"cut", "paper-cut"}
 
 
 def figures(write, names):
     """Each picture rendered to PNG - into a scratch folder, or over docs/bentobox/ with --write. A failed
-    assert or import during a PNG export still exits 0 and writes a picture of nothing, so the output is read."""
+    assert or import during a PNG export still exits 0 and writes a picture of nothing, so the output is read.
+    Rendered, not previewed: without --render a PNG export is OpenSCAD's preview, which draws a difference's
+    cut by depth tricks, so cut faces take the wrong colour, coincident faces flicker and thin ribs break up
+    (Alon noticed, 9 Oct 2026). The same backend as the checks, so a picture shows the solid they measured.
+    Only the FLAT drawings stay previews."""
     target = Path(__file__).resolve().parent.parent / "docs" / "bentobox"
     chosen = names or list(FIGURES)
     with tempfile.TemporaryDirectory() as tmp:
@@ -194,7 +201,8 @@ def figures(write, names):
 
         def one(name):
             out = folder / f"{name}.png"
-            _, log = render(out, ASSEMBLY, ["--colorscheme=Tomorrow", *CAMERAS[name], *defines(FIGURES[name])])
+            mode = [] if name in FLAT else [*BACKEND, "--render"]
+            _, log = render(out, ASSEMBLY, [*mode, "--colorscheme=Tomorrow", *CAMERAS[name], *defines(FIGURES[name])])
             return out.exists(), problems(log) + [l for l in log.splitlines() if "Assertion" in l]
 
         results = parallel(one, chosen)
