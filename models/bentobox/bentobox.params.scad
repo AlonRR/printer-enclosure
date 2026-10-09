@@ -302,7 +302,7 @@ grommet_leads = [4, 1.55];  /* The holes in the skin, one per lead (Alon, 9 Oct 
 // this block in the fan section. The pins are the bared ends of 22 AWG solid wire (Alon): each wire comes up through
 // the block, its core standing as the pin, and carries on as the lead, with no joint. A wall stands behind the
 // plug's ribbed face, and a key on it goes between the two ribs, so the plug goes on one way only.
-fan_plug = [8.0, 5.2, 12.77];   /* MEASURED (Alon, 9 Oct 2026): the fan's plug across its pins (A), its thickness without the ribs (B), and its length along the wires (C). */
+fan_plug = [8.0, 5.2, 12.77];   /* MEASURED (Alon, 9 Oct 2026): the fan's plug across its pins (A), its thickness without the ribs (B) - over the 0.3 mm lip across its open end between the ribs, 4.9 elsewhere between them, so the key keyed to B clears both - and its length along the wires (C). */
 fan_plug_d = 2.55;      /* MEASURED: from the plug's face with the text to the nearer wall of a pin's hole (D). */
 fan_plug_hole = 1.45;   /* MEASURED: a pin hole's size in the plug's end face. The pins stand in line with the holes' middles. */
 fan_plug_ribs = [1.1, 5.2, 6.67];   /* MEASURED: the ribs on the face opposite the text: each one's width, the gap between them, and the plug's thickness over them. */

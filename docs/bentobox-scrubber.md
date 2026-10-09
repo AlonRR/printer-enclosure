@@ -253,7 +253,7 @@ the fan section, so a fan comes out by unplugging it.
 - **One way on.** A wall stands behind each plug's ribbed face, and a key on it goes between the plug's two ribs,
   so the plug only goes on with its text face to the front. A **+** in front of each plug marks the red wire's
   pin; the plug's own moulded arrow lands over it.
-- **From the plug as measured** (Alon, 9 Oct 2026): 8.0 mm across its pins, 5.2 thick, 6.67 over its ribs, the
+- **From the plug as measured** (Alon, 9 Oct 2026): 8.0 mm across its pins, 5.2 thick over a 0.3 mm lip across its open end (4.9 behind it), 6.67 over its ribs, the
   ribs 1.1 wide with 5.2 between them, its holes 1.45 mm and their nearer walls 2.55 mm from the text face. The
   key is 4.7 wide, 0.25 mm of play each side of the plug.
 - **Both fans on one block** (`fan_mate_n = 2`, D160 open): their reds are joined under it, and their blacks, and
