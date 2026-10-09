@@ -23,9 +23,11 @@
 # where the wires go.
 #   GPIO10  the IRLZ44N's gate - through about 100 ohm, with about 10 kohm from gate to GND, so the fans stay
 #           off while the board boots and whenever it is unpowered
-#   GPIO3   fan 1's tach (pin 3 of its lead)    } INPUT_PULLUP to 3.3 V. ⛔ Only once T141 has shown the tach
-#   GPIO4   fan 2's tach                        } is open-collector - sitting near 0 V or floating, never
-#                                                 swinging to 12 V, which would destroy the pin.
+#   GPIO3   fan 1's tach    } the BLUE wire, the middle pin of the fan's 3-pin plug. INPUT_PULLUP to 3.3 V.
+#   GPIO4   fan 2's tach    } ⛔ Only once T141 has shown it is open-collector - sitting near 0 V or floating,
+#                             never swinging to 12 V, which would destroy the pin.
+#           The plug is not a PC fan header's pinout: its marked pin 1 is RED, +12 V, and black (GND) is pin 3.
+#           Never plug the fans into a motherboard's or a printer board's fan header.
 #   GPIO5   I2C SDA  } the outlet's sensors (D112), pull-ups to 3V3, never 5V
 #   GPIO6   I2C SCL  }
 #   GPIO8   the onboard LED, active-low: the node's status
@@ -50,8 +52,10 @@ wifi:
   password: !secret wifi_password
   # The node sits in the box, so it must never wait for a human.
   reboot_timeout: 15min
-  # SuperMini antenna: a stock board barely transmits (docs/chamber-sensor/supermini-antenna.md). Use the
-  # §3x-modded board, and read "WiFi signal" once it stands at the printer.
+  # SuperMini antenna (docs/chamber-sensor/supermini-antenna.md): this board is stock, without the §3x wire
+  # (Q151, 9 Oct 2026), so it runs at full power - the 8.5 dBm cap is for a modded board beside another radio.
+  # A stock board reaches 17-19 dB less far than a modded one: read "WiFi signal" once it stands at the
+  # printer, and add the §3x wire if it is weak there.
   ap:
     ssid: bentobox-fallback
     password: !secret ap_password
