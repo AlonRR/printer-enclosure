@@ -26,8 +26,15 @@
 #   GPIO3   fan 1's tach    } the BLUE wire, the middle pin of the fan's 3-pin plug. INPUT_PULLUP to 3.3 V.
 #   GPIO4   fan 2's tach    } ⛔ Only once T141 has shown it is open-collector - sitting near 0 V or floating,
 #                             never swinging to 12 V, which would destroy the pin.
-#           The plug is not a PC fan header's pinout: its marked pin 1 is RED, +12 V, and black (GND) is pin 3.
-#           Never plug the fans into a motherboard's or a printer board's fan header.
+#           The fans are EFB0412VHD-F00 (Q152, 9 Oct 2026). Delta's sheet for that model (delta-fan.com,
+#           Download/Spec/EFB0412VHD-F00.pdf, §11): the blue wire is an open-collector frequency output,
+#           15 V and 5 mA at most, so a 3.3 V pull-up is safe; TS = 60/N split into four equal quarters is two
+#           pulses a revolution, hence the 0.5 below; a locked rotor holds the line steady, which reads 0 RPM.
+#           T141 checks that these two fans behave as that sheet says before a pin is wired to them.
+#           The plug is a 2.54 mm KK 254-style housing, 8 mm across its pins (Alon, 9 Oct 2026), so it also
+#           pushes onto a plain 2.54 mm pin header, held by friction. It is not a PC fan header's pinout: its
+#           marked pin 1 is RED, +12 V, and black (GND) is pin 3. Never plug the fans into a motherboard's or a
+#           printer board's fan header.
 #   GPIO5   I2C SDA  } the outlet's sensors (D112), pull-ups to 3V3, never 5V
 #   GPIO6   I2C SCL  }
 #   GPIO8   the onboard LED, active-low: the node's status
