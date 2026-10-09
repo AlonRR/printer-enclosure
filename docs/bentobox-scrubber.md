@@ -54,7 +54,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Fans' plug mate** | A block in the fan section that both fans' own plugs push onto, its pins the bared ends of 22 AWG solid wire. | [`bentobox-fan-mate.scad`](../models/bentobox/bentobox-fan-mate.scad) |
 | **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
 | **Bottom sample** | To print first: the tray's -Y end with the USB-C board's pocket, and the base's floor over it with the tray's nut slots - one ASA plate. | [`bentobox-bottom-sample.scad`](../models/bentobox/bentobox-bottom-sample.scad) |
-| **Nut coupon** | Four fan-nut seats and four tray-nut slots at graded fits, to find the ones that hold on this printer (T181, T182). | [`bentobox-nut-coupon.scad`](../models/bentobox/bentobox-nut-coupon.scad) |
+| **Nut coupon** | Five fan-nut seats and five tray-nut slots at graded fits and with three kinds of end, to find the ones that hold on this printer (T181, T182). | [`bentobox-nut-coupon.scad`](../models/bentobox/bentobox-nut-coupon.scad) |
 | **Sample plates** | Every sample on two plates, one ASA and one TPU (see *The samples*). | [`bentobox-samples-asa.scad`](../models/bentobox/bentobox-samples-asa.scad), [`bentobox-samples-tpu.scad`](../models/bentobox/bentobox-samples-tpu.scad) |
 
 **Not printed yet.** Every fit is checked in the model (see *Checking it*), not yet against printed parts.
@@ -464,12 +464,21 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
   joints*).
 - **The glue sample** - one end of the glue frame (see *The glue frame*). The clamp's sample still builds, but is
   off the plate.
-- **The nut coupon** - on its own, not on the plate: four fan-nut seats, numbered 1 to 4 on the top, and four
-  tray-nut slots, 5 to 8, open at the front face over a 0.8 mm floor, as in the base. Pull a nut up into each seat
+- **The nut coupon** - on its own, not on the plate: five fan-nut seats, numbered 1 to 5 on the top, and five
+  tray-nut slots, 6 to 10, open at the front face over a 0.8 mm floor, as in the base. Pull a nut up into each seat
   with an M3 × 8 from the top and take the screw out: which keep their nut? Slide a nut into each slot and drive an
-  M3 up from below: which keep it from turning? As cut, across the flats: seats 5.5, 5.6, 5.7 and 5.9 mm (4 is
-  the base's today); slots 5.7, 5.8 and 5.9 mm (the base's is 6.1); slot 8 narrows from 6.1 mm at its mouth to
-  5.6 on the nut's flats, where it stops. `pull_fit` and `nut_fit` are set from the ones that hold. 42 m, 6 g.
+  M3 up from below: which keep it from turning? As cut, across the flats:
+
+  | | |
+  |---|---|
+  | Seats 1 to 5 | 5.5, 5.6, 5.7, 5.8 and 5.9 mm - 5 is the base's today |
+  | Slot 6 | 6.1 mm, its end square: the base's today |
+  | Slot 7 | 5.8 mm, its end square |
+  | Slot 8 | 6.1 mm, its end the nut's own shape: the nut sits against four walls, its two flats and the two faces behind them, and stops on the screw (Alon's idea) |
+  | Slot 9 | 5.8 mm, its end the nut's own shape |
+  | Slot 10 | 6.1 mm at its mouth, narrowing to 5.6 on the nut's flats where it stops (Alon's trapezoid) |
+
+  `pull_fit`, `nut_fit` and the slots' ends are set from the ones that hold. 53 m, 8 g.
 - **The bottom sample** - the tray's -Y end, 18 mm of it, and the base's floor over it, 7 mm. Drop the USB-C
   trigger board into its pocket: its socket's face should sit flush with the end face, and a USB-C plug should go
   all the way in, the stop behind the board taking the push. Slide a nut into each of the two slots in the base's
@@ -491,8 +500,9 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
 - **The TPU bead** sits in the joint's groove and compresses a lot. It stands **0.16 to 0.20 mm** proud of the
   land, where 0.4 is drawn: the bead prints about 0.2 mm under its drawn height. With the joint's one screw done
   up, the sample opens at its far end. The sample is a 30 mm strip with one screw, far floppier than the closed
-  rings, but the top joint has only the two end screws, so its 100 mm sides are the question: whether the bead
-  still touches all along where the joint opens.
+  rings, but the top joint has only the two end screws, so its 100 mm sides were the question - and **the bead
+  still touches all along where the sample opens** (Alon, 9 Oct 2026: Q190): it seals; the faces just do not
+  meet there. Nothing changed.
 - **The clamp's wedges and teeth** came out thin and fragile: hence the glue frame.
 
 ## Printing
@@ -524,7 +534,7 @@ samples-tpu` for the two sample plates.
 | Grommet | TPU 95A | 1 | 2 m | under 1 g |
 | Fans' plug mate | ASA | 1 | 18 m | 1.6 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
-| Nut coupon | ASA | 1 | 42 m | 6 g |
+| Nut coupon | ASA | 1 | 53 m | 8 g |
 | Samples, ASA | ASA | 1 plate | 2 h 29 m | 22 g |
 | Samples, TPU | TPU 95A | 1 plate | 5 m | under 1 g |
 

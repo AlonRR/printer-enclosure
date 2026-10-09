@@ -801,23 +801,29 @@ module sample_pull() let(h = 3 + nut_slot_h + nut_roof) difference() {
     pull_frame([0, 0, 0], 3 + nut_slot_h) pull_pocket(3 + eps);
 }
 // The nut coupon (T181, T182 - Alon, 9 Oct 2026: a tray nut spun in its slot, and a fan nut fell out of its seat
-// even pulled up). One block: along the back, four fan-nut seats, numbered 1 to 4 on the top, as the base's -
+// even pulled up). One block: along the back, five fan-nut seats, numbered 1 to 5 on the top, as the base's -
 // pull a nut up into each with an M3 x 8 from the top, take the screw out, and see which holds it; along the front,
-// four tray-nut slots, 5 to 8, open at the front face, a 0.8 mm floor under them as in the base - slide a nut in,
-// drive an M3 up from below, and see which keeps it from turning. 4 is today's seat; 8 is a slot that narrows to
-// the screw (Alon's trapezoid): free at its mouth, tight on the nut's flats where it stops. The fits are on top of
-// fdm_hole_comp, each side, as pull_fit and nut_fit are: set those from the ones that hold.
-coupon_pull = [-0.15, -0.1, -0.05, pull_fit];
-coupon_slot = [-0.05, 0, 0.05];
-coupon_taper = [-0.1, nut_fit, 4];     // the tapered slot: its fit on the nut's flats, at its mouth, and the taper's length
+// five tray-nut slots, 6 to 10, open at the front face, a 0.8 mm floor under them as in the base - slide a nut in,
+// drive an M3 up from below, and see which keeps it from turning. 5 is today's seat and 6 today's slot. 6 and 7 end
+// square, as the base's do; 8 and 9 end in the nut's own shape, so it sits against four walls, its two flats and the
+// two faces behind them (Alon's idea), and stops on the screw's axis; 10 narrows to the screw (Alon's trapezoid):
+// free at its mouth, tight on the nut's flats where it stops. The fits are on top of fdm_hole_comp, each side, as
+// pull_fit and nut_fit are: set those, and the slots' ends, from the ones that hold.
+coupon_pull = [-0.15, -0.1, -0.05, 0, pull_fit];
+coupon_slot = [[nut_fit, "square"], [0, "square"], [nut_fit, "hex"], [0, "hex"], [-0.1, "taper"]];
+coupon_taper = [nut_fit, 4];           // the tapered slot: its fit at its mouth, and the taper's length
+nc_n = 5;
 nc_pitch = 14;
 nc_y = [7, 22];                        // the slots' axes, from the front face, and the seats'
 nc_h = 3 + nut_slot_h + nut_roof;      // the seats' way 3 mm, the seat, the roof: as sample_pull's
 function nc_w(f) = nut_af + 2 * (fdm_hole_comp + f);
-// The tapered slot, in a slot's frame (slot_frame): tight from behind the nut to its flats' front end, then
-// widening over coupon_taper[2] to its mouth's width, and straight out through the mouth.
-module tapered_slot(out) let(ac = nut_af / cos(30), f0 = coupon_taper[0], w0 = nc_w(f0), w1 = nc_w(coupon_taper[1]),
-                             x0 = ac / 4, l = coupon_taper[2]) {
+// The coupon's slots, in a slot's frame (slot_frame), fit f on the nut's flats: ending in the nut's shape - its
+// flats, and the two faces behind them - or narrowing from coupon_taper's fit at the mouth to f on the flats.
+module hex_end_slot(f, out) let(w = nc_w(f)) hull() {
+    cylinder(r = w / 2 / cos(30), h = nut_slot_h, $fn = 6);
+    translate([0, -w / 2, 0]) cube([out, w, nut_slot_h]);
+}
+module tapered_slot(f0, out) let(ac = nut_af / cos(30), w0 = nc_w(f0), w1 = nc_w(coupon_taper[0]), x0 = ac / 4, l = coupon_taper[1]) {
     translate([-(ac / 2 + fdm_hole_comp + f0), -w0 / 2, 0]) cube([ac / 2 + fdm_hole_comp + f0 + x0 + eps, w0, nut_slot_h]);
     hull() {
         translate([x0, -w0 / 2, 0]) cube([eps, w0, nut_slot_h]);
@@ -826,22 +832,23 @@ module tapered_slot(out) let(ac = nut_af / cos(30), f0 = coupon_taper[0], w0 = n
     translate([x0 + l, -w1 / 2, 0]) cube([out - x0 - l, w1, nut_slot_h]);
 }
 module nut_coupon() difference() {
-    translate([-nc_pitch / 2, 0, 0]) cube([4 * nc_pitch, nc_y[1] + 8, nc_h]);
-    for (k = [0 : 3]) let(x = k * nc_pitch, w = k < 3 ? nc_w(coupon_slot[k]) : nc_w(coupon_taper[0])) {
+    translate([-nc_pitch / 2, 0, 0]) cube([nc_n * nc_pitch + 2, nc_y[1] + 8, nc_h]);
+    for (k = [0 : nc_n - 1]) let(x = k * nc_pitch, f = coupon_slot[k][0], end = coupon_slot[k][1]) {
         pull_frame([x, nc_y[1], 0], 3 + nut_slot_h) pull_pocket(3 + eps, coupon_pull[k]);
         translate([x, nc_y[0], -1]) cylinder(d = hole_d, h = nut_floor + 1 + eps);
         slot_frame([x, nc_y[0], 270, 0], nut_floor) {
-            if (k < 3) nut_slot(nut_af, nut_slot_h, nc_y[0] + 1, fdm_hole_comp + coupon_slot[k]);
-            else tapered_slot(nc_y[0] + 1);
-            translate([0, 0, nut_slot_h]) rotate(90) bridged_hole(w, hole_d, nc_h - nut_floor - nut_slot_h + 1, fdm_layer_h, eps);
+            if (end == "square") nut_slot(nut_af, nut_slot_h, nc_y[0] + 1, fdm_hole_comp + f);
+            else if (end == "hex") hex_end_slot(f, nc_y[0] + 1);
+            else tapered_slot(f, nc_y[0] + 1);
+            translate([0, 0, nut_slot_h]) rotate(90) bridged_hole(nc_w(f), hole_d, nc_h - nut_floor - nut_slot_h + 1, fdm_layer_h, eps);
         }
         for (j = [0, 1]) translate([x + 4.6, nc_y[j], nc_h - 0.4]) linear_extrude(1)
-            text(str(k + 1 + 4 * (1 - j)), size = 3, halign = "center", valign = "center");
+            text(str(k + 1 + nc_n * (1 - j)), size = 3, halign = "center", valign = "center");
     }
 }
-module say_nut_coupon() echo(str("nut coupon, as cut across the flats: seats 1-4 ", [for (f = coupon_pull) nc_w(f)],
-    " (pull_fit ", coupon_pull, "); slots 5-7 ", [for (f = coupon_slot) nc_w(f)], " (nut_fit ", coupon_slot, "); slot 8 ",
-    nc_w(coupon_taper[0]), " at the nut, ", nc_w(coupon_taper[1]), " at its mouth"));
+module say_nut_coupon() echo(str("nut coupon, as cut across the flats: seats 1-", nc_n, " ", [for (f = coupon_pull) nc_w(f)],
+    " (pull_fit ", coupon_pull, "); slots ", nc_n + 1, "-", 2 * nc_n, " ", [for (c = coupon_slot) [nc_w(c[0]), c[1]]],
+    " (the taper from ", nc_w(coupon_taper[0]), " at its mouth)"));
 module joint_sample() {
     w = bb_w + sample_gap;
     translate([-w / 2, 0, 0]) sample_low();
