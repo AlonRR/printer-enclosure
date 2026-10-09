@@ -31,7 +31,8 @@ def box(text, size, pins, fontsize=10):
 
 
 with schemdraw.Drawing(show=False) as d:
-    d.config(fontsize=10, unit=2.2)
+    # A white page (Alon, 9 Oct 2026): saved transparent, the lines vanish on a dark viewer.
+    d.config(fontsize=10, unit=2.2, bgcolor="white", margin=0.6)
 
     # ---- power in: the USB-C trigger asks the charger for 12 V; the step-down makes the SuperMini's 5 V
     usb = box("USB-C PD\ntrigger, 12 V", (5.2, 1.8), [pin("12 V", "right", "2/2", "v"), pin("GND", "right", "1/2", "g")])
@@ -117,6 +118,6 @@ with schemdraw.Drawing(show=False) as d:
     d += elm.Label().at((-2.2, -8.7)).label(
         "Power the bay with the SuperMini's own USB-C unplugged: its 5V pin is the USB bus. Update it over the air.",
         loc="right", fontsize=9)
-    d.save(str(OUT), dpi=140)
+    d.save(str(OUT), transparent=False, dpi=140)
 
 print("wrote", OUT.relative_to(OUT.parent.parent.parent))

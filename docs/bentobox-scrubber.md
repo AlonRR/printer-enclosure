@@ -486,21 +486,22 @@ measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](.
 | The C-MAG takes | 6 Pa | 6 Pa | 20 Pa |
 | The section's sheet takes | | 4 Pa | 3 Pa |
 | Time the air spends in the carbon | 81 ms | 83 ms | 387 ms |
-| The chamber's 180 L through it every | 4.4 min | 4.5 min | 5.2 min |
+| The chamber's 139 L through it every | 3.4 min | 3.4 min | 4.0 min |
 
 - **The HEPA cartridge sets the flow.** It takes about nine tenths of what the fans can give. Its paper sees
   only the 78 × 37 mm opening of the original's ledge (the remix's is 90 × 37, for a bigger piece of paper;
   these numbers are for the original), where the LunchBox's paper sees 70 cm², more than twice as
   much. So the BentoBox moves about half the LunchBox's air (1.3 to 1.5 L/s with its leaks sealed), and
-  turns the chamber over every 4.5 minutes where the LunchBox does it every 2 to 2.5. Without the
+  turns the chamber over every 3.4 minutes where the LunchBox does it every 1.5 to 1.8. Without the
   19/15 for its shallower pleats - the very same resistance per face as the LunchBox's paper - the lumped
   model gives 0.79 L/s with the section, and the simulation would come out near 0.8: three fifths of the
   LunchBox's air rather than half.
 - **The remix as decided moves 0.72 L/s** by the lumped model (18 pleats, the 45 mm bed, the section; see *The
-  carbon*): 2.6 m³ an hour, the chamber's 180 L every 4.2 minutes, 14 times an hour. The 180 L is the
-  LunchBox's estimate for a Lack enclosure, not measured. With the chamber's air well mixed and the paper
-  stopping what passes, a cloud of particles halves every 2.9 minutes: 90 % gone in about 10 minutes, 99 % in
-  about 20. Each time scales with the chamber's volume, and the flow with the paper's grade, which is not known.
+  carbon*): 2.6 m³ an hour, the chamber's 139 L every 3.2 minutes, 19 times an hour. The chamber is a Lack
+  table's 55 × 55 cm and 46 cm tall, the 40 cm under the table's top and 6 cm more (Alon, 9 Oct 2026: Q157); the
+  legs and the printer take a little of it. With the chamber's air well mixed and the paper stopping what passes,
+  a cloud of particles halves every 2.2 minutes: 90 % gone in about 7.5 minutes, 99 % in about 15. Each time
+  scales with the chamber's volume, and the flow with the paper's grade, which is not known.
 - **The section costs little**: 1.5 % of the flow in the simulation, 4 % by the lumped model. The two
   differ by about as much as the meshes of two cases do. Its sheet is evenly loaded: 0.15 m/s on average,
   nowhere below 0.12, a little less over the grid's two long ribs (on the 1 mm mesh, below).
