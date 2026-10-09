@@ -322,7 +322,7 @@ samples-tpu` for the two sample plates.
 | Clamp, upper frame | ASA | 1 | 1 h 19 m | 9 g |
 | Clamp sample | ASA | 1 plate | 1 h 6 m | 7 g |
 | Base | ASA | 1 | 3 h 25 m | 36 g |
-| Fan section | ASA | 1 | 3 h 41 m | 36 g |
+| Fan section | ASA | 1 | 3 h 42 m | 36 g |
 | Tray | ASA | 1 | 1 h 47 m | 20 g |
 | Carbon housing | ASA | 1 | 7 h 23 m | 71 g |
 | HEPA holder | ASA | 1 | 4 h 39 m | 45 g |
