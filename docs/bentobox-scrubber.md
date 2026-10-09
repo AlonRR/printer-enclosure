@@ -48,7 +48,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Cover** | Drawn to ThrutheFrame's hemp-leaf cover: its plate on the HEPA holder, the plug into the holder's top, the magnets' holes, and the window's pattern, drawn from its lattice of triangles. | [`bentobox-cover.scad`](../models/bentobox/bentobox-cover.scad) |
 | **C-MAG** | An option, with `carbon = "cmag"`, in place of the bed. Drawn to ThrutheFrame's: the tray and the lid, with the grills' slots and rails, the fill line and the magnets' bosses; and its four grills, with a honeycomb of holes the 4 mm pellets cannot pass. | [`bentobox-cmag-tray.scad`](../models/bentobox/bentobox-cmag-tray.scad), [`bentobox-cmag-lid.scad`](../models/bentobox/bentobox-cmag-lid.scad), [`bentobox-cmag-grills.scad`](../models/bentobox/bentobox-cmag-grills.scad) |
 | **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
-| **Grommet** | Two identical TPU halves that close round the fans' leads and click into the fan section's floor, sealing the wires' hole. | [`bentobox-grommet.scad`](../models/bentobox/bentobox-grommet.scad) |
+| **Grommet** | One TPU donut that clicks into the fan section's floor, the fans' leads pushed through the skin across its hole, sealing the wires' hole. | [`bentobox-grommet.scad`](../models/bentobox/bentobox-grommet.scad) |
 | **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
 | **Bottom sample** | To print first: the tray's -Y end with the USB-C board's pocket, and the base's floor over it with the tray's nut slots - one ASA plate. | [`bentobox-bottom-sample.scad`](../models/bentobox/bentobox-bottom-sample.scad) |
 | **Sample plates** | Every sample on two plates, one ASA and one TPU (see *The samples*). | [`bentobox-samples-asa.scad`](../models/bentobox/bentobox-samples-asa.scad), [`bentobox-samples-tpu.scad`](../models/bentobox/bentobox-samples-tpu.scad) |
@@ -210,19 +210,21 @@ drawn in that way passes neither filter. Through the 6 mm hole with the fans' le
 that is up to about 0.09 L/s, a seventh of the flow. The LunchBox's wire hole had the same fault, and it let in a
 fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026):
 
-- **Two identical TPU halves**, split through the hole for the leads, 4 mm across, which squeezes the leads'
-  4.5 mm bundle. On each half's split face, beside the leads, is a small key with 45° sides and a flat top on one
-  side and the matching slot on the other: turn one half round and the two lock together round the leads.
-  The key's bottom runs out of the face at 45°, so it prints standing without hanging over the air; its top
-  is flat.
-  Across the leads' hole, at the grommet's foot, is a thin skin, two layers: closed, the two halves' skins
-  pinch the leads between them.
+- **One TPU donut** (Alon, 9 Oct 2026, in place of two halves that closed round the leads), its hole for the
+  leads 4 mm across. Across that hole, at the grommet's foot, is a thin skin, two layers: each lead is pushed
+  through it by its own hole, and the skin closes round it. It prints on its foot, the skin on the bed, and needs
+  no support. `grommet_skin = 0` leaves the hole open instead.
 - **The floor's hole is opened out to 7.6 mm** for it, 0.8 mm off the tube's axis towards -X so it stays clear of
   the fan section's +X wall, with a groove round it at mid-height, 45° each side, and a chamfer at the top. Round
   the grommet, a lip with 45° sides clicks into the groove. The grommet is 0.1 mm proud of the hole all round, so
   it seals, and as thick as the floor, 3 mm, so it sits flush both sides.
-- **Putting it in:** the fans' leads down the tube; the two halves closed round them, key in slot; the pair
-  pushed down into the floor's hole from inside the fan section until the lip clicks into the groove.
+- **Putting it in:** the grommet first, with nothing through it, so its hole can give as the lip passes: pushed
+  down into the floor's hole from inside the fan section until the lip clicks into the groove. Then each lead,
+  from inside the fan section: pierce the skin with a pin, push the lead through, and on down the tube into the
+  bay.
+- **The fans' plugs do not go through.** Each is 8 mm across (a 2.54 mm KK 254-style housing), wider than the
+  floor's 7.6 mm hole and the 6 mm tube. Take the leads' contacts out of the plug - lift each one's latch
+  through its window - or cut the plug off, pass the bare leads, and put a plug back on, or solder, in the bay.
 
 ## The sealed joints
 
@@ -381,9 +383,10 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
   all the way in, the stop behind the board taking the push. Slide a nut into each of the two slots in the base's
   piece, from the end face, set it on the tray's piece and drive the two M3 × 12 up from below: the pieces should
   pull together, the heads ending flush, and the base's flat bottom closing the socket's notch.
-- **The grommet's coupon and halves** - a 3 mm square of the fan section's floor with its grommet hole, in ASA,
-  and the grommet's two halves, in TPU. Close the halves round a few spare leads, key in slot, and push the pair
-  into the coupon's hole until it clicks: it should sit flush and hold, and the leads should not slide easily.
+- **The grommet's coupon and the grommet** - a 3 mm square of the fan section's floor with its grommet hole, in
+  ASA, and the grommet, in TPU. Push the grommet into the coupon's hole until it clicks: it should sit flush both
+  sides and hold. Then pierce the skin and push a few spare leads through, one hole each: they should not slide
+  easily, and the skin should close round each.
 
 ## Printing
 
@@ -409,7 +412,7 @@ samples-tpu` for the two sample plates.
 | Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
 | Joint sample | ASA | 1 plate | 1 h 7 m | 10 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
-| Grommet | TPU 95A | 2 halves | 2 m | under 1 g |
+| Grommet | TPU 95A | 1 | 2 m | under 1 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
 | Samples, ASA | ASA | 1 plate | 3 h 5 m | 25 g |
 | Samples, TPU | TPU 95A | 1 plate | 5 m | under 1 g |
@@ -561,15 +564,15 @@ it closes the C-MAG's lid
 on its tray, a magnet across their joint at each corner, and sets the four grills in their slots. For the paper's clamp it stands the cassette in the cut-out HEPA holder, sets the
 upper frame on the lower one - meeting only at the end blocks - lays a model of the paper, drawn from its own
 values at the slot's thickness, in the frames' zigzag, keeps the air's way down under the paper open, and
-runs the four screws through the end blocks and the nuts into their seats and down out of them. It closes the
-grommet's two halves on each other, key in slot, and sets the pair in the fan section's floor, lip in groove. For the bottom it stands the fan
+runs the four screws through the end blocks and the nuts into their seats and down out of them. It sets the
+grommet in the fan section's floor, lip in groove. For the bottom it stands the fan
 section on the base and the base on the tray, lays the USB-C board in its pocket - its socket through its notch,
 flush with the end face - sets a nut in each of the tray's slots and slides it out through
 the end face, and one in each fan screw's seat and draws it down its pocket and out under its post, keeps two
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
 the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 37 fits and
-46 controls.
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 36 fits and
+45 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.

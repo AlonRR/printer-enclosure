@@ -28,13 +28,13 @@ cover 1 ASA
 clamp-lower 1 ASA
 clamp-upper 1 ASA
 bead-ring 1 TPU
-grommet 2 TPU
+grommet 1 TPU
 joint-sample 3 ASA
 joint-sample-bead 1 TPU
 clamp-sample 2 ASA
 bottom-sample 2 ASA
 samples-asa 8 ASA
-samples-tpu 3 TPU"
+samples-tpu 2 TPU"
 
 worst=0
 summary=""

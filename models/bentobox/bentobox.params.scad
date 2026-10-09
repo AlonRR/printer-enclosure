@@ -283,18 +283,17 @@ bottom_sample_l = 18;   /* The bottom sample: this much of the tray's -Y end, pa
 bottom_sample_h = 7;    /* ...and this much of the base over it, from the bay's roof: the nut slots and the screws' tips. */
 
 /* [The wires' grommet - Alon, 9 Oct 2026 (D117)] */
-// The fans' leads pass the fan section's floor in a TPU grommet: two identical halves, split through the wires'
-// hole, that clamp round the leads. On each half's split face is a key with 45-degree sides and a flat top on one
-// side of the wires, and its matching slot on the other, so one half turned round locks onto the other. Round the
-// outside, a lip with 45-degree sides clicks into a matching groove in the floor's hole, which is opened out for it.
-grommet_d = [7.6, 4];       /* The grommet's outside - the floor's hole as it prints - and the hole for the leads, about 4.5 mm bundled: squeezed. */
+// The fans' leads pass the fan section's floor in a TPU grommet: one piece, a donut (Alon, 9 Oct 2026, in place of
+// two halves that closed round the leads). Round its outside, a lip with 45-degree sides clicks into a matching
+// groove in the floor's hole, which is opened out for it; across its hole, at its foot, a thin skin the leads are
+// pushed through, each by its own hole.
+grommet_d = [7.6, 4];       /* The grommet's outside - the floor's hole as it prints - and its hole for the leads. */
 grommet_x = 15.6;   /* Its axis, X: 0.78 mm towards -X off the tube's, so its hole stays under the fan section's chamber, clear of its +X wall, and still takes the old hole in. */
 grommet_squeeze = 0.1;  /* The grommet stands this much proud of the floor's hole, each side, so it seals. */
 grommet_lip = 0.5;  /* How far the lip stands out, at the floor's mid-height, its sides at 45 degrees. */
-grommet_key = [1, 0.35];    /* The key at the split face: its width, and how far it stands out; with 45-degree sides its top is 0.3 wide. */
-grommet_play = 0.1; /* Round the key in its slot, and round the lip in its groove. */
+grommet_play = 0.1; /* Round the lip in its groove. */
 grommet_chamfer = 0.5;  /* The floor's hole is chamfered this much at its top, so the lip goes in. */
-grommet_skin = 2;   /* A thin skin across the leads' hole at the grommet's foot, in layers (Alon, 9 Oct 2026): closed, the two halves' skins pinch the leads between them. */
+grommet_skin = 2;   /* A thin skin across the leads' hole at the grommet's foot, in layers (Alon, 9 Oct 2026): each lead is pushed through it, by its own hole, and it closes round them. 0: an open hole. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;

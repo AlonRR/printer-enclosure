@@ -790,35 +790,14 @@ module joint_sample_bead() translate([0, sample_l - seal_y, 0]) intersection() {
 // grommet, a groove round it at mid-height with 45-degree sides, and a chamfer at its top for the lip.
 module grommet_hole() let(r = grommet_hole_r, g = grommet_groove, c = grommet_chamfer, h = auto_floor_t, m = grommet_mid)
     rotate_extrude($fn = 64) polygon([[0, -1], [r, -1], [r, m - g], [r + g, m], [r, m + g], [r, h - c], [r + c + 1, h + 1], [0, h + 1]]);
-// The grommet whole: a ring through the floor, the lip round it at mid-height, a small chamfer at its foot, and a
-// thin skin across the leads' hole there, printed on the bed.
-module grommet_body() let(r = grommet_r, i = grommet_in_r, l = grommet_lip, h = auto_floor_t, m = grommet_mid, s = grommet_skin * fdm_layer_h)
-    rotate_extrude($fn = 64) polygon([[0, 0], [r - 0.3, 0], [r, 0.3], [r, m - l], [r + l, m], [r, m + l], [r, h], [i, h], [i, s], [0, s]]);
-// The key, from above: on the split face (Y = 0) at the middle of the +X side, standing out into -Y.
-module grommet_key2d(grow = 0) let(w = grommet_key[0], k = grommet_key[1]) offset(delta = grow)
-    polygon([[grommet_key_x - w / 2, 0.01], [grommet_key_x + w / 2, 0.01], [grommet_key_x + w / 2 - k, -k], [grommet_key_x - w / 2 + k, -k]]);
-// The key whole (Alon, 9 Oct 2026): its bottom runs out of the split face at 45 degrees, so it does not hang flat
-// over the air as the half prints standing; its top stays flat. The slot is the key grown by grommet_play.
-module grommet_key3d(grow = 0) let(k = grommet_key[1], z0 = 0.3 - grow, z1 = auto_floor_t - 0.3 + grow) hull() {
-    translate([0, 0, z0]) linear_extrude(0.01) intersection() {
-        grommet_key2d(grow);
-        translate([-10, -grow - 0.01]) square([20, 1]);
-    }
-    translate([0, 0, z0 + k + grow]) linear_extrude(z1 - z0 - k - grow) grommet_key2d(grow);
+// The grommet, one piece (Alon, 9 Oct 2026): a ring through the floor, the lip round it at mid-height, a small
+// chamfer at its foot, and a thin skin across the leads' hole there - with grommet_skin 0, an open hole. It prints
+// as drawn, on its foot. The skin is a disc of its own, reaching halfway into the ring: a profile with points on the
+// axis would leave a sliver facet round each of them.
+module grommet_body() let(r = grommet_r, i = grommet_in_r, l = grommet_lip, h = auto_floor_t, m = grommet_mid, s = grommet_skin * fdm_layer_h) {
+    rotate_extrude($fn = 64) polygon([[i, 0], [r - 0.3, 0], [r, 0.3], [r, m - l], [r + l, m], [r, m + l], [r, h], [i, h]]);
+    if (s > 0) cylinder(r = (i + r - 0.3) / 2, h = s, $fn = 64);
 }
-// One half: the body's +Y half, the key on its +X side, and the slot for the other half's key on its -X side - the
-// key turned round the axis, grown by grommet_play.
-module grommet_half() let(h = auto_floor_t) difference() {
-    union() {
-        intersection() { grommet_body(); translate([-10, 0, -1]) cube([20, 10, h + 2]); }
-        grommet_key3d();
-    }
-    rotate(180) grommet_key3d(grommet_play);
-}
-// The two halves as they go in, closed round the leads: one turned round on the other.
-module grommet_pair() { grommet_half(); rotate(180) grommet_half(); }
-// The two halves as they print, standing, side by side.
-module grommets_printing() for (s = [-1, 1]) translate([s * (grommet_r + grommet_lip + 2), 0, 0]) rotate(s > 0 ? 180 : 0) grommet_half();
 // The floor's hole on a coupon of the floor, to try the grommet in before the fan section: 3 mm, in ASA.
 module grommet_coupon() difference() {
     translate([-10, -10, 0]) cube([20, 20, auto_floor_t]);
@@ -827,7 +806,7 @@ module grommet_coupon() difference() {
 
 // ------------------------------------------------------------------ the sample plates (T131)
 // All the samples, as they print: ASA - the joint sample, the clamp sample, the bottom sample and the grommet's
-// coupon; TPU - the joint sample's bead and the grommet's two halves. Placed by their footprints, measured from
+// coupon; TPU - the joint sample's bead and the grommet. Placed by their footprints, measured from
 // their renders; scad-check counts the bodies, so two that touched would show.
 module samples_asa() {
     joint_sample();                                     // Y -24 .. 39.5
@@ -837,7 +816,7 @@ module samples_asa() {
 }
 module samples_tpu() {
     joint_sample_bead();                                // Y 0 .. 27.2
-    translate([0, -10, 0]) grommets_printing();
+    translate([0, -10, 0]) grommet_body();              // Y -14.4 .. -5.6
 }
 module say_sample_hardware() let(n = _count(len(top_screws) / 2)) echo(str("joint sample: ", n, " M3 x ", j3_screw,
     " socket head and ", n, len(top_screws) == 2 ? " M3 nut" : " M3 nuts", " for the joint, one M3 nut and an M3 x 8 for the pocket's seat"));
@@ -872,8 +851,8 @@ if (draw_model) {
     // The joint sample's ASA plate, and its TPU bead.
     else if (part == "joint_sample") { joint_sample(); say_sample_hardware(); }
     else if (part == "joint_sample_bead") joint_sample_bead();
-    // The wires' grommet, its two halves, in TPU; the bottom sample; and every sample on its plate.
-    else if (part == "grommet") grommets_printing();
+    // The wires' grommet, in TPU, on its foot; the bottom sample; and every sample on its plate.
+    else if (part == "grommet") grommet_body();
     else if (part == "bottom_sample") { bottom_sample(); say_auto_hardware(); say_usb(); }
     else if (part == "samples_asa") { samples_asa(); say_sample_hardware(); say_auto_hardware(); }
     else if (part == "samples_tpu") samples_tpu();

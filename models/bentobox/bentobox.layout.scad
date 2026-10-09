@@ -162,7 +162,6 @@ grommet_r = grommet_d[0] / 2 + grommet_squeeze;
 grommet_in_r = grommet_d[1] / 2;
 grommet_mid = auto_floor_t / 2;
 grommet_groove = grommet_r + grommet_lip + grommet_play - grommet_hole_r;
-grommet_key_x = (grommet_in_r + grommet_r) / 2;      // the key's and the slot's middle, out from the axis
 // What a tray screw leaves: its hole to the board's pocket, beside it; its counterbore to the magnets' holes.
 tray_usb_wall = min([for (x = tray_screws_x) abs(x - usb_x) - usb_pocket[0] / 2 - hole_d / 2]);
 tray_magnet_wall = min([for (x = tray_screws_x, m = auto_magnets) norm([x, tray_screw_y] - m) - (m3_cb[0] + auto_magnet[0]) / 2]);
@@ -175,8 +174,8 @@ assert([for (s = auto_fan_screws) if (abs(min(duct_in[0] - s[0], duct_in[1] - ab
 assert(usb_pcb_y1 < -bay_size[1] / 2, "the USB-C board must sit in the -Y end block, the bay behind it");
 assert(usb_pcb_z > auto_seat_z, "the USB-C board's pocket must stand on the end block");
 assert(grommet_groove + grommet_chamfer < grommet_mid, "the grommet's groove must stand clear of the floor's faces");
-assert(grommet_key[0] - 2 * grommet_key[1] > 0 && grommet_key[0] + 2 * grommet_play < grommet_r - grommet_in_r,
-    "the grommet's key must have a flat top and fit, with its slot, between the leads' hole and the outside");
+assert(grommet_skin >= 0 && grommet_skin * fdm_layer_h < grommet_mid - grommet_lip,
+    "the grommet's skin must stay at its foot, under its lip");
 assert(grommet_x + grommet_hole_r + grommet_chamfer < auto_fans_in_x - 0.2, "the grommet's hole must stay under the fan section's chamber, clear of its +X wall");
 assert(abs(grommet_x - auto_conduit[0]) + auto_conduit[2] / 2 + meet < grommet_hole_r, "the grommet's hole must take the fan section's old hole in");
 assert(post_round_z < pull_seat, "a fan nut's seat must stand in its post's straight part, over the underside's round");
