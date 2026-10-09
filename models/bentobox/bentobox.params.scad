@@ -308,14 +308,15 @@ fan_plug_hole = 1.45;   /* MEASURED: a pin hole's size in the plug's end face. T
 fan_plug_ribs = [1.1, 5.2, 6.67];   /* MEASURED: the ribs on the face opposite the text: each one's width, the gap between them, and the plug's thickness over them. */
 fan_plug_pitch = 2.54;  /* KK 254's pitch, between the plug's holes - the plug's, so the checks hold it fixed. */
 fan_pitch = 2.54;       /* Between the mate's pins: KK 254's. */
-fan_wire = [0.64, 1.6]; /* 22 AWG solid wire: the core, by the gauge (0.644), and the insulation's outside <<CONFIRM>>. */
-fan_mate_n = 2;         /* Plugs on one block: 2, both fans side by side, their reds joined under it and their blacks (D154); 1, a block for each fan (D160, open). */
+fan_wire = [0.64, 1.6]; /* 22 AWG solid wire: the core, by the gauge (0.644), and the insulation's outside (MEASURED, Alon, 9 Oct 2026: Q161). */
+fan_mate_n = 2;         /* Plugs on one block: 2, both fans side by side, their reds joined under it and their blacks (D154); 1, a block for each fan. One block (Alon, 9 Oct 2026: D160). */
 fan_mate_pin = 6;       /* How far each pin stands above the block: a header's mating length. */
 fan_mate_play = 0.25;   /* Round the plug: to the wall, to the key and between its ribs. */
 fan_mate_base = [5, 1.5];   /* The block under the plug: its height, and how much of it at the top holds the core alone - below, a slot takes the insulation. */
 fan_mate_wall = [1.8, 6];   /* The wall behind the plug: its thickness, and how far it stands above the block. */
 fan_mate_gap = 2;       /* Between two plugs side by side. */
 fan_mate_front = 2.5;   /* The block runs on this far past the plug's text face, for the red pin's mark. */
+fan_mate_at = [-2, 0];  /* Where the mate stands on the fan section's floor: its middle's X and Y, between the two fans and beside the grommet (Alon, 9 Oct 2026: D162). Its back, where the leads come out, faces -Y. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;

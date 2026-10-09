@@ -266,6 +266,20 @@ else if (view == "check_grommet_hole") intersection() { fans_sealed(); translate
 // and clear of the wall. And the wires' cores, standing as the pins: through their holes in the block and up into
 // the plugs' holes, touching neither.
 else if (view == "check_fan_mate") intersection() { fan_mate(); for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x); }
+// The mate in its place on the fan section's floor, 0.01 mm up, its plugs on it: clear of the fan section, of the
+// grommet's hole and the leads' way up out of it, and of the two fans, each drawn as its 40 x 40 x 20 mm frame.
+else if (view == "check_fan_mate_place") intersection() {
+    translate([fan_mate_at[0], fan_mate_at[1], duct_h + auto_floor_t + 0.01]) {
+        fan_mate();
+        for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x);
+    }
+    union() {
+        fans_sealed();
+        // the grommet's hole and the leads' way up out of it: the grommet itself is inside the floor
+        translate([grommet_x, auto_conduit[1], duct_h]) cylinder(r = grommet_hole_r + grommet_chamfer, h = fans_h, $fn = 48);
+        for (y = fan_ys) translate([-20, y - 20, duct_h + auto_floor_t]) cube([40, 40, 20]);
+    }
+}
 else if (view == "check_fan_mate_pins") intersection() {
     union() { fan_mate(); for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x); }
     fan_mate_pins();

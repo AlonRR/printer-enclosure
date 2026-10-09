@@ -256,12 +256,14 @@ the fan section, so a fan comes out by unplugging it.
 - **From the plug as measured** (Alon, 9 Oct 2026): 8.0 mm across its pins, 5.2 thick over a 0.3 mm lip across its open end (4.9 behind it), 6.67 over its ribs, the
   ribs 1.1 wide with 5.2 between them, its holes 1.45 mm and their nearer walls 2.55 mm from the text face. The
   key is 4.7 wide, 0.25 mm of play each side of the plug.
-- **Both fans on one block** (`fan_mate_n = 2`, D160 open): their reds are joined under it, and their blacks, and
+- **Both fans on one block** (`fan_mate_n = 2`; Alon, 9 Oct 2026: D160): their reds are joined under it, and their blacks, and
   four leads go on down through the grommet (D154). `fan_mate_n = 1` draws a block for one plug.
 - **The cores' holes print small.** They are cut 0.94 mm for a 0.64 mm core; if one closes up, open it with the
   wire itself or a 0.7 mm drill.
-- **Where it sits is not drawn yet.** It stands about 18 mm tall with a plug on it, and goes on the fan section's
-  floor by the grommet; it is fixed down with glue for now.
+- **Where it sits** (Alon, 9 Oct 2026: D162): on the fan section's floor, between the two fans and beside the
+  grommet, 2 mm towards -X of the middle, its back - where the leads come out - towards the -Y fan. It stands
+  about 18 mm tall with a plug on it, under the 30 mm to the section above, and is glued down. The checks keep
+  it clear of the fan section, of both fans' frames and of the grommet's hole and the way up out of it.
 
 ## The sealed joints
 
@@ -617,8 +619,8 @@ flush with the end face - sets a nut in each of the tray's slots and slides it o
 the end face, and one in each fan screw's seat and draws it down its pocket and out under its post, keeps two
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
 the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 38 fits and
-50 controls.
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 39 fits and
+52 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.
