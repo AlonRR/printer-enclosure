@@ -391,7 +391,7 @@ def results(out):
               f"paper cells {r['topo_cells']} vs {r['paper_cells']}, drift {r['drift_pct']} %, {r['iterations']} its")
     with open(out / "pleats.csv", "w", newline="", encoding="utf-8") as f:
         keys = ["n", "pitch", "grade_Pa", "v_face", "dp_Pa", "lumped_Pa", "iterations", "drift_pct", "d_scale"]
-        wr = csv.writer(f)
+        wr = csv.writer(f, lineterminator="\n")
         wr.writerow(keys)
         for r in sorted(rows, key=lambda r: (r["grade_Pa"], r["n"], r["v_face"])):
             m, ch = lumped(c, r["n"], r["grade_Pa"], r["v_face"])
@@ -429,7 +429,7 @@ def results(out):
     print(f"the bought cartridge, as the box's simulation takes it: {q_c * 1e3:.3f} L/s filled to the line, "
           f"{q_cf * 1e3:.3f} full; it takes {p_c:.1f} Pa")
     summary["carbon"] = carbon_options(summary)
-    (out / "pleats.json").write_text(json.dumps(summary, indent=1), encoding="utf-8")
+    (out / "pleats.json").write_text(json.dumps(summary, indent=1), encoding="utf-8", newline="\n")
     chart(summary, c, out / "pleats.png")
     print(f"written: {out / 'pleats.csv'}, {out / 'pleats.json'}, {out / 'pleats.png'}")
 
