@@ -167,7 +167,7 @@ FIGURES = {
     "section-top": [("view", '"section"')], "section-bottom": [("view", '"section"'), ("axes_cam", "[235, 0, 30]")],
     "paper-frame": [("view", '"frame"'), ("explode", "25")], "clamp-print": [("view", '"clamp_print"')],
     "paper-cut": [("view", '"paper_cut"')], "auto-bottom": [("view", '"bottom"'), ("explode", "28"), ("axes_cam", "[50, 0, 215]")],
-    "joints": [("view", '"joints"'), ("explode", "22")],
+    "joints": [("view", '"joints"'), ("explode", "22")], "grommet": [("view", '"grommet"'), ("axes_cam", "[50, 0, 20]")],
 }
 CAMERAS = {
     "exploded": ["--imgsize=1200,1900", "--viewall", "--autocenter", "--camera=0,0,0,70,0,320,0"],
@@ -179,6 +179,7 @@ CAMERAS = {
     "paper-cut": ["--imgsize=1800,600", "--projection=o", "--camera=-12,11,0,0,0,0,125"],
     "auto-bottom": ["--imgsize=1400,1300", "--viewall", "--autocenter", "--camera=0,0,0,50,0,215,0"],
     "joints": ["--imgsize=1300,1800", "--viewall", "--autocenter", "--camera=0,0,0,62,0,30,0"],
+    "grommet": ["--imgsize=1100,560", "--viewall", "--autocenter", "--camera=0,0,0,50,0,20,0"],
 }
 
 

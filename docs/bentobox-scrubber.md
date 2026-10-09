@@ -211,17 +211,23 @@ that is up to about 0.09 L/s, a seventh of the flow. The LunchBox's wire hole ha
 fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026):
 
 - **One TPU donut** (Alon, 9 Oct 2026, in place of two halves that closed round the leads), its hole for the
-  leads 4 mm across. Across that hole, at the grommet's foot, is a thin skin, two layers: each lead is pushed
-  through it by its own hole, and the skin closes round it. It prints on its foot, the skin on the bed, and needs
-  no support. `grommet_skin = 0` leaves the hole open instead.
+  leads 4 mm across. Across that hole, at the grommet's foot, is a thin skin, two layers, with four holes in it,
+  1.55 mm as they print, one for each lead (Alon, 9 Oct 2026). Four leads pass, not six: the fans' reds are joined
+  in the fan section, and their blacks, and each fan's blue passes on its own (D154). Four such holes do not fit
+  inside the 4 mm skin with skin left between them, so they stand out by the ring, as close as leaves two lines
+  of skin between neighbours, centres 1.94 mm off the axis; each runs on up the ring's inside as a groove, 0.87 mm
+  deep, so its lead goes straight up, and leaves at least 1 mm of ring behind it. It prints on its foot, the skin
+  on the bed, and needs no support. `grommet_skin = 0` leaves the hole open instead.
+
+  ![The grommet from below, its skin and the leads' four holes, and from above, the holes running on up the ring's inside as grooves](bentobox/grommet.png)
 - **The floor's hole is opened out to 7.6 mm** for it, 0.8 mm off the tube's axis towards -X so it stays clear of
   the fan section's +X wall, with a groove round it at mid-height, 45° each side, and a chamfer at the top. Round
   the grommet, a lip with 45° sides clicks into the groove. The grommet is 0.1 mm proud of the hole all round, so
   it seals, and as thick as the floor, 3 mm, so it sits flush both sides.
 - **Putting it in:** the grommet first, with nothing through it, so its hole can give as the lip passes: pushed
-  down into the floor's hole from inside the fan section until the lip clicks into the groove. Then each lead,
-  from inside the fan section: pierce the skin with a pin, push the lead through, and on down the tube into the
-  bay.
+  down into the floor's hole from inside the fan section until the lip clicks into the groove. Then, from inside
+  the fan section, each of the four leads down its own groove, through its hole in the skin, and on down the
+  tube into the bay.
 - **The fans' plugs do not go through.** Each is 8 mm across (a 2.54 mm KK 254-style housing), wider than the
   floor's 7.6 mm hole and the 6 mm tube. Take the leads' contacts out of the plug - lift each one's latch
   through its window - or cut the plug off, pass the bare leads, and put a plug back on, or solder, in the bay.
@@ -385,8 +391,8 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
   pull together, the heads ending flush, and the base's flat bottom closing the socket's notch.
 - **The grommet's coupon and the grommet** - a 3 mm square of the fan section's floor with its grommet hole, in
   ASA, and the grommet, in TPU. Push the grommet into the coupon's hole until it clicks: it should sit flush both
-  sides and hold. Then pierce the skin and push a few spare leads through, one hole each: they should not slide
-  easily, and the skin should close round each.
+  sides and hold. Then push four spare leads like the fans' through it, one down each groove and through its hole
+  in the skin: they should not slide easily, and the skin should hold round each.
 
 ## Printing
 

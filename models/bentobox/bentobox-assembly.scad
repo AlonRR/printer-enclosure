@@ -303,6 +303,12 @@ else if (view == "check_seal_access") union() {
 else if (view == "frame") frame_exploded(explode);
 else if (view == "clamp_print") color("orange") clamp_frames_printing();
 else if (view == "paper_cut") paper_cut();
+// The grommet twice: on the left turned over, its skin and the leads' holes up; on the right as it sits, the holes
+// running on up the ring's inside.
+else if (view == "grommet") color("deepskyblue") {
+    translate([-6, 0, auto_floor_t]) mirror([0, 0, 1]) grommet_body();
+    translate([6, 0, 0]) grommet_body();
+}
 // The clamp stands in the HEPA holder's pocket, on its ledge.
 else if (view == "check_clamp_holder") intersection() { translate([0, 0, sst[3] - meet + ledge_top + sep]) clamp_cassette(); hepa_sealed(); }
 // The cover on the HEPA holder: its plug in the holder's top, flat on the top face; and a magnet across the joint
@@ -336,6 +342,7 @@ if (show_axes && view == "section") axes([-bb_w / 2 - 20, -bb_l / 2, 0], l = 15,
 if (show_axes && view == "frame") axes([-cas[0] / 2 - 25, -cas[1] / 2, 0], l = 15, cam = axes_cam);
 if (show_axes && view == "joints") axes([bb_w / 2 + 20, bb_l / 2, sst[0] + 30], l = 20, cam = axes_cam);
 if (show_axes && view == "bottom") axes([bb_w / 2 + 15, bb_l / 2, 0], l = 20, cam = axes_cam);
+if (show_axes && view == "grommet") axes([-13, -5, 0], l = 3.5, cam = axes_cam);
 if (show_axes && view == "clamp_print") axes([-cas[0] - 20, -cas[1] / 2, 0], l = 15, cam = axes_cam);
 // A flat view gets a flat key: an arrow across, labelled with the box's axis it shows, and +z up.
 module flat_key(across) color("black") {

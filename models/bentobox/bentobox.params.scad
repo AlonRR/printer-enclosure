@@ -285,15 +285,17 @@ bottom_sample_h = 7;    /* ...and this much of the base over it, from the bay's 
 /* [The wires' grommet - Alon, 9 Oct 2026 (D117)] */
 // The fans' leads pass the fan section's floor in a TPU grommet: one piece, a donut (Alon, 9 Oct 2026, in place of
 // two halves that closed round the leads). Round its outside, a lip with 45-degree sides clicks into a matching
-// groove in the floor's hole, which is opened out for it; across its hole, at its foot, a thin skin the leads are
-// pushed through, each by its own hole.
+// groove in the floor's hole, which is opened out for it; across its hole, at its foot, a thin skin with a hole for
+// each lead. Four leads pass: the fans' reds joined, and their blacks, in the fan section, and each fan's blue
+// (Alon, 9 Oct 2026: D154).
 grommet_d = [7.6, 4];       /* The grommet's outside - the floor's hole as it prints - and its hole for the leads. */
 grommet_x = 15.6;   /* Its axis, X: 0.78 mm towards -X off the tube's, so its hole stays under the fan section's chamber, clear of its +X wall, and still takes the old hole in. */
 grommet_squeeze = 0.1;  /* The grommet stands this much proud of the floor's hole, each side, so it seals. */
 grommet_lip = 0.5;  /* How far the lip stands out, at the floor's mid-height, its sides at 45 degrees. */
 grommet_play = 0.1; /* Round the lip in its groove. */
 grommet_chamfer = 0.5;  /* The floor's hole is chamfered this much at its top, so the lip goes in. */
-grommet_skin = 2;   /* A thin skin across the leads' hole at the grommet's foot, in layers (Alon, 9 Oct 2026): each lead is pushed through it, by its own hole, and it closes round them. 0: an open hole. */
+grommet_skin = 2;   /* A thin skin across the leads' hole at the grommet's foot, in layers (Alon, 9 Oct 2026). 0: an open hole. */
+grommet_leads = [4, 1.55];  /* The holes in the skin, one per lead (Alon, 9 Oct 2026): how many, and each one's diameter as it prints. They stand as close to the ring as leaves two lines of skin between neighbours, and each runs on up the ring's inside as a groove, so its lead goes straight up. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;

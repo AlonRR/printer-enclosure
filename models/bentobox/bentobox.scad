@@ -793,11 +793,17 @@ module grommet_hole() let(r = grommet_hole_r, g = grommet_groove, c = grommet_ch
 // The grommet, one piece (Alon, 9 Oct 2026): a ring through the floor, the lip round it at mid-height, a small
 // chamfer at its foot, and a thin skin across the leads' hole there - with grommet_skin 0, an open hole. It prints
 // as drawn, on its foot. The skin is a disc of its own, reaching halfway into the ring: a profile with points on the
-// axis would leave a sliver facet round each of them.
-module grommet_body() let(r = grommet_r, i = grommet_in_r, l = grommet_lip, h = auto_floor_t, m = grommet_mid, s = grommet_skin * fdm_layer_h) {
-    rotate_extrude($fn = 64) polygon([[i, 0], [r - 0.3, 0], [r, 0.3], [r, m - l], [r + l, m], [r, m + l], [r, h], [i, h]]);
-    if (s > 0) cylinder(r = (i + r - 0.3) / 2, h = s, $fn = 64);
-}
+// axis would leave a sliver facet round each of them. In the skin, a hole for each lead (Alon, 9 Oct 2026), out by
+// the ring; each runs on up the ring's inside as a groove, so its lead goes straight up.
+module grommet_body() let(r = grommet_r, i = grommet_in_r, l = grommet_lip, h = auto_floor_t, m = grommet_mid, s = grommet_skin * fdm_layer_h)
+    difference() {
+        union() {
+            rotate_extrude($fn = 64) polygon([[i, 0], [r - 0.3, 0], [r, 0.3], [r, m - l], [r + l, m], [r, m + l], [r, h], [i, h]]);
+            if (s > 0) cylinder(r = (i + r - 0.3) / 2, h = s, $fn = 64);
+        }
+        if (s > 0) for (k = [0 : grommet_leads[0] - 1]) rotate(k * 360 / grommet_leads[0])
+            translate([grommet_lead_r, 0, -1]) cylinder(d = grommet_lead_d, h = h + 2, $fn = 32);
+    }
 // The floor's hole on a coupon of the floor, to try the grommet in before the fan section: 3 mm, in ASA.
 module grommet_coupon() difference() {
     translate([-10, -10, 0]) cube([20, 20, auto_floor_t]);
