@@ -340,8 +340,9 @@ filters ([`sim/bentobox-cfd/pleat.py`](../sim/bentobox-cfd/README.md#one-pleat-o
   paper's depth as the pleats close up, and the channels between them narrow; past 22 those cost more than the
   added paper gives.
 - **The clamp builds up to 18**: at 19 its half wedges along the long sides come out under 3 mm. At 18 the box
-  moves 15 to 25 % more air than at today's 11 - 0.77 L/s instead of 0.63 on the middle grade - and 18 % more
-  than the bought cartridge.
+  moves 15 to 25 % more air than at today's 11 - 0.77 L/s instead of 0.63 on the middle grade. Against the bought
+  cartridge, as the box's simulation takes it, the grade decides: 18 % more air on the middle grade, less on the
+  300 Pa one.
 - **18 pleats take 19 of the sheet's 31** with the half pleats each side, so the sheet gives three pieces; at 14
   or fewer it gives six. 14 pleats move 8 % less air than 18.
 - **The paper's grade is not known**, and it sets how much air, not where the top is: the model runs it at 100,
