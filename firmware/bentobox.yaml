@@ -7,8 +7,9 @@
 # discovery, as every node here.
 #
 # ⛔ BUILD AND FLASH FROM POWERSHELL, NOT GIT BASH - see chamber-baseline.yaml: a Git Bash build prints
-#    "Successfully compiled" and builds nothing. A real build leaves .esphome/build/bentobox/.pioenvs/
-#    bentobox/firmware.bin, about 1 MB - check for it. From firmware/:
+#    "Successfully compiled" and builds nothing. A real build leaves .esphome/build/bentobox/build/bentobox.bin
+#    (ESPHome 2026.8; older ones wrote .pioenvs/bentobox/firmware.bin), about 1 MB - check for it. The first
+#    build takes over 10 minutes. From firmware/:
 #        esphome run bentobox.yaml --device COM<n>      # the first time, over the SuperMini's USB-C
 #        esphome run bentobox.yaml --device bentobox.local    # after that, over the air
 #    The USB-C port is the C3's own USB_SERIAL_JTAG: no bridge chip, and esptool resets the board into its
