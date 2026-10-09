@@ -19,6 +19,7 @@
 #    discovery fills: seven entities, sensor.bentobox_*, switch.bentobox_fans, button.bentobox_restart.
 #
 # ------------------------------------------------------------------------------ PINS
+# Drawn as a circuit by scripts/bentobox-circuit.py, into docs/bentobox/circuit.png: change a pin here and there.
 # The house SuperMini map (docs/chamber-sensor/node-design.md, §4). The bay is not wired yet: these are
 # where the wires go.
 #   GPIO10  the IRLZ44N's gate - through about 100 ohm, with about 10 kohm from gate to GND, so the fans stay

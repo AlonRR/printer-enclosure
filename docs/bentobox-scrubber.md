@@ -192,6 +192,14 @@ across and 83 long.
   9 Oct 2026 and updated over the air since, it reports to Home Assistant over MQTT, and the fans are on unless
   switched off there.
 
+  ![The bay's circuit: the USB-C trigger's 12 V, the step-down's 5 V, both fans in parallel on the IRLZ44N with a flyback Schottky across them, the gate from GPIO10 through 100 ohm with 10 kohm to ground, each fan's tach to its own pin through a Schottky, the outlet's sensors on I2C](bentobox/circuit.png)
+
+  The circuit, drawn by [`scripts/bentobox-circuit.py`](../scripts/bentobox-circuit.py) (`uv run
+  scripts/bentobox-circuit.py`) - its pins are the firmware's, so a change goes into both. The fans share the
+  one switch, their reds joined and their blacks, in the fan section (D154). Each tach goes through a 1N5819,
+  its band towards the fan: the switch is on the fans' black side, so when it is off their ground floats up to
+  12 V and the tach line with it, and the diode keeps that off the pin.
+
 **Putting it together:** the USB-C board into its pocket, its wires soldered on; a nut in each of the four slots
  in the end faces, pushed to the slot's end, then the
 tray under the base with its four screws; it comes off again from below, for the electronics. Then the fans'
@@ -488,6 +496,11 @@ measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](.
   19/15 for its shallower pleats - the very same resistance per face as the LunchBox's paper - the lumped
   model gives 0.79 L/s with the section, and the simulation would come out near 0.8: three fifths of the
   LunchBox's air rather than half.
+- **The remix as decided moves 0.72 L/s** by the lumped model (18 pleats, the 45 mm bed, the section; see *The
+  carbon*): 2.6 m³ an hour, the chamber's 180 L every 4.2 minutes, 14 times an hour. The 180 L is the
+  LunchBox's estimate for a Lack enclosure, not measured. With the chamber's air well mixed and the paper
+  stopping what passes, a cloud of particles halves every 2.9 minutes: 90 % gone in about 10 minutes, 99 % in
+  about 20. Each time scales with the chamber's volume, and the flow with the paper's grade, which is not known.
 - **The section costs little**: 1.5 % of the flow in the simulation, 4 % by the lumped model. The two
   differ by about as much as the meshes of two cases do. Its sheet is evenly loaded: 0.15 m/s on average,
   nowhere below 0.12, a little less over the grid's two long ribs (on the 1 mm mesh, below).
