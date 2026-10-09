@@ -17,6 +17,11 @@ names they download with:
 The parts were exported in place, in one frame: stacked, every one sits where it does in the assembled box.
 `bentobox.layout.scad` maps that frame into the models' own.
 
+The remix's own parts are drawn from these files' measurements and do not read them: none of its part files needs
+this folder. What still reads it: the cover and the C-MAG, which print from the author's project; the assembly's
+pictures and fit checks, which stand the original cover and C-MAG in the stack and check the joints as the
+originals have them (`sealed = false`); the `bambu` bottom; and the airflow simulation.
+
 The C-MAG's four grills (`net_infill x4.stl`) are not needed here. They are solid plates in the STL, and
 only the slicer settings in the project make them a mesh.
 

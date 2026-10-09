@@ -50,6 +50,7 @@ cmag_layers = [for (i = [0 : 2]) cmag_grills[i] + cmag_grill_t / 2];
 pocket_l = hepa_full ? in_l : hepa_pocket_l;
 ledge_top = hepa_ledge - (hepa_full ? meet : 0);             // over the original's floor
 pocket_r = in_r + meet;
+hepa_in_grow = meet;                                            // the drawn holder's inside over the ledge, as the cut-out original's
 // The clamp (D127): a cassette, its outline the pocket's, clamp_play in; X across, Y along the folds, Z from its
 // bottom face, which stands on the ledge. The paper's bottom face clamp_fold_gap over the lower frame's rim, its
 // top as deep again, and the upper frame's band clamp_fold_gap over that.

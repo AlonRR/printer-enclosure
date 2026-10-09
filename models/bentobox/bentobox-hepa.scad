@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: CC-BY-NC-SA-4.0
 // A remix of BentoBox v2.0 by ThrutheFrame (https://www.printables.com/model/272525), CC BY-NC-SA 4.0.
 
-// The HEPA holder, sealed, as it prints, standing: ThrutheFrame's, its bottom flat and chamfered to sit in the
-// carbon housing's collar, with the screws' tabs. Everything is in bentobox.scad, and this file only pins the part.
-// Needs the original's STL in original/.
+// The HEPA holder, sealed, as it prints, standing: drawn to ThrutheFrame's, its bottom flat and chamfered to sit
+// in the carbon housing's collar, with the screws' tabs, its top the original cover's.
+// Everything is in bentobox.scad, and this file only pins the part; it is drawn there, and needs no original.
 include <bentobox.scad>
 part = "hepa";

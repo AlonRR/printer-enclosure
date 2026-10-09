@@ -39,7 +39,7 @@ BACKEND = ["--backend=manifold"]
 UNSEALED = [("sealed", "false")]
 FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("check_magnets_top", UNSEALED),
         ("check_magnets_bottom", UNSEALED), ("check_air", []),
-        ("check_clamp_holder", []), ("check_clamp_frames", []), ("check_clamp_paper", []),
+        ("check_clamp_holder", []), ("check_cover_holder", []), ("check_cover_magnets", []), ("check_clamp_frames", []), ("check_clamp_paper", []),
         ("check_clamp_opening", []), ("check_clamp_screws", []), ("check_clamp_nuts", []), ("check_clamp_nut_ways", []),
         ("check_auto_fans_base", []), ("check_auto_tray", []), ("check_tray_slot_walls", []), ("check_usb_board", []),
         ("check_grommet_halves", []), ("check_grommet_hole", []), ("check_auto_nuts", []), ("check_auto_nut_ways", []),
@@ -94,7 +94,9 @@ CONTROLS = [
     ("check_seal_access", [("bracket_h", "80")], "the carbon housing's brackets reaching down over the section's screws"),
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.
     ("check_section_carbon", UNSEALED + [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
-    ("check_clamp_holder", [("hepa_stl", '"original/missing.stl"')], "the holder's STL missing - must be reported, not passed"),
+    ("check_cover_holder", [("cover_stl", '"original/missing.stl"')], "the cover's STL missing - must be reported, not passed"),
+    ("check_cover_holder", [("hepa_in_grow", "-0.5")], "the HEPA holder's inside made narrower than the cover's plug"),
+    ("check_cover_magnets", [("mag_xy", "[22.5, 53]")], "the holder's magnet holes moved 0.5 mm off the cover's"),
     ("check_section_fans", UNSEALED + [("auto_fans_stl", '"original/missing.stl"')], "the Auto fan section's STL missing - must be reported, not passed"),
 ]
 MISSING = "Can't open import file"

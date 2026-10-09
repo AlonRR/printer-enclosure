@@ -4,7 +4,7 @@
 
 // The joint sample (D121), its ASA plate: the carbon housing's top end and the HEPA holder's bottom end, sliced off
 // the parts themselves, to try one end of a sealed joint before the carbon housing; and a block with one fan nut's
-// pocket, to try its seat. Everything is in bentobox.scad, and this file only pins the part. Needs the originals'
-// STLs in original/.
+// pocket, to try its seat. Everything is in bentobox.scad, and this file only pins the part;
+// it is drawn there, and needs no original.
 include <bentobox.scad>
 part = "joint_sample";

@@ -271,7 +271,11 @@ else if (view == "frame") frame_exploded(explode);
 else if (view == "clamp_print") color("orange") clamp_frames_printing();
 else if (view == "paper_cut") paper_cut();
 // The clamp stands in the HEPA holder's pocket, on its ledge.
-else if (view == "check_clamp_holder") intersection() { translate([0, 0, ledge_z + sep]) clamp_cassette(); hepa_body(st[2] - st[1]); }
+else if (view == "check_clamp_holder") intersection() { translate([0, 0, sst[3] - meet + ledge_top + sep]) clamp_cassette(); hepa_sealed(); }
+// The original cover on the drawn HEPA holder: its plug in the holder's top, flat on the top face; and a magnet
+// across the joint at each corner, in both parts' holes.
+else if (view == "check_cover_holder") intersection() { hepa_sealed(); translate([0, 0, sep]) orig(cover_stl, hepa_dz); }
+else if (view == "check_cover_magnets") intersection() { union() { hepa_sealed(); orig(cover_stl, hepa_dz); } magnets_across(sst[3] - meet + hepa_h); }
 // The frames meet only where the end blocks' halves do - the one hard stop - held sep apart.
 else if (view == "check_clamp_frames") intersection() { clamp_low(); translate([0, 0, sep]) clamp_up(); }
 // The paper, drawn from its own values at the slot's thickness less sep each side, stands in the frames'
