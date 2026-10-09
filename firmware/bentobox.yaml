@@ -1,0 +1,132 @@
+# SPDX-FileCopyrightText: 2026 Alon A. Rabinowitz
+# SPDX-License-Identifier: MPL-2.0
+
+# bentobox - the BentoBox remix's controller: an ESP32-C3 SuperMini in the bay under the base
+# (docs/bentobox-scrubber.md, The bottom). It switches both fans through an IRLZ44N (D138), counts each
+# fan's tach, and will read the outlet's sensors once D112 decides which. Home Assistant gets it over MQTT
+# discovery, as every node here.
+#
+# ⛔ BUILD AND FLASH FROM POWERSHELL, NOT GIT BASH - see chamber-baseline.yaml: a Git Bash build prints
+#    "Successfully compiled" and builds nothing. A real build leaves .esphome/build/bentobox/.pioenvs/
+#    bentobox/firmware.bin, about 1 MB - check for it. From firmware/:
+#        esphome run bentobox.yaml --device COM<n>      # the first time, over the SuperMini's USB-C
+#        esphome run bentobox.yaml --device bentobox.local    # after that, over the air
+#    The USB-C port is the C3's own USB_SERIAL_JTAG: no bridge chip, and esptool resets the board into its
+#    bootloader by itself. Closing a USB console resets the board too - one restart in its history, not a fault.
+#    Flashed over USB 9 Oct 2026, then updated over the air (port 3232) the same day.
+#    The USB log prints only the tach counts. The other sensors' values are in Home Assistant, which MQTT
+#    discovery fills: seven entities, sensor.bentobox_*, switch.bentobox_fans, button.bentobox_restart.
+#
+# ------------------------------------------------------------------------------ PINS
+# The house SuperMini map (docs/chamber-sensor/node-design.md, §4). The bay is not wired yet: these are
+# where the wires go.
+#   GPIO10  the IRLZ44N's gate - through about 100 ohm, with about 10 kohm from gate to GND, so the fans stay
+#           off while the board boots and whenever it is unpowered
+#   GPIO3   fan 1's tach (pin 3 of its lead)    } INPUT_PULLUP to 3.3 V. ⛔ Only once T141 has shown the tach
+#   GPIO4   fan 2's tach                        } is open-collector - sitting near 0 V or floating, never
+#                                                 swinging to 12 V, which would destroy the pin.
+#   GPIO5   I2C SDA  } the outlet's sensors (D112), pull-ups to 3V3, never 5V
+#   GPIO6   I2C SCL  }
+#   GPIO8   the onboard LED, active-low: the node's status
+#   GPIO18/19 are the USB lines: wire nothing to them, or flashing and the console are gone.
+
+esphome:
+  name: bentobox
+  friendly_name: BentoBox
+
+esp32:
+  board: esp32-c3-devkitm-1
+  variant: esp32c3
+  framework:
+    type: esp-idf
+
+logger:
+  # The SuperMini's USB-C port IS the USB_SERIAL_JTAG peripheral (print-chamber.yaml).
+  hardware_uart: USB_SERIAL_JTAG
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  # The node sits in the box, so it must never wait for a human.
+  reboot_timeout: 15min
+  # SuperMini antenna: a stock board barely transmits (docs/chamber-sensor/supermini-antenna.md). Use the
+  # §3x-modded board, and read "WiFi signal" once it stands at the printer.
+  ap:
+    ssid: bentobox-fallback
+    password: !secret ap_password
+
+captive_portal:
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+# ⛔ No `api:` block - MQTT discovery only, as print-chamber.yaml, so the ESPHome integration cannot create a
+# second set of the same entities.
+mqtt:
+  broker: !secret mqtt_host
+  username: !secret mqtt_username
+  password: !secret mqtt_esp_password
+  topic_prefix: printer/bentobox
+
+status_led:
+  pin:
+    number: GPIO8
+    inverted: true
+
+# The fans, both on the one MOSFET. On unless told otherwise: a scrubber that stays off after a power cut
+# is a scrubber nobody notices is off.
+switch:
+  - platform: gpio
+    pin: GPIO10
+    id: fans
+    name: "Fans"
+    icon: "mdi:fan"
+    restore_mode: RESTORE_DEFAULT_ON
+
+i2c:
+  sda: GPIO5
+  scl: GPIO6
+  scan: true
+
+sensor:
+  # Each fan gives two tach pulses a revolution. Reads 0 with nothing wired.
+  - platform: pulse_counter
+    pin:
+      number: GPIO3
+      mode:
+        input: true
+        pullup: true
+    name: "Fan 1 speed"
+    unit_of_measurement: "RPM"
+    icon: "mdi:fan"
+    update_interval: 10s
+    filters:
+      - multiply: 0.5
+  - platform: pulse_counter
+    pin:
+      number: GPIO4
+      mode:
+        input: true
+        pullup: true
+    name: "Fan 2 speed"
+    unit_of_measurement: "RPM"
+    icon: "mdi:fan"
+    update_interval: 10s
+    filters:
+      - multiply: 0.5
+  - platform: wifi_signal
+    name: "WiFi signal"
+    update_interval: 60s
+    entity_category: diagnostic
+  - platform: uptime
+    name: "Uptime"
+    entity_category: diagnostic
+  - platform: internal_temperature
+    name: "Chip temperature"
+    entity_category: diagnostic
+
+button:
+  - platform: restart
+    name: "Restart"
+    entity_category: config

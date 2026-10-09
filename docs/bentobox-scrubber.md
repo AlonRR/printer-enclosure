@@ -187,7 +187,10 @@ across and 83 long.
 - **In the bay**, not drawn yet: the step-down (an MP1584EN, 5 V out), an ESP32-C3 SuperMini, and an IRLZ44N
   that switches both fans from the ESP32 (Alon, 9 Oct 2026), a diode across them; the fans' tach wires go to
   two of the ESP32's pins. Lying flat, they fit the 8 mm. Before wiring, check that the charger offers 12 V:
-  many offer 5, 9, 15 and 20 V only.
+  many offer 5, 9, 15 and 20 V only. The SuperMini's firmware is
+  [`firmware/bentobox.yaml`](../firmware/bentobox.yaml), with the pin for each wire in its header: flashed
+  9 Oct 2026 and updated over the air since, it reports to Home Assistant over MQTT, and the fans are on unless
+  switched off there.
 
 **Putting it together:** the USB-C board into its pocket, its wires soldered on; a nut in each of the four slots
  in the end faces, pushed to the slot's end, then the
