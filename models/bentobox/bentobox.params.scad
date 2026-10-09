@@ -128,9 +128,9 @@ ledge_beads = 3;    /* A ledge round the inside at the grid's level: the ribs en
 // halves, the upper on the lower - the one place the frames meet - and two screws draw them together.
 hepa_full = true;   /* Cut the HEPA holder's pocket out to the box's whole inside, in_w x in_l, from its ledge up, and the ledge's opening with it (Alon, 8 Oct 2026: "enlarge the HEPA area"). The original's ends are solid funnels round its 80 mm cartridge. The clamp is drawn for this pocket. */
 hepa_ledge_w = 2;   /* MEASURED: the ledge round the original's opening; the enlarged opening keeps it. */
-paper_depth = 20;   /* The pleats' depth, fold to fold: the pack's thickness. The listing's "folds 20mm". <<CONFIRM with a ruler>> */
-paper_pitch = 100 / 30;   /* One pleat, top fold to top fold. DERIVED, not measured: 1200 mm of paper in 20 mm folds packs into 100 mm, so about 30 pleats. <<CONFIRM by counting the folds>> Only the whole number that fills the clamp matters. */
-paper_t = 0.3;      /* The paper's thickness - an estimate. <<CONFIRM with calipers>> */
+paper_depth = 20.2; /* MEASURED (Alon, 9 Oct 2026: Q95): the pleats' depth, fold to fold - the pack's thickness. */
+paper_pitch = 100 / 30;   /* One pleat, top fold to top fold, as the clamp holds it: a choice, not the paper's. The paper squeezes up tight - 31 folds stack to about 26 mm (Alon, Q95) - and spreads to any pitch; 30 pleats in 100 mm is the listing's packing. Only the whole number that fills the clamp matters. */
+paper_t = 0.4;      /* MEASURED (Alon, 9 Oct 2026: Q95): the paper's thickness. */
 paper_flaps = true; /* The long edges cut on a bottom fold, so each side keeps half a pleat more, as a flap the clamp pinches. false: cut on a top fold. */
 clamp_slot = 0.2;   /* The zigzag slot between the frames' wedges and teeth, screwed together: under the paper's thickness, so the screws pinch it. The two sides are separate parts, so it need not print open. A first guess, for the sample to try. */
 clamp_play = 0.2;   /* Between the cassette and the holder's pocket, each side. */

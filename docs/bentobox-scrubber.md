@@ -18,7 +18,7 @@ screws in tabs at the corners, where the original has magnets.
 ![The stack pulled apart: the cover, the HEPA holder, the carbon housing with the C-MAG in it, the section, the fan section, the base, the tray under it; tabs at the corners of the three sealed joints](bentobox/exploded.png)
 
 **It takes its HEPA as a cartridge:** a bought one, 80 × 40 × 15 mm, rests on a ledge in its holder. Or
-the HEPA paper this build already has, pleated 20 mm deep, in the remix's frame (see *Your own HEPA
+the HEPA paper this build already has, pleated 20.2 mm deep, in the remix's frame (see *Your own HEPA
 paper*).
 
 **Every part the remix prints is drawn here** (Alon, 9 Oct 2026; the cover and the C-MAG too, D142), to the
@@ -262,7 +262,7 @@ pleats and a half each side - where the bought cartridge is 80 × 40 and the ori
   air comes in, then one open at the bottom, where it leaves after passing through the paper between them.
   Cut, each channel is open at its ends too, and air could go round the paper there. At each end the upper
   frame has a wedge in every channel open at the top, and the lower frame a tooth in every channel open at
-  the bottom, 4 mm into the paper. Screwed together they leave a zigzag slot 0.2 mm wide for 0.3 mm paper:
+  the bottom, 4 mm into the paper. Screwed together they leave a zigzag slot 0.2 mm wide for 0.4 mm paper:
   the four screws pinch the paper's cut end between the wedges and the teeth. The pleats' walls lean only
   5° from upright, so the last millimetre of the screws' travel closes the slot.
 - **The long sides.** The paper runs on half a pleat past its last top fold, down to the lower frame's rim,
@@ -277,17 +277,17 @@ pleats and a half each side - where the bought cartridge is 80 × 40 and the ori
   frame, into M2 nuts pulled up into seats in the lower frame, as the fans' nuts are in the base. M2, not the
   M2.5 first drawn: an end block is 6.5 mm along the pleats, and an M2.5 nut's pocket leaves it under two
   beads of wall.
-- **Cutting the paper.** For this build's paper, 20 mm deep with about 3.3 mm between top folds: a piece
+- **Cutting the paper.** For this build's paper, 20.2 mm deep, held about 3.4 mm between top folds: a piece
   **87.1 mm long along the folds, and 11 pleats across with half a pleat more each side** - both long edges
-  cut along a bottom fold. Count the pleats rather than measuring the width: folded, that is about 40 mm, and
-  the clamp spreads it to 40.3. The roll's 300 × 100 mm pack gives six pieces.
+  cut along a bottom fold. Count the pleats rather than measuring the width: the paper squeezes up tight or
+  spreads out, and the clamp spreads it to 40.3. The roll's 300 × 100 mm pack gives six pieces.
 - **Putting it together.** Pull an M2 nut into each of the lower frame's four seats with a spare M2 screw from
   above, and take the screw out: the nut stays. Lay the lower frame down, teeth up, and the paper on it, its
   channels open at the bottom over the teeth at each end and each flap's cut end on the rim outside the long
   teeth. Lower the upper frame on, its wedges into the channels open at the top and its half wedges outside
   the flaps, and drive the four screws until the end blocks meet. Drop the cassette onto the holder's ledge;
   to take it out, lift the holder off the stack and tip it over.
-- **Try it first.** The slot's 0.2 mm is a first guess, and so is the paper's thickness. Print the clamp sample
+- **Try it first.** The slot's 0.2 mm is a first guess: it pinches the 0.4 mm paper to half. Print the clamp sample
   - one end of each frame, an hour - clamp an offcut 16 mm long in it, and look at the cut end: the paper should
   be pinched all along the zigzag without being cut.
 
@@ -300,9 +300,10 @@ deep. The pleats across are the whole number nearest to filling it, and the wedg
 match; rendering either frame echoes the new cut. `paper_flaps = false` cuts the long edges on a top fold
 instead.
 
-**Still to confirm** for this build's paper: the 3.3 mm between folds is worked out from the roll, 1200 mm
-folded into 100, not counted, and the 0.3 mm thickness is an estimate - the one that matters, since the slot
-pinches it. Anything from 28 to 30 folds in 100 mm gives the same parts.
+**Measured** for this build's paper (Alon, 9 Oct 2026, Q95): it is 0.4 mm thick and its folds are 20.2 mm deep;
+31 folds squeeze up to about 26 mm. The 3.4 mm between top folds is the clamp's, not the paper's: pleated paper
+spreads to any pitch, and `paper_pitch`, 30 pleats in 100 mm, is the roll's listing's packing. Anything from 29
+to 31 in 100 mm gives the same 11 pleats.
 
 ## The samples
 
