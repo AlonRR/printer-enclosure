@@ -33,13 +33,13 @@
 #                             ground floats up to 12 V, the blue line with it, and the fan would find its way to
 #                             ground through the pin. The diode lets the fan pull the pin low and nothing back;
 #                             at the pull-up's 0.07 mA it drops about 0.2 V, well under the C3's 0.8 V low.
-#                             ⛔ Only once T141 has shown the tach is open-collector - sitting near 0 V or floating,
-#                             never swinging to 12 V, which would destroy the pin.
+#                             Measured open-collector (T141, 9 Oct 2026): a fan running at 12 V, nothing on its blue
+#                             wire, read 0.26 V blue to black - never near 12 V, which would destroy the pin.
 #           The fans are EFB0412VHD-F00 (Q152, 9 Oct 2026). Delta's sheet for that model (delta-fan.com,
 #           Download/Spec/EFB0412VHD-F00.pdf, §11): the blue wire is an open-collector frequency output,
 #           15 V and 5 mA at most, so a 3.3 V pull-up is safe; TS = 60/N split into four equal quarters is two
 #           pulses a revolution, hence the 0.5 below; a locked rotor holds the line steady, which reads 0 RPM.
-#           T141 checks that these two fans behave as that sheet says before a pin is wired to them.
+#           One of the two fans measured as the sheet says (T141, above).
 #           The plug is a 2.54 mm KK 254-style housing, 8 mm across its pins (Alon, 9 Oct 2026), so it also
 #           pushes onto a plain 2.54 mm pin header, held by friction. It is not a PC fan header's pinout: its
 #           marked pin 1 is RED, +12 V, and black (GND) is pin 3. Never plug the fans into a motherboard's or a
