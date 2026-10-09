@@ -23,8 +23,15 @@
 # where the wires go.
 #   GPIO10  the IRLZ44N's gate - through about 100 ohm, with about 10 kohm from gate to GND, so the fans stay
 #           off while the board boots and whenever it is unpowered
-#   GPIO3   fan 1's tach    } the BLUE wire, the middle pin of the fan's 3-pin plug. INPUT_PULLUP to 3.3 V.
-#   GPIO4   fan 2's tach    } ⛔ Only once T141 has shown it is open-collector - sitting near 0 V or floating,
+#           The two fans in parallel on it: both reds to +12 V, both blacks to the IRLZ44N's drain, and one
+#           flyback diode across the pair (a 1N5819, its band to +12 V).
+#   GPIO3   fan 1's tach    } the BLUE wire, the middle pin of the fan's 3-pin plug - each fan's to its own pin,
+#   GPIO4   fan 2's tach    } never the two joined. INPUT_PULLUP to 3.3 V, through a 1N5819 in series, its band
+#                             towards the fan. The switch is on the fans' black side: when it is off, the fans'
+#                             ground floats up to 12 V, the blue line with it, and the fan would find its way to
+#                             ground through the pin. The diode lets the fan pull the pin low and nothing back;
+#                             at the pull-up's 0.07 mA it drops about 0.2 V, well under the C3's 0.8 V low.
+#                             ⛔ Only once T141 has shown the tach is open-collector - sitting near 0 V or floating,
 #                             never swinging to 12 V, which would destroy the pin.
 #           The fans are EFB0412VHD-F00 (Q152, 9 Oct 2026). Delta's sheet for that model (delta-fan.com,
 #           Download/Spec/EFB0412VHD-F00.pdf, §11): the blue wire is an open-collector frequency output,
