@@ -81,3 +81,38 @@ The LunchBox's list, and:
   inlet's flow exactly, and the summary carries that value and says so. `off_grid()` now nudges a plane
   off both. A 2 mm case written again therefore has its planes under the HEPA and through the sheet a
   fraction of a millimetre from where the committed results measured them; the results stand.
+
+## One pleat of your own paper: how many pleats the clamp should hold
+
+[`pleat.py`](pleat.py) answers D143: how many pleats of the pre-folded HEPA paper the clamp should hold across
+its 40.3 mm. More pleats put more paper in the air's way, so each square millimetre of it passes less air; but
+the channels between the pleats narrow, and near each fold the two sheets touch, so that paper passes little.
+
+```sh
+uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py lumped     # the same, worked out by hand
+uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py cases      # one case per count, grade and velocity
+#   ... then the wsl.exe command it prints (from Git Bash, with MSYS_NO_PATHCONV=1): every case, 14 at a time
+uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py results --out docs/bentobox/cfd
+```
+
+- **The geometry** is half a pitch of the pack, 2-D, between symmetry planes through a top fold and a bottom
+  fold, with 5 mm of air above and below; the paper's thickness, depth and the clamp's width come from the
+  model. The paper is a porous band, its middle straight from fold to fold. Near a fold, where the band from
+  each side overlaps, it is solid paper: a sharp fold of real paper is pressed shut there too.
+- **The mesh** is 0.02 × 0.05 mm, about 20 cells across the paper. The band is the cells whose centres fall in
+  it, and its coefficient is scaled by its true thickness over the meshed one, as the box's zones are. Before a
+  case is written, a flood fill checks that no air gets from top to bottom without crossing paper; topoSet's
+  count of the band's cells must equal the script's.
+- **Laminar** `simpleFoam`: the channels' Reynolds number is under 100.
+- **The paper's grade is not known**: HomeBox has it as "HEPA-grade", the fibre not stated. Three are run,
+  100, 200 and 300 Pa across the flat paper at 5.33 cm/s, the velocity HEPA media are rated at; 300 is about
+  a glass-fibre H13.
+- **Each count** from 8 to 26, at three face velocities, 0.1, 0.2 and 0.35 m/s; the drop is fitted as
+  a v + b v² and put into `cfd.py`'s lumped model of the box in place of the cartridge, over the n pleats'
+  face between the clamp's wedges. The clamp builds up to 18 pleats: at 19 its half wedges come out under 3 mm.
+- **The carbon** is compared the same way: the C-MAG filled to its line or full, or no C-MAG, the housing's
+  whole inside filled to a depth on a grid, by the Ergun equation as for the box; its life by
+  `scripts/carbon-life.py` at its middle emission.
+
+A case must converge (SIMPLE's residual control), and the air in at the top must equal the air out at the
+bottom to 0.1 %.
