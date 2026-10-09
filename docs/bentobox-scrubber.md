@@ -49,6 +49,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **C-MAG** | An option, with `carbon = "cmag"`, in place of the bed. Drawn to ThrutheFrame's: the tray and the lid, with the grills' slots and rails, the fill line and the magnets' bosses; and its four grills, with a honeycomb of holes the 4 mm pellets cannot pass. | [`bentobox-cmag-tray.scad`](../models/bentobox/bentobox-cmag-tray.scad), [`bentobox-cmag-lid.scad`](../models/bentobox/bentobox-cmag-lid.scad), [`bentobox-cmag-grills.scad`](../models/bentobox/bentobox-cmag-grills.scad) |
 | **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
 | **Grommet** | One TPU donut that clicks into the fan section's floor, the fans' leads pushed through the skin across its hole, sealing the wires' hole. | [`bentobox-grommet.scad`](../models/bentobox/bentobox-grommet.scad) |
+| **Fans' plug mate** | A block in the fan section that both fans' own plugs push onto, its pins the bared ends of 22 AWG solid wire. | [`bentobox-fan-mate.scad`](../models/bentobox/bentobox-fan-mate.scad) |
 | **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
 | **Bottom sample** | To print first: the tray's -Y end with the USB-C board's pocket, and the base's floor over it with the tray's nut slots - one ASA plate. | [`bentobox-bottom-sample.scad`](../models/bentobox/bentobox-bottom-sample.scad) |
 | **Sample plates** | Every sample on two plates, one ASA and one TPU (see *The samples*). | [`bentobox-samples-asa.scad`](../models/bentobox/bentobox-samples-asa.scad), [`bentobox-samples-tpu.scad`](../models/bentobox/bentobox-samples-tpu.scad) |
@@ -236,9 +237,31 @@ fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026
   down into the floor's hole from inside the fan section until the lip clicks into the groove. Then, from inside
   the fan section, each of the four leads down its own groove, through its hole in the skin, and on down the
   tube into the bay.
-- **The fans' plugs do not go through.** Each is 8 mm across (a 2.54 mm KK 254-style housing), wider than the
-  floor's 7.6 mm hole and the 6 mm tube. Take the leads' contacts out of the plug - lift each one's latch
-  through its window - or cut the plug off, pass the bare leads, and put a plug back on, or solder, in the bay.
+- **The fans' plugs stay in the fan section**, pushed onto their mate (below). Each is 8 mm across, a 2.54 mm
+  KK 254-style housing, wider than the floor's 7.6 mm hole and the 6 mm tube, so only the mate's four leads pass.
+
+**The fans' plug mate** (Alon, 9 Oct 2026). Each fan keeps its own 3-pin plug and pushes it onto a printed block in
+the fan section, so a fan comes out by unplugging it.
+
+![The plug mate with both fans' plugs lifted off it: the pins, the bared ends of the wires, standing out of the block; the wall behind, with a key for each plug; a + in front of each red pin](bentobox/fan-mate.png)
+
+- **The pins are the wires.** 22 AWG solid wire (owned, the 5-colour UL1007): its bare core is 0.64 mm, a
+  header pin's size. Bare each wire 7.5 mm, push it up through the block from below until its insulation stops
+  at the top of its slot - it cannot pull out upwards - and its core stands 6 mm above the block as the pin.
+  Under the block, bend each wire over into the groove to the back edge. Once the block is fixed down, that bend
+  stops a pin being pushed down when a plug goes on; until then, a drop of glue in the slot does it.
+- **One way on.** A wall stands behind each plug's ribbed face, and a key on it goes between the plug's two ribs,
+  so the plug only goes on with its text face to the front. A **+** in front of each plug marks the red wire's
+  pin; the plug's own moulded arrow lands over it.
+- **From the plug as measured** (Alon, 9 Oct 2026): 8.0 mm across its pins, 5.2 thick, 6.67 over its ribs, the
+  ribs 1.1 wide with 5.2 between them, its holes 1.45 mm and their nearer walls 2.55 mm from the text face. The
+  key is 4.7 wide, 0.25 mm of play each side of the plug.
+- **Both fans on one block** (`fan_mate_n = 2`, D160 open): their reds are joined under it, and their blacks, and
+  four leads go on down through the grommet (D154). `fan_mate_n = 1` draws a block for one plug.
+- **The cores' holes print small.** They are cut 0.94 mm for a 0.64 mm core; if one closes up, open it with the
+  wire itself or a 0.7 mm drill.
+- **Where it sits is not drawn yet.** It stands about 18 mm tall with a plug on it, and goes on the fan section's
+  floor by the grommet; it is fixed down with glue for now.
 
 ## The sealed joints
 
@@ -427,6 +450,7 @@ samples-tpu` for the two sample plates.
 | Joint sample | ASA | 1 plate | 1 h 7 m | 10 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
 | Grommet | TPU 95A | 1 | 2 m | under 1 g |
+| Fans' plug mate | ASA | 1 | 16 m | 1 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
 | Samples, ASA | ASA | 1 plate | 3 h 5 m | 25 g |
 | Samples, TPU | TPU 95A | 1 plate | 5 m | under 1 g |
@@ -585,14 +609,16 @@ on its tray, a magnet across their joint at each corner, and sets the four grill
 upper frame on the lower one - meeting only at the end blocks - lays a model of the paper, drawn from its own
 values at the slot's thickness, in the frames' zigzag, keeps the air's way down under the paper open, and
 runs the four screws through the end blocks and the nuts into their seats and down out of them. It sets the
-grommet in the fan section's floor, lip in groove. For the bottom it stands the fan
+grommet in the fan section's floor, lip in groove. It seats the fans' plugs, drawn from their measurements, on
+their mate, ribs either side of each key and clear of the wall, and runs the wires' cores up through the block
+into the plugs' holes. For the bottom it stands the fan
 section on the base and the base on the tray, lays the USB-C board in its pocket - its socket through its notch,
 flush with the end face - sets a nut in each of the tray's slots and slides it out through
 the end face, and one in each fan screw's seat and draws it down its pocket and out under its post, keeps two
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
 the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 36 fits and
-45 controls.
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 38 fits and
+50 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.

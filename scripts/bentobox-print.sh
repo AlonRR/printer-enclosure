@@ -29,6 +29,7 @@ clamp-lower 1 ASA
 clamp-upper 1 ASA
 bead-ring 1 TPU
 grommet 1 TPU
+fan-mate 1 ASA
 joint-sample 3 ASA
 joint-sample-bead 1 TPU
 clamp-sample 2 ASA

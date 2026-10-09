@@ -32,7 +32,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "bottom_sample", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "fan_mate", "bottom_sample", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -296,6 +296,26 @@ grommet_play = 0.1; /* Round the lip in its groove. */
 grommet_chamfer = 0.5;  /* The floor's hole is chamfered this much at its top, so the lip goes in. */
 grommet_skin = 2;   /* A thin skin across the leads' hole at the grommet's foot, in layers (Alon, 9 Oct 2026). 0: an open hole. */
 grommet_leads = [4, 1.55];  /* The holes in the skin, one per lead (Alon, 9 Oct 2026): how many, and each one's diameter as it prints. They stand as close to the ring as leaves two lines of skin between neighbours, and each runs on up the ring's inside as a groove, so its lead goes straight up. */
+
+/* [The fans' plug mate - Alon, 9 Oct 2026] */
+// Each fan keeps its own plug - a 3-pin KK 254-style housing, which Alon calls the fan header - and it pushes onto
+// this block in the fan section. The pins are the bared ends of 22 AWG solid wire (Alon): each wire comes up through
+// the block, its core standing as the pin, and carries on as the lead, with no joint. A wall stands behind the
+// plug's ribbed face, and a key on it goes between the two ribs, so the plug goes on one way only.
+fan_plug = [8.0, 5.2, 12.77];   /* MEASURED (Alon, 9 Oct 2026): the fan's plug across its pins (A), its thickness without the ribs (B), and its length along the wires (C). */
+fan_plug_d = 2.55;      /* MEASURED: from the plug's face with the text to the nearer wall of a pin's hole (D). */
+fan_plug_hole = 1.45;   /* MEASURED: a pin hole's size in the plug's end face. The pins stand in line with the holes' middles. */
+fan_plug_ribs = [1.1, 5.2, 6.67];   /* MEASURED: the ribs on the face opposite the text: each one's width, the gap between them, and the plug's thickness over them. */
+fan_plug_pitch = 2.54;  /* KK 254's pitch, between the plug's holes - the plug's, so the checks hold it fixed. */
+fan_pitch = 2.54;       /* Between the mate's pins: KK 254's. */
+fan_wire = [0.64, 1.6]; /* 22 AWG solid wire: the core, by the gauge (0.644), and the insulation's outside <<CONFIRM>>. */
+fan_mate_n = 2;         /* Plugs on one block: 2, both fans side by side, their reds joined under it and their blacks (D154); 1, a block for each fan (D160, open). */
+fan_mate_pin = 6;       /* How far each pin stands above the block: a header's mating length. */
+fan_mate_play = 0.25;   /* Round the plug: to the wall, to the key and between its ribs. */
+fan_mate_base = [5, 1.5];   /* The block under the plug: its height, and how much of it at the top holds the core alone - below, a slot takes the insulation. */
+fan_mate_wall = [1.8, 6];   /* The wall behind the plug: its thickness, and how far it stands above the block. */
+fan_mate_gap = 2;       /* Between two plugs side by side. */
+fan_mate_front = 2.5;   /* The block runs on this far past the plug's text face, for the red pin's mark. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */
 fdm_layer_h     = 0.2;

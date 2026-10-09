@@ -45,7 +45,8 @@ FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("
         ("check_cmag_housing", CMAG), ("check_cmag_halves", []), ("check_cmag_magnets", []), ("check_cmag_grills", []), ("check_clamp_frames", []), ("check_clamp_paper", []),
         ("check_clamp_opening", []), ("check_clamp_screws", []), ("check_clamp_nuts", []), ("check_clamp_nut_ways", []),
         ("check_auto_fans_base", []), ("check_auto_tray", []), ("check_tray_slot_walls", []), ("check_usb_board", []),
-        ("check_grommet_hole", []), ("check_auto_nuts", []), ("check_auto_nut_ways", []),
+        ("check_grommet_hole", []), ("check_fan_mate", []), ("check_fan_mate_pins", []),
+        ("check_auto_nuts", []), ("check_auto_nut_ways", []),
         ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", []),
         ("check_seal_j1", []), ("check_seal_j2", []), ("check_seal_j3", []), ("check_seal_beads", []),
         ("check_seal_screws", []), ("check_seal_nuts", []), ("check_seal_nut_ways", []), ("check_seal_access", [])]
@@ -77,6 +78,12 @@ CONTROLS = [
     ("check_usb_board", [("usb_notch_w", "8.5")], "the socket's notch made narrower than the socket"),
     ("check_usb_board", [("usb_notch_r", "1.2")], "the socket's notch made lower than the socket"),
     ("check_grommet_hole", [("grommet_groove", "0.3")], "the floor's groove made shallower than the grommet's lip"),
+    # The plug is drawn from its own measurements and pitch, so each of these moves the mate alone.
+    ("check_fan_mate", [("fm_key_w", "5.6")], "the mate's key made wider than the gap between the plug's ribs"),
+    ("check_fan_mate", [("fm_wall_y", "-3.2")], "the mate's wall moved in onto the plug's ribs"),
+    ("check_fan_mate", [("fm_key_y", "-1.7")], "the key's face moved in onto the plug's ribbed face"),
+    ("check_fan_mate_pins", [("fan_pitch", "3.3")], "the mate's pins spread to 3.3 mm, off the plug's holes"),
+    ("check_fan_mate_pins", [("fm_core_d", "0.5")], "the block's holes made narrower than the wire's core"),
     ("check_auto_nuts", [("nut_fit", "-0.3")], "the nuts' slots and pockets made narrower than a nut"),
     ("check_auto_nut_ways", [("tray_slot_past", "-3")], "the tray's nut slots stopped 3 mm inside the end faces: no way in"),
     ("check_auto_nut_ways", [("pull_rise", "3")], "the fans' nut pockets started 3 mm up their posts' undersides: no way in"),
@@ -168,6 +175,7 @@ FIGURES = {
     "paper-frame": [("view", '"frame"'), ("explode", "25")], "clamp-print": [("view", '"clamp_print"')],
     "paper-cut": [("view", '"paper_cut"')], "auto-bottom": [("view", '"bottom"'), ("explode", "28"), ("axes_cam", "[50, 0, 215]")],
     "joints": [("view", '"joints"'), ("explode", "22")], "grommet": [("view", '"grommet"'), ("axes_cam", "[50, 0, 20]")],
+    "fan-mate": [("view", '"fan_mate"'), ("explode", "12"), ("axes_cam", "[50, 0, 205]")],
 }
 CAMERAS = {
     "exploded": ["--imgsize=1200,1900", "--viewall", "--autocenter", "--camera=0,0,0,70,0,320,0"],
@@ -180,6 +188,7 @@ CAMERAS = {
     "auto-bottom": ["--imgsize=1400,1300", "--viewall", "--autocenter", "--camera=0,0,0,50,0,215,0"],
     "joints": ["--imgsize=1300,1800", "--viewall", "--autocenter", "--camera=0,0,0,62,0,30,0"],
     "grommet": ["--imgsize=1100,560", "--viewall", "--autocenter", "--camera=0,0,0,50,0,20,0"],
+    "fan-mate": ["--imgsize=1300,1000", "--viewall", "--autocenter", "--camera=0,0,0,50,0,205,0"],
 }
 # The flat drawings - cuts through parts, already computed geometry - keep their parts' colours only as a preview:
 # rendered, every 2D part takes one colour and the union fills the gaps between them (paper-cut's zigzag went solid).

@@ -262,6 +262,14 @@ else if (view == "check_auto_tray") intersection() { translate([0, 0, -sep]) aut
 // The grommet sits in the fan section's floor, lip in groove. The hole is cut a hole's compensation larger than the
 // grommet's outside, and the grommet drawn only its squeeze larger, so in the model the two stand apart.
 else if (view == "check_grommet_hole") intersection() { fans_sealed(); translate([grommet_x, auto_conduit[1], duct_h]) grommet_body(); }
+// The fans' plugs, as measured, on the mate: each seated on the block, 0.01 mm up, its ribs either side of the key
+// and clear of the wall. And the wires' cores, standing as the pins: through their holes in the block and up into
+// the plugs' holes, touching neither.
+else if (view == "check_fan_mate") intersection() { fan_mate(); for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x); }
+else if (view == "check_fan_mate_pins") intersection() {
+    union() { fan_mate(); for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x); }
+    fan_mate_pins();
+}
 // The USB-C board sits in its pocket, the socket through its notch, flush with the end face.
 else if (view == "check_usb_board") intersection() { union() { auto_tray(); auto_base(); } usb_board_model(); }
 // The tray's nuts' slots, and their screws' holes, keep two beads of the end walls round them.
@@ -309,6 +317,12 @@ else if (view == "grommet") color("deepskyblue") {
     translate([-6, 0, auto_floor_t]) mirror([0, 0, 1]) grommet_body();
     translate([6, 0, 0]) grommet_body();
 }
+// The fans' plug mate, its wires' cores standing as the pins, and the fans' plugs lifted off them by `explode`.
+else if (view == "fan_mate") {
+    color("dimgray") fan_mate();
+    color("goldenrod") fan_mate_pins();
+    color("ivory") for (x = fm_xs) translate([0, 0, explode]) fan_plug_model(x);
+}
 // The clamp stands in the HEPA holder's pocket, on its ledge.
 else if (view == "check_clamp_holder") intersection() { translate([0, 0, sst[3] - meet + ledge_top + sep]) clamp_cassette(); hepa_sealed(); }
 // The cover on the HEPA holder: its plug in the holder's top, flat on the top face; and a magnet across the joint
@@ -343,6 +357,7 @@ if (show_axes && view == "frame") axes([-cas[0] / 2 - 25, -cas[1] / 2, 0], l = 1
 if (show_axes && view == "joints") axes([bb_w / 2 + 20, bb_l / 2, sst[0] + 30], l = 20, cam = axes_cam);
 if (show_axes && view == "bottom") axes([bb_w / 2 + 15, bb_l / 2, 0], l = 20, cam = axes_cam);
 if (show_axes && view == "grommet") axes([-13, -5, 0], l = 3.5, cam = axes_cam);
+if (show_axes && view == "fan_mate") axes([fm_x1 + 8, fm_y1, 0], l = 4, cam = axes_cam);
 if (show_axes && view == "clamp_print") axes([-cas[0] - 32, -cas[1] / 2, 0], l = 15, cam = axes_cam);
 // A flat view gets a flat key: an arrow across, labelled with the box's axis it shows, and +z up.
 module flat_key(across) color("black") {

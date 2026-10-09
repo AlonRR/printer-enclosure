@@ -810,6 +810,55 @@ module grommet_coupon() difference() {
     grommet_hole();
 }
 
+// ------------------------------------------------------------------ the fans' plug mate (Alon, 9 Oct 2026)
+// See bentobox.params.scad. Drawn in its own frame (bentobox.layout.scad): the pins along X at Y = 0, the block's
+// underside at Z = 0, as it prints. Each wire comes up its slot from below, its insulation stopping where the slot
+// ends, so it cannot be pulled out upwards; its bared core goes on up its hole and stands as the pin. Under the block
+// each wire bends over into a groove to the back edge: once the block is fixed down, that bend stops a pin being
+// pushed down.
+module fan_mate_key(x) let(h = fan_mate_base[0], wh = fan_mate_wall[1] - 0.5, d = fm_key_y - fm_wall_y, e = 0.3)
+    // its top chamfered at 45 degrees, a lead-in between the ribs, 0.5 mm under the wall's top. It starts e inside
+    // the wall, so the chamfer crosses the wall's face: an edge lying in that face leaves sliver facets
+    translate([x - fm_key_w / 2, fm_wall_y - e, h - 0.01]) hull() {
+        cube([fm_key_w, d + e, wh - d - e + 0.01]);
+        cube([fm_key_w, 0.01, wh + 0.01]);
+    }
+// The block and the wall are one L-shaped profile along X: two boxes sharing the back face would meet it in a line
+// of T-junctions. The groove is a little wider than the slot, so its sides are not tangent to the slot's round ends.
+module fan_mate() let(h = fan_mate_base[0], c = fan_mate_base[1], wh = fan_mate_wall[1], s = 2 * fan_pitch + fm_ins_d + 0.4)
+    difference() {
+        union() {
+            translate([fm_x0, 0, 0]) rotate([90, 0, 90]) linear_extrude(fm_x1 - fm_x0)
+                polygon([[fm_y0, 0], [fm_y1, 0], [fm_y1, h], [fm_wall_y, h], [fm_wall_y, h + wh], [fm_y0, h + wh]]);
+            for (x = fm_xs) fan_mate_key(x);
+        }
+        for (x = fm_xs) {
+            for (k = [-1 : 1]) translate([x + k * fan_pitch, 0, h - c - 0.01]) cylinder(d = fm_core_d, h = c + 1, $fn = 16);
+            translate([x, 0, -1]) linear_extrude(h - c + 1)
+                hull() for (k = [-1, 1]) translate([k * fan_pitch, 0]) circle(d = fm_ins_d, $fn = 24);
+            translate([x - s / 2, fm_y0 - 1, -1]) cube([s, 1 - fm_y0, fm_ins_d + 1]);
+            // the red pin's mark, in front of where the plug stands: its moulded pin-1 arrow lands over it
+            translate([x - fan_pitch, (fmp_text + fm_y1) / 2, h - 0.4]) linear_extrude(1)
+                text("+", size = 1.8, halign = "center", valign = "center");
+        }
+    }
+// The fan's plug as measured, to check the mate against and to draw, never printed: its body, the two ribs on the
+// face opposite the text, and a hole over each pin at the plug's own pitch. Seated on the block, at plug x.
+module fan_plug_model(x) let(a = fan_plug[0], b = fan_plug[1], c = fan_plug[2], rw = fan_plug_ribs[0], rg = fan_plug_ribs[1],
+                             o = fan_plug_hole)
+    translate([x, 0, fan_mate_base[0]]) difference() {
+        union() {
+            translate([-a / 2, -fmp_back, 0]) cube([a, b, c]);
+            for (s = [-1, 1]) translate([s * (rg + rw) / 2 - rw / 2, -fmp_ribs, 0]) cube([rw, fmp_ribs - fmp_back + 0.01, c]);
+        }
+        for (k = [-1 : 1]) translate([k * fan_plug_pitch - o / 2, -o / 2, -1]) cube([o, o, fan_mate_pin + 1]);
+    }
+// The wires' bared cores, standing as the pins: from where the insulation stops to the pins' tips.
+module fan_mate_pins() for (x = fm_xs, k = [-1 : 1])
+    translate([x + k * fan_pitch, 0, fan_mate_base[0] - fan_mate_base[1]]) cylinder(d = fan_wire[0], h = fm_strip, $fn = 16);
+module say_fan_mate() echo(str("fan plug mate: ", fan_mate_n, fan_mate_n == 1 ? " plug" : " plugs", "; bare each wire ",
+    fm_strip, " mm, push it up from below until its insulation stops, and bend it over into the groove underneath"));
+
 // ------------------------------------------------------------------ the sample plates (T131)
 // All the samples, as they print: ASA - the joint sample, the clamp sample, the bottom sample and the grommet's
 // coupon; TPU - the joint sample's bead and the grommet. Placed by their footprints, measured from
@@ -859,6 +908,8 @@ if (draw_model) {
     else if (part == "joint_sample_bead") joint_sample_bead();
     // The wires' grommet, in TPU, on its foot; the bottom sample; and every sample on its plate.
     else if (part == "grommet") grommet_body();
+    // The fans' plug mate, in ASA, on its underside.
+    else if (part == "fan_mate") { fan_mate(); say_fan_mate(); }
     else if (part == "bottom_sample") { bottom_sample(); say_auto_hardware(); say_usb(); }
     else if (part == "samples_asa") { samples_asa(); say_sample_hardware(); say_auto_hardware(); }
     else if (part == "samples_tpu") samples_tpu();
