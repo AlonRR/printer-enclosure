@@ -24,7 +24,8 @@
 #   GPIO10  the IRLZ44N's gate - through about 100 ohm, with about 10 kohm from gate to GND, so the fans stay
 #           off while the board boots and whenever it is unpowered
 #           The two fans in parallel on it: both reds to +12 V, both blacks to the IRLZ44N's drain, and one
-#           flyback diode across the pair (a 1N5819, its band to +12 V).
+#           flyback diode across the pair (a 1N5819, its band to +12 V). The reds are joined in the fan section, and
+#           the blacks, so four leads come down through the grommet to the bay: red, black and the two blues (D154).
 #   GPIO3   fan 1's tach    } the BLUE wire, the middle pin of the fan's 3-pin plug - each fan's to its own pin,
 #   GPIO4   fan 2's tach    } never the two joined. INPUT_PULLUP to 3.3 V, through a 1N5819 in series, its band
 #                             towards the fan. The switch is on the fans' black side: when it is off, the fans'
