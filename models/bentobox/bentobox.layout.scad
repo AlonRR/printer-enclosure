@@ -161,7 +161,7 @@ assert(fan_tip_z > pull_bot && fan_tip_z < pull_top - nut_h - screw_tip + 1e-9, 
 assert(bottom == "auto" || bottom == "bambu", str("unknown bottom: ", bottom));
 // How far a hex reaches towards theta, ac across its corners, a flat facing `flat`.
 function hex_reach(theta, flat, ac) = let(d = ((theta - flat) % 60 + 60) % 60) ac / 2 * cos(30 - min(d, 60 - d));
-// The walls a fan nut's pocket keeps: to the fans' air, and to its wall's face.
+// The walls a fan nut's pocket keeps: to the fans' air, which the post is cut back from, and to its wall's face.
 pull_air_wall = min([for (s = auto_fan_screws) let(f = [0, abs(s[1] - fan_ys[0]) < abs(s[1] - fan_ys[1]) ? fan_ys[0] : fan_ys[1]])
     norm([s[0], s[1]] - f) - hex_reach(atan2(f[1] - s[1], f[0] - s[0]), s[2], pull_way_ac) - auto_fan_air / 2 - meet]);
 pull_face_gap = min([for (s = auto_fan_screws) auto_post_wall - hex_reach(s[3] + 180, s[2], pull_way_ac)]);

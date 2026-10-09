@@ -131,7 +131,7 @@ bottom = "auto";    /* "auto": the remix's base and tray, after the Auto's, and 
 // down a tube to the bay.
 auto_fans_dz  = -30;    /* The fan section, from where the STEP has it, to the stack: its tongue is then the fan case's. */
 auto_floor_t  = 3;      /* The fan section's floor, which the fans' screws pass. */
-auto_fan_air  = 37;     /* The fan section's floor opening under each fan, at fan_ys. Nothing new may stand under one but the round posts' edges, post_air_bite in. */
+auto_fan_air  = 37;     /* The fan section's floor opening under each fan, at fan_ys. Nothing new may stand under one. */
 auto_fan_screws = [[-16, -46, 40, 90], [-16, 46, -40, 270], [16, -14, 230, 180], [16, 14, 130, 180]];   /* The fans' screws, X and Y; which way a flat of each nut's pocket faces, in degrees from +X - 5 off the nearer fan, towards the post's wall, so the pocket keeps a wall to both; and the way out of the post's wall into the room: the two at the end walls, the two at the long wall. */
 base_wall     = 7;      /* The end walls and the +X wall: the duct's faces at Y +-49.4 and X 19.4. */
 base_floor    = 16;     /* The duct's floor, flat from the outlet... */
@@ -160,9 +160,9 @@ fan_t     = 20;     /* The fans, 40 x 40 x 20: their screws pass through them, t
 nut_roof  = 2;      /* Over a fan screw's nut, under the base's top face: ten layers. */
 nut_floor = 0.8;    /* Under a tray screw's slot, over the base's bottom face: four layers, which the nut presses onto the tray's top - nothing bridges there. Low, the slot's back stays two beads under the end wall's fillet. */
 post_beads = 3;     /* The new post round a fan screw's pocket, past its corners, in beads. */
-post_air_bite = 0.75;    /* Round (Alon, 8 Oct 2026), each post reaches in under its fan's opening in the fan section's floor, at the opening's edge under the fan's corner: 0.69 mm at three beads. This is the most it may. */
-// Each fan screw has a post on its wall: round, big enough for the nut, on fillets into the wall, straight down and
-// then on a round into a 45-degree underside that meets the wall.
+post_clear_air = true;   /* Cut the posts back clear of the fans' air (Alon, 9 Oct 2026): round, they would reach 0.69 mm in under the fan section's floor openings. */
+// Each fan screw has a post on its wall, big enough for the nut: round at its end, its sides on fillets into the wall,
+// cut back clear of the fans' air; straight down, then on a round into a 45-degree underside that meets the wall.
 auto_post_wall = 3.4;    /* Each fan screw's axis, this far from its wall's face: the end walls' at Y +-49.4, the +X wall's at X 19.4. */
 post_fillet = 2;    /* A post's sides run into its wall on fillets this round, as the Auto's lugs do... */
 post_blend = 0.15;  /* ...tangent to a line this far inside the wall's face, so the fillet and the original's face cross at a slant, not tangent. */

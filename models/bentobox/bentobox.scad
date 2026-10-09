@@ -238,15 +238,19 @@ module roof_hole(l) translate([0, 0, nut_slot_h]) rotate(90) bridged_hole(nut_sl
 // The fan section's floor openings, carried down into the base: the fans' air.
 module fan_air(h, grow = 0) for (y = fan_ys) translate([0, y, duct_h - h]) cylinder(d = auto_fan_air + 2 * grow, h = h + 1);
 
-// A fan screw's post (seamless, Alon 8 Oct): round on the screw's axis, big enough for the nut. Its frame: the
-// screw's axis at the origin, X out of the post's wall into the room.
+// A fan screw's post (seamless, Alon 8 Oct): big enough for the nut, and cut back clear of the fans' air (Alon,
+// 9 Oct). Its frame: the screw's axis at the origin, X out of the post's wall into the room.
 module post_frame(s) translate([s[0], s[1], 0]) rotate(s[3]) children();
-// From above: round, on the screw's axis, running into the wall on fillets (Alon, 8 Oct 2026). The fillets are
-// tangent to a line post_blend inside the wall's face, so the two cross at a slant; the strip they come off runs
-// 3 mm into the wall. Round, it reaches a little way in under its fan's opening: post_air_bite.
-module post2d(s) offset(r = -post_fillet) offset(delta = post_fillet) post_frame(s) {
-    circle(r = post_r);
-    translate([-auto_post_wall - 3, -post_r - post_fillet - 0.5]) square([3 - post_blend, 2 * (post_r + post_fillet + 0.5)]);
+// From above: round at its end, its sides running into the wall on fillets; cut back clear of the fans' air, the
+// corners there rounded. The fillets are tangent to a line post_blend inside the wall's face, so the two cross at a
+// slant; the strip they come off runs 3 mm into the wall.
+module post2d(s) offset(r = 1) offset(delta = -1) difference() {
+    offset(r = -post_fillet) offset(delta = post_fillet) post_frame(s) {
+        circle(r = post_r);
+        translate([-auto_post_wall - 3, -post_r]) square([auto_post_wall + 3, 2 * post_r]);
+        translate([-auto_post_wall - 3, -post_r - post_fillet - 0.5]) square([3 - post_blend, 2 * (post_r + post_fillet + 0.5)]);
+    }
+    if (post_clear_air) for (y = fan_ys) translate([0, y]) circle(d = auto_fan_air + 2 * meet);
 }
 // From the side, out of the wall (X) and up (Y): the post's underside - straight down, then a round into 45
 // degrees, which meets the wall's face at post_foot.

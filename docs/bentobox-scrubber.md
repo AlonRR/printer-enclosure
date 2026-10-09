@@ -28,7 +28,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Section** | Goes between the carbon housing and the fan section, holding a flat filter sheet that stops carbon dust reaching the fans. Sealed at both its faces, with a pillar at each corner that the carbon housing's screws pass through. `sealed = false` builds it with the original's tongue, groove and magnets, to drop into any BentoBox v2.0 stack. | [`bentobox-section.scad`](../models/bentobox/bentobox-section.scad) |
 | **Paper clamp** | Two ASA frames, screwed together with a cut piece of pleated paper between them, standing on the HEPA holder's ledge in place of the cartridge: wedges from above and teeth from below pinch the paper's cut ends, and a bar from each its long edges. | [`bentobox-clamp-lower.scad`](../models/bentobox/bentobox-clamp-lower.scad), [`bentobox-clamp-upper.scad`](../models/bentobox/bentobox-clamp-upper.scad) |
 | **Clamp sample** | One end of each frame, on one plate: to try the pinch on an offcut before the whole clamp. | [`bentobox-clamp-sample.scad`](../models/bentobox/bentobox-clamp-sample.scad) |
-| **Base** | In place of the duct, drawn to the Auto's: the duct over the bay's roof, the wires' tube, the fans' four nuts pulled up into pockets in round posts, and four nuts in slots for the tray's screws. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
+| **Base** | In place of the duct, drawn to the Auto's: the duct over the bay's roof, the wires' tube, the fans' four nuts pulled up into pockets in posts, and four nuts in slots for the tray's screws. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
 | **Fan section** | The Auto's, in place of the fan case, its top remixed for the sealed joint. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
 | **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with four screws, their heads sunk in its bottom face. | [`bentobox-auto-tray.scad`](../models/bentobox/bentobox-auto-tray.scad) |
 | **Carbon housing** | ThrutheFrame's, remixed for the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
@@ -105,12 +105,12 @@ before it. Their mount is not drawn yet.
 **Nuts, not heat-set inserts.** The fans' nuts are pull nuts; the tray's lie flat in slots that open one way.
 
 - **The fans' four screws**, M3 × 30, come down through each fan and the fan section's floor into a pull
-  nut, in a post. Each post is round, on the screw's axis, running into its wall on fillets, straight down and
-  then on a round into a 45° underside that meets the wall. A hex pocket runs up it on the screw's axis, open
-  under the post, into a tight seat 2 mm under the base's top; a screw from above pulls the nut up into the
-  seat, and it stays there. Each pocket has a flat 5° off the nearer fan, so it keeps 0.9 mm of wall to the
-  fan's air, and 0.14 mm to its wall's face. Round, each post reaches 0.69 mm in under the edge of its fan's
-  opening in the fan section's floor, towards the fan's corner: about 2 mm² of the opening's 1,075.
+  nut, in a post: round at its end, its sides on fillets into its wall, straight down and then on a round into a
+  45° underside that meets the wall, and cut back clear of the fan's air - round, it would reach 0.69 mm in under
+  the edge of the fan section's floor opening. A hex pocket runs up it on the screw's axis, open under the post,
+  into a tight seat 2 mm under the base's top; a screw from above pulls the nut up into the seat, and it stays
+  there. Each pocket has a flat 5° off the nearer fan, so it keeps 0.9 mm of wall to the fan's air, and 0.14 mm
+  to its wall's face.
 - Each nut pocket's roof, and each slot's, starts with two bridging layers, a channel and then a square, so the
   screw's hole prints over it without support.
 
@@ -288,7 +288,7 @@ band, and a bead ring flat. No supports, no brim.
 | Clamp, lower frame | ASA | 1 | 1 h 32 m | 11 g |
 | Clamp, upper frame | ASA | 1 | 1 h 19 m | 9 g |
 | Clamp sample | ASA | 1 plate | 1 h 6 m | 7 g |
-| Base | ASA | 1 | 3 h 26 m | 36 g |
+| Base | ASA | 1 | 3 h 25 m | 36 g |
 | Fan section | ASA | 1 | 3 h 42 m | 36 g |
 | Tray | ASA | 1 | 1 h 47 m | 20 g |
 | Carbon housing | ASA | 1 | 7 h 23 m | 71 g |

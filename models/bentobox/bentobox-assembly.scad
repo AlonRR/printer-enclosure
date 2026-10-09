@@ -239,8 +239,8 @@ else if (view == "check_auto_nut_ways") intersection() { auto_base(); auto_nuts(
 else if (view == "check_auto_screws") intersection() { union() { auto_base(); auto_fans(); auto_tray(); } auto_screws(); }
 // The wires pass the floor's hole and the tube to the bay.
 else if (view == "check_auto_wires") intersection() { union() { auto_base(); auto_fans(); } wire_probe(); }
-// Nothing of the base stands under the fans' openings in the floor but the round posts' edges, post_air_bite in.
-else if (view == "check_auto_air") intersection() { auto_base(); fan_air(8, -post_air_bite); }
+// Nothing of the base stands under the fans' openings in the floor, its posts included.
+else if (view == "check_auto_air") intersection() { auto_base(); fan_air(8); }
 else if (view == "bottom") bottom_exploded(explode);
 else if (view == "joints") joints_exploded(explode);
 // The sealed joints: each upper part on its lower one - flat on the land, its chamfer in the collar, tab on tab.

@@ -78,7 +78,7 @@ CONTROLS = [
     ("check_auto_nuts", [("pull_fit", "-0.25")], "the fans' nut seats made narrower than a nut"),
     ("check_auto_screws", [("screw_shift", "[1, 0]")], "the screws moved 1 mm off their holes"),
     ("check_auto_wires", [("wire_shift", "1.5")], "the wires moved 1.5 mm off the tube"),
-    ("check_auto_air", [("post_air_bite", "0.4")], "the round posts allowed only 0.4 mm in under the fans' openings"),
+    ("check_auto_air", [("post_clear_air", "false")], "the fan screws' posts left round, under the fans' openings"),
     # The sealed joints. collar_play narrows the upper parts' chamfers, not the collars; bead_side the grooves,
     # not the beads; bracket_h reaches the carbon housing's top brackets down over the section's screws.
     ("check_seal_j1", [("collar_play", "-0.4")], "the section's chamfer cut back less than the fan section's collar"),
