@@ -41,7 +41,7 @@ FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("
         ("check_magnets_bottom", UNSEALED), ("check_air", []),
         ("check_clamp_holder", []), ("check_clamp_frames", []), ("check_clamp_paper", []),
         ("check_clamp_opening", []), ("check_clamp_screws", []), ("check_clamp_nuts", []), ("check_clamp_nut_ways", []),
-        ("check_auto_fans_base", []), ("check_auto_tray", []), ("check_tray_slot_walls", []), ("check_auto_nuts", []), ("check_auto_nut_ways", []),
+        ("check_auto_fans_base", []), ("check_auto_tray", []), ("check_tray_slot_walls", []), ("check_usb_board", []), ("check_auto_nuts", []), ("check_auto_nut_ways", []),
         ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", []),
         ("check_seal_j1", []), ("check_seal_j2", []), ("check_seal_j3", []), ("check_seal_beads", []),
         ("check_seal_screws", []), ("check_seal_nuts", []), ("check_seal_nut_ways", []), ("check_seal_access", [])]
@@ -69,6 +69,9 @@ CONTROLS = [
     ("check_auto_fans_base", [("auto_fans_dz", "-30.5")], "the Auto's fan section set 0.5 mm down into its base"),
     ("check_auto_tray", [("tray_top", "14.3")], "the tray made 0.3 mm taller than the bay's roof"),
     ("check_tray_slot_walls", [("tray_screw_y", "51.4")], "the tray's screws moved 1 mm in, their slots' backs under the end walls' fillets"),
+    ("check_usb_board", [("usb_shift", "[0, -1, 0]")], "the USB-C board moved 1 mm out, into the wall in front of it"),
+    ("check_usb_board", [("usb_notch_w", "8.5")], "the socket's notch made narrower than the socket"),
+    ("check_usb_board", [("usb_notch_r", "1.2")], "the socket's notch made lower than the socket"),
     ("check_auto_nuts", [("nut_fit", "-0.3")], "the nuts' slots and pockets made narrower than a nut"),
     ("check_auto_nut_ways", [("tray_slot_past", "-3")], "the tray's nut slots stopped 3 mm inside the end faces: no way in"),
     ("check_auto_nut_ways", [("pull_rise", "3")], "the fans' nut pockets started 3 mm up their posts' undersides: no way in"),
@@ -89,7 +92,7 @@ CONTROLS = [
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.
     ("check_section_carbon", UNSEALED + [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
     ("check_clamp_holder", [("hepa_stl", '"original/missing.stl"')], "the holder's STL missing - must be reported, not passed"),
-    ("check_auto_fans_base", [("auto_base_stl", '"original/missing.stl"')], "the Auto base's STL missing - must be reported, not passed"),
+    ("check_auto_fans_base", [("auto_fans_stl", '"original/missing.stl"')], "the Auto fan section's STL missing - must be reported, not passed"),
 ]
 MISSING = "Can't open import file"
 

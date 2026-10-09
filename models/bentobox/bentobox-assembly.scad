@@ -149,11 +149,19 @@ module tray_slot_walls() let(g = 2 * bead, f = fdm_hole_comp + nut_fit, ac = nut
         hull() for (x = [-(ac / 2 + f), s[3]], y = [-1, 1] * (nut_af / 2 + f), z = [0, nut_slot_h]) translate([x, y, z]) sphere(r = g, $fn = 12);
         hull() for (z = [0, tray_tip_z + 0.5 - tray_slot_bot]) translate([0, 0, z]) sphere(r = hole_d / 2 + g, $fn = 16);
     }
-// The base's air: inside its outline - a millimetre in, clear of the slots' mouths in its end faces - from the bay's
-// roof to its top, where the original is not.
-module base_air() difference() {
+// The base's air: the duct, inside the outline - a millimetre in, clear of the slots' mouths in the end faces.
+module base_air() intersection() {
+    duct_air();
     translate([0, 0, auto_bay_top]) linear_extrude(duct_h - auto_bay_top) offset(delta = -1) tray_outline();
-    orig(auto_base_stl);
+}
+// The USB-C board as Alon measured it: the board, the socket on it standing past its edge, and its parts - held sep
+// off the wall in front of it and the pocket's floor, as it sits. A control moves it (usb_shift).
+usb_shift = [0, 0, 0];  /* Controls only: the board moved in its pocket. */
+module usb_board_model() translate(usb_shift + [usb_x, 0, 0]) {
+    translate([-usb_board[1] / 2, usb_pcb_y0 + sep, usb_pcb_z + sep]) cube([usb_board[1], usb_board[0] - usb_socket[2], usb_board[2]]);
+    hull() for (s = [-1, 1]) translate([s * (usb_socket[0] - usb_socket[1]) / 2, -bb_l / 2 + sep, usb_axis_z + sep])
+        rotate([-90, 0, 0]) cylinder(d = usb_socket[1], h = 7.5, $fn = 32);
+    translate([-usb_board[1] / 2 + 1, -bb_l / 2 + 8, usb_pcb_z + usb_board[2] + sep]) cube([usb_board[1] - 2, usb_board[0] - 9, usb_parts_h]);
 }
 module wire_probe() translate([auto_conduit[0] + wire_shift, auto_conduit[1], auto_conduit_z[0] - 2])
     cylinder(d = wire_d, h = auto_conduit_z[1] - auto_conduit_z[0] + 3);
@@ -220,6 +228,8 @@ else if (view == "check_air") intersection() { section(); air_probe(); }
 // The Auto's bottom. The fan section stands on the base, and the tray is screwed on under it.
 else if (view == "check_auto_fans_base") intersection() { translate([0, 0, sep]) auto_fans(); auto_base(); }
 else if (view == "check_auto_tray") intersection() { translate([0, 0, -sep]) auto_tray(); auto_base(); }
+// The USB-C board sits in its pocket, the socket through its notch, flush with the end face.
+else if (view == "check_usb_board") intersection() { union() { auto_tray(); auto_base(); } usb_board_model(); }
 // The tray's nuts' slots, and their screws' holes, keep two beads of the end walls round them.
 else if (view == "check_tray_slot_walls") intersection() { tray_slot_walls(); base_air(); }
 // Each nut fits its slot, and slides in from outside.

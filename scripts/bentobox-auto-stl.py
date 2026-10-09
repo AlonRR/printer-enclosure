@@ -13,7 +13,8 @@ the repository's root:
 STEP defaults to the one file in models/bentobox/original/ whose name has "Auto" in it and ends in .step.
 Beside it, this writes:
 
-  bentobox-auto-base.stl    the base: the duct, the wires' tube, and the bay for the electronics under it
+  bentobox-auto-base.stl    the base: the duct, the wires' tube, and the bay for the electronics under it -
+                            measured, not used: the remix draws its own
   bentobox-auto-fans.stl    the fan section
   bentobox-auto-plate.stl   the plate that closes the bay - not used: the remix's tray replaces it
 

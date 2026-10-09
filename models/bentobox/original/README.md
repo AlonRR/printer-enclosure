@@ -35,7 +35,7 @@ uv run scripts/bentobox-auto-stl.py
 
 | File it writes | What it is |
 |---|---|
-| `bentobox-auto-base.stl` | the base, in place of the duct: the same duct with its floor raised over a bay for the electronics, and a tube down to the bay for the wires |
+| `bentobox-auto-base.stl` | the base, in place of the duct: the same duct with its floor raised over a bay for the electronics, and a tube down to the bay for the wires - measured, not used: the remix draws its own |
 | `bentobox-auto-fans.stl` | its fan section: the fan case's top, with each fan screwed through the floor into the base, and a hole for the wires |
 | `bentobox-auto-plate.stl` | the plate that closes the bay: not used, the remix's tray replaces it |
 

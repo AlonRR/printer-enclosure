@@ -131,14 +131,31 @@ tray_screw = screw_for(tray_slot_bot + nut_h + screw_tip - tray_head_z);
 tray_tip_z = tray_head_z + tray_screw;
 // Each: X, Y, the way out of its slot, through its end face, and how far past the axis the slot runs.
 tray_screws = [for (x = tray_screws_x, sy = [-1, 1]) [x, sy * tray_screw_y, sy > 0 ? 90 : 270, bb_l / 2 - tray_screw_y + tray_slot_past]];
-// What a counterbore leaves: to the cable port's mouth beside it, where the mouth's floor is under the head, and to
-// the magnets' holes.
-tray_port_wall = tray_head_z <= auto_port_mouth[2] ? 99 : min([for (x = tray_screws_x)
-    x < auto_port_mouth[0] ? auto_port_mouth[0] - x - m3_cb[0] / 2 : x > auto_port_mouth[1] ? x - auto_port_mouth[1] - m3_cb[0] / 2 : -1]);
+// The duct's inside: the +X wall's face and the end walls' faces; the turn's centre, X and Z.
+duct_in = [bb_w / 2 - base_wall, bb_l / 2 - base_wall];
+turn_c = [duct_in[0] - base_turn_r, base_floor + base_turn_r];
+// The USB-C board in its pocket: its front edge against the wall in front of it, as thick as the socket stands past
+// it, so the socket's face is the end face; the socket's top usb_play under the base.
+usb_c = fdm_hole_comp + usb_play;
+usb_pcb_y0 = -bb_l / 2 + usb_socket[2];
+usb_pcb_y1 = -bb_l / 2 + usb_board[0];
+usb_top = auto_bay_top - usb_play;
+usb_axis_z = usb_top - usb_socket[1] / 2;
+usb_pcb_z = usb_top - usb_socket[1] - usb_board[2];
+usb_notch_w = usb_socket[0] + 2 * usb_c;               // the notch the socket goes through, across...
+usb_notch_r = usb_socket[1] / 2 + usb_c;               // ...and the radius of its round ends
+usb_pocket = [usb_board[1] + 2 * usb_c, usb_pcb_y0];  // the board's pocket: across, and its front
+// What a tray screw leaves: its hole to the board's pocket, beside it; its counterbore to the magnets' holes.
+tray_usb_wall = min([for (x = tray_screws_x) abs(x - usb_x) - usb_pocket[0] / 2 - hole_d / 2]);
 tray_magnet_wall = min([for (x = tray_screws_x, m = auto_magnets) norm([x, tray_screw_y] - m) - (m3_cb[0] + auto_magnet[0]) / 2]);
 
 assert(!is_undef(fan_screw) && !is_undef(tray_screw), "no screw in screw_lengths is long enough");
 assert(head_sink >= 0, "a tray screw's head stands out of the tray's bottom face");
+assert(base_turn_r > base_fillet && base_floor + base_turn_r < duct_h, "the duct's turn must be rounder than its fillets and meet the +X wall under the top");
+assert([for (s = auto_fan_screws) if (abs(min(duct_in[0] - s[0], duct_in[1] - abs(s[1])) - auto_post_wall) > 1e-6) s] == [],
+    "every fan screw must stand auto_post_wall from its wall's face");
+assert(usb_pcb_y1 < -bay_size[1] / 2, "the USB-C board must sit in the -Y end block, the bay behind it");
+assert(usb_pcb_z > auto_seat_z, "the USB-C board's pocket must stand on the end block");
 assert(post_round_z < pull_seat, "a fan nut's seat must stand in its post's straight part, over the underside's round");
 assert(fan_tip_z > pull_bot && fan_tip_z < pull_top - nut_h - screw_tip + 1e-9, "a fan screw's tip must stand out of its nut, inside the pocket");
 assert(bottom == "auto" || bottom == "bambu", str("unknown bottom: ", bottom));
@@ -248,7 +265,7 @@ warns = [
     if (pull_face_gap < 0.1) str("a fan nut's pocket comes within ", pull_face_gap, " mm of its wall's face"),
     if (tab_boss_r - m3_cb[0] / 2 < 2 * bead - 1e-9) str("a tab's head counterbore leaves ", tab_boss_r - m3_cb[0] / 2, " mm of wall, under two beads"),
     if (bb_l / 2 - tray_screw_y - m3_cb[0] / 2 < 2 * bead - 1e-9) str("a tray screw's counterbore leaves ", bb_l / 2 - tray_screw_y - m3_cb[0] / 2, " mm of the end face, under two beads"),
-    if (tray_port_wall < 2 * bead - 1e-9) str("a tray screw's counterbore leaves ", tray_port_wall, " mm to the cable port, under two beads"),
+    if (tray_usb_wall < 2 * bead - 1e-9) str("a tray screw's hole leaves ", tray_usb_wall, " mm to the USB-C board's pocket, under two beads"),
     if (tray_magnet_wall < 2 * bead - 1e-9) str("a tray screw's counterbore leaves ", tray_magnet_wall, " mm to a magnet's hole, under two beads"),
     if (nut_floor < 4 * fdm_layer_h - 1e-9) str("a tray nut's slot has ", nut_floor, " mm under it, under four layers"),
 ];
