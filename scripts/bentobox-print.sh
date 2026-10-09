@@ -25,6 +25,7 @@ auto-fans 1 ASA
 carbon 1 ASA
 hepa 1 ASA
 cover 1 ASA
+glue-frame 1 ASA
 clamp-lower 1 ASA
 clamp-upper 1 ASA
 bead-ring 1 TPU
@@ -32,9 +33,10 @@ grommet 1 TPU
 fan-mate 1 ASA
 joint-sample 3 ASA
 joint-sample-bead 1 TPU
+glue-sample 1 ASA
 clamp-sample 2 ASA
 bottom-sample 2 ASA
-samples-asa 8 ASA
+samples-asa 7 ASA
 samples-tpu 2 TPU"
 
 worst=0

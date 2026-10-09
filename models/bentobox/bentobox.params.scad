@@ -32,7 +32,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "fan_mate", "bottom_sample", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "fan_mate", "bottom_sample", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -125,7 +125,10 @@ grid_pitch = 10;    /* Ribs across the box (along X), this far apart; two more r
 grid_beads = 2;     /* Each rib is this many beads wide. */
 ledge_beads = 3;    /* A ledge round the inside at the grid's level: the ribs end on it, the sheet's edges seal on it, and it is the groove's inner wall. */
 
-/* [Your own HEPA paper, and the clamp that holds it - Alon, 8 Oct 2026: D127] */
+/* [Your own HEPA paper, and the frame that holds it - Alon, 8-9 Oct 2026: D127, T131] */
+hepa_frame = "glue";    /* "glue": one ASA frame the paper is hot-glued into (Alon, 9 Oct 2026: "make a hot glue version for the hepa"). "clamp": the two-frame clamp with wedges and teeth, SHELVED until the ASA is dried - wet, it strung and its thin fins came out fragile. */
+glue_wall = [1.35, 3];  /* The glue frame's walls: along its long sides, three lines; and at its ends, along the folds. */
+glue_lip = 1.5;         /* Its walls stand this far over the paper's top folds: a corner for the glue's bead to run in. */
 // The paper: pleated, sold by the metre. These four describe it; change them for other paper, then export the
 // clamp's frames again. A pleat is one fold up and one down: the dirty air comes into the channels open at the
 // top and leaves by those open at the bottom. The clamp is a cassette of two ASA frames with the paper between
@@ -140,7 +143,7 @@ hepa_ledge_w = 2;   /* MEASURED: the ledge round the original's opening; the enl
 paper_depth = 20.2; /* MEASURED (Alon, 9 Oct 2026: Q95): the pleats' depth, fold to fold - the pack's thickness. */
 paper_pitch = 2.12; /* One pleat, top fold to top fold, as the clamp holds it: a choice, not the paper's, which squeezes up tight - 31 folds stack to about 26 mm (Alon, Q95) - and spreads to any pitch. 18 pleats across the clamp (Alon, 9 Oct 2026: D143): the most the clamp builds, within 3 % of the most air at every grade of paper (sim/bentobox-cfd/pleat.py). Only the whole number that fills the clamp matters. */
 paper_t = 0.4;      /* MEASURED (Alon, 9 Oct 2026: Q95): the paper's thickness. */
-paper_flaps = true; /* The long edges cut on a bottom fold, so each side keeps half a pleat more, as a flap the clamp pinches. false: cut on a top fold. */
+paper_flaps = true; /* The clamp: the long edges cut on a bottom fold, so each side keeps half a pleat more, as a flap the clamp pinches. false: cut on a top fold. The glue frame always takes them cut on a top fold, glued along the wall. */
 clamp_slot = 0.2;   /* The zigzag slot between the frames' wedges and teeth, screwed together: under the paper's thickness, so the screws pinch it. The two sides are separate parts, so it need not print open. A first guess, for the sample to try. */
 clamp_play = 0.2;   /* Between the cassette and the holder's pocket, each side. */
 clamp_wedge_l = 4;  /* How far the wedges and teeth reach into the paper at each end, along the pleats. */
@@ -301,22 +304,27 @@ grommet_leads = [4, 1.55];  /* The holes in the skin, one per lead (Alon, 9 Oct 
 // Each fan keeps its own plug - a 3-pin KK 254-style housing, which Alon calls the fan header - and it pushes onto
 // this block in the fan section. The pins are the bared ends of 22 AWG solid wire (Alon): each wire comes up through
 // the block, its core standing as the pin, and carries on as the lead, with no joint. A wall stands behind the
-// plug's ribbed face, and a key on it goes between the two ribs, so the plug goes on one way only.
+// plug's ribbed face, and a key on it goes between the two ribs, so the plug goes on one way only; a clip on the key
+// catches over the plug's lip, and the wall in front of the plug springs to let it by.
 fan_plug = [8.0, 5.2, 12.77];   /* MEASURED (Alon, 9 Oct 2026): the fan's plug across its pins (A), its thickness without the ribs (B) - over the 0.3 mm lip across its open end between the ribs, 4.9 elsewhere between them, so the key keyed to B clears both - and its length along the wires (C). */
 fan_plug_d = 2.55;      /* MEASURED: from the plug's face with the text to the nearer wall of a pin's hole (D). */
 fan_plug_hole = 1.45;   /* MEASURED: a pin hole's size in the plug's end face. The pins stand in line with the holes' middles. */
 fan_plug_ribs = [1.1, 5.2, 6.67];   /* MEASURED: the ribs on the face opposite the text: each one's width, the gap between them, and the plug's thickness over them. */
+fan_plug_lip = [0.3, 2.2];  /* MEASURED (Alon, 9 Oct 2026): the lip across the plug's open end between the ribs - its height and its length along the plug. The clip catches over it. */
 fan_plug_pitch = 2.54;  /* KK 254's pitch, between the plug's holes - the plug's, so the checks hold it fixed. */
 fan_pitch = 2.54;       /* Between the mate's pins: KK 254's. */
 fan_wire = [0.64, 1.6]; /* 22 AWG solid wire: the core, by the gauge (0.644), and the insulation's outside (MEASURED, Alon, 9 Oct 2026: Q161). */
 fan_mate_n = 2;         /* Plugs on one block: 2, both fans side by side, their reds joined under it and their blacks (D154); 1, a block for each fan. One block (Alon, 9 Oct 2026: D160). */
 fan_mate_pin = 6;       /* How far each pin stands above the block: a header's mating length. */
-fan_mate_play = 0.25;   /* Round the plug: to the wall, to the key and between its ribs. */
+fan_mate_play = 0.25;   /* Round the plug: to the back wall, to the key, to the walls at its ends and between its ribs. */
 fan_mate_base = [5, 1.5];   /* The block under the plug: its height, and how much of it at the top holds the core alone - below, a slot takes the insulation. */
 fan_mate_wall = [1.8, 6];   /* The wall behind the plug: its thickness, and how far it stands above the block. */
-fan_mate_side = 1.35;   /* A wall at each end of the block too (Alon, 9 Oct 2026: "the mate needs sides and back"), three lines thick and as tall as the back one; between two plugs a wall of what fan_mate_gap leaves. The front, the plugs' text faces' side, stays open. */
+fan_mate_side = 1.35;   /* A wall at each end of the block too (Alon, 9 Oct 2026: "the mate needs sides and back"), three lines thick and as tall as the back one; between two plugs a wall of what fan_mate_gap leaves. */
+fan_mate_spring = [0.9, 0.1];  /* The wall in front of each plug's text face (Alon, 9 Oct 2026), as tall as the back one: its thickness - two lines, a spring - and its play to the text face. Slits free it from the block and the walls beside it, so it gives when the clip's lip goes by. */
+fan_mate_slit = [0.6, 1];  /* Those slits: their width, and how far over the block's underside they stop - the spring's root, so it bends from low down. */
+fan_mate_clip = [0.25, 0.05];  /* The clip on each key that clicks over the plug's lip (D174, Alon 9 Oct 2026: a detent, "a little larger so it presses"): how far its tip stands past the lip's face, and how far its 45-degree underside stands into the lip's top edge, the plug centred on its pins. <<CONFIRM>> by printing - the fan connector's male has the same. */
 fan_mate_gap = 2;       /* Between two plugs side by side: the wall between them is this less the play either side, 1.5 mm. */
-fan_mate_front = 2.5;   /* The block runs on this far past the plug's text face, for the red pin's mark. */
+fan_mate_front = 2.2;   /* The block runs on this far in front of the front walls' slits, for the red pin's mark. */
 fan_mate_at = [-2, 0];  /* Where the mate stands on the fan section's floor: its middle's X and Y, between the two fans and beside the grommet (Alon, 9 Oct 2026: D162). Its back, where the leads come out, faces -Y. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */

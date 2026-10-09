@@ -59,7 +59,7 @@ def clamp():
     src = ROOT / "models" / "bentobox" / "bentobox.scad"
     with tempfile.TemporaryDirectory() as tmp:
         f = Path(tmp) / "c.scad"
-        f.write_text(f"include <{src.as_posix()}>\ndraw_model = false;\n"
+        f.write_text(f"include <{src.as_posix()}>\ndraw_model = false;\nhepa_frame = \"clamp\";\n"
                      "echo(pleat = [paper_t, paper_depth, 2 * pack_edge, 2 * comb_y - 2 * clamp_wedge_l, pack_n]);\n",
                      encoding="utf-8")
         out = Path(tmp) / "c.echo"

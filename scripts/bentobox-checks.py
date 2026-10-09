@@ -15,7 +15,7 @@
                                                for errors - rendered aside, or over docs/ with --write
 
 A fit check intersects two parts that may touch but must not overlap: OpenSCAD must write nothing, or a
-solid of no volume. The originals must be in models/bentobox/original/ (its README says where from); a
+solid of no volume - all but those in MEETS, which must meet, and whose controls must empty them. The originals must be in models/bentobox/original/ (its README says where from); a
 missing one makes an import fail, which OpenSCAD reports only as a WARNING - so every render's output is
 read, never only its exit code. OPENSCAD should name a build with the Manifold backend (the nightly).
 Exit status: 0 everything as expected, 1 anything else.
@@ -39,13 +39,17 @@ BACKEND = ["--backend=manifold"]
 UNSEALED = [("sealed", "false")]
 # The C-MAG stands in a housing of the original's height: its fit in the housing is checked with carbon = "cmag".
 CMAG = [("carbon", '"cmag"')]
+# The paper's clamp is shelved for the glue frame (T131) but kept buildable: its checks run with hepa_frame = "clamp".
+CLAMP = [("hepa_frame", '"clamp"')]
 FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("check_magnets_top", UNSEALED),
         ("check_magnets_bottom", UNSEALED), ("check_air", []),
-        ("check_clamp_holder", []), ("check_cover_holder", []), ("check_cover_magnets", []),
-        ("check_cmag_housing", CMAG), ("check_cmag_halves", []), ("check_cmag_magnets", []), ("check_cmag_grills", []), ("check_clamp_frames", []), ("check_clamp_paper", []),
-        ("check_clamp_opening", []), ("check_clamp_screws", []), ("check_clamp_nuts", []), ("check_clamp_nut_ways", []),
+        ("check_glue_holder", []), ("check_glue_paper", []), ("check_glue_opening", []),
+        ("check_clamp_holder", CLAMP), ("check_cover_holder", []), ("check_cover_magnets", []),
+        ("check_cmag_housing", CMAG), ("check_cmag_halves", []), ("check_cmag_magnets", []), ("check_cmag_grills", []), ("check_clamp_frames", CLAMP), ("check_clamp_paper", CLAMP),
+        ("check_clamp_opening", CLAMP), ("check_clamp_screws", CLAMP), ("check_clamp_nuts", CLAMP), ("check_clamp_nut_ways", CLAMP),
         ("check_auto_fans_base", []), ("check_auto_tray", []), ("check_tray_slot_walls", []), ("check_usb_board", []),
         ("check_grommet_hole", []), ("check_fan_mate", []), ("check_fan_mate_pins", []), ("check_fan_mate_place", []),
+        ("check_fan_mate_seat", []), ("check_fan_mate_free", []), ("check_fan_mate_catch", []),
         ("check_auto_nuts", []), ("check_auto_nut_ways", []),
         ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", []),
         ("check_seal_j1", []), ("check_seal_j2", []), ("check_seal_j3", []), ("check_seal_beads", []),
@@ -61,16 +65,21 @@ CONTROLS = [
     ("check_magnets_top", UNSEALED + [("mag_xy", "[23.5, 52.5]")], "the section's magnet holes moved 1 mm off the housing's"),
     ("check_magnets_bottom", UNSEALED + [("mag_xy", "[23.5, 52.5]")], "the same, against the fan case's"),
     ("check_air", [("in_w", "30")], "the section's inside narrowed into the openings' path"),
-    ("check_clamp_holder", [("clamp_play", "-0.3")], "the clamp made wider than the holder's pocket"),
-    ("check_clamp_frames", [("clamp_slot", "-0.4")], "the wedges and teeth made to meet through the paper's slot"),
-    ("check_clamp_opening", [("rim_in", "-13")], "the lower frame's rim made to reach in over the air's way down"),
-    ("check_clamp_screws", [("screw_shift", "[1, 0]")], "the clamp's screws moved 1 mm off their holes"),
-    ("check_clamp_nuts", [("pull_fit", "-0.25")], "the clamp's nut seats made narrower than a nut"),
-    ("check_clamp_nut_ways", [("clamp_way", "1")], "the clamp's nut ways stopped short of the lower frame's bottom"),
+    # The glue frame's inside and rim are derived: overriding them moves the frame and leaves the paper and the ledge.
+    ("check_glue_holder", [("clamp_play", "-0.3")], "the glue frame made wider than the holder's pocket"),
+    ("check_glue_paper", [("gf_in", "[18.5, 47.25]")], "the glue frame's side walls moved in onto the paper's top folds"),
+    ("check_glue_paper", [("gf_in", "[18.9, 46.8]")], "its end walls moved in onto the paper's cut ends"),
+    ("check_glue_opening", [("gf_rim", "[35, 85]")], "its rim made to reach in over the ledge's opening"),
+    ("check_clamp_holder", CLAMP + [("clamp_play", "-0.3")], "the clamp made wider than the holder's pocket"),
+    ("check_clamp_frames", CLAMP + [("clamp_slot", "-0.4")], "the wedges and teeth made to meet through the paper's slot"),
+    ("check_clamp_opening", CLAMP + [("rim_in", "-13")], "the lower frame's rim made to reach in over the air's way down"),
+    ("check_clamp_screws", CLAMP + [("screw_shift", "[1, 0]")], "the clamp's screws moved 1 mm off their holes"),
+    ("check_clamp_nuts", CLAMP + [("pull_fit", "-0.25")], "the clamp's nut seats made narrower than a nut"),
+    ("check_clamp_nut_ways", CLAMP + [("clamp_way", "1")], "the clamp's nut ways stopped short of the lower frame's bottom"),
     # The wedges' width is derived; overriding it moves the wedges and leaves the paper, drawn from its own values.
-    ("check_clamp_paper", [("wedge_w", "4")], "the clamp's wedges made wider than the paper's channels"),
-    ("check_clamp_paper", [("tooth_w", "4")], "the clamp's teeth made wider than theirs"),
-    ("check_clamp_paper", [("flap_off", "0")], "the half wedges' faces moved in onto the flaps' middles"),
+    ("check_clamp_paper", CLAMP + [("wedge_w", "4")], "the clamp's wedges made wider than the paper's channels"),
+    ("check_clamp_paper", CLAMP + [("tooth_w", "4")], "the clamp's teeth made wider than theirs"),
+    ("check_clamp_paper", CLAMP + [("flap_off", "0")], "the half wedges' faces moved in onto the flaps' middles"),
     ("check_auto_fans_base", [("fans_drop", "0.5")], "the fan section set 0.5 mm down into its base"),
     ("check_auto_tray", [("tray_top", "14.3")], "the tray made 0.3 mm taller than the bay's roof"),
     ("check_tray_slot_walls", [("tray_screw_y", "51.4")], "the tray's screws moved 1 mm in, their slots' backs under the end walls' fillets"),
@@ -83,6 +92,10 @@ CONTROLS = [
     ("check_fan_mate", [("fm_wall_y", "-3.2")], "the mate's wall moved in onto the plug's ribs"),
     ("check_fan_mate", [("fm_key_y", "-1.7")], "the key's face moved in onto the plug's ribbed face"),
     ("check_fan_mate", [("fm_px", "3.8")], "the mate's end walls and the wall between the plugs moved in onto their ends"),
+    ("check_fan_mate", [("fm_fy", "3.1")], "the mate's front walls moved in onto the plugs' text faces"),
+    ("check_fan_mate_seat", [("fmp_plug_lip_l", "2.4")], "the plug's lip made longer, up into the clip's underside"),
+    ("check_fan_mate_free", [("fm_px", "3.8")], "the mate's walls moved in, into the sliding plugs' way"),
+    ("check_fan_mate_catch", [("fm_fy", "3.6")], "the front walls moved out: the plugs step round the clips"),
     ("check_fan_mate_pins", [("fan_pitch", "3.3")], "the mate's pins spread to 3.3 mm, off the plug's holes"),
     ("check_fan_mate_pins", [("fm_core_d", "0.5")], "the block's holes made narrower than the wire's core"),
     ("check_fan_mate_place", [("fan_mate_at", "[4, 0]")], "the mate moved 6 mm towards the grommet"),
@@ -119,6 +132,8 @@ CONTROLS = [
     ("check_section_fans", UNSEALED + [("auto_fans_stl", '"original/missing.stl"')], "the Auto fan section's STL missing - must be reported, not passed"),
 ]
 MISSING = "Can't open import file"
+# The checks that must NOT come out empty: the plug slid off past the clip must meet it. Their controls must empty them.
+MEETS = {"check_fan_mate_catch"}
 
 # The checks hold parts that meet face to face 0.01 mm apart (bentobox-assembly.scad, `sep`), so a good fit
 # leaves NOTHING; DUST is only float noise.
@@ -138,11 +153,17 @@ def fits():
     failed = 0
     for (view, settings), (stats, bad, _) in zip(FITS, results):
         label = f"{view} {' '.join(f'{k}={v}' for k, v in settings)}"
+        empty = stats is None or abs(stats["volume"]) < DUST
         if bad:
             verdict, failed = "FAIL  " + "; ".join(bad)[:200], failed + 1
+        elif view in MEETS:
+            if empty:
+                verdict, failed = "FAIL  empty: it must meet", failed + 1
+            else:
+                verdict = f"ok    meets, {stats['volume']:.3f} mm3"
         elif stats is None:
             verdict = "ok    empty"
-        elif abs(stats["volume"]) < DUST:
+        elif empty:
             verdict = f"ok    dust ({stats['volume']:.5f} mm3)"
         else:
             verdict, failed = f"FAIL  {stats['volume']:.3f} mm3 overlap, in {describe(stats)}", failed + 1
@@ -162,6 +183,10 @@ def controls():
             failed += not caught
         elif bad:
             verdict, failed = "FAIL  " + "; ".join(bad)[:200], failed + 1
+        elif view in MEETS:
+            emptied = stats is None or abs(stats["volume"]) < DUST
+            verdict = "ok    caught, it came out empty" if emptied else f"BLIND still meets, {stats['volume']:.3f} mm3"
+            failed += not emptied
         elif stats is None or abs(stats["volume"]) < DUST:
             verdict, failed = "BLIND nothing found", failed + 1
         else:
@@ -175,8 +200,8 @@ def controls():
 FIGURES = {
     "exploded": [("view", '"exploded"')], "cut": [("view", '"cut"'), ("cut_x", "0")],
     "section-top": [("view", '"section"')], "section-bottom": [("view", '"section"'), ("axes_cam", "[235, 0, 30]")],
-    "paper-frame": [("view", '"frame"'), ("explode", "25")], "clamp-print": [("view", '"clamp_print"')],
-    "paper-cut": [("view", '"paper_cut"')], "auto-bottom": [("view", '"bottom"'), ("explode", "28"), ("axes_cam", "[50, 0, 215]")],
+    "paper-frame": [("view", '"frame"'), ("explode", "25")] + CLAMP, "clamp-print": [("view", '"clamp_print"')] + CLAMP,
+    "paper-cut": [("view", '"paper_cut"')] + CLAMP, "glue-frame": [("view", '"glue"'), ("explode", "30")], "auto-bottom": [("view", '"bottom"'), ("explode", "28"), ("axes_cam", "[50, 0, 215]")],
     "joints": [("view", '"joints"'), ("explode", "22")], "grommet": [("view", '"grommet"'), ("axes_cam", "[50, 0, 20]")],
     "fan-mate": [("view", '"fan_mate"'), ("explode", "12"), ("axes_cam", "[50, 0, 205]")],
 }
@@ -186,6 +211,7 @@ CAMERAS = {
     "section-top": ["--imgsize=1400,900", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
     "section-bottom": ["--imgsize=1400,900", "--viewall", "--autocenter", "--camera=0,0,0,235,0,30,0"],
     "paper-frame": ["--imgsize=1400,1100", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
+    "glue-frame": ["--imgsize=1400,1100", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
     "clamp-print": ["--imgsize=1400,900", "--viewall", "--autocenter", "--camera=0,0,0,55,0,25,0"],
     "paper-cut": ["--imgsize=1800,600", "--projection=o", "--camera=-12,11,0,0,0,0,125"],
     "auto-bottom": ["--imgsize=1400,1300", "--viewall", "--autocenter", "--camera=0,0,0,50,0,215,0"],

@@ -208,6 +208,12 @@ ledge_z = st[3] + ledge_top;
 module opening_probe() translate([fold_x(2) + sep, -(comb_y - clamp_wedge_l) + sep, -1])
     cube([fold_x(fold_last - 2) - fold_x(2) - 2 * sep, 2 * (comb_y - clamp_wedge_l - sep), pack_z]);
 // The clamp's screws, head to tip, and its nuts pulled up into their seats - or slid down out of them.
+// The fans' plugs slid straight on and off the mate, from seated to 12 mm up, as far forward as the front walls let
+// them go without giving.
+module fan_plugs_swept() translate([0, fm_fy - fmp_text - 0.01, 0.01]) minkowski() {
+    for (x = fm_xs) fan_plug_model(x);
+    cube([0.001, 0.001, 12]);
+}
 module clamp_screws() translate([screw_shift[0], screw_shift[1], 0]) clamp_screws_at() {
     translate([0, 0, clamp_head_z - clamp_screw]) cylinder(d = small_screw[0], h = clamp_screw);
     translate([0, 0, clamp_head_z]) cylinder(d = small_screw[1], h = small_screw[2]);
@@ -221,6 +227,13 @@ module frame_exploded(ex) {
     color("steelblue") translate([0, 0, 2 * ex]) clamp_up();
     color("silver") translate([0, 0, 3 * ex]) clamp_screws();
 }
+// The glue frame with the paper lifted out of it.
+module glue_exploded(ex) {
+    color("orange") glue_frame();
+    color("ivory") paper_pack(z = ex);
+}
+// The ledge's opening, from the holder's own values, under the glue frame's rim: the rim must leave it open.
+module glue_opening_probe() translate([-open_wl[0] / 2 + sep, -open_wl[1] / 2 + sep, -1]) cube([open_wl[0] - 2 * sep, open_wl[1] - 2 * sep, clamp_rim + 1 - sep]);
 // Across the folds, flat: the clamp through an end's combs - the teeth, the wedges, the half wedges, the paper
 // in its zigzag slot - and beside it, through its middle - the long teeth and half wedges round each flap.
 module paper_cut() {
@@ -262,10 +275,19 @@ else if (view == "check_auto_tray") intersection() { translate([0, 0, -sep]) aut
 // The grommet sits in the fan section's floor, lip in groove. The hole is cut a hole's compensation larger than the
 // grommet's outside, and the grommet drawn only its squeeze larger, so in the model the two stand apart.
 else if (view == "check_grommet_hole") intersection() { fans_sealed(); translate([grommet_x, auto_conduit[1], duct_h]) grommet_body(); }
-// The fans' plugs, as measured, on the mate: each seated on the block, 0.01 mm up, its ribs either side of the key
-// and clear of the wall. And the wires' cores, standing as the pins: through their holes in the block and up into
-// the plugs' holes, touching neither.
-else if (view == "check_fan_mate") intersection() { fan_mate(); for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x); }
+// The fans' plugs, as measured, on the mate: each seated on the block, 0.01 mm up, centred on its pins, its ribs
+// either side of the key and clear of the walls - and, the clip's press taken off, of the clip. And the wires' cores,
+// standing as the pins: through their holes in the block and up into the plugs' holes, touching neither.
+else if (view == "check_fan_mate") intersection() { fan_mate(false); for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x); }
+else if (view == "check_fan_mate_seat") intersection() {
+    fan_mate(true, [fan_mate_clip[0], -0.02]);
+    for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x);
+}
+// The clip: each plug slid straight on and off, as far forward as its front wall lets it go without giving, meets
+// nothing of the mate but the clip (check_fan_mate_free, empty) - and does meet the clip (check_fan_mate_catch, which
+// must NOT come out empty): the clip is all that holds the plug, and the front wall must give for it to pass.
+else if (view == "check_fan_mate_free") intersection() { fan_mate(false); fan_plugs_swept(); }
+else if (view == "check_fan_mate_catch") intersection() { for (x = fm_xs) fan_mate_clip(x); fan_plugs_swept(); }
 // The mate in its place on the fan section's floor, 0.01 mm up, its plugs on it: clear of the fan section, of the
 // grommet's hole and the leads' way up out of it, and of the two fans, each drawn as its 40 x 40 x 20 mm frame.
 else if (view == "check_fan_mate_place") intersection() {
@@ -323,6 +345,7 @@ else if (view == "check_seal_access") union() {
     intersection() { seal_parts(); for (s = seal_screw_list) if (s[3] == sst[3]) hex_driver(s); }
 }
 else if (view == "frame") frame_exploded(explode);
+else if (view == "glue") glue_exploded(explode);
 else if (view == "clamp_print") color("orange") clamp_frames_printing();
 else if (view == "paper_cut") paper_cut();
 // The grommet twice: on the left turned over, its skin and the leads' holes up; on the right as it sits, the holes
@@ -338,6 +361,11 @@ else if (view == "fan_mate") {
     color("ivory") for (x = fm_xs) translate([0, 0, explode]) fan_plug_model(x);
 }
 // The clamp stands in the HEPA holder's pocket, on its ledge.
+// The glue frame in the holder's pocket, on its ledge; the paper in the frame, drawn 0.01 mm thinner each side, on
+// its rim and against its walls; and the rim clear of the ledge's opening.
+else if (view == "check_glue_holder") intersection() { translate([0, 0, sst[3] - meet + ledge_top + sep]) glue_frame(); hepa_sealed(); }
+else if (view == "check_glue_paper") intersection() { glue_frame(); paper_pack(paper_t - 2 * sep); }
+else if (view == "check_glue_opening") intersection() { glue_frame(); glue_opening_probe(); }
 else if (view == "check_clamp_holder") intersection() { translate([0, 0, sst[3] - meet + ledge_top + sep]) clamp_cassette(); hepa_sealed(); }
 // The cover on the HEPA holder: its plug in the holder's top, flat on the top face; and a magnet across the joint
 // at each corner, in both parts' holes.
@@ -368,6 +396,7 @@ if (show_axes && (view == "stack" || view == "exploded")) axes([-bb_w / 2 - 40, 
 axes_cam = [55, 0, 30];   // the picture's --camera angles, so the arrows' labels face it
 if (show_axes && view == "section") axes([-bb_w / 2 - 32, -bb_l / 2, 0], l = 15, cam = axes_cam);
 if (show_axes && view == "frame") axes([-cas[0] / 2 - 25, -cas[1] / 2, 0], l = 15, cam = axes_cam);
+if (show_axes && view == "glue") axes([-cas[0] / 2 - 25, -cas[1] / 2, 0], l = 15, cam = axes_cam);
 if (show_axes && view == "joints") axes([bb_w / 2 + 20, bb_l / 2, sst[0] + 30], l = 20, cam = axes_cam);
 if (show_axes && view == "bottom") axes([bb_w / 2 + 15, bb_l / 2, 0], l = 20, cam = axes_cam);
 if (show_axes && view == "grommet") axes([-13, -5, 0], l = 3.5, cam = axes_cam);

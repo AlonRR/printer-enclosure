@@ -38,8 +38,10 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | | What it does | File |
 |---|---|---|
 | **Section** | Goes between the carbon housing and the fan section, holding a flat filter sheet that stops carbon dust reaching the fans. Sealed at both its faces, with a pillar at each corner that the carbon housing's screws pass through. `sealed = false` builds it with the original's tongue, groove and magnets, to drop into any BentoBox v2.0 stack. | [`bentobox-section.scad`](../models/bentobox/bentobox-section.scad) |
-| **Paper clamp** | Two ASA frames, screwed together with a cut piece of pleated paper between them, standing on the HEPA holder's ledge in place of the cartridge: wedges from above and teeth from below pinch the paper's cut ends, and a bar from each its long edges. | [`bentobox-clamp-lower.scad`](../models/bentobox/bentobox-clamp-lower.scad), [`bentobox-clamp-upper.scad`](../models/bentobox/bentobox-clamp-upper.scad) |
-| **Clamp sample** | One end of each frame, on one plate: to try the pinch on an offcut before the whole clamp. | [`bentobox-clamp-sample.scad`](../models/bentobox/bentobox-clamp-sample.scad) |
+| **Glue frame** | One ASA frame your own pleated HEPA paper is hot-glued into, standing on the HEPA holder's ledge in place of the cartridge (T131, Alon, 9 Oct 2026). | [`bentobox-glue-frame.scad`](../models/bentobox/bentobox-glue-frame.scad) |
+| **Glue sample** | One end of the glue frame: to glue an offcut in before the whole frame. | [`bentobox-glue-sample.scad`](../models/bentobox/bentobox-glue-sample.scad) |
+| **Paper clamp** (shelved) | Two ASA frames, screwed together with a cut piece of pleated paper between them, standing on the HEPA holder's ledge in place of the cartridge: wedges from above and teeth from below pinch the paper's cut ends, and a bar from each its long edges. | [`bentobox-clamp-lower.scad`](../models/bentobox/bentobox-clamp-lower.scad), [`bentobox-clamp-upper.scad`](../models/bentobox/bentobox-clamp-upper.scad) |
+| **Clamp sample** (shelved) | One end of each frame, on one plate: to try the pinch on an offcut before the whole clamp. | [`bentobox-clamp-sample.scad`](../models/bentobox/bentobox-clamp-sample.scad) |
 | **Base** | In place of the duct, drawn to the Auto's: the duct over the bay's roof, the wires' tube, the fans' four nuts pulled up into pockets in posts, and four nuts in slots for the tray's screws. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
 | **Fan section** | In place of the fan case, drawn to the Auto's: its floor with the fans' openings and screws' holes, its top the sealed joint's, and its wires' hole opened out for the grommet. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
 | **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with four screws, their heads sunk in its bottom face. | [`bentobox-auto-tray.scad`](../models/bentobox/bentobox-auto-tray.scad) |
@@ -243,7 +245,7 @@ fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026
 **The fans' plug mate** (Alon, 9 Oct 2026). Each fan keeps its own 3-pin plug and pushes it onto a printed block in
 the fan section, so a fan comes out by unplugging it.
 
-![The plug mate with both fans' plugs lifted off it: the pins, the bared ends of the wires, standing out of the block; the walls round each plug, open at the front, with a key on the back one; a + in front of each red pin](bentobox/fan-mate.png)
+![The plug mate with both fans' plugs lifted off it: the pins, the bared ends of the wires, standing out of the block; walls on all four sides of each plug, a key and its clip on the back one, the front one standing free in its slits; a + in front of each red pin](bentobox/fan-mate.png)
 
 - **The pins are the wires.** 22 AWG solid wire (owned, the 5-colour UL1007): its bare core is 0.64 mm, a
   header pin's size. Bare each wire 7.5 mm, push it up through the block from below until its insulation stops
@@ -251,9 +253,15 @@ the fan section, so a fan comes out by unplugging it.
   Under the block, bend each wire over into the groove to the back edge. Once the block is fixed down, that bend
   stops a pin being pushed down when a plug goes on; until then, a drop of glue in the slot does it.
 - **One way on.** A wall stands behind each plug's ribbed face, and a key on it goes between the plug's two ribs,
-  so the plug only goes on with its text face to the front. A wall at each end of the block and one between the
-  plugs (Alon, 9 Oct 2026: "the mate needs sides and back") guide each plug on square; the front stays open. A
-  **+** in front of each plug marks the red wire's pin; the plug's own moulded arrow lands over it.
+  so the plug only goes on with its text face to the front. A wall at each end of the block, one between the plugs
+  and one in front of each plug's text face (Alon, 9 Oct 2026) close each plug in on all four sides. A **+** in
+  front of each plug marks the red wire's pin; the plug's own moulded arrow lands over it.
+- **A clip holds each plug on** (D174, Alon, 9 Oct 2026). A ridge across the key catches over the plug's lip - the
+  0.3 mm step across its open end between the ribs, 2.2 mm long - and its 45-degree underside presses on the lip's
+  edge. The front wall is a spring, two lines thick, freed by 0.6 mm slits from the walls beside it and down into
+  the block to 1 mm over its underside: it gives for the lip to ride over the ridge, going on and coming off, and
+  presses the plug onto the ridge once it is on. The reach (0.25 mm) and press (0.05 mm) are first guesses, the
+  same as the fan connector's male: try a real plug on a printed mate, and check the slits printed open.
 - **From the plug as measured** (Alon, 9 Oct 2026): 8.0 mm across its pins, 5.2 thick over a 0.3 mm lip across its open end (4.9 behind it), 6.67 over its ribs, the
   ribs 1.1 wide with 5.2 between them, its holes 1.45 mm and their nearer walls 2.55 mm from the text face. The
   key is 4.7 wide, 0.25 mm of play each side of the plug.
@@ -335,7 +343,35 @@ Pleated HEPA paper off a roll can take the bought cartridge's place. The origina
 remix cuts the pocket out to the box's whole inside, 100.8 × 40.8 mm with its rounded corners, from the ledge
 up, and the ledge's opening with it, to 87.5 × 36.8 mm (78 × 36.8 on the original).
 
-A clamp holds the paper there: two ASA frames with a cut piece of paper between them, screwed together into a
+### The glue frame
+
+Alon, 9 Oct 2026 (T131): the clamp's wedges and teeth printed thin and fragile from ASA that was not dry, so the
+paper is hot-glued into one frame instead. The clamp is shelved until the filament is dried, and still builds
+with `hepa_frame = "clamp"` (below).
+
+![The glue frame with the cut paper lifted out of it: walls all round, a rim round the bottom leaving the ledge's opening open, the paper's folds running end to end](bentobox/glue-frame.png)
+
+- **The frame.** One ASA frame with the clamp's outline, 100.5 × 40.5 mm and 22.9 mm tall: side walls three
+  lines thick, end walls 3 mm, standing 1.5 mm over the paper's top folds, and a rim round its bottom, 1.2 mm
+  thick, that stands on the ledge and leaves the ledge's 87.5 × 36.8 mm opening open. No fins: every wall is
+  solid, the thinnest place 1.1 mm, at the corners. 1 h 16 m, 10 g.
+- **The paper.** A piece **94.1 mm long along the folds and 18 pleats across, both long edges cut on a top
+  fold**; the frame takes it at 2.08 mm a pleat, 37.4 mm across. It is 7 mm longer than the clamp's piece,
+  since nothing reaches into its ends now, and the sheet still gives three pieces.
+- **Glue from the top only.** The dirty air comes in at the top, so closing the top closes every way round the
+  paper. Stand the paper in the frame on its rim, its cut ends against the end walls. At each end, fill the end
+  of every channel open at the top with glue, down to its bottom fold and a few millimetres along - the glue
+  does what the clamp's wedges did. Then run a bead across each end, over the top folds' cut ends and into the
+  corner with the end wall, and one along each long side, where the top fold meets the wall. The channels open
+  at the bottom end over the rim, which closes them: nothing is needed underneath.
+- **Heat.** Ordinary hot-melt glue softens from about 60 °C, and the frame sits in the chamber's air: if the
+  chamber runs over about 50 °C, use high-temperature sticks.
+- **Try it first.** The glue sample is one end of the frame, 16 mm of it (32 m, 3 g). Glue an offcut 16 mm long
+  into it as above, and look up through it at a light: none should come round the paper's end or its sides.
+
+### The clamp (shelved)
+
+Two ASA frames with a cut piece of paper between them, screwed together into a
 cassette that stands on the ledge, 100.5 × 40.5 mm. It takes a piece 87.1 mm long and 40.3 mm across - 18
 pleats and a half each side (D143) - where the bought cartridge is 80 × 40 and the original's pocket took 75.7 ×
 37.2 of this paper: 25 % more paper than that.
@@ -417,7 +453,8 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
 
 - **The joint sample** and its TPU bead - one end of a sealed joint, and a fan nut's seat (see *The sealed
   joints*).
-- **The clamp sample** - one end of each of the paper clamp's frames (see *Your own HEPA paper*).
+- **The glue sample** - one end of the glue frame (see *The glue frame*). The clamp's sample still builds, but is
+  off the plate.
 - **The bottom sample** - the tray's -Y end, 18 mm of it, and the base's floor over it, 7 mm. Drop the USB-C
   trigger board into its pocket: its socket's face should sit flush with the end face, and a USB-C plug should go
   all the way in, the stop behind the board taking the push. Slide a nut into each of the two slots in the base's
@@ -428,11 +465,19 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
   sides and hold. Then push four spare leads like the fans' through it, one down each groove and through its hole
   in the skin: they should not slide easily, and the skin should hold round each.
 
+**Tried, 9 Oct 2026** (T131), with ASA that was not dry and strung:
+
+- **The USB-C trigger board fits perfectly** in the bottom sample's pocket.
+- Of the bottom sample's two tray nuts, one held as its screw was driven; **the other spun in its slot**.
+- **The fan nut's seat is very loose**: the nut slides in and falls out.
+- **The TPU bead** sits in the joint's groove and compresses a lot.
+- **The clamp's wedges and teeth** came out thin and fragile: hence the glue frame.
+
 ## Printing
 
 Every part prints as its file draws it, standing on its bottom - the section, the base on its floor, the tray,
-the fan section, the carbon housing and the HEPA holder - the cover on its top face, the clamp's lower frame on its
-rim and its upper frame turned over onto its band, and a bead ring flat. With the C-MAG, its parts print from their
+the fan section, the carbon housing and the HEPA holder - the cover on its top face, the glue frame on its rim,
+the clamp's lower frame on its rim and its upper frame turned over onto its band, and a bead ring flat. With the C-MAG, its parts print from their
 own files: the tray on its floor, the lid on its top face, the grills flat. No supports, no brim. `sh scripts/bentobox-print.sh` builds every one, checks it and slices
 it, and puts its STL and G-code in `models/bentobox/print/`; name parts to build only those - `samples-asa
 samples-tpu` for the two sample plates.
@@ -440,9 +485,11 @@ samples-tpu` for the two sample plates.
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
 | Section | ASA | 1 | 1 h 57 m | 17 g |
-| Clamp, lower frame | ASA | 1 | 1 h 28 m | 10 g |
-| Clamp, upper frame | ASA | 1 | 1 h 11 m | 8 g |
-| Clamp sample | ASA | 1 plate | 1 h 7 m | 7 g |
+| Glue frame | ASA | 1 | 1 h 16 m | 10 g |
+| Glue sample | ASA | 1 | 32 m | 3 g |
+| Clamp, lower frame (shelved) | ASA | 1 | 1 h 29 m | 10 g |
+| Clamp, upper frame (shelved) | ASA | 1 | 1 h 11 m | 8 g |
+| Clamp sample (shelved) | ASA | 1 plate | 1 h 7 m | 7 g |
 | Base | ASA | 1 | 3 h 25 m | 36 g |
 | Fan section | ASA | 1 | 3 h 42 m | 36 g |
 | Tray | ASA | 1 | 1 h 47 m | 20 g |
@@ -453,9 +500,9 @@ samples-tpu` for the two sample plates.
 | Joint sample | ASA | 1 plate | 1 h 7 m | 10 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
 | Grommet | TPU 95A | 1 | 2 m | under 1 g |
-| Fans' plug mate | ASA | 1 | 16 m | 1.4 g |
+| Fans' plug mate | ASA | 1 | 18 m | 1.6 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
-| Samples, ASA | ASA | 1 plate | 3 h 5 m | 25 g |
+| Samples, ASA | ASA | 1 plate | 2 h 26 m | 21 g |
 | Samples, TPU | TPU 95A | 1 plate | 5 m | under 1 g |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
@@ -486,7 +533,9 @@ For the joint sample, from the same stock: 2 M3 nuts, 1 M3 × 12 and 1 M3 × 8. 
 2.5 mm hex screwdriver, its blade 75 mm or longer. For the bottom sample: 2 M3 nuts,
 2 M3 × 12 and the USB-C trigger board.
 
-For the paper's clamp:
+For the glue frame: a hot-glue gun and sticks, high-temperature ones if the chamber runs hot.
+
+For the paper's clamp, shelved:
 
 | Quantity | Item |
 |---|---|
@@ -608,20 +657,21 @@ holes. It runs the air's way from the housing's floor - its honeycomb, or with t
 the section. It stands the cover on the HEPA holder, its plug in the holder's top, a magnet across the joint
 at each corner. With `carbon = "cmag"` it stands the C-MAG in the carbon housing, clear of its walls and of the HEPA holder; and
 it closes the C-MAG's lid
-on its tray, a magnet across their joint at each corner, and sets the four grills in their slots. For the paper's clamp it stands the cassette in the cut-out HEPA holder, sets the
+on its tray, a magnet across their joint at each corner, and sets the four grills in their slots. It stands the glue frame in the cut-out HEPA holder, the paper in the frame against its walls, and keeps the
+ledge's opening clear of the frame's rim. For the paper's clamp, with `hepa_frame = "clamp"`, it stands the cassette in the cut-out HEPA holder, sets the
 upper frame on the lower one - meeting only at the end blocks - lays a model of the paper, drawn from its own
 values at the slot's thickness, in the frames' zigzag, keeps the air's way down under the paper open, and
 runs the four screws through the end blocks and the nuts into their seats and down out of them. It sets the
 grommet in the fan section's floor, lip in groove. It seats the fans' plugs, drawn from their measurements, on
-their mate, ribs either side of each key and clear of the walls, and runs the wires' cores up through the block
+their mate, ribs either side of each key and clear of the walls and - the press taken off - of the clips, slides each plug on and off as far forward as its front wall lets it, meeting nothing but its clip and meeting that (the one check that must not come out empty), and runs the wires' cores up through the block
 into the plugs' holes. For the bottom it stands the fan
 section on the base and the base on the tray, lays the USB-C board in its pocket - its socket through its notch,
 flush with the end face - sets a nut in each of the tray's slots and slides it out through
 the end face, and one in each fan screw's seat and draws it down its pocket and out under its post, keeps two
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
 the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 39 fits and
-53 controls.
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 45 fits and
+61 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.

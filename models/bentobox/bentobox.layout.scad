@@ -63,25 +63,35 @@ hepa_in_grow = meet;                                            // the drawn hol
 // The clamp (D127): a cassette, its outline the pocket's, clamp_play in; X across, Y along the folds, Z from its
 // bottom face, which stands on the ledge. The paper's bottom face clamp_fold_gap over the lower frame's rim, its
 // top as deep again, and the upper frame's band clamp_fold_gap over that.
+// The glue frame (hepa_frame = "glue") has the same outline: the paper stands on its rim, its long edges cut on a top
+// fold against the side walls, its cut ends against the end walls with clamp_fold_gap for the glue.
 cas = [in_w + 2 * meet - 2 * clamp_play, pocket_l + 2 * meet - 2 * clamp_play];
-pack_z = clamp_rim + clamp_fold_gap;
+glue = hepa_frame == "glue";
+flaps = paper_flaps && !glue;
+pack_z = glue ? clamp_rim : clamp_rim + clamp_fold_gap;
 pack_top = pack_z + paper_depth;
 band_z = pack_top + clamp_fold_gap;
 cas_h = band_z + clamp_band;
 comb_y = cas[1] / 2 - clamp_blk;                     // each end block's inner face; the combs reach in from it
 slot_w = clamp_slot;                                 // the slot the paper sits in, pinched
-pack_edge = paper_flaps ? cas[0] / 2 - slot_w / 2 : cas[0] / 2;   // the paper's middle at its long edges, +/- X
-pack_halves = paper_flaps ? 1 : 0;                   // the flaps: a half pleat each side
+pack_edge = glue ? cas[0] / 2 - glue_wall[0] - paper_t / 2   // the paper's middle at its long edges, +/- X
+          : flaps ? cas[0] / 2 - slot_w / 2 : cas[0] / 2;
+pack_halves = flaps ? 1 : 0;                         // the flaps: a half pleat each side
 pack_n = max(1, round(2 * pack_edge / paper_pitch) - pack_halves);   // full pleats across
 pack_pitch = 2 * pack_edge / (pack_n + pack_halves);
-pack_l = 2 * (comb_y - clamp_fold_gap);              // the piece's length, along the folds, clear of the end blocks
+pack_l = glue ? cas[1] - 2 * (glue_wall[1] + clamp_fold_gap)   // the piece's length, along the folds, clear of
+             : 2 * (comb_y - clamp_fold_gap);                 // the end walls or the end blocks
 // The ledge's opening, cut out with the pocket: hepa_ledge_w inside the walls across, and along to the combs.
 open_wl = hepa_full ? [in_w - 2 * hepa_ledge_w, 2 * comb_y] : hepa_open;
+// The glue frame: its inside, half across and half along; its rim's opening, the ledge's; and its height.
+gf_in = [cas[0] / 2 - glue_wall[0], cas[1] / 2 - glue_wall[1]];
+gf_rim = open_wl;
+gf_h = pack_top + glue_lip;
 // The folds across the piece, from one long edge to the other: the i-th is at fold_x(i), a top fold or a
 // bottom one. With flaps, the first and the last are the flaps' cut ends.
 fold_last = 2 * (pack_n + pack_halves);
 function fold_x(i) = -pack_edge + i * pack_pitch / 2;
-function fold_top(i) = (i % 2 == 0) != paper_flaps;
+function fold_top(i) = (i % 2 == 0) != flaps;
 // Seen along the folds, the paper's middle runs from a top fold paper_t / 2 under the pack's top face to a
 // bottom fold paper_t / 2 over its bottom, leaning pleat_alpha from upright. Screwed together, the frames leave
 // it a slot slot_w wide, centred on that middle, so the side of a wedge or a tooth is the middle moved
@@ -169,7 +179,8 @@ grommet_lead_r = (grommet_lead_d + 2 * fdm_extrusion_w) / (2 * sin(180 / grommet
 // The fans' plug mate, in its own frame: the pins along X at Y = 0, standing up from Z = 0, the block's underside;
 // the plug's text face towards +Y, its ribs towards -Y. Out from the pins' line: the plug's text face, its ribbed
 // face, its ribs' tips; the wall's inside, the key's face and its width; the holes as cut; each plug's X and its
-// pocket's half-width; the block's ends and its back and front faces; and how much of each wire to bare.
+// pocket's half-width; the front wall's inside; the block's ends and its back and front faces; and how much of each
+// wire to bare. Then the clip's tip, out from the pins and up from the block's underside, for a clip c.
 fmp_text = fan_plug_d + fan_plug_hole / 2;
 fmp_back = fan_plug[1] - fmp_text;
 fmp_ribs = fan_plug_ribs[2] - fmp_text;
@@ -183,8 +194,12 @@ fm_px = fan_plug[0] / 2 + fan_mate_play;
 fm_x0 = min(fm_xs) - fm_px - fan_mate_side;
 fm_x1 = max(fm_xs) + fm_px + fan_mate_side;
 fm_y0 = fm_wall_y - fan_mate_wall[0];
-fm_y1 = fmp_text + fan_mate_front;
+fm_fy = fmp_text + fan_mate_spring[1];
+fm_y1 = fm_fy + fan_mate_spring[0] + fan_mate_slit[0] + fan_mate_front;
 fm_strip = fan_mate_base[1] + fan_mate_pin;
+fmp_plug_lip_l = fan_plug_lip[1];   // the plug's lip's length, drawn: its own, so a check's control can move it alone
+function fm_clip_y(c) = -fmp_back + c[0];
+function fm_clip_z(c) = fan_mate_base[0] + fan_plug_lip[1] + c[0] - c[1];
 // What a tray screw leaves: its hole to the board's pocket, beside it; its counterbore to the magnets' holes.
 tray_usb_wall = min([for (x = tray_screws_x) abs(x - usb_x) - usb_pocket[0] / 2 - hole_d / 2]);
 tray_magnet_wall = min([for (x = tray_screws_x, m = auto_magnets) norm([x, tray_screw_y] - m) - (m3_cb[0] + auto_magnet[0]) / 2]);
@@ -209,6 +224,13 @@ assert(fan_mate_base[0] - fan_mate_base[1] > fm_ins_d && fan_pitch - fm_core_d >
     "the plug mate's block must hold the insulation's slot under the cores' holes, a line of it between them");
 assert(fan_mate_n == 1 || fan_mate_gap - 2 * fan_mate_play > 2 * fdm_extrusion_w,
     "the plug mate's wall between two plugs must be two lines thick");
+assert(fan_mate_clip[0] > fan_mate_spring[1] && fan_mate_clip[0] < fan_plug_lip[0] - 0.02 && fan_mate_clip[1] < fan_mate_clip[0],
+    "the plug mate's clip must reach past the front wall's play, stay clear of the plug's face behind the lip, and stand over the lip");
+assert(fm_clip_z(fan_mate_clip) + (fm_clip_y(fan_mate_clip) - fm_key_y) * sqrt(3) < fan_mate_base[0] + fan_mate_wall[1] - 0.5 - (fm_key_y - fm_wall_y),
+    "the plug mate's clip must stand under its key's chamfer");
+assert(fan_mate_spring[0] >= 2 * fdm_extrusion_w - 1e-9 && fan_mate_slit[0] > fdm_extrusion_w && fan_mate_slit[1] > 0
+       && fm_fy - fan_mate_slit[0] > fm_ins_d / 2 + fdm_extrusion_w,
+    "the plug mate's front wall must be two lines thick, its slits wider than a line, stopping over the underside, clear of the insulation's slot");
 assert(grommet_x + grommet_hole_r + grommet_chamfer < auto_fans_in_x - 0.2, "the grommet's hole must stay under the fan section's chamber, clear of its +X wall");
 assert(abs(grommet_x - auto_conduit[0]) + auto_conduit[2] / 2 + meet < grommet_hole_r, "the grommet's hole must take the fan section's old hole in");
 assert(post_round_z < pull_seat, "a fan nut's seat must stand in its post's straight part, over the underside's round");
@@ -295,11 +317,18 @@ bracket_slope = max(3 * bracket_l, (seal_r - tab_blend + 0.5) * 1.5 / (tab_corne
 assert(bracket_slope <= 1 + 1e-9, str("a bracket overhangs more than 45 degrees: dy/dz up to ", bracket_slope));
 assert(!sealed || (bottom == "auto" || bottom == "bambu"), "a sealed stack needs a fan section");
 
-assert(wedge_w > 0 && tooth_w > 0, "the pleats are too narrow for the paper's slot: no channel is left to close");
-assert(hepa_full, "the clamp is drawn for the HEPA holder's pocket cut out to the whole inside");
-assert(pack_l > 2 * clamp_wedge_l + 10, "the clamp is too short for its combs");
-assert(hepa_ledge + cas_h < hepa_h - 1, "the clamp is taller than the HEPA holder");
-assert(half_wedge_z0 < paper_depth - 3, "the half wedges outside the flaps come out shorter than 3 mm");
+assert(hepa_frame == "glue" || hepa_frame == "clamp", "hepa_frame is \"glue\" or \"clamp\"");
+assert(hepa_full, "the paper's frame is drawn for the HEPA holder's pocket cut out to the whole inside");
+// The clamp's own: they hold only when it is the frame drawn.
+assert(glue || (wedge_w > 0 && tooth_w > 0), "the pleats are too narrow for the paper's slot: no channel is left to close");
+assert(glue || pack_l > 2 * clamp_wedge_l + 10, "the clamp is too short for its combs");
+assert(glue || hepa_ledge + cas_h < hepa_h - 1, "the clamp is taller than the HEPA holder");
+assert(glue || half_wedge_z0 < paper_depth - 3, "the half wedges outside the flaps come out shorter than 3 mm");
+assert(glue_wall[0] >= 2 * fdm_extrusion_w - 1e-9 && glue_wall[1] >= 2 * fdm_extrusion_w - 1e-9 && glue_lip >= 0,
+    "the glue frame's walls must be two lines thick and stand over the paper");
+assert(gf_in[0] > gf_rim[0] / 2 && gf_in[1] > gf_rim[1] / 2, "the glue frame's walls must stand outside the ledge's opening");
+assert(hepa_ledge + gf_h < hepa_h - 1, "the glue frame is taller than the HEPA holder");
+assert(pack_l > 20, "the glue frame is too short for its paper");
 
 assert(grid_t >= groove_h + 2 * fdm_layer_h, "the grid's rim must roof the groove in the section's bottom");
 assert(ledge_w > -groove_in, "the ledge must reach past the groove's inner face");
@@ -323,7 +352,7 @@ warns = [
     if (plenum_h < 3) str("only ", plenum_h, " mm of air above the sheet: the openings above will load it unevenly"),
     if (abs(pack_pitch / paper_pitch - 1) > 0.1)
         str("the paper is ", pack_pitch > paper_pitch ? "stretched" : "squeezed", " ", round(100 * abs(pack_pitch / paper_pitch - 1)),
-            " % to fill the clamp: ", pack_n, " pleats in ", cas[0], " mm"),
+            " % to fill the ", glue ? "glue frame" : "clamp", ": ", pack_n, " pleats in ", 2 * pack_edge, " mm"),
     if (wedge_w < 2 * bead - 1e-9) str("the clamp's wedges are ", wedge_w, " mm wide at the top, under two beads: they may not print"),
     if (clamp_slot > paper_t) str("the clamp's slot is wider than the paper: it holds the paper but does not pinch it"),
     if (small_nut_wall < 2 * bead - 1e-9) str("the clamp's nut pockets leave ", small_nut_wall, " mm of the end blocks, under two beads"),

@@ -6,4 +6,5 @@
 // paper's flaps, and the end blocks' lower halves with a seat for each screw's nut. Everything is in bentobox.scad,
 // and this file only pins the part.
 include <bentobox.scad>
+hepa_frame = "clamp";   // shelved for the glue frame (T131, 9 Oct 2026), kept buildable
 part = "clamp_lower";

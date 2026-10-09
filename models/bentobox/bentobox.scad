@@ -104,10 +104,10 @@ module cas2d() offset(delta = -clamp_play) inside_offset(meet);
 module tooth_2d(i) let(x = fold_x(i), g = clamp_fold_gap * tan(pleat_alpha))
     polygon([[x - tooth_w / 2 - g, -clamp_fold_gap - eps], [x + tooth_w / 2 + g, -clamp_fold_gap - eps], [x, tooth_z1]]);
 module teeth_2d() for (i = [0 : fold_last]) if (fold_top(i)) tooth_2d(i);
-module long_teeth_2d() if (paper_flaps) { tooth_2d(1); tooth_2d(fold_last - 1); }
+module long_teeth_2d() if (flaps) { tooth_2d(1); tooth_2d(fold_last - 1); }
 module half_wedge_2d() let(t = paper_depth + clamp_fold_gap + eps) polygon([[-cas[0] / 2 - 1, half_wedge_z0],
     [flap_out_x(half_wedge_z0), half_wedge_z0], [flap_out_x(t), t], [-cas[0] / 2 - 1, t]]);
-module half_wedges_2d() if (paper_flaps) for (m = [0, 1]) mirror([m, 0]) half_wedge_2d();
+module half_wedges_2d() if (flaps) for (m = [0, 1]) mirror([m, 0]) half_wedge_2d();
 module wedges_2d() {
     for (i = [1 : fold_last - 1]) if (!fold_top(i)) let(x = fold_x(i), g = clamp_fold_gap * tan(pleat_alpha), t = paper_depth + clamp_fold_gap + eps)
         polygon([[x - wedge_w / 2 - g, t], [x + wedge_w / 2 + g, t], [x, wedge_z0]]);
@@ -170,7 +170,7 @@ module clamp_cassette() { clamp_low(); clamp_up(); }
 // pack's faces. With flaps, each flap's cut end stands on the lower frame's rim.
 module paper_2d(t = paper_t) {
     pts = [for (i = [0 : fold_last])
-        paper_flaps && (i == 0 || i == fold_last)
+        flaps && (i == 0 || i == fold_last)
             ? [fold_x(i) + (i == 0 ? 1 : -1) * (flap_foot_z - paper_t / 2) * tan(pleat_alpha), flap_foot_z]
             : [fold_x(i), fold_top(i) ? paper_depth - paper_t / 2 : paper_t / 2]];
     for (k = [0 : len(pts) - 2]) hull() {
@@ -190,6 +190,26 @@ module _clamp_end() translate([-50, cas[1] / 2 - clamp_sample_l, -1]) cube([100,
 module clamp_sample() {
     translate([-cas[0] / 2 - 3, 0, 0]) intersection() { clamp_low(); _clamp_end(); }
     translate([cas[0] / 2 + 3, 0, cas_h]) mirror([0, 0, 1]) intersection() { clamp_up(); _clamp_end(); }
+}
+
+// ------------------------------------------------------------------ the glue frame for your own HEPA paper (T131)
+// Alon, 9 Oct 2026: "make a hot glue version for the hepa". One ASA frame, the clamp's outline: walls glue_lip over
+// the paper's top folds, a rim round its bottom on the ledge, open over the ledge's opening. The paper stands on the
+// rim, its long edges cut on a top fold against the side walls, its cut ends against the end walls. The glue goes in
+// from the top, the dirty side, and that is the only side that needs it: in the end of every channel open at the
+// top, at both ends, as the clamp's wedges were, and in a bead across each end and along each long side where the
+// top fold meets the wall. The channels open at the bottom end over the rim, which closes them. No fins: every wall
+// is solid, two lines or more, the corners at least 1.1 mm.
+module glue_frame() difference() {
+    linear_extrude(gf_h) cas2d();
+    translate([-gf_in[0], -gf_in[1], clamp_rim]) cube([2 * gf_in[0], 2 * gf_in[1], gf_h]);
+    translate([-gf_rim[0] / 2, -gf_rim[1] / 2, -1]) cube([gf_rim[0], gf_rim[1], clamp_rim + 2]);
+}
+// Its sample: one end, glue_sample_l in from it, as it prints - to glue an offcut in before the whole frame.
+glue_sample_l = 16;
+module glue_sample() intersection() {
+    glue_frame();
+    translate([-50, cas[1] / 2 - glue_sample_l, -1]) cube([100, glue_sample_l + 1, gf_h + 2]);
 }
 
 // ------------------------------------------------------------------ the originals, in the box's frame
@@ -823,36 +843,62 @@ module fan_mate_key(x) let(h = fan_mate_base[0], wh = fan_mate_wall[1] - 0.5, d 
         cube([fm_key_w, d + e, wh - d - e + 0.01]);
         cube([fm_key_w, 0.01, wh + 0.01]);
     }
-// The block and its walls - the back one, one at each end and one between the plugs (Alon, 9 Oct 2026) - are one
-// prism of the whole outline with each plug's pocket cut down to the block: boxes sharing faces would meet in lines
-// of T-junctions. The groove is a little wider than the slot, so its sides are not tangent to the slot's round ends.
-module fan_mate() let(h = fan_mate_base[0], c = fan_mate_base[1], wh = fan_mate_wall[1], s = 2 * fan_pitch + fm_ins_d + 0.4)
+// The clip (D174): a ridge across each key's face that the plug's lip rides over going on - a 30-degree lead-in
+// above - and clicks under, its 45-degree underside pressing on the lip's top edge. It starts inside the key and is
+// 0.2 mm narrower each side, so none of its faces lies in one of the key's.
+module fan_mate_clip(x, cl = fan_mate_clip) let(e = 0.3, w = fm_key_w - 0.4, cy = fm_clip_y(cl), cz = fm_clip_z(cl), r = cy - fm_key_y + e)
+    translate([x - w / 2, 0, 0]) rotate([90, 0, 90]) linear_extrude(w)
+        polygon([[fm_key_y - e, cz - r], [cy, cz], [fm_key_y - e, cz + r * sqrt(3)]]);
+// The air round each plug's front wall, in plan: over the block, the plug's pocket, the slits at the front wall's
+// ends and everything in front of it; in the block, the slits round it, behind, at its ends and in front.
+module fan_mate_air_2d() let(f = fan_mate_spring[0], g = fan_mate_slit[0]) {
+    for (x = fm_xs) {
+        translate([x - fm_px, fm_wall_y]) square([2 * fm_px, fm_fy - fm_wall_y]);
+        for (s = [-1, 1]) translate([s > 0 ? x + fm_px - g : x - fm_px, fm_fy - 0.01]) square([g, f + 0.02]);
+    }
+    translate([fm_x0 - 1, fm_fy + f]) square([fm_x1 - fm_x0 + 2, fm_y1 - fm_fy - f + 1]);
+}
+module fan_mate_slits_2d() let(f = fan_mate_spring[0], g = fan_mate_slit[0]) for (x = fm_xs) difference() {
+    translate([x - fm_px, fm_fy - g]) square([2 * fm_px, f + 2 * g]);
+    translate([x - fm_px + g, fm_fy]) square([2 * (fm_px - g), f]);
+}
+// The block and its walls - the back one, one at each end, one between the plugs and one in front of each plug's text
+// face (Alon, 9 Oct 2026) - are one prism of the whole outline with what is air cut out of it: boxes sharing faces
+// would meet in lines of T-junctions. Each front wall is a spring: slits round it, down into the block to
+// fan_mate_slit[1] over its underside, free it from the block and the walls beside it, so it gives when the plug's lip
+// rides over the clip. The groove is a little wider than the slot, so its sides are not tangent to the slot's round
+// ends.
+module fan_mate(with_clip = true, cl = fan_mate_clip) let(h = fan_mate_base[0], c = fan_mate_base[1], wh = fan_mate_wall[1], s = 2 * fan_pitch + fm_ins_d + 0.4)
     difference() {
         union() {
             difference() {
                 translate([fm_x0, fm_y0, 0]) cube([fm_x1 - fm_x0, fm_y1 - fm_y0, h + wh]);
-                for (x = fm_xs) translate([x - fm_px, fm_wall_y, h]) cube([2 * fm_px, fm_y1 - fm_wall_y + 1, wh + 1]);
+                translate([0, 0, h]) linear_extrude(wh + 1) fan_mate_air_2d();
+                translate([0, 0, fan_mate_slit[1]]) linear_extrude(h - fan_mate_slit[1] + 1) fan_mate_slits_2d();
             }
             for (x = fm_xs) fan_mate_key(x);
+            if (with_clip) for (x = fm_xs) fan_mate_clip(x, cl);
         }
         for (x = fm_xs) {
             for (k = [-1 : 1]) translate([x + k * fan_pitch, 0, h - c - 0.01]) cylinder(d = fm_core_d, h = c + 1, $fn = 16);
             translate([x, 0, -1]) linear_extrude(h - c + 1)
                 hull() for (k = [-1, 1]) translate([k * fan_pitch, 0]) circle(d = fm_ins_d, $fn = 24);
             translate([x - s / 2, fm_y0 - 1, -1]) cube([s, 1 - fm_y0, fm_ins_d + 1]);
-            // the red pin's mark, in front of where the plug stands: its moulded pin-1 arrow lands over it
-            translate([x - fan_pitch, (fmp_text + fm_y1) / 2, h - 0.4]) linear_extrude(1)
+            // the red pin's mark, on the block in front of the front wall: the plug's moulded pin-1 arrow lands over it
+            translate([x - fan_pitch, fm_y1 - fan_mate_front / 2, h - 0.4]) linear_extrude(1)
                 text("+", size = 1.8, halign = "center", valign = "center");
         }
     }
-// The fan's plug as measured, to check the mate against and to draw, never printed: its body, the two ribs on the
-// face opposite the text, and a hole over each pin at the plug's own pitch. Seated on the block, at plug x.
+// The fan's plug as measured, to check the mate against and to draw, never printed: its body, the lip across its
+// open end between the ribs, the two ribs on the face opposite the text, and a hole over each pin at the plug's own
+// pitch. Seated on the block, at plug x.
 module fan_plug_model(x) let(a = fan_plug[0], b = fan_plug[1], c = fan_plug[2], rw = fan_plug_ribs[0], rg = fan_plug_ribs[1],
-                             o = fan_plug_hole)
+                             o = fan_plug_hole, l = fan_plug_lip, bk = fmp_back - fan_plug_lip[0])
     translate([x, 0, fan_mate_base[0]]) difference() {
         union() {
-            translate([-a / 2, -fmp_back, 0]) cube([a, b, c]);
-            for (s = [-1, 1]) translate([s * (rg + rw) / 2 - rw / 2, -fmp_ribs, 0]) cube([rw, fmp_ribs - fmp_back + 0.01, c]);
+            translate([-a / 2, -bk, 0]) cube([a, b - l[0], c]);
+            translate([-rg / 2 - 0.01, -fmp_back, 0]) cube([rg + 0.02, l[0] + 0.01, fmp_plug_lip_l]);
+            for (s = [-1, 1]) translate([s * (rg + rw) / 2 - rw / 2, -fmp_ribs, 0]) cube([rw, fmp_ribs - bk + 0.01, c]);
         }
         for (k = [-1 : 1]) translate([k * fan_plug_pitch - o / 2, -o / 2, -1]) cube([o, o, fan_mate_pin + 1]);
     }
@@ -863,12 +909,12 @@ module say_fan_mate() echo(str("fan plug mate: ", fan_mate_n, fan_mate_n == 1 ? 
     fm_strip, " mm, push it up from below until its insulation stops, and bend it over into the groove underneath"));
 
 // ------------------------------------------------------------------ the sample plates (T131)
-// All the samples, as they print: ASA - the joint sample, the clamp sample, the bottom sample and the grommet's
+// All the samples, as they print: ASA - the joint sample, the glue frame's or the clamp's sample, the bottom sample and the grommet's
 // coupon; TPU - the joint sample's bead and the grommet. Placed by their footprints, measured from
 // their renders; scad-check counts the bodies, so two that touched would show.
 module samples_asa() {
     joint_sample();                                     // Y -24 .. 39.5
-    translate([0, 20, 0]) clamp_sample();               // Y 54 .. 70
+    translate([0, 20, 0]) if (glue) glue_sample(); else clamp_sample();   // Y 54 .. 70
     bottom_sample();                                    // Y -56.4 .. -38.4
     translate([75, 0, 0]) grommet_coupon();
 }
@@ -881,8 +927,12 @@ module say_sample_hardware() let(n = _count(len(top_screws) / 2)) echo(str("join
 
 // How to cut the paper for the clamp, from the values above: what the build page quotes. Only the length is
 // measured; across the folds the piece is counted, since the clamp sets its width.
-module say_paper_cut() echo(str("paper: cut a piece ", round(pack_l * 10) / 10, " mm long along the folds and ", pack_n,
-    paper_flaps ? " pleats across and a half pleat more each side, both long edges on a bottom fold"
+module say_paper_cut() if (glue) echo(str("paper: cut a piece ", round(pack_l * 10) / 10, " mm long along the folds and ", pack_n,
+    " pleats across, both long edges on a top fold (about ", round(pack_n * paper_pitch * 10) / 10, " mm as folded; the frame takes ",
+    round(2 * pack_edge * 10) / 10, " mm, ", round(pack_pitch * 100) / 100, " mm a pleat). Glue it in from the top: fill the end of",
+    " every channel open at the top, at both ends, and run a bead across each end and along each long side's top fold"));
+else echo(str("paper: cut a piece ", round(pack_l * 10) / 10, " mm long along the folds and ", pack_n,
+    flaps ? " pleats across and a half pleat more each side, both long edges on a bottom fold"
                 : " pleats across, both long edges on a top fold",
     " (about ", round((pack_n + pack_halves) * paper_pitch * 10) / 10, " mm as folded; the clamp spreads it to ",
     round(2 * pack_edge * 10) / 10, " mm, ", round(pack_pitch * 100) / 100, " mm a pleat). The clamp's slot is ",
@@ -891,9 +941,11 @@ module say_paper_cut() echo(str("paper: cut a piece ", round(pack_l * 10) / 10, 
 if (draw_model) {
     if (part == "section") section();
     // The clamp's two frames as they print: the lower standing, the upper on its band; and its sample.
-    else if (part == "clamp_lower") { clamp_low(); say_paper_cut(); }
-    else if (part == "clamp_upper") { translate([0, 0, cas_h]) mirror([0, 0, 1]) clamp_up(); say_paper_cut(); }
-    else if (part == "clamp_sample") { clamp_sample(); say_paper_cut(); }
+    else if (part == "glue_frame") { assert(glue, "the glue frame's part: hepa_frame = \"glue\""); glue_frame(); say_paper_cut(); }
+    else if (part == "glue_sample") { assert(glue, "the glue frame's part: hepa_frame = \"glue\""); glue_sample(); say_paper_cut(); }
+    else if (part == "clamp_lower") { assert(!glue, "the clamp's parts: hepa_frame = \"clamp\""); clamp_low(); say_paper_cut(); }
+    else if (part == "clamp_upper") { assert(!glue, "the clamp's parts: hepa_frame = \"clamp\""); translate([0, 0, cas_h]) mirror([0, 0, 1]) clamp_up(); say_paper_cut(); }
+    else if (part == "clamp_sample") { assert(!glue, "the clamp's parts: hepa_frame = \"clamp\""); clamp_sample(); say_paper_cut(); }
     // The Auto's parts as they print, standing: the base on its floor, the tray on its own.
     else if (part == "auto_base") { translate([0, 0, -auto_bay_top]) auto_base(); say_auto_hardware(); }
     else if (part == "auto_tray") { translate([0, 0, -auto_base_z0]) auto_tray(); say_auto_hardware(); say_usb(); }
