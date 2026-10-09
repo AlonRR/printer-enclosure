@@ -69,6 +69,7 @@ CONTROLS = [
     ("check_glue_holder", [("clamp_play", "-0.3")], "the glue frame made wider than the holder's pocket"),
     ("check_glue_paper", [("gf_in", "[18.5, 47.25]")], "the glue frame's side walls moved in onto the paper's top folds"),
     ("check_glue_paper", [("gf_in", "[18.9, 46.8]")], "its end walls moved in onto the paper's cut ends"),
+    ("check_glue_paper", [("jig_c", "0.05")], "its fins made wider, into the paper's flanks"),
     ("check_glue_opening", [("gf_rim", "[35, 85]")], "its rim made to reach in over the ledge's opening"),
     ("check_clamp_holder", CLAMP + [("clamp_play", "-0.3")], "the clamp made wider than the holder's pocket"),
     ("check_clamp_frames", CLAMP + [("clamp_slot", "-0.4")], "the wedges and teeth made to meet through the paper's slot"),
@@ -201,7 +202,7 @@ FIGURES = {
     "exploded": [("view", '"exploded"')], "cut": [("view", '"cut"'), ("cut_x", "0")],
     "section-top": [("view", '"section"')], "section-bottom": [("view", '"section"'), ("axes_cam", "[235, 0, 30]")],
     "paper-frame": [("view", '"frame"'), ("explode", "25")] + CLAMP, "clamp-print": [("view", '"clamp_print"')] + CLAMP,
-    "paper-cut": [("view", '"paper_cut"')] + CLAMP, "glue-frame": [("view", '"glue"'), ("explode", "30")], "auto-bottom": [("view", '"bottom"'), ("explode", "28"), ("axes_cam", "[50, 0, 215]")],
+    "paper-cut": [("view", '"paper_cut"')] + CLAMP, "glue-frame": [("view", '"glue"'), ("explode", "30")], "glue-cut": [("view", '"glue_cut"')], "auto-bottom": [("view", '"bottom"'), ("explode", "28"), ("axes_cam", "[50, 0, 215]")],
     "joints": [("view", '"joints"'), ("explode", "22")], "grommet": [("view", '"grommet"'), ("axes_cam", "[50, 0, 20]")],
     "fan-mate": [("view", '"fan_mate"'), ("explode", "12"), ("axes_cam", "[50, 0, 205]")],
 }
@@ -214,6 +215,7 @@ CAMERAS = {
     "glue-frame": ["--imgsize=1400,1100", "--viewall", "--autocenter", "--camera=0,0,0,55,0,30,0"],
     "clamp-print": ["--imgsize=1400,900", "--viewall", "--autocenter", "--camera=0,0,0,55,0,25,0"],
     "paper-cut": ["--imgsize=1800,600", "--projection=o", "--camera=-12,11,0,0,0,0,125"],
+    "glue-cut": ["--imgsize=1600,800", "--projection=o", "--camera=-12,11,0,0,0,0,88"],
     "auto-bottom": ["--imgsize=1400,1300", "--viewall", "--autocenter", "--camera=0,0,0,50,0,215,0"],
     "joints": ["--imgsize=1300,1800", "--viewall", "--autocenter", "--camera=0,0,0,62,0,30,0"],
     "grommet": ["--imgsize=1100,560", "--viewall", "--autocenter", "--camera=0,0,0,50,0,20,0"],
@@ -221,7 +223,7 @@ CAMERAS = {
 }
 # The flat drawings - cuts through parts, already computed geometry - keep their parts' colours only as a preview:
 # rendered, every 2D part takes one colour and the union fills the gaps between them (paper-cut's zigzag went solid).
-FLAT = {"cut", "paper-cut"}
+FLAT = {"cut", "paper-cut", "glue-cut"}
 
 
 def figures(write, names):

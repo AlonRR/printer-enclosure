@@ -100,6 +100,9 @@ function fold_top(i) = (i % 2 == 0) != flaps;
 // millimetres, not the slot's width. A tooth, in a channel open at the bottom, is the same shape upside down.
 // Heights here are over the pack's bottom face.
 pleat_alpha = atan((pack_pitch / 2) / (paper_depth - paper_t));
+// The glue frame's fins: a side's offset across from the paper's middle, and a fin's width at its top.
+jig_c = (paper_t / 2 + glue_jig[1]) / cos(pleat_alpha);
+jig_top_w = 2 * (pack_pitch / 2 - (glue_jig[0] - paper_t / 2) * tan(pleat_alpha) - jig_c);
 wedge_w = 2 * ((paper_depth - paper_t / 2) * tan(pleat_alpha) - slot_w / (2 * cos(pleat_alpha)));   // at the top face
 wedge_z0 = paper_t / 2 + slot_w / (2 * sin(pleat_alpha));    // its point
 tooth_w = wedge_w;                                           // at the bottom face
@@ -329,6 +332,8 @@ assert(glue_wall[0] >= 2 * fdm_extrusion_w - 1e-9 && glue_wall[1] >= 2 * fdm_ext
 assert(gf_in[0] > gf_rim[0] / 2 && gf_in[1] > gf_rim[1] / 2, "the glue frame's walls must stand outside the ledge's opening");
 assert(hepa_ledge + gf_h < hepa_h - 1, "the glue frame is taller than the HEPA holder");
 assert(pack_l > 20, "the glue frame is too short for its paper");
+assert(!glue || (jig_top_w >= 2 * fdm_extrusion_w - 1e-9 && glue_jig[0] > 0 && glue_jig[0] < paper_depth / 2),
+    "the glue frame's fins must stay two lines wide to their tops, and stand under half the paper's depth");
 
 assert(grid_t >= groove_h + 2 * fdm_layer_h, "the grid's rim must roof the groove in the section's bottom");
 assert(ledge_w > -groove_in, "the ledge must reach past the groove's inner face");

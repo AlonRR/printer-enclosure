@@ -234,6 +234,12 @@ module glue_exploded(ex) {
 }
 // The ledge's opening, from the holder's own values, under the glue frame's rim: the rim must leave it open.
 module glue_opening_probe() translate([-open_wl[0] / 2 + sep, -open_wl[1] / 2 + sep, -1]) cube([open_wl[0] - 2 * sep, open_wl[1] - 2 * sep, clamp_rim + 1 - sep]);
+// Across the folds, flat, through the glue frame's fins at one end: the frame - rim, walls and a fin in every
+// channel open at the bottom - and the paper standing on the rim between them.
+module glue_cut() let(y = (gf_rim[1] / 2 + gf_in[1]) / 2) {
+    color("orange") projection(cut = true) multmatrix([[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, -y]]) glue_frame();
+    color("black") translate([0, pack_z]) paper_2d();
+}
 // Across the folds, flat: the clamp through an end's combs - the teeth, the wedges, the half wedges, the paper
 // in its zigzag slot - and beside it, through its middle - the long teeth and half wedges round each flap.
 module paper_cut() {
@@ -348,6 +354,7 @@ else if (view == "frame") frame_exploded(explode);
 else if (view == "glue") glue_exploded(explode);
 else if (view == "clamp_print") color("orange") clamp_frames_printing();
 else if (view == "paper_cut") paper_cut();
+else if (view == "glue_cut") glue_cut();
 // The grommet twice: on the left turned over, its skin and the leads' holes up; on the right as it sits, the holes
 // running on up the ring's inside.
 else if (view == "grommet") color("deepskyblue") {
@@ -414,3 +421,4 @@ module flat_key(across) color("black") {
 // The cut's across is +y, along the box; the paper's cut's is +x, across it.
 if (show_axes && view == "cut") translate([-bb_l / 2 - 30, 10]) flat_key("+y");
 if (show_axes && view == "paper_cut") translate([-cas[0] - 4 - 22, 2]) scale(0.5) flat_key("+x");
+if (show_axes && view == "glue_cut") translate([-cas[0] / 2 - 15, 2]) scale(0.5) flat_key("+x");

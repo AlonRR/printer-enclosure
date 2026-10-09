@@ -32,7 +32,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "fan_mate", "bottom_sample", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "fan_mate", "bottom_sample", "nut_coupon", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -129,6 +129,7 @@ ledge_beads = 3;    /* A ledge round the inside at the grid's level: the ribs en
 hepa_frame = "glue";    /* "glue": one ASA frame the paper is hot-glued into (Alon, 9 Oct 2026: "make a hot glue version for the hepa"). "clamp": the two-frame clamp with wedges and teeth, SHELVED until the ASA is dried - wet, it strung and its thin fins came out fragile. */
 glue_wall = [1.35, 3];  /* The glue frame's walls: along its long sides, three lines; and at its ends, along the folds. */
 glue_lip = 1.5;         /* Its walls stand this far over the paper's top folds: a corner for the glue's bead to run in. */
+glue_jig = [4, 0.15];   /* Short fins on the rim at each end, one up into each channel open at the bottom, that space the folds as the paper goes in (Alon, 9 Oct 2026: "add small fins at the bottom to help as a jig, they dont need to go the full height"): their height over the rim, and their play to the paper. */
 // The paper: pleated, sold by the metre. These four describe it; change them for other paper, then export the
 // clamp's frames again. A pleat is one fold up and one down: the dirty air comes into the channels open at the
 // top and leaves by those open at the bottom. The clamp is a cassette of two ASA frames with the paper between

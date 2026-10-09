@@ -199,11 +199,21 @@ module clamp_sample() {
 // from the top, the dirty side, and that is the only side that needs it: in the end of every channel open at the
 // top, at both ends, as the clamp's wedges were, and in a bead across each end and along each long side where the
 // top fold meets the wall. The channels open at the bottom end over the rim, which closes them. No fins: every wall
-// is solid, two lines or more, the corners at least 1.1 mm.
-module glue_frame() difference() {
-    linear_extrude(gf_h) cas2d();
-    translate([-gf_in[0], -gf_in[1], clamp_rim]) cube([2 * gf_in[0], 2 * gf_in[1], gf_h]);
-    translate([-gf_rim[0] / 2, -gf_rim[1] / 2, -1]) cube([gf_rim[0], gf_rim[1], clamp_rim + 2]);
+// is solid, two lines or more, the corners at least 1.1 mm. Short fins on the rim at each end (Alon, 9 Oct 2026)
+// space the folds as the paper goes in: one up into each channel open at the bottom, glue_jig[1] clear of the
+// paper, glue_jig[0] tall - from 1.4 mm wide at the rim to 1 at the top. They stop 0.3 mm short of the rim's
+// inner edge, so no face of theirs lies in the rim's.
+module jig_fin_2d(i) let(x = fold_x(i), ta = tan(pleat_alpha), w0 = pack_pitch / 2 + (1 + paper_t / 2) * ta - jig_c,
+                         w1 = pack_pitch / 2 - (glue_jig[0] - paper_t / 2) * ta - jig_c)
+    polygon([[x - w0, -1], [x + w0, -1], [x + w1, glue_jig[0]], [x - w1, glue_jig[0]]]);
+module jig_fins_2d() for (i = [1 : fold_last - 1]) if (fold_top(i)) jig_fin_2d(i);
+module glue_frame() union() {
+    difference() {
+        linear_extrude(gf_h) cas2d();
+        translate([-gf_in[0], -gf_in[1], clamp_rim]) cube([2 * gf_in[0], 2 * gf_in[1], gf_h]);
+        translate([-gf_rim[0] / 2, -gf_rim[1] / 2, -1]) cube([gf_rim[0], gf_rim[1], clamp_rim + 2]);
+    }
+    both_ends() run_y(gf_rim[1] / 2 + 0.3, gf_in[1] + 0.5) jig_fins_2d();
 }
 // Its sample: one end, glue_sample_l in from it, as it prints - to glue an offcut in before the whole frame.
 glue_sample_l = 16;
@@ -303,9 +313,9 @@ module pull_frame(s, z) translate([s[0], s[1], z]) rotate(s[2] - 30) children();
 // A fan screw's way: its nut's pocket (scad-tools nuts.scad), up from its mouth under the post to the seat, the
 // seat a nut's height under the roof, and the screw's hole on up through the roof to the base's top, bridged
 // (scad-tools fdm.scad): a channel the hole's width from corner to corner, then the hole's square, then the round hole.
-module pull_pocket(way) {
-    pull_nut_pocket(nut_af, nut_slot_h, way, fdm_hole_comp + pull_fit, fdm_hole_comp + pull_way_fit, eps);
-    bridged_hole(pull_ac, hole_d, duct_h - pull_top + 1, fdm_layer_h, eps);
+module pull_pocket(way, f = pull_fit) {
+    pull_nut_pocket(nut_af, nut_slot_h, way, fdm_hole_comp + f, fdm_hole_comp + pull_way_fit, eps);
+    bridged_hole((nut_af + 2 * (fdm_hole_comp + f)) / cos(30), hole_d, duct_h - pull_top + 1, fdm_layer_h, eps);
 }
 module fan_screw_cut(s) pull_frame(s, pull_top) pull_pocket(pull_seat - pull_bot);
 // A tray screw's way in the base: its hole up from the base's bottom face through the floor to its slot, the slot
@@ -790,6 +800,48 @@ module sample_pull() let(h = 3 + nut_slot_h + nut_roof) difference() {
     linear_extrude(h) offset(r = 2) square(pull_block - [4, 4], center = true);
     pull_frame([0, 0, 0], 3 + nut_slot_h) pull_pocket(3 + eps);
 }
+// The nut coupon (T181, T182 - Alon, 9 Oct 2026: a tray nut spun in its slot, and a fan nut fell out of its seat
+// even pulled up). One block: along the back, four fan-nut seats, numbered 1 to 4 on the top, as the base's -
+// pull a nut up into each with an M3 x 8 from the top, take the screw out, and see which holds it; along the front,
+// four tray-nut slots, 5 to 8, open at the front face, a 0.8 mm floor under them as in the base - slide a nut in,
+// drive an M3 up from below, and see which keeps it from turning. 4 is today's seat; 8 is a slot that narrows to
+// the screw (Alon's trapezoid): free at its mouth, tight on the nut's flats where it stops. The fits are on top of
+// fdm_hole_comp, each side, as pull_fit and nut_fit are: set those from the ones that hold.
+coupon_pull = [-0.15, -0.1, -0.05, pull_fit];
+coupon_slot = [-0.05, 0, 0.05];
+coupon_taper = [-0.1, nut_fit, 4];     // the tapered slot: its fit on the nut's flats, at its mouth, and the taper's length
+nc_pitch = 14;
+nc_y = [7, 22];                        // the slots' axes, from the front face, and the seats'
+nc_h = 3 + nut_slot_h + nut_roof;      // the seats' way 3 mm, the seat, the roof: as sample_pull's
+function nc_w(f) = nut_af + 2 * (fdm_hole_comp + f);
+// The tapered slot, in a slot's frame (slot_frame): tight from behind the nut to its flats' front end, then
+// widening over coupon_taper[2] to its mouth's width, and straight out through the mouth.
+module tapered_slot(out) let(ac = nut_af / cos(30), f0 = coupon_taper[0], w0 = nc_w(f0), w1 = nc_w(coupon_taper[1]),
+                             x0 = ac / 4, l = coupon_taper[2]) {
+    translate([-(ac / 2 + fdm_hole_comp + f0), -w0 / 2, 0]) cube([ac / 2 + fdm_hole_comp + f0 + x0 + eps, w0, nut_slot_h]);
+    hull() {
+        translate([x0, -w0 / 2, 0]) cube([eps, w0, nut_slot_h]);
+        translate([x0 + l, -w1 / 2, 0]) cube([eps, w1, nut_slot_h]);
+    }
+    translate([x0 + l, -w1 / 2, 0]) cube([out - x0 - l, w1, nut_slot_h]);
+}
+module nut_coupon() difference() {
+    translate([-nc_pitch / 2, 0, 0]) cube([4 * nc_pitch, nc_y[1] + 8, nc_h]);
+    for (k = [0 : 3]) let(x = k * nc_pitch, w = k < 3 ? nc_w(coupon_slot[k]) : nc_w(coupon_taper[0])) {
+        pull_frame([x, nc_y[1], 0], 3 + nut_slot_h) pull_pocket(3 + eps, coupon_pull[k]);
+        translate([x, nc_y[0], -1]) cylinder(d = hole_d, h = nut_floor + 1 + eps);
+        slot_frame([x, nc_y[0], 270, 0], nut_floor) {
+            if (k < 3) nut_slot(nut_af, nut_slot_h, nc_y[0] + 1, fdm_hole_comp + coupon_slot[k]);
+            else tapered_slot(nc_y[0] + 1);
+            translate([0, 0, nut_slot_h]) rotate(90) bridged_hole(w, hole_d, nc_h - nut_floor - nut_slot_h + 1, fdm_layer_h, eps);
+        }
+        for (j = [0, 1]) translate([x + 4.6, nc_y[j], nc_h - 0.4]) linear_extrude(1)
+            text(str(k + 1 + 4 * (1 - j)), size = 3, halign = "center", valign = "center");
+    }
+}
+module say_nut_coupon() echo(str("nut coupon, as cut across the flats: seats 1-4 ", [for (f = coupon_pull) nc_w(f)],
+    " (pull_fit ", coupon_pull, "); slots 5-7 ", [for (f = coupon_slot) nc_w(f)], " (nut_fit ", coupon_slot, "); slot 8 ",
+    nc_w(coupon_taper[0]), " at the nut, ", nc_w(coupon_taper[1]), " at its mouth"));
 module joint_sample() {
     w = bb_w + sample_gap;
     translate([-w / 2, 0, 0]) sample_low();
@@ -966,6 +1018,7 @@ if (draw_model) {
     // The fans' plug mate, in ASA, on its underside.
     else if (part == "fan_mate") { fan_mate(); say_fan_mate(); }
     else if (part == "bottom_sample") { bottom_sample(); say_auto_hardware(); say_usb(); }
+    else if (part == "nut_coupon") { nut_coupon(); say_nut_coupon(); }
     else if (part == "samples_asa") { samples_asa(); say_sample_hardware(); say_auto_hardware(); }
     else if (part == "samples_tpu") samples_tpu();
     else assert(false, str("unknown part: ", part));

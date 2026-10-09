@@ -54,6 +54,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Fans' plug mate** | A block in the fan section that both fans' own plugs push onto, its pins the bared ends of 22 AWG solid wire. | [`bentobox-fan-mate.scad`](../models/bentobox/bentobox-fan-mate.scad) |
 | **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
 | **Bottom sample** | To print first: the tray's -Y end with the USB-C board's pocket, and the base's floor over it with the tray's nut slots - one ASA plate. | [`bentobox-bottom-sample.scad`](../models/bentobox/bentobox-bottom-sample.scad) |
+| **Nut coupon** | Four fan-nut seats and four tray-nut slots at graded fits, to find the ones that hold on this printer (T181, T182). | [`bentobox-nut-coupon.scad`](../models/bentobox/bentobox-nut-coupon.scad) |
 | **Sample plates** | Every sample on two plates, one ASA and one TPU (see *The samples*). | [`bentobox-samples-asa.scad`](../models/bentobox/bentobox-samples-asa.scad), [`bentobox-samples-tpu.scad`](../models/bentobox/bentobox-samples-tpu.scad) |
 
 **Not printed yet.** Every fit is checked in the model (see *Checking it*), not yet against printed parts.
@@ -354,19 +355,27 @@ with `hepa_frame = "clamp"` (below).
 - **The frame.** One ASA frame with the clamp's outline, 100.5 × 40.5 mm and 22.9 mm tall: side walls three
   lines thick, end walls 3 mm, standing 1.5 mm over the paper's top folds, and a rim round its bottom, 1.2 mm
   thick, that stands on the ledge and leaves the ledge's 87.5 × 36.8 mm opening open. No fins: every wall is
-  solid, the thinnest place 1.1 mm, at the corners. 1 h 16 m, 10 g.
+  solid, the thinnest place 1.1 mm, at the corners. 1 h 22 m, 11 g.
+- **Fins that space the folds** (Alon, 9 Oct 2026: "add small fins at the bottom to help as a jig"). On the rim at
+  each end, between the ledge's opening and the end wall, a short fin stands up into every channel open at the
+  bottom: 4 mm tall, 1.4 mm wide at the rim and 1 mm at the top, 0.15 mm clear of the paper each side. Lower the
+  paper in so a fin goes up into each channel open at the bottom, at both ends, and the paper's bottom folds come
+  to rest on the rim between them: the fins set every fold's place, 2.08 mm apart, and hold it while the glue
+  sets.
+
+  ![Across the folds, flat, through the fins at one end: the frame's rim and walls, a fin up into each channel open at the bottom, and the paper's zigzag standing on the rim between them](bentobox/glue-cut.png)
 - **The paper.** A piece **94.1 mm long along the folds and 18 pleats across, both long edges cut on a top
   fold**; the frame takes it at 2.08 mm a pleat, 37.4 mm across. It is 7 mm longer than the clamp's piece,
   since nothing reaches into its ends now, and the sheet still gives three pieces.
 - **Glue from the top only.** The dirty air comes in at the top, so closing the top closes every way round the
-  paper. Stand the paper in the frame on its rim, its cut ends against the end walls. At each end, fill the end
+  paper. Stand the paper in the frame on the fins and the rim, its cut ends against the end walls. At each end, fill the end
   of every channel open at the top with glue, down to its bottom fold and a few millimetres along - the glue
   does what the clamp's wedges did. Then run a bead across each end, over the top folds' cut ends and into the
   corner with the end wall, and one along each long side, where the top fold meets the wall. The channels open
   at the bottom end over the rim, which closes them: nothing is needed underneath.
 - **Heat.** Ordinary hot-melt glue softens from about 60 °C, and the frame sits in the chamber's air: if the
   chamber runs over about 50 °C, use high-temperature sticks.
-- **Try it first.** The glue sample is one end of the frame, 16 mm of it (32 m, 3 g). Glue an offcut 16 mm long
+- **Try it first.** The glue sample is one end of the frame, 16 mm of it, fins and all (34 m, 3 g). Glue an offcut 16 mm long
   into it as above, and look up through it at a light: none should come round the paper's end or its sides.
 
 ### The clamp (shelved)
@@ -455,6 +464,12 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
   joints*).
 - **The glue sample** - one end of the glue frame (see *The glue frame*). The clamp's sample still builds, but is
   off the plate.
+- **The nut coupon** - on its own, not on the plate: four fan-nut seats, numbered 1 to 4 on the top, and four
+  tray-nut slots, 5 to 8, open at the front face over a 0.8 mm floor, as in the base. Pull a nut up into each seat
+  with an M3 × 8 from the top and take the screw out: which keep their nut? Slide a nut into each slot and drive an
+  M3 up from below: which keep it from turning? As cut, across the flats: seats 5.5, 5.6, 5.7 and 5.9 mm (4 is
+  the base's today); slots 5.7, 5.8 and 5.9 mm (the base's is 6.1); slot 8 narrows from 6.1 mm at its mouth to
+  5.6 on the nut's flats, where it stops. `pull_fit` and `nut_fit` are set from the ones that hold. 42 m, 6 g.
 - **The bottom sample** - the tray's -Y end, 18 mm of it, and the base's floor over it, 7 mm. Drop the USB-C
   trigger board into its pocket: its socket's face should sit flush with the end face, and a USB-C plug should go
   all the way in, the stop behind the board taking the push. Slide a nut into each of the two slots in the base's
@@ -468,9 +483,16 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
 **Tried, 9 Oct 2026** (T131), with ASA that was not dry and strung:
 
 - **The USB-C trigger board fits perfectly** in the bottom sample's pocket.
-- Of the bottom sample's two tray nuts, one held as its screw was driven; **the other spun in its slot**.
-- **The fan nut's seat is very loose**: the nut slides in and falls out.
-- **The TPU bead** sits in the joint's groove and compresses a lot.
+- Of the bottom sample's two tray nuts, one held as its screw was driven; **the other, the one nearer the front,
+  spun in its slot**. The two slots are drawn the same and nothing in the model stands near either: a 5.5 mm nut
+  in a 6.1 mm slot jams on its corners after about 16 degrees, so that one printed wider, or its nut is small.
+- **The fan nut's seat is very loose**: the nut slides in and falls out, and a screw pulling it up does not seat
+  it. As cut it is 0.4 mm over the nut. Hence the nut coupon.
+- **The TPU bead** sits in the joint's groove and compresses a lot. It stands **0.16 to 0.20 mm** proud of the
+  land, where 0.4 is drawn: the bead prints about 0.2 mm under its drawn height. With the joint's one screw done
+  up, the sample opens at its far end. The sample is a 30 mm strip with one screw, far floppier than the closed
+  rings, but the top joint has only the two end screws, so its 100 mm sides are the question: whether the bead
+  still touches all along where the joint opens.
 - **The clamp's wedges and teeth** came out thin and fragile: hence the glue frame.
 
 ## Printing
@@ -485,8 +507,8 @@ samples-tpu` for the two sample plates.
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
 | Section | ASA | 1 | 1 h 57 m | 17 g |
-| Glue frame | ASA | 1 | 1 h 16 m | 10 g |
-| Glue sample | ASA | 1 | 32 m | 3 g |
+| Glue frame | ASA | 1 | 1 h 22 m | 11 g |
+| Glue sample | ASA | 1 | 34 m | 3 g |
 | Clamp, lower frame (shelved) | ASA | 1 | 1 h 29 m | 10 g |
 | Clamp, upper frame (shelved) | ASA | 1 | 1 h 11 m | 8 g |
 | Clamp sample (shelved) | ASA | 1 plate | 1 h 7 m | 7 g |
@@ -502,7 +524,8 @@ samples-tpu` for the two sample plates.
 | Grommet | TPU 95A | 1 | 2 m | under 1 g |
 | Fans' plug mate | ASA | 1 | 18 m | 1.6 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
-| Samples, ASA | ASA | 1 plate | 2 h 26 m | 21 g |
+| Nut coupon | ASA | 1 | 42 m | 6 g |
+| Samples, ASA | ASA | 1 plate | 2 h 29 m | 22 g |
 | Samples, TPU | TPU 95A | 1 plate | 5 m | under 1 g |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
@@ -671,7 +694,7 @@ the end face, and one in each fan screw's seat and draws it down its pocket and 
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
 the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
 something broken on purpose that it must catch, and the run fails if one passes unnoticed: 45 fits and
-61 controls.
+62 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame.
