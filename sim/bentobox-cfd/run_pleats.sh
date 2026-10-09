@@ -8,7 +8,7 @@
 #   wsl.exe -d Ubuntu -- bash -s -- <the cases folder as /mnt/c/...> [ranks] < sim/bentobox-cfd/run_pleats.sh
 #
 # Each case is a few tens of thousands of cells and runs on one core; `ranks` of them run at once (14). Runs on
-# WSL's own disk, ~/bentobox-cfd/pleats. Needs OpenFOAM v2412 in the micromamba env "of" (README.md).
+# WSL's own disk, ~/bentobox-cfd/<the cases folder's name>. Needs OpenFOAM v2412 in the micromamba env "of" (README.md).
 set -eo pipefail
 export MAMBA_ROOT_PREFIX=${MAMBA_ROOT_PREFIX:-$HOME/.local/share/mamba}
 eval "$("$HOME/.local/bin/micromamba" shell hook -s bash)"
@@ -16,7 +16,8 @@ micromamba activate of
 set -u
 SRC=$1
 RANKS=${2:-14}
-W=$HOME/bentobox-cfd/pleats
+# A folder of its own per set of cases (pleats, pleats-mesh), so two sets can run at once without one wiping the other.
+W=$HOME/bentobox-cfd/$(basename "$SRC")
 rm -rf "$W" && mkdir -p "$W" && cp -r "$SRC"/. "$W"/ && cd "$W"
 
 one() {

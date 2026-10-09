@@ -91,7 +91,10 @@ the channels between the pleats narrow, and near each fold the two sheets touch,
 ```sh
 uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py lumped     # the same, worked out by hand
 uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py cases      # one case per count, grade and velocity
-#   ... then the wsl.exe command it prints (from Git Bash, with MSYS_NO_PATHCONV=1): every case, 14 at a time
+#   ... then the wsl.exe command it prints (from Git Bash, with MSYS_NO_PATHCONV=1): every case, 14 at a time.
+#   The whole sweep takes about an hour: start it detached inside WSL (setsid nohup bash <cases>/run_pleats.sh
+#   <cases> 14 &), not under a watcher that may end first. It runs the cases in list.txt, so a stopped sweep
+#   resumes with a list of the cases that have no results/ yet.
 uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py results --out docs/bentobox/cfd
 ```
 
@@ -114,5 +117,7 @@ uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py results --out docs/b
   whole inside filled to a depth on a grid, by the Ergun equation as for the box; its life by
   `scripts/carbon-life.py` at its middle emission.
 
-A case must converge (SIMPLE's residual control), and the air in at the top must equal the air out at the
-bottom to 0.1 %.
+A case's drop must have settled - its inlet pressure moving under 0.05 % over the last fifth of its
+iterations; each case runs 800 - and the air in at the top must equal the air out at the bottom to 0.1 %. Left to
+SIMPLE's residual control, the dense pleats' cases stopped after 80 to 120 iterations with their drop still moving
+by up to 0.3 %, so none is stopped by residuals. The mesh check runs three counts again on half the cells' size.

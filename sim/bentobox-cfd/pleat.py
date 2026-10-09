@@ -41,6 +41,7 @@ sys.path.insert(0, str(HERE))
 import cfd
 
 CASES = HERE / "cases" / "pleats"
+CASES_MESH = HERE / "cases" / "pleats-mesh"
 OPENSCAD = os.environ.get("OPENSCAD") or "openscad"
 
 GRADES = {"100": 100.0, "200": 200.0, "300": 300.0}   # Pa across the flat paper at 5.33 cm/s - assumptions
@@ -160,13 +161,13 @@ def bypass(rows):
     return False
 
 
-def write_case(c, n, grade, v):
+def write_case(c, n, grade, v, root=CASES, dx=DX, dy=DY, tag=""):
     g = geometry(c, n)
-    case = CASES / name(n, grade, v)
+    case = root / (name(n, grade, v) + tag)
     if case.exists():
         shutil.rmtree(case)
-    nx = max(40, math.ceil(g["b"] / DX))
-    ny = math.ceil((c["depth"] + 2 * PLENUM) / DY)
+    nx = max(40, math.ceil(g["b"] / dx))
+    ny = math.ceil((c["depth"] + 2 * PLENUM) / dy)
     rows, origin, i_vec, j_vec = mask(c, g, nx, ny)
     if bypass(rows):
         sys.exit(f"{case.name}: air gets past the paper without crossing it - the band is not closed")
@@ -241,11 +242,11 @@ boundaryField
           "type zeroGradient;")
     field("p", "volScalarField", "[0 2 -2 0 0 0 0]", "0", "type zeroGradient;", "type fixedValue; value uniform 0;")
     fo = lambda nm, patch, op, fld: (f"{nm} {{ type surfaceFieldValue; libs (fieldFunctionObjects); writeControl timeStep; "
-                                     f"writeInterval 20; log false; writeFields false; regionType patch; name {patch}; "
+                                     f"writeInterval 5; log false; writeFields false; regionType patch; name {patch}; "
                                      f"operation {op}; fields ({fld}); }}")
     w(case, "system/controlDict", f"""application simpleFoam;
-startFrom startTime; startTime 0; stopAt endTime; endTime 6000; deltaT 1;
-writeControl timeStep; writeInterval 6000; purgeWrite 1; writeFormat binary; writePrecision 8;
+startFrom startTime; startTime 0; stopAt endTime; endTime 800; deltaT 1;
+writeControl timeStep; writeInterval 800; purgeWrite 1; writeFormat binary; writePrecision 8;
 writeCompression off; timeFormat general; timePrecision 6; runTimeModifiable false;
 functions
 {{
@@ -270,7 +271,9 @@ SIMPLE
 {
     consistent yes;
     nNonOrthogonalCorrectors 0;
-    residualControl { p 1e-7; U 1e-8; }
+    // No residual control: every case runs 800 iterations and is judged by its inlet pressure's drift over its
+    // last fifth (results). Stopped by residuals, the dense pleats' cases stopped at 80 to 120 iterations with
+    // their drop still moving by up to 0.3 %; the open ones took 350.
 }
 relaxationFactors { fields { p 1; } equations { U 0.9; } }
 """)
@@ -280,21 +283,41 @@ relaxationFactors { fields { p 1; } equations { U 0.9; } }
     return case
 
 
-def make_cases():
+def make_cases(mesh_check=False):
+    """Every count, grade and velocity; or, for the mesh check, three counts on the mesh and on one of half the
+    cells' size, side by side."""
     c = clamp()
-    if CASES.exists():
-        shutil.rmtree(CASES)
+    root = CASES_MESH if mesh_check else CASES
+    if root.exists():
+        shutil.rmtree(root)
     names = []
-    for n in COUNTS:
-        for grade in GRADES:
-            for v in V_FACE:
-                names.append(write_case(c, n, grade, v).name)
-    (CASES / "list.txt").write_text("\n".join(names) + "\n", encoding="utf-8", newline="\n")
-    (CASES / "clamp.json").write_text(json.dumps(c, indent=1), encoding="utf-8")
-    shutil.copy(HERE / "run_pleats.sh", CASES / "run_pleats.sh")
-    wsl = "/mnt/" + CASES.as_posix()[0].lower() + CASES.as_posix()[2:]
-    print(f"{len(names)} cases in {CASES}")
+    if mesh_check:
+        for n in (11, 18, 26):
+            names.append(write_case(c, n, "200", 0.2, root, DX, DY, "-m1").name)
+            names.append(write_case(c, n, "200", 0.2, root, DX / 2, DY / 2, "-m2").name)
+    else:
+        for n in COUNTS:
+            for grade in GRADES:
+                for v in V_FACE:
+                    names.append(write_case(c, n, grade, v).name)
+    (root / "list.txt").write_text("\n".join(names) + "\n", encoding="utf-8", newline="\n")
+    (root / "clamp.json").write_text(json.dumps(c, indent=1), encoding="utf-8")
+    shutil.copy(HERE / "run_pleats.sh", root / "run_pleats.sh")
+    wsl = "/mnt/" + root.as_posix()[0].lower() + root.as_posix()[2:]
+    print(f"{len(names)} cases in {root}")
     print(f"run them:  wsl.exe -d Ubuntu -- bash -s -- {wsl} < sim/bentobox-cfd/run_pleats.sh")
+
+
+def show_mesh_check():
+    """The mesh check's drops: each count on the mesh and on half its cells' size."""
+    print("the mesh check, 200 Pa paper at 0.2 m/s: the drop on the mesh, and on half its cells' size")
+    for n in (11, 18, 26):
+        r1, r2 = (read_case(CASES_MESH / (name(n, "200", 0.2) + t)) for t in ("-m1", "-m2"))
+        if r1 is None or r2 is None:
+            print(f"{n:>3} pleats: not run")
+            continue
+        print(f"{n:>3} pleats: {r1['dp_Pa']:.2f} Pa, {r2['dp_Pa']:.2f} Pa on half the cells: "
+              f"{100 * (r1['dp_Pa'] / r2['dp_Pa'] - 1):+.2f} %")
 
 
 # ------------------------------------------------------------------ the results
@@ -362,10 +385,10 @@ def results(out):
             continue
         rows.append(r)
     bad = [r for r in rows if abs(r["q_in"] + r["q_out"]) > 1e-3 * abs(r["q_in"]) or r["topo_cells"] != r["paper_cells"]
-           or not r["converged"]]
+           or r["drift_pct"] is None or r["drift_pct"] > 0.05]
     for r in bad:
         print(f"CHECK n{r['n']} g{r['grade_Pa']:.0f} v{r['v_face']}: in {r['q_in']:.4g} out {r['q_out']:.4g}, "
-              f"paper cells {r['topo_cells']} vs {r['paper_cells']}, converged {r['converged']}, {r['iterations']} its")
+              f"paper cells {r['topo_cells']} vs {r['paper_cells']}, drift {r['drift_pct']} %, {r['iterations']} its")
     with open(out / "pleats.csv", "w", newline="", encoding="utf-8") as f:
         keys = ["n", "pitch", "grade_Pa", "v_face", "dp_Pa", "lumped_Pa", "iterations", "drift_pct", "d_scale"]
         wr = csv.writer(f)
@@ -407,7 +430,39 @@ def results(out):
           f"{q_cf * 1e3:.3f} full; it takes {p_c:.1f} Pa")
     summary["carbon"] = carbon_options(summary)
     (out / "pleats.json").write_text(json.dumps(summary, indent=1), encoding="utf-8")
-    print(f"written: {out / 'pleats.csv'}, {out / 'pleats.json'}")
+    chart(summary, c, out / "pleats.png")
+    print(f"written: {out / 'pleats.csv'}, {out / 'pleats.json'}, {out / 'pleats.png'}")
+
+
+def chart(summary, c, path):
+    """The box's flow against the clamp's pleat count, a line per grade, the C-MAG filled to its line."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(figsize=(8, 4.8), dpi=150)
+    for grade, colour in zip(GRADES.values(), ("tab:green", "tab:blue", "tab:red")):
+        pts = sorted((int(k.split("/")[1]), v["flow_line_L_s"]) for k, v in summary.items()
+                     if k.startswith(f"{grade:.0f}/"))
+        ax.plot([p[0] for p in pts], [p[1] for p in pts], "o-", color=colour, ms=4,
+                label=f"paper {grade:.0f} Pa at 5.33 cm/s")
+    ax.axhline(summary["cartridge"]["flow_line_L_s"], color="grey", ls="--", lw=1,
+               label="the bought cartridge, as the box's simulation takes it")
+    ax.axvspan(CLAMP_MAX + 0.5, max(COUNTS) + 0.5, color="0.9", zorder=0)
+    ax.axvline(c["n_now"], color="0.4", lw=1, ls=":")
+    lo, hi = ax.get_ylim()
+    ax.set_ylim(lo - 0.25 * (hi - lo), hi)                 # room under the curves for the legend
+    ax.text(CLAMP_MAX + 0.8, 0.27, "past what the clamp builds", fontsize=8, color="0.3",
+            transform=ax.get_xaxis_transform())               # x in pleats, y in the axes: between curves and legend
+    ax.text(c["n_now"] + 0.15, hi - 0.04 * (hi - lo), f"now: {c['n_now']}", fontsize=8, color="0.3", va="top")
+    ax.set_xlabel(f"pleats across the clamp's {c['width']:.1f} mm")
+    ax.set_ylabel("air through the box, L/s")
+    ax.set_xlim(min(COUNTS) - 0.5, max(COUNTS) + 0.5)
+    ax.set_xticks(COUNTS)
+    ax.grid(alpha=0.3)
+    ax.legend(fontsize=8, loc="lower left", ncol=2)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
 
 
 # ------------------------------------------------------------------ the carbon: the C-MAG, or the housing filled
@@ -475,10 +530,13 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("what", choices=["lumped", "cases", "results"])
     ap.add_argument("--out", default=str(CASES))
+    ap.add_argument("--mesh", action="store_true", help="cases: the mesh check's six; results: its comparison")
     a = ap.parse_args()
     if a.what == "lumped":
         show_lumped()
     elif a.what == "cases":
-        make_cases()
+        make_cases(a.mesh)
+    elif a.mesh:
+        show_mesh_check()
     else:
         results(Path(a.out))

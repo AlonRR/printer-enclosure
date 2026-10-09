@@ -69,6 +69,29 @@ rim six beads wide goes round them, of which the rails hide the outer 2.1 mm. Th
 The author's grills are solid plates in their STL, which the slicer settings in his project turn into a
 honeycomb about half open; the drawn ones print the same in any slicer.
 
+**Without the C-MAG** (D146, 9 Oct 2026; Alon asked whether the housing could be filled on a grid instead). The
+same airflow models, with the paper clamp at 18 pleats and the middle grade:
+
+| The carbon | How much | Air through the box | ASA print hours until it is spent |
+|---|---|---|---|
+| C-MAG, filled to its line | 55 cm³ | 0.77 L/s | about 800 |
+| C-MAG, trays full | 222 cm³ | 0.65 L/s | about 3,400 |
+| No C-MAG: the housing filled 35 mm deep on a grid | 143 cm³ | 0.74 L/s | about 2,100 |
+| ...45 mm deep | 184 cm³ | 0.72 L/s | about 2,700 |
+| ...55 mm deep | 225 cm³ | 0.70 L/s | about 3,400 |
+
+- **A bed over the housing's whole inside does more with the same carbon.** Standing, the C-MAG's three trays are
+  three layers one above the other, and they resist as one layer of their total depth would; its walls and the
+  gap round it leave the pellets 35 cm² of the housing's 41. Spread over all 41, the carbon of a full C-MAG takes
+  7 % more air through, and 45 mm of it holds more than three times the C-MAG's line for 7 % less air. Every grade
+  of paper orders them the same way.
+- **What the C-MAG gives instead is handling.** It lifts out of the housing once the HEPA holder is off, and it
+  holds its pellets in place whichever way the box is turned. Loose in the housing, the pellets come out by
+  taking the housing off the stack too and tipping it, and the bed must be level: air takes the thinner side.
+  A grid would be the housing's own floor, drawn as the grills' honeycomb across the whole inside, in place of
+  its two openings.
+- How long the carbon lasts is `scripts/carbon-life.py`'s estimate at 1.5 mg/h (see *How long the carbon lasts*).
+
 ## The section
 
 ![The section from above: the grid at its bottom, the collar and the bead's groove round its top, a pillar at each corner](bentobox/section-top.png)
@@ -140,7 +163,8 @@ across and 83 long.
   that, its back keeps two beads under the end wall's fillet. The screws stand clear of the magnets' holes and,
   at the -Y end, of the USB-C board's pocket.
 - **The USB-C socket** (Alon, 9 Oct 2026). A USB-C PD trigger board takes 12 V from a charger for the fans, and
-  a step-down makes 5 V from it for the ESP32. The board - as Alon measured it, 14.51 mm long with its socket,
+  a step-down makes 5 V from it for the ESP32. On the charger this build uses, the board gives 12 V (Alon
+  measured it, 9 Oct 2026). The board - as Alon measured it, 14.51 mm long with its socket,
   9.97 wide and 1.05 thick, the socket 8.96 × 3.25 and standing 1.55 past the board's edge - lies in a pocket in
   the tray's -Y end, its socket's face flush with the end face: the wall in front of the board is 1.55 mm thick,
   and the board's edge rests against it. The socket goes through a notch open at the top, the board drops into
@@ -304,6 +328,25 @@ instead.
 31 folds squeeze up to about 26 mm. The 3.4 mm between top folds is the clamp's, not the paper's: pleated paper
 spreads to any pitch, and `paper_pitch`, 30 pleats in 100 mm, is the roll's listing's packing. Anything from 29
 to 31 in 100 mm gives the same 11 pleats.
+
+**How many pleats** (D143, 9 Oct 2026; not applied yet, the clamp still holds 11). An airflow model of one pleat of
+this paper, run for each count the clamp might hold and put into the box's model of the fans and its other
+filters ([`sim/bentobox-cfd/pleat.py`](../sim/bentobox-cfd/README.md#one-pleat-of-your-own-paper-how-many-pleats-the-clamp-should-hold)):
+
+![The air through the box against the pleats across the clamp, for three grades of paper: each rises to a broad top at 20 to 22 pleats; the clamp builds up to 18](bentobox/cfd/pleats.png)
+
+- **The most air comes at 20 to 22 pleats**, whatever the paper's grade, and anything from 18 to 24 is within 3 %
+  of it. More pleats put more paper in the air's way, but near each fold the two sheets touch, over more of the
+  paper's depth as the pleats close up, and the channels between them narrow; past 22 those cost more than the
+  added paper gives.
+- **The clamp builds up to 18**: at 19 its half wedges along the long sides come out under 3 mm. At 18 the box
+  moves 15 to 25 % more air than at today's 11 - 0.77 L/s instead of 0.63 on the middle grade - and 18 % more
+  than the bought cartridge.
+- **18 pleats take 19 of the sheet's 31** with the half pleats each side, so the sheet gives three pieces; at 14
+  or fewer it gives six. 14 pleats move 8 % less air than 18.
+- **The paper's grade is not known**, and it sets how much air, not where the top is: the model runs it at 100,
+  200 and 300 Pa across the flat paper at 5.33 cm/s. Checked on a mesh of half the cells' size, every count's drop
+  moves by the same 1.4 to 2.1 %.
 
 ## The samples
 
