@@ -588,14 +588,23 @@ module grommet_body() let(r = grommet_r, i = grommet_in_r, l = grommet_lip, h = 
 // The key, from above: on the split face (Y = 0) at the middle of the +X side, standing out into -Y.
 module grommet_key2d(grow = 0) let(w = grommet_key[0], k = grommet_key[1]) offset(delta = grow)
     polygon([[grommet_key_x - w / 2, 0.01], [grommet_key_x + w / 2, 0.01], [grommet_key_x + w / 2 - k, -k], [grommet_key_x - w / 2 + k, -k]]);
+// The key whole (Alon, 9 Oct 2026): its bottom runs out of the split face at 45 degrees, so it does not hang flat
+// over the air as the half prints standing; its top stays flat. The slot is the key grown by grommet_play.
+module grommet_key3d(grow = 0) let(k = grommet_key[1], z0 = 0.3 - grow, z1 = auto_floor_t - 0.3 + grow) hull() {
+    translate([0, 0, z0]) linear_extrude(0.01) intersection() {
+        grommet_key2d(grow);
+        translate([-10, -grow - 0.01]) square([20, 1]);
+    }
+    translate([0, 0, z0 + k + grow]) linear_extrude(z1 - z0 - k - grow) grommet_key2d(grow);
+}
 // One half: the body's +Y half, the key on its +X side, and the slot for the other half's key on its -X side - the
 // key turned round the axis, grown by grommet_play.
 module grommet_half() let(h = auto_floor_t) difference() {
     union() {
         intersection() { grommet_body(); translate([-10, 0, -1]) cube([20, 10, h + 2]); }
-        translate([0, 0, 0.3]) linear_extrude(h - 0.6) grommet_key2d();
+        grommet_key3d();
     }
-    translate([0, 0, 0.3 - grommet_play]) linear_extrude(h - 0.6 + 2 * grommet_play) rotate(180) grommet_key2d(grommet_play);
+    rotate(180) grommet_key3d(grommet_play);
 }
 // The two halves as they go in, closed round the leads: one turned round on the other.
 module grommet_pair() { grommet_half(); rotate(180) grommet_half(); }

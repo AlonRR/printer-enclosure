@@ -161,6 +161,8 @@ fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026
 - **Two identical TPU halves**, split through the hole for the leads, 4 mm across, which squeezes the leads'
   4.5 mm bundle. On each half's split face, beside the leads, is a small key with 45° sides and a flat top on one
   side and the matching slot on the other: turn one half round and the two lock together round the leads.
+  The key's bottom runs out of the face at 45°, so it prints standing without hanging over the air; its top
+  is flat.
   Across the leads' hole, at the grommet's foot, is a thin skin, two layers: closed, the two halves' skins
   pinch the leads between them.
 - **The floor's hole is opened out to 7.6 mm** for it, 0.8 mm off the tube's axis towards -X so it stays clear of
