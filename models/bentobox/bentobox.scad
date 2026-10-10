@@ -805,12 +805,12 @@ module sample_pull() let(h = 3 + nut_slot_h + nut_roof) difference() {
 // even pulled up). One block: along the back, five fan-nut seats, numbered 1 to 5 on the top, as the base's -
 // pull a nut up into each with an M3 x 8 from the top, take the screw out, and see which holds it; along the front,
 // five tray-nut slots, 6 to 10, open at the front face, a 0.8 mm floor under them as in the base - slide a nut in,
-// drive an M3 up from below, and see which keeps it from turning. 5 is today's seat and 6 today's slot. 6 and 7 end
-// square, as the base's do; 8 and 9 end in the nut's own shape, so it sits against four walls, its two flats and the
-// two faces behind them (Alon's idea), and stops on the screw's axis; 10 narrows to the screw (Alon's trapezoid):
-// free at its mouth, tight on the nut's flats where it stops. The fits are on top of fdm_hole_comp, each side, as
-// pull_fit and nut_fit are. Tried 10 Oct 2026 (T189): seat 3 and slot 8 set pull_fit and the slots' ends. The fits
-// are literals, the coupon as it was printed and tried, so setting pull_fit and nut_fit does not change it.
+// drive an M3 up from below, and see which keeps it from turning. 5 was the base's seat and 6 its slot until 10 Oct.
+// 6 and 7 end square, as the base's did; 8 and 9 end in the nut's own shape, so it sits against four walls, its two
+// flats and the two faces behind them (Alon's idea), and stops on the screw's axis; 10 narrows to the screw (Alon's
+// trapezoid): free at its mouth, tight on the nut's flats where it stops. The fits are on top of fdm_hole_comp, each
+// side, as pull_fit and nut_fit are. Tried 10 Oct 2026 (T189): seat 3 and slot 8 set pull_fit and the slots' ends.
+// The fits are literals, the coupon as it was printed and tried, so setting pull_fit and nut_fit does not change it.
 coupon_pull = [-0.15, -0.1, -0.05, 0, 0.05];
 coupon_slot = [[0.15, "square"], [0, "square"], [0.15, "hex"], [0, "hex"], [-0.1, "taper"]];
 coupon_taper = [0.15, 4];              // the tapered slot: its fit at its mouth, and the taper's length

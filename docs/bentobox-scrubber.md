@@ -472,8 +472,8 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
 
   | | |
   |---|---|
-  | Seats 1 to 5 | 5.5, 5.6, 5.7, 5.8 and 5.9 mm - 5 is the base's today |
-  | Slot 6 | 6.1 mm, its end square: the base's today |
+  | Seats 1 to 5 | 5.5, 5.6, 5.7, 5.8 and 5.9 mm - 5 was the base's until 10 Oct |
+  | Slot 6 | 6.1 mm, its end square: the base's until 10 Oct |
   | Slot 7 | 5.8 mm, its end square |
   | Slot 8 | 6.1 mm, its end the nut's own shape: the nut sits against four walls, its two flats and the two faces behind them, and stops on the screw (Alon's idea) |
   | Slot 9 | 5.8 mm, its end the nut's own shape |
