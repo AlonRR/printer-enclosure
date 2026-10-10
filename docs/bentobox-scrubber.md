@@ -247,7 +247,7 @@ fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026
 **The fans' plug mate** (Alon, 9 Oct 2026). Each fan keeps its own 3-pin plug and pushes it onto a printed block in
 the fan section, so a fan comes out by unplugging it.
 
-![The plug mate with both fans' plugs lifted off it: the pins, the bared ends of the wires, standing out of the block; walls on all four sides of each plug, a key and its clip on the back one, the front one standing free in its slits; a + in front of each red pin](bentobox/fan-mate.png)
+![The plug mate with both fans' plugs lifted off it: the pins, the bared ends of the wires, standing out of the block; walls on all four sides of each plug, a key on the back one and two ribs up each end; a + in front of each red pin](bentobox/fan-mate.png)
 
 - **The pins are the wires.** 22 AWG solid wire (owned, the 5-colour UL1007): its bare core is 0.64 mm, a
   header pin's size. Bare each wire 8 mm, push it up through the block from below until its insulation stops
@@ -258,14 +258,15 @@ the fan section, so a fan comes out by unplugging it.
   stops a pin being pushed down when a plug goes on; until then, a drop of glue in the slot does it.
 - **One way on.** A wall stands behind each plug's ribbed face, and a key on it goes between the plug's two ribs,
   so the plug only goes on with its text face to the front. A wall at each end of the block, one between the plugs
-  and one in front of each plug's text face (Alon, 9 Oct 2026) close each plug in on all four sides. A **+** in
-  front of each plug marks the red wire's pin; the plug's own moulded arrow lands over it.
-- **A clip holds each plug on** (D174, Alon, 9 Oct 2026). A ridge across the key catches over the plug's lip - the
-  0.3 mm step across its open end between the ribs, 2.2 mm long - and its 45-degree underside presses on the lip's
-  edge. The front wall is a spring, two lines thick, freed by 0.6 mm slits from the walls beside it and down into
-  the block to 1 mm over its underside: it gives for the lip to ride over the ridge, going on and coming off, and
-  presses the plug onto the ridge once it is on. The reach (0.25 mm) and press (0.05 mm) are first guesses, the
-  same as the fan connector's male: try a real plug on a printed mate, and check the slits printed open.
+  and one in front of each plug's text face (Alon, 9 Oct 2026) close each plug in on all four sides; joined at the
+  corners, they stiffen one another. A **+** in front of each plug marks the red wire's pin; the plug's own moulded
+  arrow lands over it.
+- **Friction holds each plug on**, as on the fan connector's male (Alon, 10 Oct 2026: "no spring, friction fit").
+  Two round ribs stand up the wall at each end of each plug, biting 0.15 mm into its end faces; their tops lean back
+  into the walls, a lead-in for the plug. That bite is the male's first guess: the fan connector's grip coupon finds
+  the one that holds on this printer, and `fan_mate_grip` takes the same value. The mate first had the male's
+  spring front wall and a clip over the plug's lip: on the printed males the front wall as the spring was too weak
+  to press, and on the back one the clip snapped off.
 - **From the plug as measured** (Alon, 9 Oct 2026): 8.0 mm across its pins, 5.2 thick over a 0.3 mm lip across its open end (4.9 behind it), 6.67 over its ribs, the
   ribs 1.1 wide with 5.2 between them, its holes 1.45 mm and their nearer walls 2.55 mm from the text face. The
   key is 4.7 wide, 0.25 mm of play each side of the plug.
@@ -559,7 +560,7 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Joint sample | ASA | 1 plate | 1 h 7 m | 10 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
 | Grommet | TPU 95A | 1 | 2 m | under 1 g |
-| Fans' plug mate | ASA | 1 | 18 m | 1.6 g |
+| Fans' plug mate | ASA | 1 | 17 m | 1.7 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
 | Nut coupon | ASA | 1 | 53 m | 8 g |
 | Samples, ASA | ASA | 1 plate | 2 h 29 m | 22 g |
@@ -725,14 +726,14 @@ upper frame on the lower one - meeting only at the end blocks - lays a model of 
 values at the slot's thickness, in the frames' zigzag, keeps the air's way down under the paper open, and
 runs the four screws through the end blocks and the nuts into their seats and down out of them. It sets the
 grommet in the fan section's floor, lip in groove. It seats the fans' plugs, drawn from their measurements, on
-their mate, ribs either side of each key and clear of the walls and - the press taken off - of the clips, slides each plug on and off as far forward as its front wall lets it, meeting nothing but its clip and meeting that (the one check that must not come out empty), and runs the wires' cores up through the block
+their mate, ribs either side of each key and clear of the walls; finds the grip's ribs biting their ends (the one check that must not come out empty) and, the bite taken off, clear of them; and runs the wires' cores up through the block
 into the plugs' holes. For the bottom it stands the fan
 section on the base and the base on the tray, lays the USB-C board in its pocket - its socket through its notch,
 flush with the end face - sets a nut in each of the tray's slots and slides it out through
 the end face, and one in each fan screw's seat and draws it down its pocket and out under its post, keeps two
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
 the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 45 fits and
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 44 fits and
 62 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured

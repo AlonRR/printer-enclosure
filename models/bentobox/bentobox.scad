@@ -900,43 +900,43 @@ module fan_mate_key(x) let(h = fan_mate_base[0], wh = fan_mate_wall[1] - 0.5, d 
         cube([fm_key_w, d + e, wh - d - e + 0.01]);
         cube([fm_key_w, 0.01, wh + 0.01]);
     }
-// The clip (D174): a ridge across each key's face that the plug's lip rides over going on - a 30-degree lead-in
-// above - and clicks under, its 45-degree underside pressing on the lip's top edge. It starts inside the key and is
-// 0.2 mm narrower each side, so none of its faces lies in one of the key's.
-module fan_mate_clip(x, cl = fan_mate_clip) let(e = 0.3, w = fm_key_w - 0.4, cy = fm_clip_y(cl), cz = fm_clip_z(cl), r = cy - fm_key_y + e)
-    translate([x - w / 2, 0, 0]) rotate([90, 0, 90]) linear_extrude(w)
-        polygon([[fm_key_y - e, cz - r], [cy, cz], [fm_key_y - e, cz + r * sqrt(3)]]);
-// The air round each plug's front wall, in plan: over the block, the plug's pocket, the slits at the front wall's
-// ends and everything in front of it; in the block, the slits round it, behind, at its ends and in front.
-module fan_mate_air_2d() let(f = fan_mate_spring[0], g = fan_mate_slit[0]) {
-    for (x = fm_xs) {
-        translate([x - fm_px, fm_wall_y]) square([2 * fm_px, fm_fy - fm_wall_y]);
-        for (s = [-1, 1]) translate([s > 0 ? x + fm_px - g : x - fm_px, fm_fy - 0.01]) square([g, f + 0.02]);
-    }
-    translate([fm_x0 - 1, fm_fy + f]) square([fm_x1 - fm_x0 + 2, fm_y1 - fm_fy - f + 1]);
-}
-module fan_mate_slits_2d() let(f = fan_mate_spring[0], g = fan_mate_slit[0]) for (x = fm_xs) difference() {
-    translate([x - fm_px, fm_fy - g]) square([2 * fm_px, f + 2 * g]);
-    translate([x - fm_px + g, fm_fy]) square([2 * (fm_px - g), f]);
+// The grip, as the fan connector's male has it (Alon, 10 Oct 2026: "no spring, friction fit"): round ribs up the
+// walls at each plug's ends, from the floor, each standing g into the plug's end face. In plan each is an arc of a
+// circle fan_mate_grip[1] across, its ends 0.05 mm short of the wall's face, then straight on into the wall: so its
+// outline crosses the face part way along an edge - a corner in the face leaves zero-area facets. Each rib's top leans
+// back into the wall at 30 degrees from upright, a lead-in for the plug's edge, and ends inside the wall 0.2 mm under
+// its top. Drawn with the wall's face at x = 0, the pocket towards -x.
+module fan_mate_grips(g = fan_mate_grip[0])
+    let(h = fan_mate_base[0], r = fan_mate_grip[1] / 2, k = fan_mate_play + g, t = h + fan_mate_wall[1] - 0.2,
+        lead = (k + 0.1) * sqrt(3), a = acos((r - k + 0.05) / r), ye = r * sin(a),
+        plan = [for (i = [0 : 12]) let(u = 180 - a + 2 * a * i / 12) [r - k + r * cos(u), r * sin(u)], [0.3, -ye], [0.3, ye]])
+        for (x = fm_xs, s = [-1, 1], y = fm_grip_y) translate([x + s * fm_px, y, 0]) mirror([s < 0 ? 1 : 0, 0, 0]) hull() {
+            translate([0, 0, h - 0.01]) linear_extrude(t - lead - h + 0.01) polygon(plan);
+            translate([k + 0.1, 0, t - 0.01]) linear_extrude(0.01) polygon(plan);
+        }
+// The air over the block, in plan: each plug's pocket, and everything in front of the front walls.
+module fan_mate_air_2d() {
+    for (x = fm_xs) translate([x - fm_px, fm_wall_y]) square([2 * fm_px, fm_fy - fm_wall_y]);
+    translate([fm_x0 - 1, fm_fy + fan_mate_wall[0]]) square([fm_x1 - fm_x0 + 2, fan_mate_front + 1]);
 }
 // The block and its walls - the back one, one at each end, one between the plugs and one in front of each plug's text
 // face (Alon, 9 Oct 2026) - are one prism of the whole outline with what is air cut out of it: boxes sharing faces
-// would meet in lines of T-junctions. Each front wall is a spring: slits round it, down into the block to
-// fan_mate_slit[1] over its underside, free it from the block and the walls beside it, so it gives when the plug's lip
-// rides over the clip. The groove is a little wider than the slot, so its sides are not tangent to the slot's round
-// ends. The slot's roof slopes up at 45 degrees to a ridge between its end pins, so no core's hole starts in a
-// bridged layer: on the fan connector's male, a flat roof printed each hole's rim over air and closed it (T188,
-// 10 Oct 2026). The roof also leads each core into its hole.
-module fan_mate(with_clip = true, cl = fan_mate_clip) let(h = fan_mate_base[0], c = fan_mate_base[1], wh = fan_mate_wall[1], s = 2 * fan_pitch + fm_ins_d + 0.4)
+// would meet in lines of T-junctions. Joined at the corners, the walls stiffen one another, and the grip holds the
+// plugs. The mate first had a spring front wall, freed by slits, and a clip on each key over the plug's lip, as the
+// fan connector's male did: printed and tried on the male, the front wall as the spring was too weak to press, and
+// on the back one the clip snapped off (10 Oct 2026). The groove is a little wider than the slot, so its sides are
+// not tangent to the slot's round ends. The slot's roof slopes up at 45 degrees to a ridge between its end pins, so
+// no core's hole starts in a bridged layer: on the fan connector's male, a flat roof printed each hole's rim over air
+// and closed it (T188, 10 Oct 2026). The roof also leads each core into its hole.
+module fan_mate(with_grip = true) let(h = fan_mate_base[0], c = fan_mate_base[1], wh = fan_mate_wall[1], s = 2 * fan_pitch + fm_ins_d + 0.4)
     difference() {
         union() {
             difference() {
                 translate([fm_x0, fm_y0, 0]) cube([fm_x1 - fm_x0, fm_y1 - fm_y0, h + wh]);
                 translate([0, 0, h]) linear_extrude(wh + 1) fan_mate_air_2d();
-                translate([0, 0, fan_mate_slit[1]]) linear_extrude(h - fan_mate_slit[1] + 1) fan_mate_slits_2d();
             }
             for (x = fm_xs) fan_mate_key(x);
-            if (with_clip) for (x = fm_xs) fan_mate_clip(x, cl);
+            if (with_grip) fan_mate_grips();
         }
         for (x = fm_xs) {
             for (k = [-1 : 1]) translate([x + k * fan_pitch, 0, h - c - 0.01]) cylinder(d = fm_core_d, h = c + 1, $fn = 16);
@@ -954,7 +954,7 @@ module fan_mate(with_clip = true, cl = fan_mate_clip) let(h = fan_mate_base[0], 
 // open end between the ribs, the two ribs on the face opposite the text, and a hole over each pin at the plug's own
 // pitch, 1 mm deeper than the pins stand - a real plug takes a header's 6 mm pins and more, and the fan connector's
 // female has 7 mm cavities. Seated on the block, at plug x.
-module fan_plug_model(x) let(a = fan_plug[0], b = fan_plug[1], c = fan_plug[2], rw = fan_plug_ribs[0], rg = fan_plug_ribs[1],
+module fan_plug_model(x) let(a = fmp_plug_a, b = fan_plug[1], c = fan_plug[2], rw = fan_plug_ribs[0], rg = fan_plug_ribs[1],
                              o = fan_plug_hole, l = fan_plug_lip, bk = fmp_back - fan_plug_lip[0])
     translate([x, 0, fan_mate_base[0]]) difference() {
         union() {

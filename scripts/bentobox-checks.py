@@ -49,7 +49,7 @@ FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("
         ("check_clamp_opening", CLAMP), ("check_clamp_screws", CLAMP), ("check_clamp_nuts", CLAMP), ("check_clamp_nut_ways", CLAMP),
         ("check_auto_fans_base", []), ("check_auto_tray", []), ("check_tray_slot_walls", []), ("check_usb_board", []),
         ("check_grommet_hole", []), ("check_fan_mate", []), ("check_fan_mate_pins", []), ("check_fan_mate_place", []),
-        ("check_fan_mate_seat", []), ("check_fan_mate_free", []), ("check_fan_mate_catch", []),
+        ("check_fan_mate_grip", []), ("check_fan_mate_grip_seat", []),
         ("check_auto_nuts", []), ("check_auto_nut_ways", []),
         ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", []),
         ("check_seal_j1", []), ("check_seal_j2", []), ("check_seal_j3", []), ("check_seal_beads", []),
@@ -94,9 +94,8 @@ CONTROLS = [
     ("check_fan_mate", [("fm_key_y", "-1.7")], "the key's face moved in onto the plug's ribbed face"),
     ("check_fan_mate", [("fm_px", "3.8")], "the mate's end walls and the wall between the plugs moved in onto their ends"),
     ("check_fan_mate", [("fm_fy", "3.1")], "the mate's front walls moved in onto the plugs' text faces"),
-    ("check_fan_mate_seat", [("fmp_plug_lip_l", "2.4")], "the plug's lip made longer, up into the clip's underside"),
-    ("check_fan_mate_free", [("fm_px", "3.8")], "the mate's walls moved in, into the sliding plugs' way"),
-    ("check_fan_mate_catch", [("fm_fy", "3.6")], "the front walls moved out: the plugs step round the clips"),
+    ("check_fan_mate_grip", [("fm_px", "4.7")], "the mate's walls moved out: the grip stands clear of the plugs"),
+    ("check_fan_mate_grip_seat", [("fmp_plug_a", "8.2")], "the plugs drawn wider, onto the grip past its bite"),
     ("check_fan_mate_pins", [("fan_pitch", "3.3")], "the mate's pins spread to 3.3 mm, off the plug's holes"),
     ("check_fan_mate_pins", [("fm_core_d", "0.5")], "the block's holes made narrower than the wire's core"),
     ("check_fan_mate_pins", [("fm_strip", "10")], "the wires bared 2 mm longer, the pins into the plug past its holes"),
@@ -134,8 +133,8 @@ CONTROLS = [
     ("check_section_fans", UNSEALED + [("auto_fans_stl", '"original/missing.stl"')], "the Auto fan section's STL missing - must be reported, not passed"),
 ]
 MISSING = "Can't open import file"
-# The checks that must NOT come out empty: the plug slid off past the clip must meet it. Their controls must empty them.
-MEETS = {"check_fan_mate_catch"}
+# The checks that must NOT come out empty: the mate's grip must bite the plugs. Their controls must empty them.
+MEETS = {"check_fan_mate_grip"}
 
 # The checks hold parts that meet face to face 0.01 mm apart (bentobox-assembly.scad, `sep`), so a good fit
 # leaves NOTHING; DUST is only float noise.

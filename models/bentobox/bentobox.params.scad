@@ -311,21 +311,18 @@ fan_plug = [8.0, 5.2, 12.77];   /* MEASURED (Alon, 9 Oct 2026): the fan's plug a
 fan_plug_d = 2.55;      /* MEASURED: from the plug's face with the text to the nearer wall of a pin's hole (D). */
 fan_plug_hole = 1.45;   /* MEASURED: a pin hole's size in the plug's end face. The pins stand in line with the holes' middles. */
 fan_plug_ribs = [1.1, 5.2, 6.67];   /* MEASURED: the ribs on the face opposite the text: each one's width, the gap between them, and the plug's thickness over them. */
-fan_plug_lip = [0.3, 2.2];  /* MEASURED (Alon, 9 Oct 2026): the lip across the plug's open end between the ribs - its height and its length along the plug. The clip catches over it. */
+fan_plug_lip = [0.3, 2.2];  /* MEASURED (Alon, 9 Oct 2026): the lip across the plug's open end between the ribs - its height and its length along the plug. */
 fan_plug_pitch = 2.54;  /* KK 254's pitch, between the plug's holes - the plug's, so the checks hold it fixed. */
 fan_pitch = 2.54;       /* Between the mate's pins: KK 254's. */
 fan_wire = [0.64, 1.6]; /* 22 AWG solid wire: the core, by the gauge (0.644), and the insulation's outside (MEASURED, Alon, 9 Oct 2026: Q161). */
 fan_mate_n = 2;         /* Plugs on one block: 2, both fans side by side, their reds joined under it and their blacks (D154); 1, a block for each fan. One block (Alon, 9 Oct 2026: D160). */
 fan_mate_pin = 6;       /* How far each pin stands above the block: a header's mating length. */
-fan_mate_play = 0.25;   /* Round the plug: to the back wall, to the key, to the walls at its ends and between its ribs. */
+fan_mate_play = 0.25;   /* Round the plug: to each wall, to the key, and between its ribs. */
 fan_mate_base = [5, 2];     /* The block under the plug: its height, and how much of it at the top is over the insulation's slot - the slot's 45-degree roof, then the core's hole alone. */
-fan_mate_wall = [1.8, 6];   /* The wall behind the plug: its thickness, and how far it stands above the block. */
-fan_mate_side = 1.35;   /* A wall at each end of the block too (Alon, 9 Oct 2026: "the mate needs sides and back"), three lines thick and as tall as the back one; between two plugs a wall of what fan_mate_gap leaves. */
-fan_mate_spring = [0.9, 0.1];  /* The wall in front of each plug's text face (Alon, 9 Oct 2026), as tall as the back one: its thickness - two lines, a spring - and its play to the text face. Slits free it from the block and the walls beside it, so it gives when the clip's lip goes by. */
-fan_mate_slit = [0.6, 1];  /* Those slits: their width, and how far over the block's underside they stop - the spring's root, so it bends from low down. */
-fan_mate_clip = [0.25, 0.05];  /* The clip on each key that clicks over the plug's lip (D174, Alon 9 Oct 2026: a detent, "a little larger so it presses"): how far its tip stands past the lip's face, and how far its 45-degree underside stands into the lip's top edge, the plug centred on its pins. <<CONFIRM>> by printing - the fan connector's male has the same. */
+fan_mate_wall = [1.8, 6];   /* The walls round each plug - behind it, at the block's ends and in front (Alon, 9 Oct 2026: "the mate needs sides and back"): their thickness, four lines, and how far they stand above the block; between two plugs a wall of what fan_mate_gap leaves. */
+fan_mate_grip = [0.15, 1.6];  /* The grip, as the fan connector's male has it (Alon, 10 Oct 2026: "no spring, friction fit"): two round ribs up the wall at each end of each plug, which hold it: how far each stands into the plug's end face, the plug centred, and its width. <<CONFIRM>> with the fan connector's grip coupon. */
 fan_mate_gap = 2;       /* Between two plugs side by side: the wall between them is this less the play either side, 1.5 mm. */
-fan_mate_front = 2.2;   /* The block runs on this far in front of the front walls' slits, for the red pin's mark. */
+fan_mate_front = 2.2;   /* The block runs on this far in front of the front walls, for the red pin's mark. */
 fan_mate_at = [-2, 0];  /* Where the mate stands on the fan section's floor: its middle's X and Y, between the two fans and beside the grommet (Alon, 9 Oct 2026: D162). Its back, where the leads come out, faces -Y. */
 
 /* [Printing - mirrors the print profile; scad-check.sh compares the first two with the slicer's] */

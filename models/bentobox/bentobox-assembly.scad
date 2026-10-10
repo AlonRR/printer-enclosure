@@ -208,12 +208,6 @@ ledge_z = st[3] + ledge_top;
 module opening_probe() translate([fold_x(2) + sep, -(comb_y - clamp_wedge_l) + sep, -1])
     cube([fold_x(fold_last - 2) - fold_x(2) - 2 * sep, 2 * (comb_y - clamp_wedge_l - sep), pack_z]);
 // The clamp's screws, head to tip, and its nuts pulled up into their seats - or slid down out of them.
-// The fans' plugs slid straight on and off the mate, from seated to 12 mm up, as far forward as the front walls let
-// them go without giving.
-module fan_plugs_swept() translate([0, fm_fy - fmp_text - 0.01, 0.01]) minkowski() {
-    for (x = fm_xs) fan_plug_model(x);
-    cube([0.001, 0.001, 12]);
-}
 module clamp_screws() translate([screw_shift[0], screw_shift[1], 0]) clamp_screws_at() {
     translate([0, 0, clamp_head_z - clamp_screw]) cylinder(d = small_screw[0], h = clamp_screw);
     translate([0, 0, clamp_head_z]) cylinder(d = small_screw[1], h = small_screw[2]);
@@ -282,18 +276,13 @@ else if (view == "check_auto_tray") intersection() { translate([0, 0, -sep]) aut
 // grommet's outside, and the grommet drawn only its squeeze larger, so in the model the two stand apart.
 else if (view == "check_grommet_hole") intersection() { fans_sealed(); translate([grommet_x, auto_conduit[1], duct_h]) grommet_body(); }
 // The fans' plugs, as measured, on the mate: each seated on the block, 0.01 mm up, centred on its pins, its ribs
-// either side of the key and clear of the walls - and, the clip's press taken off, of the clip. And the wires' cores,
-// standing as the pins: through their holes in the block and up into the plugs' holes, touching neither.
+// either side of the key and clear of the walls, the grip left off; met by the grip (check_fan_mate_grip, which must
+// NOT come out empty), and - the grip's bite taken off - clear of it, so its ribs bite the plugs' ends by
+// fan_mate_grip and touch nothing else. And the wires' cores, standing as the pins: through their holes in the block
+// and up into the plugs' holes, touching neither.
 else if (view == "check_fan_mate") intersection() { fan_mate(false); for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x); }
-else if (view == "check_fan_mate_seat") intersection() {
-    fan_mate(true, [fan_mate_clip[0], -0.02]);
-    for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x);
-}
-// The clip: each plug slid straight on and off, as far forward as its front wall lets it go without giving, meets
-// nothing of the mate but the clip (check_fan_mate_free, empty) - and does meet the clip (check_fan_mate_catch, which
-// must NOT come out empty): the clip is all that holds the plug, and the front wall must give for it to pass.
-else if (view == "check_fan_mate_free") intersection() { fan_mate(false); fan_plugs_swept(); }
-else if (view == "check_fan_mate_catch") intersection() { for (x = fm_xs) fan_mate_clip(x); fan_plugs_swept(); }
+else if (view == "check_fan_mate_grip") intersection() { fan_mate_grips(); for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x); }
+else if (view == "check_fan_mate_grip_seat") intersection() { fan_mate_grips(-0.02); for (x = fm_xs) translate([0, 0, 0.01]) fan_plug_model(x); }
 // The mate in its place on the fan section's floor, 0.01 mm up, its plugs on it: clear of the fan section, of the
 // grommet's hole and the leads' way up out of it, and of the two fans, each drawn as its 40 x 40 x 20 mm frame.
 else if (view == "check_fan_mate_place") intersection() {

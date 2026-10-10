@@ -182,8 +182,8 @@ grommet_lead_r = (grommet_lead_d + 2 * fdm_extrusion_w) / (2 * sin(180 / grommet
 // The fans' plug mate, in its own frame: the pins along X at Y = 0, standing up from Z = 0, the block's underside;
 // the plug's text face towards +Y, its ribs towards -Y. Out from the pins' line: the plug's text face, its ribbed
 // face, its ribs' tips; the wall's inside, the key's face and its width; the holes as cut; each plug's X and its
-// pocket's half-width; the front wall's inside; the block's ends and its back and front faces; and how much of each
-// wire to bare. Then the clip's tip, out from the pins and up from the block's underside, for a clip c.
+// pocket's half-width; the front wall's inside; the block's ends and its back and front faces; where the grip's ribs
+// stand along the plug's end faces, at the faces' quarters; and how much of each wire to bare.
 fmp_text = fan_plug_d + fan_plug_hole / 2;
 fmp_back = fan_plug[1] - fmp_text;
 fmp_ribs = fan_plug_ribs[2] - fmp_text;
@@ -194,18 +194,18 @@ fm_core_d = fan_wire[0] + 2 * fdm_hole_comp;
 fm_ins_d = fan_wire[1] + 2 * fdm_hole_comp;
 fm_xs = [for (i = [0 : fan_mate_n - 1]) (i - (fan_mate_n - 1) / 2) * (fan_plug[0] + fan_mate_gap)];
 fm_px = fan_plug[0] / 2 + fan_mate_play;
-fm_x0 = min(fm_xs) - fm_px - fan_mate_side;
-fm_x1 = max(fm_xs) + fm_px + fan_mate_side;
+fm_x0 = min(fm_xs) - fm_px - fan_mate_wall[0];
+fm_x1 = max(fm_xs) + fm_px + fan_mate_wall[0];
 fm_y0 = fm_wall_y - fan_mate_wall[0];
-fm_fy = fmp_text + fan_mate_spring[1];
-fm_y1 = fm_fy + fan_mate_spring[0] + fan_mate_slit[0] + fan_mate_front;
+fm_fy = fmp_text + fan_mate_play;
+fm_y1 = fm_fy + fan_mate_wall[0] + fan_mate_front;
+fm_grip_y = [for (s = [-1, 1]) let(bk = fmp_back - fan_plug_lip[0]) (fmp_text - bk) / 2 + s * (fmp_text + bk) / 4];
 // The insulation stops up the slot's roof, where the roof is as narrow as the insulation; the bared length is rounded
 // to half a millimetre, so the pin stands a little over fan_mate_pin.
 fm_stop = fan_mate_base[0] - fan_mate_base[1] + (fm_ins_d - fan_wire[1]) / 2;
 fm_strip = ceil((fan_mate_base[0] - fm_stop + fan_mate_pin) * 2) / 2;
 fmp_plug_lip_l = fan_plug_lip[1];   // the plug's lip's length, drawn: its own, so a check's control can move it alone
-function fm_clip_y(c) = -fmp_back + c[0];
-function fm_clip_z(c) = fan_mate_base[0] + fan_plug_lip[1] + c[0] - c[1];
+fmp_plug_a = fan_plug[0];           // the plug's width, drawn, its own for the same reason
 // What a tray screw leaves: its hole to the board's pocket, beside it; its counterbore to the magnets' holes.
 tray_usb_wall = min([for (x = tray_screws_x) abs(x - usb_x) - usb_pocket[0] / 2 - hole_d / 2]);
 tray_magnet_wall = min([for (x = tray_screws_x, m = auto_magnets) norm([x, tray_screw_y] - m) - (m3_cb[0] + auto_magnet[0]) / 2]);
@@ -232,13 +232,11 @@ assert(fan_mate_base[1] - (fm_ins_d - fm_core_d) / 2 >= 1,
     "the plug mate's cores' holes must run on 1 mm or more over the slot's roof, to hold the pins upright");
 assert(fan_mate_n == 1 || fan_mate_gap - 2 * fan_mate_play > 2 * fdm_extrusion_w,
     "the plug mate's wall between two plugs must be two lines thick");
-assert(fan_mate_clip[0] > fan_mate_spring[1] && fan_mate_clip[0] < fan_plug_lip[0] - 0.02 && fan_mate_clip[1] < fan_mate_clip[0],
-    "the plug mate's clip must reach past the front wall's play, stay clear of the plug's face behind the lip, and stand over the lip");
-assert(fm_clip_z(fan_mate_clip) + (fm_clip_y(fan_mate_clip) - fm_key_y) * sqrt(3) < fan_mate_base[0] + fan_mate_wall[1] - 0.5 - (fm_key_y - fm_wall_y),
-    "the plug mate's clip must stand under its key's chamfer");
-assert(fan_mate_spring[0] >= 2 * fdm_extrusion_w - 1e-9 && fan_mate_slit[0] > fdm_extrusion_w && fan_mate_slit[1] > 0
-       && fm_fy - fan_mate_slit[0] > fm_ins_d / 2 + fdm_extrusion_w,
-    "the plug mate's front wall must be two lines thick, its slits wider than a line, stopping over the underside, clear of the insulation's slot");
+assert(fan_mate_grip[0] > 0 && fan_mate_grip[1] >= 2 * fdm_extrusion_w && fan_mate_play + fan_mate_grip[0] < fan_mate_grip[1] / 2
+       && 0.4 + fan_mate_play + fan_mate_grip[0] < (fan_mate_n == 1 ? fan_mate_wall[0] : min(fan_mate_wall[0], fan_mate_gap - 2 * fan_mate_play)),
+    "the plug mate's grip must bite the plugs' ends, its ribs two lines wide, standing out of their wall by less than their radius and inside it at its top");
+assert(fm_grip_y[0] - fan_mate_grip[1] / 2 > -(fmp_back - fan_plug_lip[0]) + 0.2 && fm_grip_y[1] + fan_mate_grip[1] / 2 < fmp_text - 0.2,
+    "the plug mate's grip must stand on the plugs' end faces, clear of their edges");
 assert(grommet_x + grommet_hole_r + grommet_chamfer < auto_fans_in_x - 0.2, "the grommet's hole must stay under the fan section's chamber, clear of its +X wall");
 assert(abs(grommet_x - auto_conduit[0]) + auto_conduit[2] / 2 + meet < grommet_hole_r, "the grommet's hole must take the fan section's old hole in");
 assert(post_round_z < pull_seat, "a fan nut's seat must stand in its post's straight part, over the underside's round");
