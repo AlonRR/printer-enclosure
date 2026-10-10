@@ -276,8 +276,9 @@ module fans_printed() if (sealed && bottom == "auto") fans_sealed(); else fan_se
 
 // A slot's own frame: X out towards its mouth, the screw's axis at the origin, Z = 0 at z.
 module slot_frame(s, z) translate([s[0], s[1], z]) rotate(s[2]) children();
-// A nut's slot (scad-tools nuts.scad), from behind the axis out through its mouth, `out` past the axis...
-module slot(out = nut_slot_out) nut_slot(nut_af, nut_slot_h, out, fdm_hole_comp + nut_fit);
+// A nut's slot (scad-tools nuts.scad), from behind the axis out through its mouth, `out` past the axis, its back end
+// the nut's own shape (T189, 10 Oct 2026: on the coupon only those ends held the nut still and kept it in)...
+module slot(out = nut_slot_out) nut_slot_hex_end(nut_af, nut_slot_h, out, fdm_hole_comp + nut_fit);
 // ...and the screw's hole on up through its roof, l long, as a bridged hole (scad-tools fdm.scad): a channel as
 // wide as the hole across the slot, so the first layer is two bridges from side to side; the hole, square, so the
 // second is two bridges along the slot over the channel; then the round hole.
@@ -808,21 +809,18 @@ module sample_pull() let(h = 3 + nut_slot_h + nut_roof) difference() {
 // square, as the base's do; 8 and 9 end in the nut's own shape, so it sits against four walls, its two flats and the
 // two faces behind them (Alon's idea), and stops on the screw's axis; 10 narrows to the screw (Alon's trapezoid):
 // free at its mouth, tight on the nut's flats where it stops. The fits are on top of fdm_hole_comp, each side, as
-// pull_fit and nut_fit are: set those, and the slots' ends, from the ones that hold.
-coupon_pull = [-0.15, -0.1, -0.05, 0, pull_fit];
-coupon_slot = [[nut_fit, "square"], [0, "square"], [nut_fit, "hex"], [0, "hex"], [-0.1, "taper"]];
-coupon_taper = [nut_fit, 4];           // the tapered slot: its fit at its mouth, and the taper's length
+// pull_fit and nut_fit are. Tried 10 Oct 2026 (T189): seat 3 and slot 8 set pull_fit and the slots' ends. The fits
+// are literals, the coupon as it was printed and tried, so setting pull_fit and nut_fit does not change it.
+coupon_pull = [-0.15, -0.1, -0.05, 0, 0.05];
+coupon_slot = [[0.15, "square"], [0, "square"], [0.15, "hex"], [0, "hex"], [-0.1, "taper"]];
+coupon_taper = [0.15, 4];              // the tapered slot: its fit at its mouth, and the taper's length
 nc_n = 5;
 nc_pitch = 14;
 nc_y = [7, 22];                        // the slots' axes, from the front face, and the seats'
 nc_h = 3 + nut_slot_h + nut_roof;      // the seats' way 3 mm, the seat, the roof: as sample_pull's
 function nc_w(f) = nut_af + 2 * (fdm_hole_comp + f);
-// The coupon's slots, in a slot's frame (slot_frame), fit f on the nut's flats: ending in the nut's shape - its
-// flats, and the two faces behind them - or narrowing from coupon_taper's fit at the mouth to f on the flats.
-module hex_end_slot(f, out) let(w = nc_w(f)) hull() {
-    cylinder(r = w / 2 / cos(30), h = nut_slot_h, $fn = 6);
-    translate([0, -w / 2, 0]) cube([out, w, nut_slot_h]);
-}
+// The coupon's tapered slot, in a slot's frame (slot_frame): narrowing from coupon_taper's fit at the mouth to f on
+// the nut's flats. Its square and nut-shaped ends are scad-tools nuts.scad's.
 module tapered_slot(f0, out) let(ac = nut_af / cos(30), w0 = nc_w(f0), w1 = nc_w(coupon_taper[0]), x0 = ac / 4, l = coupon_taper[1]) {
     translate([-(ac / 2 + fdm_hole_comp + f0), -w0 / 2, 0]) cube([ac / 2 + fdm_hole_comp + f0 + x0 + eps, w0, nut_slot_h]);
     hull() {
@@ -838,7 +836,7 @@ module nut_coupon() difference() {
         translate([x, nc_y[0], -1]) cylinder(d = hole_d, h = nut_floor + 1 + eps);
         slot_frame([x, nc_y[0], 270, 0], nut_floor) {
             if (end == "square") nut_slot(nut_af, nut_slot_h, nc_y[0] + 1, fdm_hole_comp + f);
-            else if (end == "hex") hex_end_slot(f, nc_y[0] + 1);
+            else if (end == "hex") nut_slot_hex_end(nut_af, nut_slot_h, nc_y[0] + 1, fdm_hole_comp + f);
             else tapered_slot(f, nc_y[0] + 1);
             translate([0, 0, nut_slot_h]) rotate(90) bridged_hole(nc_w(f), hole_d, nc_h - nut_floor - nut_slot_h + 1, fdm_layer_h, eps);
         }

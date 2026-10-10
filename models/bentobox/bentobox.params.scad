@@ -195,7 +195,7 @@ conduit_wall  = [4, 2];         /* ...the tube's outside radius, standing agains
 screw_d   = 3.0;    /* M3. */
 nut_af    = 5.5;    /* The M3 hex nut, across its flats - ISO 4032... */
 nut_h     = 2.4;    /* ...and its height, the largest allowed. */
-nut_fit   = 0.15;   /* A nut's slot, per side, on top of fdm_hole_comp: the nut slides in and the screw holds it. */
+nut_fit   = 0.15;   /* A nut's slot, per side, on top of fdm_hole_comp: the nut slides in and the screw holds it. Its back end is the nut's own shape: on the coupon, at this fit, the nut slid in, held still and stayed in (T189, 10 Oct 2026: slot 8). */
 screw_tip = 1.5;    /* A screw must stand this far out of its nut. */
 screw_lengths = [6, 8, 10, 12, 16, 20, 25, 30, 35, 40];   /* M3 lengths to choose from: the build has many. */
 fan_t     = 20;     /* The fans, 40 x 40 x 20: their screws pass through them, the heads on their top flanges. */
@@ -214,7 +214,7 @@ nut_slot_out = 12;  /* How far past its screw each slot is cut towards its mouth
 // Alon, 8 Oct 2026 (D123, D124): the fans' screws take pull nuts. Each nut goes up a hex pocket under its post, on
 // the screw's axis, open downwards, into a tight seat under the roof; a screw from above pulls it up into the seat,
 // and it stays there. Do it with a spare screw before the fan section goes on.
-pull_fit = 0.05;    /* A fan nut's seat, per side, on top of fdm_hole_comp: tighter than a slot, so a nut pulled up into it once, with a spare screw, stays there (D124)... */
+pull_fit = -0.05;   /* A fan nut's seat, per side, on top of fdm_hole_comp: tighter than a slot, so a nut pulled up into it once, with a spare screw, stays there (D124). Alon, 10 Oct 2026 (T189), the coupon's seats 5.5 to 5.9 across: 5.7 "just right"; 5.8 held; 5.9, the old 0.05, let it slip out; 5.6 too tight; 5.5 would not go in... */
 pull_way_fit = 0.1; /* ...and the pocket under it, up which the nut slides to the seat. */
 pull_rise = 0.8;    /* The pocket starts this far over its post's foot: there a nut slides in under the post, from the room, and goes up the pocket. */
 m3_head = [5.5, 3];     /* The M3 socket head, ISO 4762: the head's diameter and height. */

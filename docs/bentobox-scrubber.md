@@ -163,8 +163,8 @@ before it. Their mount is not drawn yet.
   nut, in a post: round at its end, its sides on fillets into its wall, straight down and then on a round into a
   45° underside that meets the wall, and cut back clear of the fan's air - round, it would reach 0.69 mm in under
   the edge of the fan section's floor opening. A hex pocket runs up it on the screw's axis, open under the post,
-  into a tight seat 2 mm under the base's top; a screw from above pulls the nut up into the seat, and it stays
-  there. Each pocket has a flat 5° off the nearer fan, so it keeps 0.9 mm of wall to the fan's air, and 0.14 mm
+  into a tight seat 2 mm under the base's top, 5.7 mm across its flats as cut (T189: the nut coupon); a screw
+  from above pulls the nut up into the seat, and it stays there. Each pocket has a flat 5° off the nearer fan, so it keeps 0.9 mm of wall to the fan's air, and 0.14 mm
   to its wall's face.
 - Each nut pocket's roof, and each slot's, starts with two bridging layers, a channel and then a square, so the
   screw's hole prints over it without support.
@@ -176,7 +176,8 @@ across and 83 long.
 - **Its four screws**, M3 × 12 socket head, two at each end, come up through counterbores in the tray, their
   heads sunk 0.2 mm inside its bottom face, into nuts in slots in the base's end walls, just over the bay's
   roof. Each slot opens out through the end face: a nut goes in from outside and slides to the slot's end, on
-  its screw's axis. A slot has 0.8 mm under it, four layers, which the nut presses onto the tray's top; low like
+  its screw's axis. The slot's end is the nut's own shape, so the nut beds against four walls and stays in
+  (T189: the nut coupon). A slot has 0.8 mm under it, four layers, which the nut presses onto the tray's top; low like
   that, its back keeps two beads under the end wall's fillet. The screws stand clear of the magnets' holes and,
   at the -Y end, of the USB-C board's pocket.
 - **The USB-C socket** (Alon, 9 Oct 2026). A USB-C PD trigger board takes 12 V from a charger for the fans, and
@@ -478,7 +479,7 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
   | Slot 9 | 5.8 mm, its end the nut's own shape |
   | Slot 10 | 6.1 mm at its mouth, narrowing to 5.6 on the nut's flats where it stops (Alon's trapezoid) |
 
-  `pull_fit`, `nut_fit` and the slots' ends are set from the ones that hold. 53 m, 8 g.
+  Seat 3 and slot 8 were chosen (see *Tried, 10 Oct*). The coupon keeps these fits as printed. 53 m, 8 g.
 - **The bottom sample** - the tray's -Y end, 18 mm of it, and the base's floor over it, 7 mm. Drop the USB-C
   trigger board into its pocket: its socket's face should sit flush with the end face, and a USB-C plug should go
   all the way in, the stop behind the board taking the push. Slide a nut into each of the two slots in the base's
@@ -505,10 +506,29 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
   meet there. Nothing changed.
 - **The clamp's wedges and teeth** came out thin and fragile: hence the glue frame.
 
-**Still to try**, on a second ASA plate,
+**The second ASA plate**,
 [`bentobox-samples-asa-2.scad`](../models/bentobox/bentobox-samples-asa-2.scad) (10 Oct 2026): the glue sample
 (T185) and the nut coupon (T189), 1 h 25 m and 12 g. The grommet's coupon from the first plate is still as drawn,
 so it is not on it: it waits only on the TPU grommet.
+
+**Tried, 10 Oct 2026** (T189), the nut coupon, in Alon's words:
+
+| | As cut | Result |
+|---|---|---|
+| Seat 1 | 5.5 mm | doesn't go in |
+| Seat 2 | 5.6 mm | too tight |
+| Seat 3 | 5.7 mm | **just right** - the base's seats now |
+| Seat 4 | 5.8 mm | holds |
+| Seat 5 | 5.9 mm, the base's until then | slips out |
+| Slot 6 | 6.1 mm, square end, the base's until then | works, the nut is stuck |
+| Slot 7 | 5.8 mm, square end | slips in easily, grips with no slippage, falls out easily |
+| Slot 8 | 6.1 mm, the nut's own shape | as 7, but does not come out easily - **the base's slots now** |
+| Slot 9 | 5.8 mm, the nut's own shape | as 8 |
+| Slot 10 | tapered, 6.1 to 5.6 mm | as 7 |
+
+So `pull_fit` is -0.05, and every nut slot - the tray's and the joints' - ends in the nut's own shape at its old
+width. Slot 9 did as well as 8, but its fit would also have lowered the slot to the nut's own height, which the
+coupon did not try. The nut-shaped end is scad-tools' `nut_slot_hex_end` now.
 
 ## Printing
 
