@@ -55,7 +55,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
 | **Bottom sample** | To print first: the tray's -Y end with the USB-C board's pocket, and the base's floor over it with the tray's nut slots - one ASA plate. | [`bentobox-bottom-sample.scad`](../models/bentobox/bentobox-bottom-sample.scad) |
 | **Nut coupon** | Five fan-nut seats and five tray-nut slots at graded fits and with three kinds of end, to find the ones that hold on this printer (T181, T182). | [`bentobox-nut-coupon.scad`](../models/bentobox/bentobox-nut-coupon.scad) |
-| **Sample plates** | Every sample on two plates, one ASA and one TPU (see *The samples*). | [`bentobox-samples-asa.scad`](../models/bentobox/bentobox-samples-asa.scad), [`bentobox-samples-tpu.scad`](../models/bentobox/bentobox-samples-tpu.scad) |
+| **Sample plates** | Every sample on two plates, one ASA and one TPU, and a second ASA plate of the ones not yet tried (see *The samples*). | [`bentobox-samples-asa.scad`](../models/bentobox/bentobox-samples-asa.scad), [`bentobox-samples-tpu.scad`](../models/bentobox/bentobox-samples-tpu.scad), [`bentobox-samples-asa-2.scad`](../models/bentobox/bentobox-samples-asa-2.scad) |
 
 **Not printed yet.** Every fit is checked in the model (see *Checking it*), not yet against printed parts.
 
@@ -464,7 +464,7 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
   joints*).
 - **The glue sample** - one end of the glue frame (see *The glue frame*). The clamp's sample still builds, but is
   off the plate.
-- **The nut coupon** - on its own, not on the plate: five fan-nut seats, numbered 1 to 5 on the top, and five
+- **The nut coupon** - on the second ASA plate (below), not the first: five fan-nut seats, numbered 1 to 5 on the top, and five
   tray-nut slots, 6 to 10, open at the front face over a 0.8 mm floor, as in the base. Pull a nut up into each seat
   with an M3 × 8 from the top and take the screw out: which keep their nut? Slide a nut into each slot and drive an
   M3 up from below: which keep it from turning? As cut, across the flats:
@@ -505,6 +505,11 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
   meet there. Nothing changed.
 - **The clamp's wedges and teeth** came out thin and fragile: hence the glue frame.
 
+**Still to try**, on a second ASA plate,
+[`bentobox-samples-asa-2.scad`](../models/bentobox/bentobox-samples-asa-2.scad) (10 Oct 2026): the glue sample
+(T185) and the nut coupon (T189), 1 h 25 m and 12 g. The grommet's coupon from the first plate is still as drawn,
+so it is not on it: it waits only on the TPU grommet.
+
 ## Printing
 
 Every part prints as its file draws it, standing on its bottom - the section, the base on its floor, the tray,
@@ -512,7 +517,7 @@ the fan section, the carbon housing and the HEPA holder - the cover on its top f
 the clamp's lower frame on its rim and its upper frame turned over onto its band, and a bead ring flat. With the C-MAG, its parts print from their
 own files: the tray on its floor, the lid on its top face, the grills flat. No supports, no brim. `sh scripts/bentobox-print.sh` builds every one, checks it and slices
 it, and puts its STL and G-code in `models/bentobox/print/`; name parts to build only those - `samples-asa
-samples-tpu` for the two sample plates.
+samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA one.
 
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
@@ -536,6 +541,7 @@ samples-tpu` for the two sample plates.
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
 | Nut coupon | ASA | 1 | 53 m | 8 g |
 | Samples, ASA | ASA | 1 plate | 2 h 29 m | 22 g |
+| Samples, ASA, second plate | ASA | 1 plate | 1 h 25 m | 12 g |
 | Samples, TPU | TPU 95A | 1 plate | 5 m | under 1 g |
 
 Times and weights are PrusaSlicer's, at 0.2 mm with the house profile `0.2mm QUALITY @MK3 - no skirt, no
@@ -564,7 +570,8 @@ lid 1 h 49 m and 21 g, the four grills on one plate 1 h 51 m and 11 g.
 
 For the joint sample, from the same stock: 2 M3 nuts, 1 M3 × 12 and 1 M3 × 8. Every screw is turned with a
 2.5 mm hex screwdriver, its blade 75 mm or longer. For the bottom sample: 2 M3 nuts,
-2 M3 × 12 and the USB-C trigger board.
+2 M3 × 12 and the USB-C trigger board. For the nut coupon: an M3 nut for each seat and slot, or one moved
+along, and an M3 × 8.
 
 For the glue frame: a hot-glue gun and sticks, high-temperature ones if the chamber runs hot.
 

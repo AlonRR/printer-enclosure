@@ -32,7 +32,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [Which part] */
-part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "fan_mate", "bottom_sample", "nut_coupon", "samples_asa" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "fan_mate", "bottom_sample", "nut_coupon", "samples_asa", "samples_asa_2" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of

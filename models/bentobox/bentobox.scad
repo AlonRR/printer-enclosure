@@ -977,6 +977,12 @@ module samples_asa() {
     bottom_sample();                                    // Y -56.4 .. -38.4
     translate([75, 0, 0]) grommet_coupon();
 }
+// The second ASA plate (10 Oct 2026): the samples not yet tried - the glue sample (T185) and the nut coupon (T189).
+// The rest were tried on 9 Oct (T131), and the grommet's coupon from that plate is still as drawn.
+module samples_asa_2() {
+    nut_coupon();                                       // X -7 .. 65, Y 0 .. 30
+    translate([29, 2, 0]) glue_sample();                // X 8.75 .. 49.25, Y 36.25 .. 52.25
+}
 module samples_tpu() {
     joint_sample_bead();                                // Y 0 .. 27.2
     translate([0, -10, 0]) grommet_body();              // Y -14.4 .. -5.6
@@ -1027,6 +1033,7 @@ if (draw_model) {
     else if (part == "bottom_sample") { bottom_sample(); say_auto_hardware(); say_usb(); }
     else if (part == "nut_coupon") { nut_coupon(); say_nut_coupon(); }
     else if (part == "samples_asa") { samples_asa(); say_sample_hardware(); say_auto_hardware(); }
+    else if (part == "samples_asa_2") { assert(glue, "the glue sample's plate: hepa_frame = \"glue\""); samples_asa_2(); say_nut_coupon(); say_paper_cut(); }
     else if (part == "samples_tpu") samples_tpu();
     else assert(false, str("unknown part: ", part));
 }
