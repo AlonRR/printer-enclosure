@@ -199,7 +199,10 @@ fm_x1 = max(fm_xs) + fm_px + fan_mate_side;
 fm_y0 = fm_wall_y - fan_mate_wall[0];
 fm_fy = fmp_text + fan_mate_spring[1];
 fm_y1 = fm_fy + fan_mate_spring[0] + fan_mate_slit[0] + fan_mate_front;
-fm_strip = fan_mate_base[1] + fan_mate_pin;
+// The insulation stops up the slot's roof, where the roof is as narrow as the insulation; the bared length is rounded
+// to half a millimetre, so the pin stands a little over fan_mate_pin.
+fm_stop = fan_mate_base[0] - fan_mate_base[1] + (fm_ins_d - fan_wire[1]) / 2;
+fm_strip = ceil((fan_mate_base[0] - fm_stop + fan_mate_pin) * 2) / 2;
 fmp_plug_lip_l = fan_plug_lip[1];   // the plug's lip's length, drawn: its own, so a check's control can move it alone
 function fm_clip_y(c) = -fmp_back + c[0];
 function fm_clip_z(c) = fan_mate_base[0] + fan_plug_lip[1] + c[0] - c[1];
@@ -225,6 +228,8 @@ assert(fan_mate_n >= 1 && fm_key_w > 2 * fdm_extrusion_w && fm_key_y > fm_wall_y
     "the plug mate's key must be wide enough to print and stand out from its wall");
 assert(fan_mate_base[0] - fan_mate_base[1] > fm_ins_d && fan_pitch - fm_core_d > fdm_extrusion_w,
     "the plug mate's block must hold the insulation's slot under the cores' holes, a line of it between them");
+assert(fan_mate_base[1] - (fm_ins_d - fm_core_d) / 2 >= 1,
+    "the plug mate's cores' holes must run on 1 mm or more over the slot's roof, to hold the pins upright");
 assert(fan_mate_n == 1 || fan_mate_gap - 2 * fan_mate_play > 2 * fdm_extrusion_w,
     "the plug mate's wall between two plugs must be two lines thick");
 assert(fan_mate_clip[0] > fan_mate_spring[1] && fan_mate_clip[0] < fan_plug_lip[0] - 0.02 && fan_mate_clip[1] < fan_mate_clip[0],

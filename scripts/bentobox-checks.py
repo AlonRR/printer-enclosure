@@ -99,6 +99,7 @@ CONTROLS = [
     ("check_fan_mate_catch", [("fm_fy", "3.6")], "the front walls moved out: the plugs step round the clips"),
     ("check_fan_mate_pins", [("fan_pitch", "3.3")], "the mate's pins spread to 3.3 mm, off the plug's holes"),
     ("check_fan_mate_pins", [("fm_core_d", "0.5")], "the block's holes made narrower than the wire's core"),
+    ("check_fan_mate_pins", [("fm_strip", "10")], "the wires bared 2 mm longer, the pins into the plug past its holes"),
     ("check_fan_mate_place", [("fan_mate_at", "[4, 0]")], "the mate moved 6 mm towards the grommet"),
     ("check_fan_mate_place", [("fan_mate_at", "[-2, 5]")], "the mate moved 5 mm towards a fan"),
     ("check_auto_nuts", [("nut_fit", "-0.3")], "the nuts' slots and pockets made narrower than a nut"),

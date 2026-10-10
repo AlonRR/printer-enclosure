@@ -924,7 +924,9 @@ module fan_mate_slits_2d() let(f = fan_mate_spring[0], g = fan_mate_slit[0]) for
 // would meet in lines of T-junctions. Each front wall is a spring: slits round it, down into the block to
 // fan_mate_slit[1] over its underside, free it from the block and the walls beside it, so it gives when the plug's lip
 // rides over the clip. The groove is a little wider than the slot, so its sides are not tangent to the slot's round
-// ends.
+// ends. The slot's roof slopes up at 45 degrees to a ridge between its end pins, so no core's hole starts in a
+// bridged layer: on the fan connector's male, a flat roof printed each hole's rim over air and closed it (T188,
+// 10 Oct 2026). The roof also leads each core into its hole.
 module fan_mate(with_clip = true, cl = fan_mate_clip) let(h = fan_mate_base[0], c = fan_mate_base[1], wh = fan_mate_wall[1], s = 2 * fan_pitch + fm_ins_d + 0.4)
     difference() {
         union() {
@@ -938,8 +940,10 @@ module fan_mate(with_clip = true, cl = fan_mate_clip) let(h = fan_mate_base[0], 
         }
         for (x = fm_xs) {
             for (k = [-1 : 1]) translate([x + k * fan_pitch, 0, h - c - 0.01]) cylinder(d = fm_core_d, h = c + 1, $fn = 16);
-            translate([x, 0, -1]) linear_extrude(h - c + 1)
-                hull() for (k = [-1, 1]) translate([k * fan_pitch, 0]) circle(d = fm_ins_d, $fn = 24);
+            hull() for (k = [-1, 1]) translate([x + k * fan_pitch, 0, 0]) {
+                translate([0, 0, -1]) cylinder(d = fm_ins_d, h = h - c + 1, $fn = 24);
+                translate([0, 0, h - c]) cylinder(d1 = fm_ins_d, d2 = 0, h = fm_ins_d / 2, $fn = 24);
+            }
             translate([x - s / 2, fm_y0 - 1, -1]) cube([s, 1 - fm_y0, fm_ins_d + 1]);
             // the red pin's mark, on the block in front of the front wall: the plug's moulded pin-1 arrow lands over it
             translate([x - fan_pitch, fm_y1 - fan_mate_front / 2, h - 0.4]) linear_extrude(1)
@@ -948,7 +952,8 @@ module fan_mate(with_clip = true, cl = fan_mate_clip) let(h = fan_mate_base[0], 
     }
 // The fan's plug as measured, to check the mate against and to draw, never printed: its body, the lip across its
 // open end between the ribs, the two ribs on the face opposite the text, and a hole over each pin at the plug's own
-// pitch. Seated on the block, at plug x.
+// pitch, 1 mm deeper than the pins stand - a real plug takes a header's 6 mm pins and more, and the fan connector's
+// female has 7 mm cavities. Seated on the block, at plug x.
 module fan_plug_model(x) let(a = fan_plug[0], b = fan_plug[1], c = fan_plug[2], rw = fan_plug_ribs[0], rg = fan_plug_ribs[1],
                              o = fan_plug_hole, l = fan_plug_lip, bk = fmp_back - fan_plug_lip[0])
     translate([x, 0, fan_mate_base[0]]) difference() {
@@ -957,11 +962,11 @@ module fan_plug_model(x) let(a = fan_plug[0], b = fan_plug[1], c = fan_plug[2], 
             translate([-rg / 2 - 0.01, -fmp_back, 0]) cube([rg + 0.02, l[0] + 0.01, fmp_plug_lip_l]);
             for (s = [-1, 1]) translate([s * (rg + rw) / 2 - rw / 2, -fmp_ribs, 0]) cube([rw, fmp_ribs - bk + 0.01, c]);
         }
-        for (k = [-1 : 1]) translate([k * fan_plug_pitch - o / 2, -o / 2, -1]) cube([o, o, fan_mate_pin + 1]);
+        for (k = [-1 : 1]) translate([k * fan_plug_pitch - o / 2, -o / 2, -1]) cube([o, o, fan_mate_pin + 2]);
     }
 // The wires' bared cores, standing as the pins: from where the insulation stops to the pins' tips.
 module fan_mate_pins() for (x = fm_xs, k = [-1 : 1])
-    translate([x + k * fan_pitch, 0, fan_mate_base[0] - fan_mate_base[1]]) cylinder(d = fan_wire[0], h = fm_strip, $fn = 16);
+    translate([x + k * fan_pitch, 0, fm_stop]) cylinder(d = fan_wire[0], h = fm_strip, $fn = 16);
 module say_fan_mate() echo(str("fan plug mate: ", fan_mate_n, fan_mate_n == 1 ? " plug" : " plugs", "; bare each wire ",
     fm_strip, " mm, push it up from below until its insulation stops, and bend it over into the groove underneath"));
 

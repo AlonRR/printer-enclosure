@@ -250,8 +250,10 @@ the fan section, so a fan comes out by unplugging it.
 ![The plug mate with both fans' plugs lifted off it: the pins, the bared ends of the wires, standing out of the block; walls on all four sides of each plug, a key and its clip on the back one, the front one standing free in its slits; a + in front of each red pin](bentobox/fan-mate.png)
 
 - **The pins are the wires.** 22 AWG solid wire (owned, the 5-colour UL1007): its bare core is 0.64 mm, a
-  header pin's size. Bare each wire 7.5 mm, push it up through the block from below until its insulation stops
-  at the top of its slot - it cannot pull out upwards - and its core stands 6 mm above the block as the pin.
+  header pin's size. Bare each wire 8 mm, push it up through the block from below until its insulation stops
+  in its slot's roof - it cannot pull out upwards - and its core stands 6 mm above the block as the pin. The roof
+  slopes up at 45 degrees and leads the core into its hole: under the flat roof the fan connector's male first had,
+  the holes printed closed (T188, 10 Oct 2026).
   Under the block, bend each wire over into the groove to the back edge. Once the block is fixed down, that bend
   stops a pin being pushed down when a plug goes on; until then, a drop of glue in the slot does it.
 - **One way on.** A wall stands behind each plug's ribbed face, and a key on it goes between the plug's two ribs,
