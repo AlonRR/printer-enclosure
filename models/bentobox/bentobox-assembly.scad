@@ -87,8 +87,11 @@ module seal_screws() translate([screw_shift[0], screw_shift[1], 0]) for (s = sea
         translate([0, 0, -s[4]]) cylinder(d = screw_d, h = s[4]);
         cylinder(d = m3_head[0], h = m3_head[1]);
     }
+// Each joint's nut, pulled up into its seat in the lower part's tab; with way, drawn on down its pocket, through the
+// tab and way down past it - a bracket's height takes it out of the bracket.
 module seal_nuts(way = 0) for (n = concat([for (s = tab_screws) [s, sst[1]]], [for (s = top_screws) [s, sst[3]]]))
-    hull() for (x = [0, way]) translate([x * cos(n[0][2]), x * sin(n[0][2]), 0]) nut_at(n[0], n[1] + seal_slot_bot);
+    let(s = n[0], z = n[1] + seal_slot_bot + nut_slot_h - sep - nut_h)
+        hull() for (zz = way == 0 ? [z] : [z, n[1] - tab_lower_t - way]) pull_frame(s, zz) hex_nut(nut_af, nut_h);
 // The hex screwdriver on a screw's head, from its tab's top - the head is sunk in it: its blade, then its handle.
 module hex_driver(s) translate([s[0], s[1], s[3] + tab_upper_h]) {
     cylinder(d = driver[0], h = driver[1]);
@@ -173,7 +176,7 @@ module auto_screws() translate([screw_shift[0], screw_shift[1], 0]) {
 module tray_slot_walls() let(g = 2 * bead, f = fdm_hole_comp + nut_fit, ac = nut_af / cos(30)) for (s = tray_screws)
     slot_frame(s, tray_slot_bot) {
         hull() for (x = [-(ac / 2 + f), s[3]], y = [-1, 1] * (nut_af / 2 + f), z = [0, nut_slot_h]) translate([x, y, z]) sphere(r = g, $fn = 12);
-        hull() for (z = [0, tray_tip_z + 0.5 - tray_slot_bot]) translate([0, 0, z]) sphere(r = hole_d / 2 + g, $fn = 16);
+        hull() for (z = [0, tray_room_z - tray_slot_bot]) translate([0, 0, z]) sphere(r = hole_d / 2 + g, $fn = 16);
     }
 // The base's air: the duct, inside the outline - a millimetre in, clear of the slots' mouths in the end faces.
 module base_air() intersection() {
@@ -332,7 +335,7 @@ else if (view == "check_seal_beads") union() {
 else if (view == "check_seal_screws") intersection() { seal_parts(); seal_screws(); }
 // The nuts in their slots, and their way in from the tabs' ends.
 else if (view == "check_seal_nuts") intersection() { seal_parts(); seal_nuts(); }
-else if (view == "check_seal_nut_ways") intersection() { seal_parts(); seal_nuts(nut_way); }
+else if (view == "check_seal_nut_ways") intersection() { seal_parts(); seal_nuts(bracket_h); }
 // A hex screwdriver on each screw's head, straight up, nothing in its way: the lower joints' screws go in first,
 // before the HEPA holder is on; the top joint's last, with everything on but the cover.
 else if (view == "check_seal_access") union() {

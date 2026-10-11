@@ -116,8 +116,8 @@ CONTROLS = [
     ("check_seal_j3", [("collar_play", "-0.4")], "the HEPA holder's chamfer, against the carbon housing's collar"),
     ("check_seal_beads", [("bead_side", "-0.35")], "the grooves made narrower than the beads"),
     ("check_seal_screws", [("screw_shift", "[1, 0]")], "the joints' screws moved 1 mm off their holes"),
-    ("check_seal_nuts", [("nut_fit", "-0.3")], "the joints' nut slots made narrower and lower than a nut"),
-    ("check_seal_nut_ways", [("nut_slot_out", "1")], "the joints' nut slots cut short of the tabs' ends"),
+    ("check_seal_nuts", [("pull_fit", "-0.25")], "the joints' nut seats made narrower than a nut"),
+    ("check_seal_nut_ways", [("seal_way", "3")], "the joints' nut pockets stopped 3 mm under their seats: no way in"),
     ("check_seal_access", [("top_tabs", '"corners"')], "the top joint's tabs back at the corners, over the lower screws' heads"),
     ("check_seal_access", [("driver", "[4, 30, 30]")], "a 30 mm blade: the driver's handle down against the HEPA holder"),
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.

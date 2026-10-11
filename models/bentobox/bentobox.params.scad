@@ -201,7 +201,7 @@ nut_af    = 5.5;    /* The M3 hex nut, across its flats - ISO 4032... */
 nut_h     = 2.4;    /* ...and its height, the largest allowed. */
 nut_fit   = 0.15;   /* A nut's slot, per side, on top of fdm_hole_comp: the nut slides in and the screw holds it. Its back end is the nut's own shape: on the coupon, at this fit, the nut slid in, held still and stayed in (T189, 10 Oct 2026: slot 8). */
 screw_tip = 1.5;    /* A screw must stand this far out of its nut. */
-screw_lengths = [6, 8, 10, 12, 16, 20, 25, 30, 35, 40];   /* M3 lengths to choose from: the build has many. */
+screw_lengths = [8, 12, 16, 20, 30];   /* The M3 lengths HomeBox records, 11 Oct 2026: set your own. Each screw is the shortest of them that stands screw_tip out of its nut; every nut is pulled into a seat with its pocket open below it, or sits in a slot with its hole running on past the tip, so a longer one fits too (D213). */
 fan_t     = 20;     /* The fans, 40 x 40 x 20: their screws pass through them, the heads on their top flanges. */
 nut_roof  = 2;      /* Over a fan screw's nut, under the base's top face: ten layers. */
 nut_floor = 0.8;    /* Under a tray screw's slot, over the base's bottom face: four layers, which the nut presses onto the tray's top - nothing bridges there. Low, the slot's back stays two beads under the end wall's fillet. */
@@ -214,7 +214,6 @@ post_fillet = 2;    /* A post's sides run into its wall on fillets this round, a
 post_blend = 0.15;  /* ...tangent to a line this far inside the wall's face, so the fillet and the original's face cross at a slant, not tangent. */
 post_round = 2;     /* Under a post, the round from its straight side into its 45-degree underside. */
 post_foot = 37.7;   /* Where a post's 45-degree underside meets its wall. */
-nut_slot_out = 12;  /* How far past its screw each slot is cut towards its mouth: out into the open. */
 // Alon, 8 Oct 2026 (D123, D124): the fans' screws take pull nuts. Each nut goes up a hex pocket under its post, on
 // the screw's axis, open downwards, into a tight seat under the roof; a screw from above pulls it up into the seat,
 // and it stays there. Do it with a spare screw before the fan section goes on.
@@ -233,6 +232,7 @@ head_room = 0.4;    /* ...in a counterbore this much wider than the head, past f
 tray_screws_x = [-13, 3];   /* The tray's screws, X, at each end: clear of the magnets, and of the USB-C board's pocket at the -Y end... */
 tray_screw_y = 52.4;    /* ...and Y: in the end wall, as far out as the head's counterbore keeps two beads of the end face, so the slot's back keeps two beads under the fillet. */
 tray_slot_past = 1; /* Each tray nut's slot runs on this far past the end face: its mouth. */
+tray_screw_max = 20;    /* The longest screw each tray hole takes: the hole runs on up past where its tip would end (D213). */
 
 /* [The USB-C power: a PD trigger board, its socket flush in the tray's -Y end - Alon, 9 Oct 2026 (D133, D135)] */
 // The box takes 12 V from a USB-C charger through a PD trigger board ("USB-C PD3.0/3.1 QC3.0 trigger

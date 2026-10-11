@@ -152,6 +152,7 @@ tray_slot_bot = auto_bay_top + nut_floor;
 tray_slot_top = tray_slot_bot + nut_slot_h;
 tray_screw = screw_for(tray_slot_bot + nut_h + screw_tip - tray_head_z);
 tray_tip_z = tray_head_z + tray_screw;
+tray_room_z = tray_head_z + tray_screw_max + 0.5;     // ...and the top of its hole: room for a screw up to tray_screw_max
 // Each: X, Y, the way out of its slot, through its end face, and how far past the axis the slot runs.
 tray_screws = [for (x = tray_screws_x, sy = [-1, 1]) [x, sy * tray_screw_y, sy > 0 ? 90 : 270, bb_l / 2 - tray_screw_y + tray_slot_past]];
 // The duct's inside: the +X wall's face and the end walls' faces; the turn's centre, X and Z.
@@ -306,12 +307,18 @@ tab_mx0 = tab_sc[0] - tab_x0;
 function joint_screws(style) = style == "middle" ? [for (sy = [-1, 1]) [0, sy * tab_sc[1], sy > 0 ? 90 : 270]] : tab_screws;
 top_screws = joint_screws(top_tabs);                                   // the top joint's, the HEPA holder's
 // The screws: through the HEPA holder's tab into the carbon housing's nut; and through the carbon housing's tab and
-// the section's pillar into the fan section's nut. Each nut sits in the middle of its tab's height, pulled up
-// against its slot's roof.
-seal_slot_bot = -tab_lower_t / 2 - nut_slot_h / 2;                      // a nut's slot, below the joint's face
+// the section's pillar into the fan section's nut. Each nut is a pull nut (D213, Alon 11 Oct 2026), as the fans'
+// are: in a seat in the middle of its tab's height, pulled up against its roof; under it, its pocket runs straight
+// down through the tab and the bracket under it, out past the bracket's foot, so the nut goes in from below and a
+// longer screw runs on down the pocket.
+seal_slot_bot = -tab_lower_t / 2 - nut_slot_h / 2;                      // a nut's seat's bottom, below the joint's face
+seal_way = seal_slot_bot + tab_lower_t + bracket_h + 1;                // ...and its pocket under it, to 1 mm past the bracket's foot
 j3_screw = screw_for(tab_upper_t - (seal_slot_bot + nut_slot_h) + nut_h + screw_tip);
 j12_screw = screw_for(tab_upper_t + sec_h - (seal_slot_bot + nut_slot_h) + nut_h + screw_tip);
 
+assert(tab_boss_r - pull_way_ac / 2 >= 2 * bead - 1e-9, str("a joint's nut pocket leaves ", tab_boss_r - pull_way_ac / 2, " mm of its tab's boss, under two beads"));
+assert(tab_out - pull_way_ac / 2 * cos(30) >= 2 * bead - 1e-9, "a joint's nut pocket must stay two beads clear of the end wall");
+assert(seal_slot_bot > -tab_lower_t, "a joint's nut seat must stand in its tab, over the bracket");
 assert(seal_inner + seal_groove[0] + bead_land <= wall - meet - chamfer_in + 1e-9,
     str("the groove, ", seal_groove[0], " mm, does not fit between the inside and the collar"));
 assert(seal_bead[1] > seal_groove[1], "the bead must stand proud of its groove");

@@ -280,7 +280,7 @@ module fans_printed() if (sealed && bottom == "auto") fans_sealed(); else fan_se
 module slot_frame(s, z) translate([s[0], s[1], z]) rotate(s[2]) children();
 // A nut's slot (scad-tools nuts.scad), from behind the axis out through its mouth, `out` past the axis, its back end
 // the nut's own shape (T189, 10 Oct 2026: on the coupon only those ends held the nut still and kept it in)...
-module slot(out = nut_slot_out) nut_slot_hex_end(nut_af, nut_slot_h, out, fdm_hole_comp + nut_fit);
+module slot(out) nut_slot_hex_end(nut_af, nut_slot_h, out, fdm_hole_comp + nut_fit);
 // ...and the screw's hole on up through its roof, l long, as a bridged hole (scad-tools fdm.scad): a channel as
 // wide as the hole across the slot, so the first layer is two bridges from side to side; the hole, square, so the
 // second is two bridges along the slot over the channel; then the round hole.
@@ -313,19 +313,20 @@ module fan_post(s) intersection() {
 }
 // A fan nut's pocket's own frame: the screw's axis on Z, a corner along X, and a flat facing s[2].
 module pull_frame(s, z) translate([s[0], s[1], z]) rotate(s[2] - 30) children();
-// A fan screw's way: its nut's pocket (scad-tools nuts.scad), up from its mouth under the post to the seat, the
-// seat a nut's height under the roof, and the screw's hole on up through the roof to the base's top, bridged
-// (scad-tools fdm.scad): a channel the hole's width from corner to corner, then the hole's square, then the round hole.
-module pull_pocket(way, f = pull_fit) {
+// A pull nut's way: its pocket (scad-tools nuts.scad), up from its mouth to the seat, the seat a nut's height under
+// the roof, and the screw's hole on up through the roof, roof long, bridged (scad-tools fdm.scad): a channel the
+// hole's width from corner to corner, then the hole's square, then the round hole. A fan screw's roof by default.
+module pull_pocket(way, f = pull_fit, roof = nut_roof + 1) {
     pull_nut_pocket(nut_af, nut_slot_h, way, fdm_hole_comp + f, fdm_hole_comp + pull_way_fit, eps);
-    bridged_hole((nut_af + 2 * (fdm_hole_comp + f)) / cos(30), hole_d, duct_h - pull_top + 1, fdm_layer_h, eps);
+    bridged_hole((nut_af + 2 * (fdm_hole_comp + f)) / cos(30), hole_d, roof, fdm_layer_h, eps);
 }
 module fan_screw_cut(s) pull_frame(s, pull_top) pull_pocket(pull_seat - pull_bot);
 // A tray screw's way in the base: its hole up from the base's bottom face through the floor to its slot, the slot
-// out through the end face, and the hole on up through the slot's roof, bridged, to past its tip.
+// out through the end face, and the hole on up through the slot's roof, bridged, to past the tip of the longest
+// screw it takes (D213).
 module tray_slot_cut(s) {
     translate([s[0], s[1], auto_bay_top - 1]) cylinder(d = hole_d, h = tray_slot_bot - auto_bay_top + 1 + eps);
-    slot_frame(s, tray_slot_bot) { slot(s[3]); roof_hole(tray_tip_z + 0.5 - tray_slot_top); }
+    slot_frame(s, tray_slot_bot) { slot(s[3]); roof_hole(tray_room_z - tray_slot_top); }
 }
 // The duct's air: its floor flat from the outlet, then turning up into the +X wall on base_turn_r, tangent to both,
 // between the end walls; every edge where these meet rounded by base_fillet. It is a convex core, base_fillet in
@@ -579,10 +580,9 @@ module sealed_part(zb, zt, z0, z1, sb = "corners", st = "corners") {
         }
         if (low) {
             seal_groove_cut(zt);
-            for (s = joint_screws(st)) {
-                slot_frame(s, zt + seal_slot_bot) { slot(); roof_hole(-(seal_slot_bot + nut_slot_h) + 1); }
-                translate([s[0], s[1], zt - 9]) cylinder(d = hole_d, h = 9 + seal_slot_bot + eps);
-            }
+            // Each nut's pull pocket, a flat towards the wall, its roof's hole up to the joint's face.
+            for (s = joint_screws(st)) pull_frame(s, zt + seal_slot_bot + nut_slot_h)
+                pull_pocket(seal_way, pull_fit, -(seal_slot_bot + nut_slot_h) + 1);
         }
     }
 }
