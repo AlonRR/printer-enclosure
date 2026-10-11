@@ -17,6 +17,7 @@ path = [
   "archive/**/sim/**/README.md",
   "archive/**/sim/**/uv.lock",
   "PROJECT.yml",
+  ".repo-status",
   ".gitignore",
   ".gitattributes",
   ".gitmodules",
