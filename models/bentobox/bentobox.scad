@@ -54,9 +54,11 @@ module groove_cut() {
         translate([0, 0, -2]) linear_extrude(groove_h + 3) inside_offset(groove_in);
     }
 }
-module magnet_holes(z, up) {
+// The magnets' holes at a joint's face z, up into the part over it or down into the part under it: the originals', or
+// with xy and d given, the cover's joint's.
+module magnet_holes(z, up, xy = mag_xy, d = mag_d, h = mag_h) {
     for (sx = [-1, 1], sy = [-1, 1])
-        translate([sx * mag_xy[0], sy * mag_xy[1], up ? z : z - mag_h]) cylinder(d = mag_d, h = mag_h + eps);
+        translate([sx * xy[0], sy * xy[1], up ? z : z - h]) cylinder(d = d, h = h + eps);
 }
 
 // ------------------------------------------------------------------ the section
@@ -670,7 +672,7 @@ module hepa_drawn(z0) let(c = bb_chamfer, t = z0 + hepa_h) difference() {
     }
     translate([0, 0, z0 + ledge_top]) linear_extrude(hepa_h) inside_offset(hepa_in_grow);
     translate([0, 0, z0 - 1]) linear_extrude(hepa_ledge + 2) offset(delta = meet) rrect(open_wl[0], open_wl[1], hepa_open_r);
-    magnet_holes(z0 + hepa_h, false);
+    magnet_holes(z0 + hepa_h, false, top_mag_xy, top_mag_d, magnet[1]);
 }
 module hepa_sealed() sealed_part(sst[3], undef, sst[3] - meet, sst[3] - meet + hepa_h, top_tabs) hepa_drawn(sst[3] - meet);
 // The cover drawn (Alon, 9 Oct 2026: D142), to ThrutheFrame's cover_hemp, its plate's underside on Z = z0, the
@@ -694,7 +696,7 @@ module cover_drawn(z0) difference() {
     }
     translate([0, 0, z0 - cover_plug[3] - 1]) linear_extrude(cover_plug[3] + cover_top + 2, convexity = 10)
         intersection() { rrect(2 * cover_win[0], 2 * cover_win[1], cover_win_r); hemp_holes2d(); }
-    for (sx = [-1, 1], sy = [-1, 1]) translate([sx * mag_xy[0], sy * mag_xy[1], z0 - 1]) cylinder(d = mag_d, h = 1 + mag_h);
+    for (sx = [-1, 1], sy = [-1, 1]) translate([sx * top_mag_xy[0], sy * top_mag_xy[1], z0 - 1]) cylinder(d = top_mag_d, h = 1 + magnet[1]);
 }
 // The cover on the sealed stack's HEPA holder.
 cover_z0 = sst[3] - meet + hepa_h;

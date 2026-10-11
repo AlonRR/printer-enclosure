@@ -206,6 +206,7 @@ fm_stop = fan_mate_base[0] - fan_mate_base[1] + (fm_ins_d - fan_wire[1]) / 2;
 fm_strip = ceil((fan_mate_base[0] - fm_stop + fan_mate_pin) * 2) / 2;
 fmp_plug_lip_l = fan_plug_lip[1];   // the plug's lip's length, drawn: its own, so a check's control can move it alone
 fmp_plug_a = fan_plug[0];           // the plug's width, drawn, its own for the same reason
+auto_magnet = [magnet[0] + 0.2, magnet[1] + 0.2];      // the tray's magnets' holes, d and depth
 // What a tray screw leaves: its hole to the board's pocket, beside it; its counterbore to the magnets' holes.
 tray_usb_wall = min([for (x = tray_screws_x) abs(x - usb_x) - usb_pocket[0] / 2 - hole_d / 2]);
 tray_magnet_wall = min([for (x = tray_screws_x, m = auto_magnets) norm([x, tray_screw_y] - m) - (m3_cb[0] + auto_magnet[0]) / 2]);
@@ -354,6 +355,17 @@ assert(cmag_rail[1] > cmag_rail[2] && cmag_rail[2] <= cmag_fillet, "a rail's tra
 mag_to_inside = norm([mag_xy[0] - (in_w / 2 - in_r), mag_xy[1] - (in_l / 2 - in_r)]) - in_r;
 mag_wall = mag_to_inside - mag_d / 2 - max(tongue_base, groove_out);
 assert(mag_wall > 2 * bead, "a magnet's hole must not break into the joint's groove");
+// The cover's joint: the remix's magnets, each moved in from the outline's corner's centre - where the originals'
+// are - along the diagonal by top_mag_in, which leaves the wall inside it, to the holder's inside, as thick as the
+// wall outside it at the top's chamfer. From the outline, not from mag_xy, so the originals' holes move alone.
+top_mag_d = magnet[0] + 0.2;
+_mag_c = [bb_w / 2 - bb_r, bb_l / 2 - bb_r];
+top_mag_in = (norm(_mag_c - [in_w / 2 - in_r, in_l / 2 - in_r]) - in_r - bb_r + bb_chamfer) / (1 + 1 / sqrt(2));
+top_mag_xy = _mag_c - top_mag_in / sqrt(2) * [1, 1];
+top_mag_wall_in = norm([top_mag_xy[0] - (in_w / 2 - in_r), top_mag_xy[1] - (in_l / 2 - in_r)]) - in_r - top_mag_d / 2;
+top_mag_wall_out = min(bb_w / 2 - top_mag_xy[0], bb_l / 2 - top_mag_xy[1]) - top_mag_d / 2 - bb_chamfer;
+assert(min(top_mag_wall_in, top_mag_wall_out) >= 2 * bead - 1e-9,
+    str("the cover joint's magnets leave ", top_mag_wall_in, " mm inside and ", top_mag_wall_out, " mm outside at the chamfer: under two beads"));
 
 warns = [
     if (ledge_w + groove_in < 2 * bead - 1e-9) str("the groove's inner wall is ", ledge_w + groove_in, " mm, under two beads"),

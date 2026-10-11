@@ -46,7 +46,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Fan section** | In place of the fan case, drawn to the Auto's: its floor with the fans' openings and screws' holes, its top the sealed joint's, and its wires' hole opened out for the grommet. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
 | **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with four screws, their heads sunk in its bottom face. | [`bentobox-auto-tray.scad`](../models/bentobox/bentobox-auto-tray.scad) |
 | **Carbon housing** | Drawn to ThrutheFrame's, with the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. Its floor is a honeycomb across the whole inside, and the pellets lie on it, 45 mm deep, to a mark on each inside wall (D146); with `carbon = "cmag"`, the original's two openings, for the C-MAG. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
-| **HEPA holder** | Drawn to ThrutheFrame's, its bottom sealed on the carbon housing, its pocket the box's whole inside, for a bigger piece of paper, and its top the original cover's, with its magnets. | [`bentobox-hepa.scad`](../models/bentobox/bentobox-hepa.scad) |
+| **HEPA holder** | Drawn to ThrutheFrame's, its bottom sealed on the carbon housing, its pocket the box's whole inside, for a bigger piece of paper, and its top the original cover's, with its magnets, 6 × 2 mm here. | [`bentobox-hepa.scad`](../models/bentobox/bentobox-hepa.scad) |
 | **Cover** | Drawn to ThrutheFrame's hemp-leaf cover: its plate on the HEPA holder, the plug into the holder's top, the magnets' holes, and the window's pattern, drawn from its lattice of triangles. | [`bentobox-cover.scad`](../models/bentobox/bentobox-cover.scad) |
 | **C-MAG** | An option, with `carbon = "cmag"`, in place of the bed. Drawn to ThrutheFrame's: the tray and the lid, with the grills' slots and rails, the fill line and the magnets' bosses; and its four grills, with a honeycomb of holes the 4 mm pellets cannot pass. | [`bentobox-cmag-tray.scad`](../models/bentobox/bentobox-cmag-tray.scad), [`bentobox-cmag-lid.scad`](../models/bentobox/bentobox-cmag-lid.scad), [`bentobox-cmag-grills.scad`](../models/bentobox/bentobox-cmag-grills.scad) |
 | **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
@@ -213,8 +213,8 @@ it into the seat with a spare M3 screw from above; take the screw out, and the n
 the tube; the fan section on the base, the fans in it, and their four screws down through them. The seat's
 fit was found with the nut coupon (T189; see *The samples*).
 
-**Magnets:** none at the fan section's top, whose joint is sealed. The base's underside has four holes for
-4 × 2 mm magnets, from the Auto; magnets there would hold the box to a steel floor. They are optional.
+**Magnets:** none at the fan section's top, whose joint is sealed. The tray's underside has four holes for
+6 × 2 mm magnets, where the Auto has its 4 × 2; magnets there would hold the box to a steel floor. They are optional.
 
 **Seal the wires' hole.** The hole in the fan section's floor opens above the floor, into the fans' intake,
 the lowest pressure in the box, about 97 Pa under the chamber's. The tube under it opens into the bay, and
@@ -330,7 +330,9 @@ magnets. The checks stand a screwdriver with a 75 mm blade and a 30 mm handle on
 screws' before the HEPA holder is on, and find nothing in its way.
 
 The sheet in the section, the carbon and the HEPA come out by the same screws. Only the cover's joint keeps
-magnets: four in the HEPA holder's top and four in the cover.
+magnets: four in the HEPA holder's top and four in the cover. They are 6 × 2 mm, where the original's are 4 × 2
+(Alon, 11 Oct 2026), each moved 0.76 mm in from its corner along the diagonal, so that the wall inside it and the wall
+outside it, at the top's 0.4 mm chamfer, are the same: 0.93 mm, two lines. `magnet` sets their size.
 
 **Try one end first.** The bead's size and the seat's fit were first guesses, and the carbon housing is a
 6-hour print. The joint sample is one end of the joint between the carbon housing and the HEPA holder, sliced
@@ -555,9 +557,9 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Clamp sample (shelved) | ASA | 1 plate | 1 h 7 m | 7 g |
 | Base | ASA | 1 | 3 h 25 m | 36 g |
 | Fan section | ASA | 1 | 3 h 42 m | 36 g |
-| Tray | ASA | 1 | 1 h 47 m | 20 g |
+| Tray | ASA | 1 | 1 h 48 m | 20 g |
 | Carbon housing | ASA | 1 | 6 h 22 m | 57 g |
-| HEPA holder | ASA | 1 | 4 h 32 m | 44 g |
+| HEPA holder | ASA | 1 | 4 h 35 m | 44 g |
 | Cover | ASA | 1 | 1 h 53 m | 13 g |
 | Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
 | Joint sample | ASA | 1 plate | 1 h 7 m | 10 g |
@@ -581,6 +583,7 @@ For the bottom:
 | 8 | M3 hex nut, ISO 4032 |
 | 4 | M3 × 30 socket head cap screw, ISO 4762: the fans |
 | 4 | M3 × 12 socket head cap screw, ISO 4762: the tray, their heads sunk |
+| 4 | 6 × 2 mm magnet, optional: the tray's bottom, to hold the box to a steel floor |
 
 For the sealed joints:
 
@@ -589,9 +592,9 @@ For the sealed joints:
 | 6 | M3 hex nut, ISO 4032 |
 | 4 | M3 × 25 socket head cap screw, ISO 4762: the carbon housing and the section to the fan section |
 | 2 | M3 × 12 socket head cap screw, ISO 4762: the HEPA holder to the carbon housing |
-| 8 | 4 × 2 mm magnet: the cover's joint, four in the HEPA holder and four in the cover |
+| 8 | 6 × 2 mm magnet: the cover's joint, four in the HEPA holder and four in the cover |
 
-With the C-MAG: 8 more 4 × 2 mm magnets, four in each half. Its parts, in ASA: the tray 2 h 16 m and 25 g, the
+With the C-MAG: eight 4 × 2 mm magnets, four in each half - its bosses are drawn round the original's. Its parts, in ASA: the tray 2 h 16 m and 25 g, the
 lid 1 h 49 m and 21 g, the four grills on one plate 1 h 51 m and 11 g.
 
 For the joint sample, from the same stock: 2 M3 nuts, 1 M3 × 12 and 1 M3 × 8. Every screw is turned with a

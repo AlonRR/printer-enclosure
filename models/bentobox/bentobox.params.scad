@@ -79,9 +79,14 @@ groove_out  = 1.7;  /* ...its outer face, straight up from the bottom face for g
 groove_flat = 0.4;
 groove_out_top = 0.9;   /* ...then sloping to here at its top... */
 groove_in   = -0.1; /* ...and its inner face, 0.1 mm INSIDE the inside's outline: the part's floor or rim makes that wall. */
-mag_d    = 4.2;     /* The magnets' holes: 4 x 2 mm magnets, a hole in each face of each joint... */
+mag_d    = 4.2;     /* The originals' magnets' holes: 4 x 2 mm magnets, a hole in each face of each joint... */
 mag_h    = 2.0;
-mag_xy   = [22.5, 52.5];    /* ...at the four corners, +/-X, +/-Y. */
+mag_xy   = [22.5, 52.5];    /* ...at the four corners, +/-X, +/-Y: the centres of the outline's corners. */
+magnet   = [6, 2];  /* The remix's own magnets, d and thickness: the cover's joint and the tray's bottom (Alon, 11 Oct
+                       2026: "no 4x2 magnets. change to 6x2"). The originals' joints (sealed = false) and the C-MAG keep
+                       their 4 x 2. Their holes are 0.2 mm over the magnet's d. At the cover's joint each is moved in
+                       from the corner along its diagonal, as far as leaves the same wall inside it as outside at the
+                       top's chamfer. */
 // The C-MAG, in its own frame: L along its trays' stacking, W along the box, T across it. It stands in the
 // carbon housing on its end, trays horizontal, filling the inside but for 0.4 mm all round.
 cmag     = [72, 100, 40];   /* L, W, T: its outside. Its walls are 2 mm; its ends are open behind grills. */
@@ -185,8 +190,7 @@ auto_seat_z   = 6;      /* The bay's floor: the tray's floor is 2.5 mm. */
 auto_bay_top  = 14;     /* The bay's roof, the underside of the duct's floor: the base and the tray meet here. */
 bay_size      = [40.8, 82.8, 3];    /* The bay from above, as the Auto's: across, along, and its corners' radius... */
 bay_x         = -1;     /* ...centred at this X: its +X side under the duct's +X face. */
-auto_magnets  = [[-19.4, 49.4], [15.4, 49.4]];  /* Holes for 4 x 2 mm magnets in the bottom face, at these and their mirrors in Y... */
-auto_magnet   = [4.2, 2.2];     /* ...d and depth: magnets there hold the box to a steel floor. */
+auto_magnets  = [[-19.6, 49.4], [15.4, 49.4]];  /* Holes for magnets in the tray's bottom face, at these and their mirrors in Y, the Auto's places but the -X ones 0.2 mm further out, so the 6 mm magnets keep two beads from the tray screws' counterbores: magnets there hold the box to a steel floor. Each hole is the remix's magnet, 0.2 mm deeper than it. */
 auto_conduit  = [16.38, 0, 6];  /* The wires' way down: X, Y and d - the fan section's floor hole, and a tube under it down to the bay... */
 auto_conduit_z = [14, 55];      /* ...from the bay's roof to the top of the fan section's floor... */
 conduit_wall  = [4, 2];         /* ...the tube's outside radius, standing against the +X wall, and its fillets into it, as the Auto's. */

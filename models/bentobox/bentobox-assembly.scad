@@ -127,8 +127,9 @@ module bed_pellets() translate([0, 0, sst[2] - meet + carbon_floor]) linear_extr
 module cmag_magnets_across() cmag_corners() translate([cmag_boss[0], cmag_boss[1], cmag_split - mag_h + 0.1]) cylinder(d = 4, h = 2 * mag_h - 0.2);
 // A magnet in each of the section's holes, standing into the original's hole across the joint: if the two
 // holes line up, it touches neither part. Built from the section's own holes - the original's stay put.
-module magnets_across(z) for (sx = [-1, 1], sy = [-1, 1])
-    translate([sx * mag_xy[0], sy * mag_xy[1], z - mag_h + 0.1]) cylinder(d = 4, h = 2 * mag_h - 0.2);
+// With xy, d and h given, the cover's joint's magnets.
+module magnets_across(z, xy = mag_xy, d = 4, h = mag_h) for (sx = [-1, 1], sy = [-1, 1])
+    translate([sx * xy[0], sy * xy[1], z - h + 0.1]) cylinder(d = d, h = 2 * h - 0.2);
 // The air's way through the section, from numbers kept apart from the ones that draw it: where the carbon housing's
 // floor lets the air down, carried down through the plenum and the sheet's space to the grid. Nothing of the section
 // may stand in it. With the C-MAG, the original's two floor openings; with the bed, the floor's honeycomb, which
@@ -366,7 +367,7 @@ else if (view == "check_clamp_holder") intersection() { translate([0, 0, sst[3] 
 // The cover on the HEPA holder: its plug in the holder's top, flat on the top face; and a magnet across the joint
 // at each corner, in both parts' holes.
 else if (view == "check_cover_holder") intersection() { hepa_sealed(); translate([0, 0, sep]) cover_placed(); }
-else if (view == "check_cover_magnets") intersection() { union() { hepa_sealed(); cover_placed(); } magnets_across(sst[3] - meet + hepa_h); }
+else if (view == "check_cover_magnets") intersection() { union() { hepa_sealed(); cover_placed(); } magnets_across(sst[3] - meet + hepa_h, top_mag_xy, magnet[0], magnet[1]); }
 // The C-MAG standing in the carbon housing, sep over its floor, clear of its walls and of the HEPA holder above.
 else if (view == "check_cmag_housing") intersection() { union() { carbon_sealed(); hepa_sealed(); } cmag_placed(sep); }
 // The C-MAG's halves meet face to face at the joint, held sep apart; a magnet across the joint in both halves' holes;
