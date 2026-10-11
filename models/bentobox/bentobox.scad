@@ -82,6 +82,15 @@ else if (draw == "check_auto_tray") intersection() { translate([0, 0, -sep]) aut
 // The grommet sits in the fan section's floor, lip in groove. The hole is cut a hole's compensation larger than the
 // grommet's outside, and the grommet drawn only its squeeze larger, so in the model the two stand apart.
 else if (draw == "check_grommet_hole") intersection() { fans_sealed(); translate([grommet_x, auto_conduit[1], duct_h]) grommet_body(); }
+// The floor's hole for the grommet cuts nothing over the floor: what of its cut stands above the floor's top, 0.01 mm
+// up, meets nothing of the fan section, whose +X wall stands just past the hole's chamfer.
+else if (draw == "check_grommet_wall") intersection() {
+    fans_whole();
+    translate([grommet_x, auto_conduit[1], duct_h]) intersection() {
+        grommet_hole();
+        translate([-20, -20, auto_floor_t + sep]) cube([40, 40, 5]);
+    }
+}
 // The fans' plugs, as measured, on the mate: each seated on the block, 0.01 mm up, centred on its pins, its ribs
 // either side of the key and clear of the walls, the grip left off; met by the grip (check_fan_mate_grip, which must
 // NOT come out empty), and - the grip's bite taken off - clear of it, so its ribs bite the plugs' ends by

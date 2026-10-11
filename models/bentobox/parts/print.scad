@@ -6,7 +6,7 @@
 // that scripts/tools/part-files.sh writes in .check/ for scad-tools' scad-check.sh and printables.py. Included by
 // bentobox.scad; not a model on its own.
 
-printed = ["section", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "auto_base", "auto_tray", "auto_fans", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "joint_sample", "joint_sample_bead", "grommet", "fan_mate", "bottom_sample", "nut_coupon", "samples_asa", "samples_asa_2", "samples_tpu"];
+printed = ["section", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "auto_base", "auto_tray", "auto_fans", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "joint_sample", "joint_sample_bead", "grommet", "grommet_coupon", "fan_mate", "bottom_sample", "nut_coupon", "samples_asa", "samples_asa_2", "samples_tpu"];
 module print_part(name) {
     if (name == "section") section();
     // The clamp's two frames as they print: the lower standing, the upper on its band; and its sample.
@@ -32,6 +32,8 @@ module print_part(name) {
     else if (name == "joint_sample_bead") joint_sample_bead();
     // The wires' grommet, in TPU, on its foot; the bottom sample; and every sample on its plate.
     else if (name == "grommet") grommet_body();
+    // The floor's hole on a 3 mm coupon, in ASA, to try the grommet in (T184).
+    else if (name == "grommet_coupon") grommet_coupon();
     // The fans' plug mate, in ASA, on its underside.
     else if (name == "fan_mate") { fan_mate(); say_fan_mate(); }
     else if (name == "bottom_sample") { bottom_sample(); say_auto_hardware(); say_usb(); }

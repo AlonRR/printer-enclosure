@@ -32,7 +32,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [What to draw] */
-draw = "section";   /* A printed part, as it prints (parts/print.scad: "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "fan_mate", "bottom_sample", "nut_coupon", "samples_asa", "samples_asa_2", "samples_tpu"); the assembled views (assembly/stack.scad: "stack", "exploded", "cut", "section_fig", "cmag", "frame", "glue", "clamp_print", "paper_cut", "glue_cut", "bottom", "joints", "grommet_fig", "fan_mate_fig"); one of the checks' views (checks/fits.scad, "check_..."), each a solid that must come out empty; or "none", for a file that includes this one to draw its own. */
+draw = "section";   /* A printed part, as it prints (parts/print.scad: "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "grommet_coupon", "fan_mate", "bottom_sample", "nut_coupon", "samples_asa", "samples_asa_2", "samples_tpu"); the assembled views (assembly/stack.scad: "stack", "exploded", "cut", "section_fig", "cmag", "frame", "glue", "clamp_print", "paper_cut", "glue_cut", "bottom", "joints", "grommet_fig", "fan_mate_fig"); one of the checks' views (checks/fits.scad, "check_..."), each a solid that must come out empty; or "none", for a file that includes this one to draw its own. */
 
 /* [The assembled views] */
 with_section = true;
@@ -296,7 +296,7 @@ grommet_x = 15.6;   /* Its axis, X: 0.78 mm towards -X off the tube's, so its ho
 grommet_squeeze = 0.1;  /* The grommet stands this much proud of the floor's hole, each side, so it seals. */
 grommet_lip = 0.5;  /* How far the lip stands out, at the floor's mid-height, its sides at 45 degrees. */
 grommet_play = 0.1; /* Round the lip in its groove. */
-grommet_chamfer = 0.5;  /* The floor's hole is chamfered this much at its top, so the lip goes in. */
+grommet_chamfer = 0.6;  /* The floor's hole is chamfered this much at its top, so the lip goes in: 0.6, from 0.5 (Alon, 11 Oct 2026, T184: the grommet clicks in, sits flush and holds the leads, but "its a little dificult to click in, make the entrance a small amount larger"). 0.6 is as far as the fan section's +X wall leaves room for, 0.2 mm off it. */
 grommet_skin = 2;   /* A thin skin across the leads' hole at the grommet's foot, in layers (Alon, 9 Oct 2026). 0: an open hole. */
 grommet_leads = [4, 1.55];  /* The holes in the skin, one per lead (Alon, 9 Oct 2026): how many, and each one's diameter as it prints. They stand as close to the ring as leaves two lines of skin between neighbours, and each runs on up the ring's inside as a groove, so its lead goes straight up. */
 

@@ -24,7 +24,7 @@ part() {  # the part file's name, after bentobox-, then each setting past draw
     } > "$dir/bentobox-$name.scad"
 }
 for p in section auto-base auto-fans auto-tray carbon hepa cover cmag-tray cmag-lid cmag-grills bead-ring \
-         glue-frame glue-sample grommet joint-sample joint-sample-bead bottom-sample nut-coupon \
+         glue-frame glue-sample grommet grommet-coupon joint-sample joint-sample-bead bottom-sample nut-coupon \
          samples-asa samples-asa-2 samples-tpu; do
     part "$p"
 done

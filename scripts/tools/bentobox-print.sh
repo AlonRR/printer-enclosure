@@ -39,6 +39,7 @@ glue-sample 1 ASA
 clamp-sample 2 ASA
 bottom-sample 2 ASA
 nut-coupon 1 ASA
+grommet-coupon 1 ASA
 samples-asa 7 ASA
 samples-asa-2 2 ASA
 samples-tpu 2 TPU"

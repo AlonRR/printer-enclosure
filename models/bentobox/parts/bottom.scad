@@ -163,7 +163,9 @@ module auto_tray() union() {
     usb_stop_block();
 }
 
+// The fan section with its sealed joint, before the grommet's hole is cut; and with it.
+module fans_whole() sealed_part(undef, sst[1], duct_h, duct_h + fans_h) if (bottom == "auto") fans_drawn(); else fan_section();
 module fans_sealed() difference() {
-    sealed_part(undef, sst[1], duct_h, duct_h + fans_h) if (bottom == "auto") fans_drawn(); else fan_section();
+    fans_whole();
     translate([grommet_x, auto_conduit[1], duct_h]) grommet_hole();
 }

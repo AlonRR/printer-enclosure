@@ -49,7 +49,7 @@ FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("
         ("check_cmag_housing", CMAG), ("check_cmag_halves", []), ("check_cmag_magnets", []), ("check_cmag_grills", []), ("check_clamp_frames", CLAMP), ("check_clamp_paper", CLAMP),
         ("check_clamp_opening", CLAMP), ("check_clamp_screws", CLAMP), ("check_clamp_nuts", CLAMP), ("check_clamp_nut_ways", CLAMP),
         ("check_auto_fans_base", []), ("check_auto_tray", []), ("check_tray_slot_walls", []), ("check_usb_board", []),
-        ("check_grommet_hole", []), ("check_fan_mate", []), ("check_fan_mate_pins", []), ("check_fan_mate_place", []),
+        ("check_grommet_hole", []), ("check_grommet_wall", []), ("check_fan_mate", []), ("check_fan_mate_pins", []), ("check_fan_mate_place", []),
         ("check_fan_mate_grip", []), ("check_fan_mate_grip_seat", []),
         ("check_auto_nuts", []), ("check_auto_nut_ways", []),
         ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", []),
@@ -89,6 +89,7 @@ CONTROLS = [
     ("check_usb_board", [("usb_notch_w", "8.5")], "the socket's notch made narrower than the socket"),
     ("check_usb_board", [("usb_notch_r", "1.2")], "the socket's notch made lower than the socket"),
     ("check_grommet_hole", [("grommet_groove", "0.3")], "the floor's groove made shallower than the grommet's lip"),
+    ("check_grommet_wall", [("grommet_mouth_r", "5.25")], "the hole's mouth opened to 5.25 mm, into the +X wall"),
     # The plug is drawn from its own measurements and pitch, so each of these moves the mate alone.
     ("check_fan_mate", [("fm_key_w", "5.6")], "the mate's key made wider than the gap between the plug's ribs"),
     ("check_fan_mate", [("fm_wall_y", "-3.2")], "the mate's wall moved in onto the plug's ribs"),

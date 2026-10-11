@@ -7,6 +7,7 @@
 // The grommet in the fan section's floor, from Z = duct_h for auto_floor_t: its radii - the hole's as cut, the
 // grommet's drawn, the leads' - the lip's and the groove's mid-height, and how deep the groove goes past the hole.
 grommet_hole_r = grommet_d[0] / 2 + fdm_hole_comp;
+grommet_mouth_r = grommet_hole_r + grommet_chamfer;   // the hole's mouth, at the floor's top
 grommet_r = grommet_d[0] / 2 + grommet_squeeze;
 grommet_in_r = grommet_d[1] / 2;
 grommet_mid = auto_floor_t / 2;
@@ -18,9 +19,12 @@ grommet_lead_r = (grommet_lead_d + 2 * fdm_extrusion_w) / (2 * sin(180 / grommet
 
 // ------------------------------------------------------------------ the wires' grommet (D117)
 // See bentobox.params.scad. Drawn on its axis, Z = 0 at the floor's underside. The floor's hole: opened out to the
-// grommet, a groove round it at mid-height with 45-degree sides, and a chamfer at its top for the lip.
+// grommet, a groove round it at mid-height with 45-degree sides, and a chamfer at its top for the lip - the entrance,
+// where the grommet is pushed in from the fan section. Above the floor the cut goes straight up from the mouth: run on
+// as a cone, it cut 0.65 mm into the foot of the fan section's +X wall (check_grommet_wall).
 module grommet_hole() let(r = grommet_hole_r, g = grommet_groove, c = grommet_chamfer, h = auto_floor_t, m = grommet_mid)
-    rotate_extrude($fn = 64) polygon([[0, -1], [r, -1], [r, m - g], [r + g, m], [r, m + g], [r, h - c], [r + c + 1, h + 1], [0, h + 1]]);
+    rotate_extrude($fn = 64)
+        polygon([[0, -1], [r, -1], [r, m - g], [r + g, m], [r, m + g], [r, h - c], [grommet_mouth_r, h], [grommet_mouth_r, h + 1], [0, h + 1]]);
 // The grommet, one piece (Alon, 9 Oct 2026): a ring through the floor, the lip round it at mid-height, a small
 // chamfer at its foot, and a thin skin across the leads' hole there - with grommet_skin 0, an open hole. It prints
 // as drawn, on its foot. The skin is a disc of its own, reaching halfway into the ring: a profile with points on the

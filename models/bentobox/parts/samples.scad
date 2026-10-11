@@ -91,7 +91,8 @@ module samples_asa() {
     translate([75, 0, 0]) grommet_coupon();
 }
 // The second ASA plate (10 Oct 2026): the samples not yet tried - the glue sample (T185) and the nut coupon (T189).
-// The rest were tried on 9 Oct (T131), and the grommet's coupon from that plate is still as drawn.
+// The rest were tried on 9 Oct (T131); the grommet's coupon from that plate was still as drawn then. Its hole's
+// entrance is larger now (T184, 11 Oct 2026), and it prints alone as grommet_coupon.
 module samples_asa_2() {
     nut_coupon();                                       // X -7 .. 65, Y 0 .. 30
     translate([29, 2, 0]) glue_sample();                // X 8.75 .. 49.25, Y 36.25 .. 52.25

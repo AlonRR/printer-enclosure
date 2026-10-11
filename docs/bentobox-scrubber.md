@@ -237,7 +237,8 @@ fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026
 
   ![The grommet from below, its skin and the leads' four holes, and from above, the holes running on up the ring's inside as grooves](diagrams/bentobox/grommet.png)
 - **The floor's hole is opened out to 7.6 mm** for it, 0.8 mm off the tube's axis towards -X so it stays clear of
-  the fan section's +X wall, with a groove round it at mid-height, 45° each side, and a chamfer at the top. Round
+  the fan section's +X wall, with a groove round it at mid-height, 45° each side, and a 0.6 mm chamfer at the top,
+  its entrance. Round
   the grommet, a lip with 45° sides clicks into the groove. The grommet is 0.1 mm proud of the hole all round, so
   it seals, and as thick as the floor, 3 mm, so it sits flush both sides.
 - **Putting it in:** the grommet first, with nothing through it, so its hole can give as the lip passes: pushed
@@ -527,8 +528,8 @@ one of them on two plates, `samples_asa` and `samples_tpu` in [`parts/samples.sc
 
 **The second ASA plate**,
 `samples_asa_2` in [`parts/samples.scad`](../models/bentobox/parts/samples.scad) (10 Oct 2026): the glue sample
-(T185) and the nut coupon (T189), 1 h 25 m and 12 g. The grommet's coupon from the first plate is still as drawn,
-so it is not on it: it waits only on the TPU grommet.
+(T185) and the nut coupon (T189), 1 h 25 m and 12 g. The grommet's coupon from the first plate was then still as
+drawn, so it is not on it: it waited only on the TPU grommet.
 
 **Tried, 10 Oct 2026** (T189), the nut coupon, in Alon's words:
 
@@ -548,6 +549,13 @@ so it is not on it: it waits only on the TPU grommet.
 So `pull_fit` is -0.05, and every nut slot - the tray's and the joints' - ends in the nut's own shape at its old
 width. Slot 9 did as well as 8, but its fit would also have lowered the slot to the nut's own height, which the
 coupon did not try. The nut-shaped end is scad-tools' `nut_slot_hex_end` now.
+
+**Tried, 11 Oct 2026** (T184), the one-piece TPU grommet in the first plate's coupon: it clicks in, sits flush both
+sides and holds the leads, but it is a little difficult to click in (Alon: "make the entrance a small amount
+larger"). So the floor's hole is chamfered 0.6 mm at its top, where the grommet goes in, from 0.5: as far as the
+fan section's +X wall leaves room for, 0.2 mm off it. Above the floor the hole's cut now goes straight up from its
+mouth: run on as a cone, as it was, it cut 0.65 mm into the foot of that wall (`check_grommet_wall`).
+`grommet-coupon` prints the coupon alone, to try the new entrance.
 
 ## Printing
 
@@ -579,6 +587,7 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Fans' plug mate (on hold) | ASA | 1 | 17 m | 1.7 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
 | Nut coupon | ASA | 1 | 53 m | 8 g |
+| Grommet's coupon | ASA | 1 | 6 m | 0.9 g |
 | Samples, ASA | ASA | 1 plate | 2 h 29 m | 22 g |
 | Samples, ASA, second plate | ASA | 1 plate | 1 h 25 m | 12 g |
 | Samples, TPU | TPU 95A | 1 plate | 5 m | under 1 g |
@@ -751,9 +760,10 @@ section on the base and the base on the tray, lays the USB-C board in its pocket
 flush with the end face - sets a nut in each of the tray's slots and slides it out through
 the end face, and one in each fan screw's seat and draws it down its pocket and out under its post, keeps two
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
-the wires down the tube, and the fans' air down into the base past the posts. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 44 fits and
-62 controls.
+the wires down the tube, and the fans' air down into the base past the posts, and keeps the grommet's hole from
+cutting into the fan section's wall above the floor. Each must come out empty. Every check has a positive control,
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 45 fits and
+63 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame; the bought parts' own numbers -
