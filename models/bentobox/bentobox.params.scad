@@ -166,7 +166,7 @@ small_nut_roof = 1.6;           /* Over each nut, under the end block's split: e
 /* [The bottom: Strangwooduk's BentoBox Auto, or ThrutheFrame's duct and fan case] */
 bottom = "auto";    /* "auto": the remix's base and tray, after the Auto's, and the Auto's fan section. "bambu": ThrutheFrame's duct and fan case, as they come. The airflow simulation keeps the duct either way. */
 // The BentoBox Auto VOC Sensor system, by Strangwooduk (MakerWorld 1882240), comes as one STEP file;
-// scripts/bentobox-auto-stl.py writes its STLs into original/. MEASURED by sectioning them, 8-9 Oct 2026, in
+// scripts/tools/bentobox-auto-stl.py writes its STLs into original/. MEASURED by sectioning them, 8-9 Oct 2026, in
 // this frame. Its base is ThrutheFrame's duct with its floor raised over a bay for the electronics, its outlet
 // the whole -X face between its end walls. The remix DRAWS the base from those measurements (Alon, 9 Oct 2026:
 // "remake the base from scratch"): inside, its duct is the Auto's to about 0.05 mm, sectioned both ways at nine cuts;

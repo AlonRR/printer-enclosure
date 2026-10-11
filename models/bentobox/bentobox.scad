@@ -254,7 +254,7 @@ module cmag_stood(z0) translate([cmag[2] / 2, -cmag[1] / 2, z0]) rotate([0, -90,
 
 // ------------------------------------------------------------------ the bottom
 // The base and its tray are the remix's own, drawn to the Auto's measurements (bentobox.params.scad); the fan
-// section is Strangwooduk's (scripts/bentobox-auto-stl.py writes it from the STEP, with the base and plate this
+// section is Strangwooduk's (scripts/tools/bentobox-auto-stl.py writes it from the STEP, with the base and plate this
 // remix measured), moved into this frame. The base stands on the tray, the tray on Z = auto_base_z0, and the
 // base's top is at duct_h, where the duct's is.
 auto_fans_stl  = str(orig_dir, "bentobox-auto-fans.stl");

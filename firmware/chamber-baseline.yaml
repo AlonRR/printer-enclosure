@@ -129,7 +129,7 @@ web_server:
   # from a CDN - useless on a network without internet, and on a phone it just
   # shows a blank page. v2 embeds everything in the firmware AND keeps the
   # per-entity REST endpoints (/sensor/chamber_temperature) that
-  # scripts/chamber-log.py polls. v3 replaced those with an SSE stream at
+  # scripts/tools/chamber-log.py polls. v3 replaced those with an SSE stream at
   # /events and returns 404 for the old paths.
   version: 2
 

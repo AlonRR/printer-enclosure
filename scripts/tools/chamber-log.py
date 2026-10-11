@@ -3,7 +3,7 @@
 
 """Log the chamber-baseline node to CSV over WiFi.
 
-    python scripts/chamber-log.py [host] [--csv PATH] [--every SECONDS] [--note TEXT]
+    python scripts/tools/chamber-log.py [host] [--csv PATH] [--every SECONDS] [--note TEXT]
 
 Consumes ESPHome's Server-Sent Events stream at /events rather than polling the
 per-entity REST paths. Two reasons:

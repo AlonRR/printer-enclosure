@@ -30,14 +30,14 @@ HEPA paper is hot-glued into. The LunchBox remix it was weighed against is archi
 |---|---|
 | [`docs/chamber-sensor.md`](docs/chamber-sensor.md), [`docs/chamber-sensor/`](docs/chamber-sensor/) | the record and the decisions: sensors, the node, boards, WiFi, the SuperMini antenna, measurements, heating and airflow, the build order |
 | [`docs/chamber-airflow.md`](docs/chamber-airflow.md) | the two-fan filter and extraction plan |
-| [`docs/bentobox-scrubber.md`](docs/bentobox-scrubber.md), [`models/bentobox/`](models/bentobox/), [`scripts/bentobox-checks.py`](scripts/bentobox-checks.py), [`scripts/bentobox-auto-stl.py`](scripts/bentobox-auto-stl.py) | the filter: BentoBox v2.0 with its carbon magazine, a carbon-dust section for it, sealed joints, a hot-glue frame for the build's own HEPA paper (its screwed clamp shelved), the BentoBox Auto's bottom with nuts for its heat-set inserts, and its fit checks |
+| [`docs/bentobox-scrubber.md`](docs/bentobox-scrubber.md), [`models/bentobox/`](models/bentobox/), [`scripts/checks/bentobox-checks.py`](scripts/checks/bentobox-checks.py), [`scripts/tools/bentobox-auto-stl.py`](scripts/tools/bentobox-auto-stl.py) | the filter: BentoBox v2.0 with its carbon magazine, a carbon-dust section for it, sealed joints, a hot-glue frame for the build's own HEPA paper (its screwed clamp shelved), the BentoBox Auto's bottom with nuts for its heat-set inserts, and its fit checks |
 | [`sim/`](sim/) | the filter's airflow simulation, OpenFOAM, from its model |
 | [`archive/lunchbox/`](archive/lunchbox/) | archived 8 Oct 2026, not built: the LunchBox remix it was weighed against - its parts, build page, fit checks and airflow simulation, as they were, and still working |
 | [`scad-tools/`](https://github.com/AlonRR/scad-tools) | the shared OpenSCAD tools, a git submodule: `scad-check.sh`, and the xyz arrows the pictures use |
 | [`firmware/chamber-c3.yaml`](firmware/chamber-c3.yaml) | the chamber node in service |
-| [`firmware/bentobox.yaml`](firmware/bentobox.yaml), [`scripts/bentobox-circuit.py`](scripts/bentobox-circuit.py) | the filter's controller in the base's bay: the fans' switch and tach, over MQTT; and its circuit, drawn |
-| [`firmware/chamber-baseline.yaml`](firmware/chamber-baseline.yaml), [`scripts/chamber-log.py`](scripts/chamber-log.py), [`data/chamber-baseline.csv`](data/chamber-baseline.csv) | the first enclosure test, steps 1 and 2 of the build order, and its data |
-| `firmware/chamber-*-espnow.yaml`, `chamber-sensor-mini1.yaml`, [`espnow-c/`](firmware/espnow-c/), [`espnow-rssi/`](firmware/espnow-rssi/), [`scripts/chamber-serial-log.py`](scripts/chamber-serial-log.py) | the ESP-NOW attempt: ESPHome's component would not pass a packet, so it was tested in plain ESP-IDF |
+| [`firmware/bentobox.yaml`](firmware/bentobox.yaml), [`scripts/figures/bentobox-circuit.py`](scripts/figures/bentobox-circuit.py) | the filter's controller in the base's bay: the fans' switch and tach, over MQTT; and its circuit, drawn |
+| [`firmware/chamber-baseline.yaml`](firmware/chamber-baseline.yaml), [`scripts/tools/chamber-log.py`](scripts/tools/chamber-log.py), [`data/chamber-baseline.csv`](data/chamber-baseline.csv) | the first enclosure test, steps 1 and 2 of the build order, and its data |
+| `firmware/chamber-*-espnow.yaml`, `chamber-sensor-mini1.yaml`, [`espnow-c/`](firmware/espnow-c/), [`espnow-rssi/`](firmware/espnow-rssi/), [`scripts/tools/chamber-serial-log.py`](scripts/tools/chamber-serial-log.py) | the ESP-NOW attempt: ESPHome's component would not pass a packet, so it was tested in plain ESP-IDF |
 | [`firmware/secrets.yaml.example`](firmware/secrets.yaml.example) | copy to `firmware/secrets.yaml`, which is gitignored, and fill in |
 
 **The models need the [`scad-tools`](https://github.com/AlonRR/scad-tools) submodule.** Clone with it:
@@ -76,7 +76,7 @@ rm -rf scad-tools && mkdir scad-tools && curl -sL "https://github.com/AlonRR/sca
 
 Code — `firmware/`, `scripts/` and `sim/`, and the archive's — is MPL-2.0. The LunchBox remix —
 `archive/lunchbox/models/lunchbox/` and its pictures in `archive/lunchbox/docs/lunchbox/` — is CC-BY-SA-4.0, as the [LunchBox](https://www.printables.com/model/468166) it builds
-on is. The BentoBox remix — `models/bentobox/` and its pictures in `docs/bentobox/` — is
+on is. The BentoBox remix — `models/bentobox/` and its pictures in `docs/diagrams/bentobox/` — is
 CC-BY-NC-SA-4.0, as [BentoBox v2.0](https://www.printables.com/model/272525) is, and the
 [BentoBox Auto](https://makerworld.com/en/models/1882240) its bottom comes from. Everything else, the docs, the data and this README, is CC-BY-4.0. Every file states its own
 licence, following [REUSE](https://reuse.software/): an `SPDX-License-Identifier` header, or an entry in

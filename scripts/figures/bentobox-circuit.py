@@ -5,9 +5,9 @@
 # requires-python = ">=3.11"
 # dependencies = ["schemdraw>=0.19", "matplotlib>=3.8"]
 # ///
-"""The BentoBox bay's circuit, drawn from this file into docs/bentobox/circuit.png:
+"""The BentoBox bay's circuit, drawn from this file into docs/diagrams/bentobox/circuit.png:
 
-  uv run scripts/bentobox-circuit.py
+  uv run scripts/figures/bentobox-circuit.py
 
 The pins are firmware/bentobox.yaml's; change one there and here together. Every +12 V, +5 V, 3V3 and ground
 symbol is one net, and each tag joins the wire with the same name, so the drawing needs no long wires.
@@ -18,7 +18,8 @@ from pathlib import Path
 import schemdraw
 import schemdraw.elements as elm
 
-OUT = Path(__file__).resolve().parent.parent / "docs" / "bentobox" / "circuit.png"
+ROOT = Path(__file__).resolve().parents[2]
+OUT = ROOT / "docs" / "diagrams" / "bentobox" / "circuit.png"
 schemdraw.use("matplotlib")
 
 
@@ -120,4 +121,4 @@ with schemdraw.Drawing(show=False) as d:
         loc="right", fontsize=9)
     d.save(str(OUT), transparent=False, dpi=140)
 
-print("wrote", OUT.relative_to(OUT.parent.parent.parent))
+print("wrote", OUT.relative_to(ROOT))

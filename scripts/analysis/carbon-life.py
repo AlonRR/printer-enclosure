@@ -8,7 +8,7 @@
 """How many hours of ASA printing each scrubber's carbon takes before it is spent - an estimate, from the
 carbon's own datasheet and published printer emissions. From the repository's root:
 
-  uv run scripts/carbon-life.py
+  uv run scripts/analysis/carbon-life.py
 
 THE CARBON: Chemviron/Calgon AP4-60, 4 mm steam-activated coal pellets. Its Envirocarb data sheet gives a
 bed density of 450 kg/m3 and the benzene it holds in dry air at 20 C: 39, 34, 22 and 13 % of its weight at

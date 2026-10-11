@@ -8,7 +8,7 @@
 """Strangwooduk's BentoBox Auto comes as one STEP file, and the models import STLs: this writes them. From
 the repository's root:
 
-  uv run scripts/bentobox-auto-stl.py [STEP]
+  uv run scripts/tools/bentobox-auto-stl.py [STEP]
 
 STEP defaults to the one file in models/bentobox/original/ whose name has "Auto" in it and ends in .step.
 Beside it, this writes:
@@ -37,7 +37,7 @@ from pathlib import Path
 from build123d import export_stl, import_step
 from OCP.BRepTools import BRepTools
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scad-tools" / "scripts"))
 from scadtools import mesh_problems  # noqa: E402
 

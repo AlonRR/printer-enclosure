@@ -34,8 +34,8 @@ page. The originals are not in git (`original/README.md`), every value is in `be
 the large meshes in seconds; under the 2021.01 release every control reads BLIND):
 
 ```sh
-uv run scripts/bentobox-checks.py all              # every fit empty, every positive control caught
-uv run scripts/bentobox-checks.py figures --write  # the pictures in docs/bentobox/, if a view changed
+uv run scripts/checks/bentobox-checks.py all              # every fit empty, every positive control caught
+uv run scripts/checks/bentobox-checks.py figures --write  # the pictures in docs/diagrams/bentobox/, if a view changed
 sh scad-tools/scripts/scad-check.sh models/bentobox/bentobox-<part>.scad
 ```
 

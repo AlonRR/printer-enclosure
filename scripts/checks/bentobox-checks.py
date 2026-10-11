@@ -6,12 +6,12 @@
 # ///
 """The BentoBox remix's fit checks, against the original STLs. From the repository's root:
 
-  uv run scripts/bentobox-checks.py fits       every fit check in models/bentobox/bentobox-assembly.scad
-  uv run scripts/bentobox-checks.py controls   each check's positive control: one thing broken on purpose,
+  uv run scripts/checks/bentobox-checks.py fits       every fit check in models/bentobox/bentobox-assembly.scad
+  uv run scripts/checks/bentobox-checks.py controls   each check's positive control: one thing broken on purpose,
                                                which its check must catch
-  uv run scripts/bentobox-checks.py all        both
-  uv run scripts/bentobox-checks.py figures [--write]
-                                               every picture in docs/bentobox/, each render's output read
+  uv run scripts/checks/bentobox-checks.py all        both
+  uv run scripts/checks/bentobox-checks.py figures [--write]
+                                               every picture in docs/diagrams/bentobox/, each render's output read
                                                for errors - rendered aside, or over docs/ with --write
 
 A fit check intersects two parts that may touch but must not overlap: OpenSCAD must write nothing, or a
@@ -28,7 +28,7 @@ import tempfile
 import uuid
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scad-tools" / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scad-tools" / "scripts"))
 from scadtools import DEGENERATE, defines, describe, parallel, problems, render, stl_stats  # noqa: E402
 
 ASSEMBLY = "models/bentobox/bentobox-assembly.scad"
@@ -197,7 +197,7 @@ def controls():
     return failed == 0
 
 
-# Every picture in docs/bentobox/: the view it shows, and the camera and settings it is rendered with.
+# Every picture in docs/diagrams/bentobox/: the view it shows, and the camera and settings it is rendered with.
 FIGURES = {
     "exploded": [("view", '"exploded"')], "cut": [("view", '"cut"'), ("cut_x", "0")],
     "section-top": [("view", '"section"')], "section-bottom": [("view", '"section"'), ("axes_cam", "[235, 0, 30]")],
@@ -227,13 +227,13 @@ FLAT = {"cut", "paper-cut", "glue-cut"}
 
 
 def figures(write, names):
-    """Each picture rendered to PNG - into a scratch folder, or over docs/bentobox/ with --write. A failed
+    """Each picture rendered to PNG - into a scratch folder, or over docs/diagrams/bentobox/ with --write. A failed
     assert or import during a PNG export still exits 0 and writes a picture of nothing, so the output is read.
     Rendered, not previewed: without --render a PNG export is OpenSCAD's preview, which draws a difference's
     cut by depth tricks, so cut faces take the wrong colour, coincident faces flicker and thin ribs break up
     (Alon noticed, 9 Oct 2026). The same backend as the checks, so a picture shows the solid they measured.
     Only the FLAT drawings stay previews."""
-    target = Path(__file__).resolve().parent.parent / "docs" / "bentobox"
+    target = Path(__file__).resolve().parents[2] / "docs" / "diagrams" / "bentobox"
     chosen = names or list(FIGURES)
     with tempfile.TemporaryDirectory() as tmp:
         folder = target if write else Path(tmp)
@@ -250,7 +250,7 @@ def figures(write, names):
     for name, (made, bad) in zip(chosen, results):
         verdict = "ok" if made and not bad else "FAIL  " + ("; ".join(bad) or "no picture")[:200]
         failed += verdict != "ok"
-        print(f"{name:15} {verdict}{'  -> docs/bentobox/' + name + '.png' if write and verdict == 'ok' else ''}")
+        print(f"{name:15} {verdict}{'  -> docs/diagrams/bentobox/' + name + '.png' if write and verdict == 'ok' else ''}")
     print(f"figures: {len(chosen) - failed} of {len(chosen)} rendered clean")
     return failed == 0
 

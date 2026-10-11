@@ -19,7 +19,7 @@ each end for the top one - all turned with a hex screwdriver.
 **Its carbon is a bed in the housing** (see *The carbon*): the pellets poured onto the housing's floor, a
 honeycomb across its whole inside, 45 mm deep. The C-MAG stays an option.
 
-![The stack pulled apart: the cover, the HEPA holder, the carbon housing with its bed of pellets, the section, the fan section, the base, the tray under it; tabs at the corners of the three sealed joints](bentobox/exploded.png)
+![The stack pulled apart: the cover, the HEPA holder, the carbon housing with its bed of pellets, the section, the fan section, the base, the tray under it; tabs at the corners of the three sealed joints](diagrams/bentobox/exploded.png)
 
 **It takes its HEPA as a cartridge:** a bought one, 80 × 40 × 15 mm, rests on a ledge in its holder. Or
 the HEPA paper this build already has, pleated 20.2 mm deep, in the remix's frame (see *Your own HEPA
@@ -90,7 +90,7 @@ screws are in the middle of each end (D147), clear of the lower joints' screws a
   of paper orders them the same way.
 - **What the C-MAG gives instead is handling.** It lifts out of the housing once the HEPA holder is off, and it
   holds its pellets in place whichever way the box is turned.
-- How long the carbon lasts is `scripts/carbon-life.py`'s estimate at 1.5 mg/h (see *How long the carbon lasts*).
+- How long the carbon lasts is `scripts/analysis/carbon-life.py`'s estimate at 1.5 mg/h (see *How long the carbon lasts*).
 
 **With the C-MAG** (`carbon = "cmag"`): the housing is the original's height, with the original's two openings in
 its floor, and the C-MAG stands in it. The C-MAG is two halves that close on four grills.
@@ -111,7 +111,7 @@ honeycomb about half open; the drawn ones print the same in any slicer.
 
 ## The section
 
-![The section from above: the grid at its bottom, the collar and the bead's groove round its top, a pillar at each corner](bentobox/section-top.png)
+![The section from above: the grid at its bottom, the collar and the bead's groove round its top, a pillar at each corner](diagrams/bentobox/section-top.png)
 
 The sheet lies on a grid at the section's bottom, with 5 mm of air above it. The carbon housing's floor has
 an opening over each fan only, and that air spreads over the whole sheet before it goes through. Below the
@@ -121,7 +121,7 @@ grid is the fan section, with 11 mm of air above the fans.
 section's inside, 40.8 × 100.8, so it seals at its edges on the ledge round the grid. It is there for carbon
 dust, which is coarse, so it needs to be open, not fine. Change it when it turns grey.
 
-![The section from below: flat, its edge chamfered to sit in the fan section's collar, the grid, a pillar at each corner](bentobox/section-bottom.png)
+![The section from below: flat, its edge chamfered to sit in the fan section's collar, the grid, a pillar at each corner](diagrams/bentobox/section-bottom.png)
 
 **No magnets:** both its joints are sealed (see *The sealed joints*), and the carbon housing's four screws
 hold it, through its pillars, to the fan section.
@@ -155,7 +155,7 @@ controller in the bay. Neither is used here. This build's sensors (the same as t
 **in the base's outlet**, where they read the air after the carbon; the chamber's own monitor reads the air
 before it. Their mount is not drawn yet.
 
-![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's pocket under each post, the tray under it, and its four screws](bentobox/auto-bottom.png)
+![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's pocket under each post, the tray under it, and its four screws](diagrams/bentobox/auto-bottom.png)
 
 **Nuts, not heat-set inserts.** The fans' nuts are pull nuts; the tray's lie flat in slots that open one way.
 
@@ -198,10 +198,10 @@ across and 83 long.
   9 Oct 2026 and updated over the air since, it reports to Home Assistant over MQTT, and the fans are on unless
   switched off there.
 
-  ![The bay's circuit: the USB-C trigger's 12 V, the step-down's 5 V, both fans in parallel on the IRLZ44N with a flyback Schottky across them, the gate from GPIO10 through 100 ohm with 10 kohm to ground, each fan's tach to its own pin through a Schottky, the outlet's sensors on I2C](bentobox/circuit.png)
+  ![The bay's circuit: the USB-C trigger's 12 V, the step-down's 5 V, both fans in parallel on the IRLZ44N with a flyback Schottky across them, the gate from GPIO10 through 100 ohm with 10 kohm to ground, each fan's tach to its own pin through a Schottky, the outlet's sensors on I2C](diagrams/bentobox/circuit.png)
 
-  The circuit, drawn by [`scripts/bentobox-circuit.py`](../scripts/bentobox-circuit.py) (`uv run
-  scripts/bentobox-circuit.py`) - its pins are the firmware's, so a change goes into both. The fans share the
+  The circuit, drawn by [`scripts/figures/bentobox-circuit.py`](../scripts/figures/bentobox-circuit.py) (`uv run
+  scripts/figures/bentobox-circuit.py`) - its pins are the firmware's, so a change goes into both. The fans share the
   one switch, their reds joined and their blacks, in the fan section (D154). Each tach goes through a 1N5819,
   its band towards the fan: the switch is on the fans' black side, so when it is off their ground floats up to
   12 V and the tach line with it, and the diode keeps that off the pin.
@@ -233,7 +233,7 @@ fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026
   deep, so its lead goes straight up, and leaves at least 1 mm of ring behind it. It prints on its foot, the skin
   on the bed, and needs no support. `grommet_skin = 0` leaves the hole open instead.
 
-  ![The grommet from below, its skin and the leads' four holes, and from above, the holes running on up the ring's inside as grooves](bentobox/grommet.png)
+  ![The grommet from below, its skin and the leads' four holes, and from above, the holes running on up the ring's inside as grooves](diagrams/bentobox/grommet.png)
 - **The floor's hole is opened out to 7.6 mm** for it, 0.8 mm off the tube's axis towards -X so it stays clear of
   the fan section's +X wall, with a groove round it at mid-height, 45° each side, and a chamfer at the top. Round
   the grommet, a lip with 45° sides clicks into the groove. The grommet is 0.1 mm proud of the hole all round, so
@@ -251,7 +251,7 @@ its hold and sizes once that is settled; `bentobox-print.sh` leaves it out until
 Each fan keeps its own 3-pin plug and pushes it onto a printed block in
 the fan section, so a fan comes out by unplugging it.
 
-![The plug mate with both fans' plugs lifted off it: the pins, the bared ends of the wires, standing out of the block; walls on all four sides of each plug, a key on the back one and two ribs up each end; a + in front of each red pin](bentobox/fan-mate.png)
+![The plug mate with both fans' plugs lifted off it: the pins, the bared ends of the wires, standing out of the block; walls on all four sides of each plug, a key on the back one and two ribs up each end; a + in front of each red pin](diagrams/bentobox/fan-mate.png)
 
 - **The pins are the wires.** 22 AWG solid wire (owned, the 5-colour UL1007): its bare core is 0.64 mm, a
   header pin's size. Bare each wire 8 mm, push it up through the block from below until its insulation stops
@@ -328,7 +328,7 @@ housing are sealed:
   counterbore in its tab, 0.2 mm under the top: the upper parts' tabs stand 8.2 mm, 5 mm of it under the
   head. They are socket heads, turned with a 2.5 mm hex screwdriver (Q148).
 
-![The sealed joints pulled apart: the fan section, the section, the carbon housing and the HEPA holder, a bead ring over each lower part's groove, the screws](bentobox/joints.png)
+![The sealed joints pulled apart: the fan section, the section, the carbon housing and the HEPA holder, a bead ring over each lower part's groove, the screws](diagrams/bentobox/joints.png)
 
 **Putting it together:** a bead ring in the groove on the fan section, the section and the carbon housing;
 a nut in each tab of the fan section and the carbon housing - pushed up its pocket from under the tab, pulled
@@ -368,7 +368,7 @@ Alon, 9 Oct 2026 (T131): the clamp's wedges and teeth printed thin and fragile f
 paper is hot-glued into one frame instead. The clamp is shelved until the filament is dried, and still builds
 with `hepa_frame = "clamp"` (below).
 
-![The glue frame with the cut paper lifted out of it: walls all round, a rim round the bottom leaving the ledge's opening open, the paper's folds running end to end](bentobox/glue-frame.png)
+![The glue frame with the cut paper lifted out of it: walls all round, a rim round the bottom leaving the ledge's opening open, the paper's folds running end to end](diagrams/bentobox/glue-frame.png)
 
 - **The frame.** One ASA frame with the clamp's outline, 100.5 × 40.5 mm and 22.9 mm tall: side walls three
   lines thick, end walls 3 mm, standing 1.5 mm over the paper's top folds, and a rim round its bottom, 1.2 mm
@@ -381,7 +381,7 @@ with `hepa_frame = "clamp"` (below).
   to rest on the rim between them: the fins set every fold's place, 2.08 mm apart, and hold it while the glue
   sets.
 
-  ![Across the folds, flat, through the fins at one end: the frame's rim and walls, a fin up into each channel open at the bottom, and the paper's zigzag standing on the rim between them](bentobox/glue-cut.png)
+  ![Across the folds, flat, through the fins at one end: the frame's rim and walls, a fin up into each channel open at the bottom, and the paper's zigzag standing on the rim between them](diagrams/bentobox/glue-cut.png)
 - **The paper.** A piece **94.1 mm long along the folds and 18 pleats across, both long edges cut on a top
   fold**; the frame takes it at 2.08 mm a pleat, 37.4 mm across. It is 7 mm longer than the clamp's piece,
   since nothing reaches into its ends now, and the sheet still gives three pieces.
@@ -403,7 +403,7 @@ cassette that stands on the ledge, 100.5 × 40.5 mm. It takes a piece 87.1 mm lo
 pleats and a half each side (D143) - where the bought cartridge is 80 × 40 and the original's pocket took 75.7 ×
 37.2 of this paper: 25 % more paper than that.
 
-![The clamp pulled apart: the lower frame with its teeth, the cut paper over it with its folds running end to end, the upper frame with its wedges, and its four screws](bentobox/paper-frame.png)
+![The clamp pulled apart: the lower frame with its teeth, the cut paper over it with its folds running end to end, the upper frame with its wedges, and its four screws](diagrams/bentobox/paper-frame.png)
 
 - **Why the ends need closing.** Pleated paper is a row of channels: one open at the top, where the dirty
   air comes in, then one open at the bottom, where it leaves after passing through the paper between them.
@@ -419,7 +419,7 @@ pleats and a half each side (D143) - where the bought cartridge is 80 × 40 and 
   nowhere else: the band round the top and the rim round the bottom stand 0.2 mm clear of the paper's folds,
   so the slot's width is set by the frames, not by the paper.
 
-  ![Across the folds, flat: on the left the clamp at an end, the upper frame's wedges and the lower frame's teeth round the paper's zigzag; on the right at its middle, a half wedge and a long tooth round each flap](bentobox/paper-cut.png)
+  ![Across the folds, flat: on the left the clamp at an end, the upper frame's wedges and the lower frame's teeth round the paper's zigzag; on the right at its middle, a half wedge and a long tooth round each flap](diagrams/bentobox/paper-cut.png)
 - **The screws.** Four M2 × 16 socket head, two at each end, from the top, their heads sunk in the upper
   frame, into M2 nuts pulled up into seats in the lower frame, as the fans' nuts are in the base. M2, not the
   M2.5 first drawn: an end block is 6.5 mm along the pleats, and an M2.5 nut's pocket leaves it under two
@@ -438,7 +438,7 @@ pleats and a half each side (D143) - where the bought cartridge is 80 × 40 and 
   - one end of each frame, an hour - clamp an offcut 16 mm long in it, and look at the cut end: the paper should
   be pinched all along the zigzag without being cut.
 
-![The clamp's two frames as they print: the lower standing on its rim, the upper turned over onto its band](bentobox/clamp-print.png)
+![The clamp's two frames as they print: the lower standing on its rim, the upper turned over onto its band](diagrams/bentobox/clamp-print.png)
 
 **Other paper:** change its values in [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) -
 `paper_depth` (fold to fold), `paper_pitch` (top fold to top fold) and `paper_t` (its thickness), and
@@ -456,7 +456,7 @@ spreads to any pitch, and `paper_pitch`, 2.12 mm, is chosen for 18 pleats (see *
 this paper, run for each count the clamp might hold and put into the box's model of the fans and its other
 filters ([`sim/bentobox-cfd/pleat.py`](../sim/bentobox-cfd/README.md#one-pleat-of-your-own-paper-how-many-pleats-the-clamp-should-hold)):
 
-![The air through the box against the pleats across the clamp, for three grades of paper: each rises to a broad top at 20 to 22 pleats; the clamp builds up to 18](bentobox/cfd/pleats.png)
+![The air through the box against the pleats across the clamp, for three grades of paper: each rises to a broad top at 20 to 22 pleats; the clamp builds up to 18](diagrams/bentobox/cfd/pleats.png)
 
 - **The most air comes at 20 to 22 pleats**, whatever the paper's grade, and anything from 18 to 24 is within 3 %
   of it. More pleats put more paper in the air's way, but near each fold the two sheets touch, over more of the
@@ -552,7 +552,7 @@ coupon did not try. The nut-shaped end is scad-tools' `nut_slot_hex_end` now.
 Every part prints as its file draws it, standing on its bottom - the section, the base on its floor, the tray,
 the fan section, the carbon housing and the HEPA holder - the cover on its top face, the glue frame on its rim,
 the clamp's lower frame on its rim and its upper frame turned over onto its band, and a bead ring flat. With the C-MAG, its parts print from their
-own files: the tray on its floor, the lid on its top face, the grills flat. No supports, no brim. `sh scripts/bentobox-print.sh` builds every one, checks it and slices
+own files: the tray on its floor, the lid on its top face, the grills flat. No supports, no brim. `sh scripts/tools/bentobox-print.sh` builds every one, checks it and slices
 it, and puts its STL and G-code in `models/bentobox/print/`; name parts to build only those - `samples-asa
 samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA one.
 
@@ -630,7 +630,7 @@ else: the numbers are for the LunchBox's mid-grade paper, folded into this cartr
 of 19 mm, which leaves it 15/19 of the paper and so 19/15 of the resistance - a judgement, not a
 measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](../sim/bentobox-cfd/README.md).
 
-![A cut across the box through a fan: the air comes in at the cover, goes down through the HEPA cartridge and the C-MAG's trays, through the fan, and the duct turns it out along the floor](bentobox/cfd/side-fan.png)
+![A cut across the box through a fan: the air comes in at the cover, goes down through the HEPA cartridge and the C-MAG's trays, through the fan, and the duct turns it out along the floor](diagrams/bentobox/cfd/side-fan.png)
 
 | | As designed | With the section | Section, trays full |
 |---|---|---|---|
@@ -660,7 +660,7 @@ measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](.
   differ by about as much as the meshes of two cases do. Its sheet is evenly loaded: 0.15 m/s on average,
   nowhere below 0.12, a little less over the grid's two long ribs (on the 1 mm mesh, below).
 
-  ![The section's sheet from above, on the 1 mm mesh: evenly loaded, a little less over the grid's two long ribs](bentobox/cfd/sheet.png)
+  ![The section's sheet from above, on the 1 mm mesh: evenly loaded, a little less over the grid's two long ribs](diagrams/bentobox/cfd/sheet.png)
 - **Filling the C-MAG's trays full costs a seventh of the flow and quadruples the carbon**: 222 cm³ instead
   of 55, more than the LunchBox's 150, and the air spends nearly five times as long in it. The carbon is
   not what limits this box's flow, so carbon here is cheap.
@@ -678,13 +678,13 @@ measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](.
   is on top, 23 cm above it: in the air modelled round the box, none of it gets back there. A real
   chamber's walls turn it, so take it as a sign, not a number, as on the LunchBox's page.
 
-  ![The fans' air, followed: it runs out along the floor and none of it rises to the cover](bentobox/cfd/tracer.png)
+  ![The fans' air, followed: it runs out along the floor and none of it rises to the cover](diagrams/bentobox/cfd/tracer.png)
 
-![Paths from the cover: down through the HEPA and the C-MAG, round the fans' hubs, out of the duct](bentobox/cfd/streamlines.png)
+![Paths from the cover: down through the HEPA and the C-MAG, round the fans' hubs, out of the duct](diagrams/bentobox/cfd/streamlines.png)
 
 ## How long the carbon lasts
 
-An estimate, from [`scripts/carbon-life.py`](../scripts/carbon-life.py), which says where each number comes
+An estimate, from [`scripts/analysis/carbon-life.py`](../scripts/analysis/carbon-life.py), which says where each number comes
 from:
 
 - **The carbon** is AP4-60: 4 mm pellets of steam-activated coal, so acid-free in the sense the BentoBox's
@@ -722,8 +722,8 @@ The fits are checked against the original's STLs, which have to be in
 [`models/bentobox/original/`](../models/bentobox/original/), with the Auto's written there from its STEP:
 
 ```sh
-uv run scripts/bentobox-auto-stl.py                                # the Auto's STLs, from its STEP
-OPENSCAD="<the OpenSCAD nightly>" uv run scripts/bentobox-checks.py all
+uv run scripts/tools/bentobox-auto-stl.py                                # the Auto's STLs, from its STEP
+OPENSCAD="<the OpenSCAD nightly>" uv run scripts/checks/bentobox-checks.py all
 ```
 
 For the sealed joints it stands each upper part on its lower one - flat on the land, its chamfer in the
@@ -760,5 +760,5 @@ by sectioning its STLs, and every setting of the section and of the paper's fram
 BentoBox v2.0 is © ThrutheFrame, under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 The BentoBox Auto VOC Sensor system, whose base and fan section the bottom is drawn after, is © Strangwooduk,
 under the same licence as a remix of it.
-The remix — the models in [`models/bentobox/`](../models/bentobox/) and the pictures in [`bentobox/`](bentobox/)
+The remix — the models in [`models/bentobox/`](../models/bentobox/) and the pictures in [`bentobox/`](diagrams/bentobox/)
 — is under CC BY-NC-SA 4.0 too: free to use and share, not for sale.

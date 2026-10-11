@@ -9,7 +9,7 @@ count the clamp might take, and what each does to the whole box's flow. From the
   uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py cases
         write one OpenFOAM case per pleat count, paper grade and face velocity into sim/bentobox-cfd/cases/pleats/,
         and print the command that runs them all in WSL
-  uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py results [--out docs/bentobox/cfd]
+  uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py results [--out docs/diagrams/bentobox/cfd]
         read the solved cases: the pleat's drop for each count, and the box's flow with the C-MAG filled to its
         line and filled full, by cfd.py's lumped model of the fans and the other filters
 
@@ -475,7 +475,7 @@ BEDS = (0.015, 0.025, 0.035, 0.045, 0.055, 0.065)     # m of loose pellets on a 
 
 
 def life_hours(cm3, flow_l_s):
-    """scripts/carbon-life.py's estimate, at its middle emission (1.5 mg/h of ASA VOCs)."""
+    """scripts/analysis/carbon-life.py's estimate, at its middle emission (1.5 mg/h of ASA VOCs)."""
     spec = importlib.util.spec_from_file_location("carbon_life", ROOT / "scripts" / "carbon-life.py")
     cl = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(cl)

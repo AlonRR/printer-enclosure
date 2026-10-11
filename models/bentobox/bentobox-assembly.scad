@@ -4,7 +4,7 @@
 
 /*
 The BentoBox stack, put together from the remix's parts - for pictures, and for the fit checks that
-scripts/bentobox-checks.py renders. The sealed stack needs no original; sealed = false, which stacks the
+scripts/checks/bentobox-checks.py renders. The sealed stack needs no original; sealed = false, which stacks the
 originals as they come, and the bambu bottom need them in original/.
 
   view = "stack"      the box as it stands, with the section

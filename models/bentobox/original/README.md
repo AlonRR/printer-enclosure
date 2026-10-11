@@ -35,7 +35,7 @@ It comes as one STEP file: download it, put it here under the name it downloads 
 and write its parts as STLs, from the repository's root:
 
 ```sh
-uv run scripts/bentobox-auto-stl.py
+uv run scripts/tools/bentobox-auto-stl.py
 ```
 
 | File it writes | What it is |

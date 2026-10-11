@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MPL-2.0
 """Pictures and numbers from a solved BentoBox case. From the repository's root:
 
-  uv run --project sim/bentobox-cfd sim/bentobox-cfd/post.py <case name> [--out docs/bentobox/cfd]
+  uv run --project sim/bentobox-cfd sim/bentobox-cfd/post.py <case name> [--out docs/diagrams/bentobox/cfd]
 
 Reads sim/bentobox-cfd/cases/<name>/results (what run_case.sh copies back) and writes, into --out (default
 the case's own results/pictures):

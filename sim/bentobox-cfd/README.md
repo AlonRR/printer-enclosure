@@ -39,7 +39,7 @@ From the repository's root, with `OPENSCAD` set to an OpenSCAD nightly and the o
 uv run --project sim/bentobox-cfd sim/bentobox-cfd/cfd.py network          # the lumped model, beside the LunchBox's
 uv run --project sim/bentobox-cfd sim/bentobox-cfd/cfd.py case [--plain] [--fine] [--cores 7]
 #   ... then the wsl.exe command it prints: meshes and solves in WSL, copies the results back
-uv run --project sim/bentobox-cfd sim/bentobox-cfd/post.py section [--out docs/bentobox/cfd]
+uv run --project sim/bentobox-cfd sim/bentobox-cfd/post.py section [--out docs/diagrams/bentobox/cfd]
 ```
 
 `--plain` is the stack as designed, without the section. A 2 mm case is about 380,000 cells; a 1 mm one,
@@ -70,7 +70,7 @@ The LunchBox's list, and:
   duct's outlet carry the same air, unless `inflow_by_face_L_s` names where the difference goes in or out.
   That one sums a closed box 3 mm round the scrubber; it is a coarse locator, closing to a few per cent.
 - **The mesh check**: the section's case on the 1 mm mesh, 1.50 million cells, 2500 iterations, 2 h 23 min
-  on 14 cores (`summary-section-fine.json` in `docs/bentobox/cfd/`). The filtered flow comes out 3.5 % lower
+  on 14 cores (`summary-section-fine.json` in `docs/diagrams/bentobox/cfd/`). The filtered flow comes out 3.5 % lower
   than on 2 mm, 0.653 L/s at the cover instead of 0.676, and equal to the lumped model's 0.654 within
   0.2 %; it drifted under 0.1 % over the last quarter on every filter-side plane, and those planes and the
   fan case's floor agree to 0.05 %. The duct's plane reads 1.5 % low, in the fans' wake as before.
@@ -95,7 +95,7 @@ uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py cases      # one cas
 #   The whole sweep takes about an hour: start it detached inside WSL (setsid nohup bash <cases>/run_pleats.sh
 #   <cases> 14 &), not under a watcher that may end first. It runs the cases in list.txt, so a stopped sweep
 #   resumes with a list of the cases that have no results/ yet.
-uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py results --out docs/bentobox/cfd
+uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py results --out docs/diagrams/bentobox/cfd
 ```
 
 - **The geometry** is half a pitch of the pack, 2-D, between symmetry planes through a top fold and a bottom
@@ -115,7 +115,7 @@ uv run --project sim/bentobox-cfd sim/bentobox-cfd/pleat.py results --out docs/b
   face between the clamp's wedges. The clamp builds up to 18 pleats: at 19 its half wedges come out under 3 mm.
 - **The carbon** is compared the same way: the C-MAG filled to its line or full, or no C-MAG, the housing's
   whole inside filled to a depth on a grid, by the Ergun equation as for the box; its life by
-  `scripts/carbon-life.py` at its middle emission.
+  `scripts/analysis/carbon-life.py` at its middle emission.
 
 A case's drop must have settled - its inlet pressure moving under 0.05 % over the last fifth of its
 iterations; each case runs 800 - and the air in at the top must equal the air out at the bottom to 0.1 %. Left to
