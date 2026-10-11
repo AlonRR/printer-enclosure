@@ -17,9 +17,11 @@ nightly. [archive/lunchbox/README.md](archive/lunchbox/README.md) says what is t
 - **The original STLs are not in git.** Each model's `original/README.md` names the files and their page.
   Without them only the parts drawn from scratch build; everything else fails loudly.
 - `<box>.params.scad` holds every value set - the original's, measured by sectioning its STLs and tagged so,
-  and the remix's. `<box>.layout.scad` derives the rest and holds the rules as asserts and warnings.
-  `<box>.scad` draws the parts in the box's frame; each `<box>-<part>.scad` pins one part in its printing
-  pose. `<box>-assembly.scad` holds the views and the fit checks.
+  and the remix's. The BentoBox is laid out as scad-tools' `docs/project-layout.md` says (11 Oct 2026):
+  [`models/bentobox/README.md`](models/bentobox/README.md) lists its files, and its `bentobox.scad` draws
+  whatever `draw` names - a part as it prints, a view, or a fit check. The archived LunchBox keeps the older
+  form: a layout file with the derived values and the rules, a model, `<box>-<part>.scad` per part, and
+  `<box>-assembly.scad` for the views and the fit checks.
 - Report results with their totals ("12 of 12"). A new fit check gets a positive control in the same change:
   one that breaks one side of the fit, trips no assert, and must be caught.
 - To measure an original again: `uv run scad-tools/scripts/stl-inspect.py` (sections, bounds, the 3MF's
@@ -36,12 +38,13 @@ the large meshes in seconds; under the 2021.01 release every control reads BLIND
 ```sh
 uv run scripts/checks/bentobox-checks.py all              # every fit empty, every positive control caught
 uv run scripts/checks/bentobox-checks.py figures --write  # the pictures in docs/diagrams/bentobox/, if a view changed
-sh scad-tools/scripts/scad-check.sh models/bentobox/bentobox-<part>.scad
+sh scripts/tools/bentobox-print.sh <part>                 # scad-check.sh on the part file part-files.sh writes in .check/
 ```
 
 ## The airflow simulations - `sim/`
 
-One OpenFOAM case per box, built from its `*-cfd.scad`; each README says how to run it and what a result
+One OpenFOAM case per box, built from the box's view of the air (the LunchBox's `lunchbox-cfd.scad`, the
+BentoBox's `checks/air.scad`); each README says how to run it and what a result
 must pass before it is quoted. The two are kept apart on purpose: changing one must not move the other's
 published numbers. A porous zone must be snapped to the mesh (`sim/bentobox-cfd/README.md` says why).
 

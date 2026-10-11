@@ -10,6 +10,7 @@ path = [
   "data/**",
   "models/**/README.md",
   "sim/**/README.md",
+  "scripts/README.md",
   "sim/**/uv.lock",
   "archive/lunchbox/README.md",
   "archive/lunchbox/docs/*.md",

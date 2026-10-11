@@ -8,7 +8,7 @@ apply here unchanged. This one says what differs. What it found is on the build 
 
 ## What is modelled
 
-- **The geometry** is `models/bentobox/bentobox-cfd.scad`: the stack from the duct to the cover, the C-MAG
+- **The geometry** is `models/bentobox/checks/air.scad`: the stack from the duct to the cover, the C-MAG
   standing in its housing, the two fans' frames and hubs, and the section if it is in. It stands on the
   chamber's floor with the chamber's air round it. The model also echoes every zone, so the case cannot
   disagree with it. Its header lists what is left out or closed, and why: the C-MAG's grills, the cover's

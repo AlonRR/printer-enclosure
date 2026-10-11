@@ -246,7 +246,7 @@ def main():
                                      (s[0], s[1], s[2], s[3], s[4] - 1, s[5] + 1))
     summary["inflow_by_face_L_s"] = by_face(grid, nums)
     # Round the C-MAG: down the band between its inside and the housing's, at its middle. It is closed in the
-    # model (bentobox-cfd.scad), so anything here is a modelling error.
+    # model (checks/air.scad), so anything here is a modelling error.
     cm = nums["cmag_in"]
     zc = (nums["carbon"][0][4] + nums["carbon"][2][5]) / 2
     band = sum(through_box(grid, "z", (0, 0, zc), b, 2) for b in (

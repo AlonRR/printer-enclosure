@@ -6,7 +6,7 @@
 # ///
 """The BentoBox remix's fit checks, against the original STLs. From the repository's root:
 
-  uv run scripts/checks/bentobox-checks.py fits       every fit check in models/bentobox/bentobox-assembly.scad
+  uv run scripts/checks/bentobox-checks.py fits       every fit check: one of models/bentobox/bentobox.scad's draw views
   uv run scripts/checks/bentobox-checks.py controls   each check's positive control: one thing broken on purpose,
                                                which its check must catch
   uv run scripts/checks/bentobox-checks.py all        both
@@ -31,7 +31,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scad-tools" / "scripts"))
 from scadtools import DEGENERATE, defines, describe, parallel, problems, render, stl_stats  # noqa: E402
 
-ASSEMBLY = "models/bentobox/bentobox-assembly.scad"
+MODEL = "models/bentobox/bentobox.scad"
+FIGURES_FILE = "models/bentobox/assembly/figures.scad"   # the model, with the arrows every picture carries
 BACKEND = ["--backend=manifold"]
 
 # The joints as the originals have them - magnets, tongue and groove - are checked with sealed=false; the model's
@@ -121,7 +122,7 @@ CONTROLS = [
     ("check_seal_access", [("top_tabs", '"corners"')], "the top joint's tabs back at the corners, over the lower screws' heads"),
     ("check_seal_access", [("driver", "[4, 30, 30]")], "a 30 mm blade: the driver's handle down against the HEPA holder"),
     # A missing original makes every intersection empty, which reads as a pass: its import's WARNING must fail it.
-    ("check_section_carbon", UNSEALED + [("carbon_stl", '"original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
+    ("check_section_carbon", UNSEALED + [("carbon_stl", '"../original/missing.stl"')], "the housing's STL missing - must be reported, not passed"),
     ("check_cover_holder", [("hepa_in_grow", "-0.5")], "the HEPA holder's inside made narrower than the cover's plug"),
     # The cover is drawn from the same mag_xy as the holder: moving it would move both. The cover is moved instead.
     ("check_cover_magnets", [("cover_shift", "[0, 0.5]")], "the cover moved 0.5 mm along, its magnet holes off the holder's"),
@@ -130,20 +131,20 @@ CONTROLS = [
     ("check_cmag_halves", [("cmag_lid_move", "[0, 0, -0.3]")], "the lid set 0.3 mm down into the tray"),
     ("check_cmag_magnets", [("cmag_lid_move", "[0.5, 0, 0]")], "the lid moved 0.5 mm along, its magnet holes off the tray's"),
     ("check_cmag_grills", [("cmag_grill_t", "1.7")], "the grills made thicker than their slots"),
-    ("check_section_fans", UNSEALED + [("auto_fans_stl", '"original/missing.stl"')], "the Auto fan section's STL missing - must be reported, not passed"),
+    ("check_section_fans", UNSEALED + [("auto_fans_stl", '"../original/missing.stl"')], "the Auto fan section's STL missing - must be reported, not passed"),
 ]
 MISSING = "Can't open import file"
 # The checks that must NOT come out empty: the mate's grip must bite the plugs. Their controls must empty them.
 MEETS = {"check_fan_mate_grip"}
 
-# The checks hold parts that meet face to face 0.01 mm apart (bentobox-assembly.scad, `sep`), so a good fit
+# The checks hold parts that meet face to face 0.01 mm apart (checks/fits.scad, `sep`), so a good fit
 # leaves NOTHING; DUST is only float noise.
 DUST = 1e-3   # mm3
 
 
 def run(view, settings, tmp):
     out = Path(tmp) / f"{view}-{uuid.uuid4().hex[:8]}.stl"
-    _, log = render(out, ASSEMBLY, BACKEND + defines([("view", f'"{view}"'), *settings]))
+    _, log = render(out, MODEL, BACKEND + defines([("draw", f'"{view}"'), *settings]))
     stats = stl_stats(out) if out.exists() else None
     return stats, problems(log, allowed=[DEGENERATE]), log
 
@@ -199,12 +200,12 @@ def controls():
 
 # Every picture in docs/diagrams/bentobox/: the view it shows, and the camera and settings it is rendered with.
 FIGURES = {
-    "exploded": [("view", '"exploded"')], "cut": [("view", '"cut"'), ("cut_x", "0")],
-    "section-top": [("view", '"section"')], "section-bottom": [("view", '"section"'), ("axes_cam", "[235, 0, 30]")],
-    "paper-frame": [("view", '"frame"'), ("explode", "25")] + CLAMP, "clamp-print": [("view", '"clamp_print"')] + CLAMP,
-    "paper-cut": [("view", '"paper_cut"')] + CLAMP, "glue-frame": [("view", '"glue"'), ("explode", "30")], "glue-cut": [("view", '"glue_cut"')], "auto-bottom": [("view", '"bottom"'), ("explode", "28"), ("axes_cam", "[50, 0, 215]")],
-    "joints": [("view", '"joints"'), ("explode", "22")], "grommet": [("view", '"grommet"'), ("axes_cam", "[50, 0, 20]")],
-    "fan-mate": [("view", '"fan_mate"'), ("explode", "12"), ("axes_cam", "[50, 0, 205]")],
+    "exploded": [("draw", '"exploded"')], "cut": [("draw", '"cut"'), ("cut_x", "0")],
+    "section-top": [("draw", '"section_fig"')], "section-bottom": [("draw", '"section_fig"'), ("axes_cam", "[235, 0, 30]")],
+    "paper-frame": [("draw", '"frame"'), ("explode", "25")] + CLAMP, "clamp-print": [("draw", '"clamp_print"')] + CLAMP,
+    "paper-cut": [("draw", '"paper_cut"')] + CLAMP, "glue-frame": [("draw", '"glue"'), ("explode", "30")], "glue-cut": [("draw", '"glue_cut"')], "auto-bottom": [("draw", '"bottom"'), ("explode", "28"), ("axes_cam", "[50, 0, 215]")],
+    "joints": [("draw", '"joints"'), ("explode", "22")], "grommet": [("draw", '"grommet_fig"'), ("axes_cam", "[50, 0, 20]")],
+    "fan-mate": [("draw", '"fan_mate_fig"'), ("explode", "12"), ("axes_cam", "[50, 0, 205]")],
 }
 CAMERAS = {
     "exploded": ["--imgsize=1200,1900", "--viewall", "--autocenter", "--camera=0,0,0,70,0,320,0"],
@@ -242,7 +243,7 @@ def figures(write, names):
         def one(name):
             out = folder / f"{name}.png"
             mode = [] if name in FLAT else [*BACKEND, "--render"]
-            _, log = render(out, ASSEMBLY, [*mode, "--colorscheme=Tomorrow", *CAMERAS[name], *defines(FIGURES[name])])
+            _, log = render(out, FIGURES_FILE, [*mode, "--colorscheme=Tomorrow", *CAMERAS[name], *defines(FIGURES[name])])
             return out.exists(), problems(log) + [l for l in log.splitlines() if "Assertion" in l]
 
         results = parallel(one, chosen)

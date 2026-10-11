@@ -3,6 +3,8 @@
 // A remix of BentoBox v2.0 by ThrutheFrame (https://www.printables.com/model/272525), CC BY-NC-SA 4.0.
 
 /*
+checks/air.scad - rendered on its own by sim/bentobox-cfd/cfd.py; it includes the model and draws its own.
+
 The BentoBox stack as the air sees it, for the airflow simulation in sim/bentobox-cfd/. The box's frame, mm.
 Needs the originals in original/.
 
@@ -22,8 +24,8 @@ What is left out or closed, and why:
 - The HEPA cartridge: its pack fills the pocket above the ledge as one porous zone. The ledge under its
   edges leaves 78 x 36.8 mm open below it, and the pleats let no air sideways.
 */
-include <bentobox.scad>
-draw_model = false;
+include <../bentobox.scad>
+draw = "none";
 
 view = "solid";
 with_section = true;

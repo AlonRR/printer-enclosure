@@ -31,8 +31,15 @@ The original's STLs are not in this repository; original/README.md says where th
 exported in place, assembled, in one frame of their own, which bentobox.layout.scad maps into this one.
 */
 
-/* [Which part] */
-part = "section";   /* "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "fan_mate", "bottom_sample", "nut_coupon", "samples_asa", "samples_asa_2" or "samples_tpu": the parts the remix adds or changes. bentobox-assembly.scad shows them in place. */
+/* [What to draw] */
+draw = "section";   /* A printed part, as it prints (parts/print.scad: "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "fan_mate", "bottom_sample", "nut_coupon", "samples_asa", "samples_asa_2", "samples_tpu"); the assembled views (assembly/stack.scad: "stack", "exploded", "cut", "section_fig", "cmag", "frame", "glue", "clamp_print", "paper_cut", "glue_cut", "bottom", "joints", "grommet_fig", "fan_mate_fig"); one of the checks' views (checks/fits.scad, "check_..."), each a solid that must come out empty; or "none", for a file that includes this one to draw its own. */
+
+/* [The assembled views] */
+with_section = true;
+explode = 30;           /* "exploded": the gap between parts */
+cut_x = 0;              /* "cut": where to cut, along X */
+show_axes = true;
+axes_cam = [55, 0, 30];   // the picture's --camera angles, so the arrows' labels face it
 
 /* [The original BentoBox v2.0 - MEASURED by sectioning its STLs, 7 Oct 2026] */
 // Every part has the same outline and the same inside, to 0.05 mm; read from horizontal and vertical cuts of
@@ -82,11 +89,7 @@ groove_in   = -0.1; /* ...and its inner face, 0.1 mm INSIDE the inside's outline
 mag_d    = 4.2;     /* The originals' magnets' holes: 4 x 2 mm magnets, a hole in each face of each joint... */
 mag_h    = 2.0;
 mag_xy   = [22.5, 52.5];    /* ...at the four corners, +/-X, +/-Y: the centres of the outline's corners. */
-magnet   = [6, 2];  /* The remix's own magnets, d and thickness: the cover's joint and the tray's bottom (Alon, 11 Oct
-                       2026: "no 4x2 magnets. change to 6x2"). The originals' joints (sealed = false) and the C-MAG keep
-                       their 4 x 2. Their holes are 0.2 mm over the magnet's d. At the cover's joint each is moved in
-                       from the corner along its diagonal, as far as leaves the same wall inside it as outside at the
-                       top's chamfer. */
+
 // The C-MAG, in its own frame: L along its trays' stacking, W along the box, T across it. It stands in the
 // carbon housing on its end, trays horizontal, filling the inside but for 0.4 mm all round.
 cmag     = [72, 100, 40];   /* L, W, T: its outside. Its walls are 2 mm; its ends are open behind grills. */
@@ -108,9 +111,9 @@ cmag_boss = [9.6, 3.2, 3.3];    /* MEASURED: the magnets' bosses, at the joint n
 cmag_boss_under = [0.68, 4.67]; /* MEASURED: a boss's underside. Across the wall it runs up from the wall at 45 degrees, then rounds into the boss's front about a centre this far from the joint; each slice along the wall is half an ellipse this deep. */
 cmag_line = [6.4, 1.4, 0.4];    /* MEASURED: the fill line in the middle of each tray, on the -Y wall, its middle cmag_fill above the floor: long, tall and proud, its edges at 45 degrees. */
 cmag_grill = [95, 35, 3.5];     /* MEASURED: a grill, along W and T, and its corners' radius; it is cmag_grill_t thick. */
-cmag_pellet = 4;        /* The carbon's pellets: AP4-60, 4 mm across. */
+
 cmag_mesh = [3.2, 2, 6];    /* The grills' honeycomb: holes this far across their flats - a pellet stays on one even across its corners - with webs this many beads wide, inside a rim this many beads wide, whose outer 2.1 mm the rails hide. */
-hepa_cart = [80, 40, 15];   /* The HEPA cartridge, bought: L x W x H. */
+
 duct_out = [-49.4, 49.4, 6, 52];   /* The duct's outlet, the whole -X face between its end walls: Y and Z. */
 cover_win = [18, 48];       /* The cover's window, X and Y +/-: the pattern's bars span it. */
 // The cover, drawn (Alon, 9 Oct 2026: D142) to ThrutheFrame's cover_hemp: a plate cover_top thick on the holder's
@@ -146,9 +149,9 @@ glue_jig = [4, 0.15];   /* Short fins on the rim at each end, one up into each c
 // halves, the upper on the lower - the one place the frames meet - and two screws draw them together.
 hepa_full = true;   /* Cut the HEPA holder's pocket out to the box's whole inside, in_w x in_l, from its ledge up, and the ledge's opening with it (Alon, 8 Oct 2026: "enlarge the HEPA area"). The original's ends are solid funnels round its 80 mm cartridge. The clamp is drawn for this pocket. */
 hepa_ledge_w = 2;   /* MEASURED: the ledge round the original's opening; the enlarged opening keeps it. */
-paper_depth = 20.2; /* MEASURED (Alon, 9 Oct 2026: Q95): the pleats' depth, fold to fold - the pack's thickness. */
+
 paper_pitch = 2.12; /* One pleat, top fold to top fold, as the clamp holds it: a choice, not the paper's, which squeezes up tight - 31 folds stack to about 26 mm (Alon, Q95) - and spreads to any pitch. 18 pleats across the clamp (Alon, 9 Oct 2026: D143): the most the clamp builds, within 3 % of the most air at every grade of paper (sim/bentobox-cfd/pleat.py). Only the whole number that fills the clamp matters. */
-paper_t = 0.4;      /* MEASURED (Alon, 9 Oct 2026: Q95): the paper's thickness. */
+
 paper_flaps = true; /* The clamp: the long edges cut on a bottom fold, so each side keeps half a pleat more, as a flap the clamp pinches. false: cut on a top fold. The glue frame always takes them cut on a top fold, glued along the wall. */
 clamp_slot = 0.2;   /* The zigzag slot between the frames' wedges and teeth, screwed together: under the paper's thickness, so the screws pinch it. The two sides are separate parts, so it need not print open. A first guess, for the sample to try. */
 clamp_play = 0.2;   /* Between the cassette and the holder's pocket, each side. */
@@ -158,8 +161,7 @@ clamp_band = 1.6;   /* ...and the upper frame's band round its top: eight. */
 clamp_fold_gap = 0.2;   /* The band and the rim stand this clear of the paper's folds, and the wedges and teeth of the other frame's end block, so the end blocks' halves are the one hard stop. */
 clamp_blk = 6.5;    /* Each end block, along the pleats: room for an M2 nut's pocket, its flats along the pleats, and two beads each side. */
 clamp_screw_x = 13; /* Each end's two screws, this far either side of the middle. */
-small_screw = [2, 3.8, 2];      /* The clamp's screws, M2 socket head, ISO 4762: the thread, the head's diameter and height. */
-small_nut = [4, 1.6];           /* The M2 hex nut, ISO 4032: across its flats, and its height. */
+
 small_screw_lengths = [6, 8, 12, 16, 20];   /* The M2 lengths HomeBox records, 8 Oct 2026. */
 small_nut_roof = 1.6;           /* Over each nut, under the end block's split: eight layers. */
 
@@ -196,13 +198,11 @@ auto_conduit_z = [14, 55];      /* ...from the bay's roof to the top of the fan 
 conduit_wall  = [4, 2];         /* ...the tube's outside radius, standing against the +X wall, and its fillets into it, as the Auto's. */
 
 /* [Nuts and screws, where the Auto had heat-set inserts] */
-screw_d   = 3.0;    /* M3. */
-nut_af    = 5.5;    /* The M3 hex nut, across its flats - ISO 4032... */
-nut_h     = 2.4;    /* ...and its height, the largest allowed. */
+
 nut_fit   = 0.15;   /* A nut's slot, per side, on top of fdm_hole_comp: the nut slides in and the screw holds it. Its back end is the nut's own shape: on the coupon, at this fit, the nut slid in, held still and stayed in (T189, 10 Oct 2026: slot 8). */
 screw_tip = 1.5;    /* A screw must stand this far out of its nut. */
 screw_lengths = [8, 12, 16, 20, 30];   /* The M3 lengths HomeBox records, 11 Oct 2026: set your own. Each screw is the shortest of them that stands screw_tip out of its nut; every nut is pulled into a seat with its pocket open below it, or sits in a slot with its hole running on past the tip, so a longer one fits too (D213). */
-fan_t     = 20;     /* The fans, 40 x 40 x 20: their screws pass through them, the heads on their top flanges. */
+
 nut_roof  = 2;      /* Over a fan screw's nut, under the base's top face: ten layers. */
 nut_floor = 0.8;    /* Under a tray screw's slot, over the base's bottom face: four layers, which the nut presses onto the tray's top - nothing bridges there. Low, the slot's back stays two beads under the end wall's fillet. */
 post_beads = 3;     /* The new post round a fan screw's pocket, past its corners, in beads. */
@@ -220,7 +220,7 @@ post_foot = 37.7;   /* Where a post's 45-degree underside meets its wall. */
 pull_fit = -0.05;   /* A fan nut's seat, per side, on top of fdm_hole_comp: tighter than a slot, so a nut pulled up into it once, with a spare screw, stays there (D124). Alon, 10 Oct 2026 (T189), the coupon's seats 5.5 to 5.9 across: 5.7 "just right"; 5.8 held; 5.9, the old 0.05, let it slip out; 5.6 too tight; 5.5 would not go in... */
 pull_way_fit = 0.1; /* ...and the pocket under it, up which the nut slides to the seat. */
 pull_rise = 0.8;    /* The pocket starts this far over its post's foot: there a nut slides in under the post, from the room, and goes up the pocket. */
-m3_head = [5.5, 3];     /* The M3 socket head, ISO 4762: the head's diameter and height. */
+
 head_sink = 0.2;    /* Each sunk head sits this far inside its face: the tray's screws' in its bottom face, the joints' in their tabs' tops... */
 head_room = 0.4;    /* ...in a counterbore this much wider than the head, past fdm_hole_comp: room for the key. */
 // Alon, 8 Oct 2026: the base split at the bay's roof, the bay a tray screwed on from below. The base then prints on
@@ -235,12 +235,7 @@ tray_slot_past = 1; /* Each tray nut's slot runs on this far past the end face: 
 tray_screw_max = 20;    /* The longest screw each tray hole takes: the hole runs on up past where its tip would end (D213). */
 
 /* [The USB-C power: a PD trigger board, its socket flush in the tray's -Y end - Alon, 9 Oct 2026 (D133, D135)] */
-// The box takes 12 V from a USB-C charger through a PD trigger board ("USB-C PD3.0/3.1 QC3.0 trigger
-// board", its low-voltage variant), MEASURED by Alon, 9 Oct 2026 (Q134): the socket stands on the board and past its edge, nothing
-// is under the board, and its + and - pads are at the far corners. A step-down feeds the ESP32 from the 12 V.
-usb_board  = [14.51, 9.97, 1.05];   /* The board: its whole length, from the socket's face to the far edge; its width; its thickness... */
-usb_socket = [8.96, 3.25, 1.55];    /* ...the socket: its width, its height, and how far it stands past the board's edge... */
-usb_parts_h = 0.74;     /* ...and the tallest part on the board but the socket. */
+
 usb_x = 13;         /* The socket's centre, X: near where the Auto's cable port was, clear of a tray screw's head. */
 usb_play = 0.1;     /* Round the board in its pocket, on top of fdm_hole_comp; and over the socket, under the base. */
 usb_stop = [3, 1.5];    /* Behind the board, between its pads, a stop that takes the plug's push: its width and depth. */
@@ -311,14 +306,9 @@ grommet_leads = [4, 1.55];  /* The holes in the skin, one per lead (Alon, 9 Oct 
 // the block, its core standing as the pin, and carries on as the lead, with no joint. A wall stands behind the
 // plug's ribbed face, and a key on it goes between the two ribs, so the plug goes on one way only; a clip on the key
 // catches over the plug's lip, and the wall in front of the plug springs to let it by.
-fan_plug = [8.0, 5.2, 12.77];   /* MEASURED (Alon, 9 Oct 2026): the fan's plug across its pins (A), its thickness without the ribs (B) - over the 0.3 mm lip across its open end between the ribs, 4.9 elsewhere between them, so the key keyed to B clears both - and its length along the wires (C). */
-fan_plug_d = 2.55;      /* MEASURED: from the plug's face with the text to the nearer wall of a pin's hole (D). */
-fan_plug_hole = 1.45;   /* MEASURED: a pin hole's size in the plug's end face. The pins stand in line with the holes' middles. */
-fan_plug_ribs = [1.1, 5.2, 6.67];   /* MEASURED: the ribs on the face opposite the text: each one's width, the gap between them, and the plug's thickness over them. */
-fan_plug_lip = [0.3, 2.2];  /* MEASURED (Alon, 9 Oct 2026): the lip across the plug's open end between the ribs - its height and its length along the plug. */
-fan_plug_pitch = 2.54;  /* KK 254's pitch, between the plug's holes - the plug's, so the checks hold it fixed. */
+
 fan_pitch = 2.54;       /* Between the mate's pins: KK 254's. */
-fan_wire = [0.64, 1.6]; /* 22 AWG solid wire: the core, by the gauge (0.644), and the insulation's outside (MEASURED, Alon, 9 Oct 2026: Q161). */
+
 fan_mate_n = 2;         /* Plugs on one block: 2, both fans side by side, their reds joined under it and their blacks (D154); 1, a block for each fan. One block (Alon, 9 Oct 2026: D160). */
 fan_mate_pin = 6;       /* How far each pin stands above the block: a header's mating length. */
 fan_mate_play = 0.25;   /* Round the plug: to each wall, to the key, and between its ribs. */
@@ -333,3 +323,12 @@ fan_mate_at = [-2, 0];  /* Where the mate stands on the fan section's floor: its
 fdm_layer_h     = 0.2;
 fdm_extrusion_w = 0.45;
 fdm_hole_comp   = 0.15;   /* Added to every hole's radius - fdm-design-rules section 2. Not cross-checked. */
+
+/* [The checks' switches - zero but in a check's positive control, which sets one with -D] */
+cover_shift = [0, 0];
+cmag_shift = [0, 0, 0];
+cmag_lid_move = [0, 0, 0];
+screw_shift = [0, 0];   /* Controls only: the screws moved off their holes. */
+wire_shift = 0;         /* Controls only: the wires' probe moved off the tube, along X. */
+usb_shift = [0, 0, 0];  /* Controls only: the board moved in its pocket. */
+fans_drop = 0;          /* Controls only: the fan section set this much down onto its base. */

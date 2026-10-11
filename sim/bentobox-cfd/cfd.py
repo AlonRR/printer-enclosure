@@ -5,7 +5,7 @@
 model. From the repository's root:
 
   uv run --project sim/bentobox-cfd sim/bentobox-cfd/cfd.py case [--plain] [--full] [--fine] [--cores N]
-        render the geometry from models/bentobox/bentobox-cfd.scad, write the case into
+        render the geometry from models/bentobox/checks/air.scad, write the case into
         sim/bentobox-cfd/cases/<name>/, and print the command that runs it in WSL
   uv run --project sim/bentobox-cfd sim/bentobox-cfd/cfd.py network
         the same physics as a lumped model: the fans' operating point with and without the section, across
@@ -33,7 +33,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
-MODEL = ROOT / "models" / "bentobox" / "bentobox-cfd.scad"
+MODEL = ROOT / "models" / "bentobox" / "checks" / "air.scad"
 OPENSCAD = os.environ.get("OPENSCAD") or "openscad"
 
 # ------------------------------------------------------------------ physics: every assumption in one place
@@ -427,7 +427,7 @@ def make_case(with_section, fine, cores, full=False):
 
 
 # ------------------------------------------------------------------ the lumped cross-check
-LAYERS, LAYER_T = 3, 0.00535                          # the C-MAG's trays, standing (bentobox.layout.scad)
+LAYERS, LAYER_T = 3, 0.00535                          # the C-MAG's trays, standing (parts/cmag.scad)
 A_HEPA = 0.078 * 0.0368                               # the ledge's opening under the cartridge, m2
 A_CARBON = 0.096 * 0.036                              # the C-MAG's inside, m2
 A_SHEET = 0.1008 * 0.0408                             # the section's inside, m2

@@ -37,25 +37,27 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 
 | | What it does | File |
 |---|---|---|
-| **Section** | Goes between the carbon housing and the fan section, holding a flat filter sheet that stops carbon dust reaching the fans. Sealed at both its faces, with a pillar at each corner that the carbon housing's screws pass through. `sealed = false` builds it with the original's tongue, groove and magnets, to drop into any BentoBox v2.0 stack. | [`bentobox-section.scad`](../models/bentobox/bentobox-section.scad) |
-| **Glue frame** | One ASA frame your own pleated HEPA paper is hot-glued into, standing on the HEPA holder's ledge in place of the cartridge (T131, Alon, 9 Oct 2026). | [`bentobox-glue-frame.scad`](../models/bentobox/bentobox-glue-frame.scad) |
-| **Glue sample** | One end of the glue frame: to glue an offcut in before the whole frame. | [`bentobox-glue-sample.scad`](../models/bentobox/bentobox-glue-sample.scad) |
-| **Paper clamp** (shelved) | Two ASA frames, screwed together with a cut piece of pleated paper between them, standing on the HEPA holder's ledge in place of the cartridge: wedges from above and teeth from below pinch the paper's cut ends, and a bar from each its long edges. | [`bentobox-clamp-lower.scad`](../models/bentobox/bentobox-clamp-lower.scad), [`bentobox-clamp-upper.scad`](../models/bentobox/bentobox-clamp-upper.scad) |
-| **Clamp sample** (shelved) | One end of each frame, on one plate: to try the pinch on an offcut before the whole clamp. | [`bentobox-clamp-sample.scad`](../models/bentobox/bentobox-clamp-sample.scad) |
-| **Base** | In place of the duct, drawn to the Auto's: the duct over the bay's roof, the wires' tube, the fans' four nuts pulled up into pockets in posts, and four nuts in slots for the tray's screws. | [`bentobox-auto-base.scad`](../models/bentobox/bentobox-auto-base.scad) |
-| **Fan section** | In place of the fan case, drawn to the Auto's: its floor with the fans' openings and screws' holes, its top the sealed joint's, and its wires' hole opened out for the grommet. | [`bentobox-auto-fans.scad`](../models/bentobox/bentobox-auto-fans.scad) |
-| **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with four screws, their heads sunk in its bottom face. | [`bentobox-auto-tray.scad`](../models/bentobox/bentobox-auto-tray.scad) |
-| **Carbon housing** | Drawn to ThrutheFrame's, with the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. Its floor is a honeycomb across the whole inside, and the pellets lie on it, 45 mm deep, to a mark on each inside wall (D146); with `carbon = "cmag"`, the original's two openings, for the C-MAG. | [`bentobox-carbon.scad`](../models/bentobox/bentobox-carbon.scad) |
-| **HEPA holder** | Drawn to ThrutheFrame's, its bottom sealed on the carbon housing, its pocket the box's whole inside, for a bigger piece of paper, and its top the original cover's, with its magnets, 6 × 2 mm here. | [`bentobox-hepa.scad`](../models/bentobox/bentobox-hepa.scad) |
-| **Cover** | Drawn to ThrutheFrame's hemp-leaf cover: its plate on the HEPA holder, the plug into the holder's top, the magnets' holes, and the window's pattern, drawn from its lattice of triangles. | [`bentobox-cover.scad`](../models/bentobox/bentobox-cover.scad) |
-| **C-MAG** | An option, with `carbon = "cmag"`, in place of the bed. Drawn to ThrutheFrame's: the tray and the lid, with the grills' slots and rails, the fill line and the magnets' bosses; and its four grills, with a honeycomb of holes the 4 mm pellets cannot pass. | [`bentobox-cmag-tray.scad`](../models/bentobox/bentobox-cmag-tray.scad), [`bentobox-cmag-lid.scad`](../models/bentobox/bentobox-cmag-lid.scad), [`bentobox-cmag-grills.scad`](../models/bentobox/bentobox-cmag-grills.scad) |
-| **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
-| **Grommet** | One TPU donut that clicks into the fan section's floor, the fans' leads pushed through the skin across its hole, sealing the wires' hole. | [`bentobox-grommet.scad`](../models/bentobox/bentobox-grommet.scad) |
-| **Fans' plug mate** | A block in the fan section that both fans' own plugs push onto, its pins the bared ends of 22 AWG solid wire. **On hold, not to print**, until the fan connector it copies is settled. | [`bentobox-fan-mate.scad`](../models/bentobox/bentobox-fan-mate.scad) |
-| **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
-| **Bottom sample** | To print first: the tray's -Y end with the USB-C board's pocket, and the base's floor over it with the tray's nut slots - one ASA plate. | [`bentobox-bottom-sample.scad`](../models/bentobox/bentobox-bottom-sample.scad) |
-| **Nut coupon** | Five fan-nut seats and five tray-nut slots at graded fits and with three kinds of end, to find the ones that hold on this printer (T181, T182). | [`bentobox-nut-coupon.scad`](../models/bentobox/bentobox-nut-coupon.scad) |
-| **Sample plates** | Every sample on two plates, one ASA and one TPU, and a second ASA plate of the ones not yet tried (see *The samples*). | [`bentobox-samples-asa.scad`](../models/bentobox/bentobox-samples-asa.scad), [`bentobox-samples-tpu.scad`](../models/bentobox/bentobox-samples-tpu.scad), [`bentobox-samples-asa-2.scad`](../models/bentobox/bentobox-samples-asa-2.scad) |
+| **Section** | Goes between the carbon housing and the fan section, holding a flat filter sheet that stops carbon dust reaching the fans. Sealed at both its faces, with a pillar at each corner that the carbon housing's screws pass through. `sealed = false` builds it with the original's tongue, groove and magnets, to drop into any BentoBox v2.0 stack. | [`parts/section.scad`](../models/bentobox/parts/section.scad) |
+| **Glue frame** | One ASA frame your own pleated HEPA paper is hot-glued into, standing on the HEPA holder's ledge in place of the cartridge (T131, Alon, 9 Oct 2026). | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
+| **Glue sample** | One end of the glue frame: to glue an offcut in before the whole frame. | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
+| **Paper clamp** (shelved) | Two ASA frames, screwed together with a cut piece of pleated paper between them, standing on the HEPA holder's ledge in place of the cartridge: wedges from above and teeth from below pinch the paper's cut ends, and a bar from each its long edges. | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
+| **Clamp sample** (shelved) | One end of each frame, on one plate: to try the pinch on an offcut before the whole clamp. | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
+| **Base** | In place of the duct, drawn to the Auto's: the duct over the bay's roof, the wires' tube, the fans' four nuts pulled up into pockets in posts, and four nuts in slots for the tray's screws. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
+| **Fan section** | In place of the fan case, drawn to the Auto's: its floor with the fans' openings and screws' holes, its top the sealed joint's, and its wires' hole opened out for the grommet. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
+| **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with four screws, their heads sunk in its bottom face. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
+| **Carbon housing** | Drawn to ThrutheFrame's, with the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. Its floor is a honeycomb across the whole inside, and the pellets lie on it, 45 mm deep, to a mark on each inside wall (D146); with `carbon = "cmag"`, the original's two openings, for the C-MAG. | [`parts/carbon.scad`](../models/bentobox/parts/carbon.scad) |
+| **HEPA holder** | Drawn to ThrutheFrame's, its bottom sealed on the carbon housing, its pocket the box's whole inside, for a bigger piece of paper, and its top the original cover's, with its magnets, 6 × 2 mm here. | [`parts/hepa.scad`](../models/bentobox/parts/hepa.scad) |
+| **Cover** | Drawn to ThrutheFrame's hemp-leaf cover: its plate on the HEPA holder, the plug into the holder's top, the magnets' holes, and the window's pattern, drawn from its lattice of triangles. | [`parts/cover.scad`](../models/bentobox/parts/cover.scad) |
+| **C-MAG** | An option, with `carbon = "cmag"`, in place of the bed. Drawn to ThrutheFrame's: the tray and the lid, with the grills' slots and rails, the fill line and the magnets' bosses; and its four grills, with a honeycomb of holes the 4 mm pellets cannot pass. | [`parts/cmag.scad`](../models/bentobox/parts/cmag.scad) |
+| **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`parts/joints.scad`](../models/bentobox/parts/joints.scad) |
+| **Grommet** | One TPU donut that clicks into the fan section's floor, the fans' leads pushed through the skin across its hole, sealing the wires' hole. | [`parts/grommet.scad`](../models/bentobox/parts/grommet.scad) |
+| **Fans' plug mate** | A block in the fan section that both fans' own plugs push onto, its pins the bared ends of 22 AWG solid wire. **On hold, not to print**, until the fan connector it copies is settled. | [`parts/fan-mate.scad`](../models/bentobox/parts/fan-mate.scad) |
+| **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`parts/samples.scad`](../models/bentobox/parts/samples.scad) |
+| **Bottom sample** | To print first: the tray's -Y end with the USB-C board's pocket, and the base's floor over it with the tray's nut slots - one ASA plate. | [`parts/samples.scad`](../models/bentobox/parts/samples.scad) |
+| **Nut coupon** | Five fan-nut seats and five tray-nut slots at graded fits and with three kinds of end, to find the ones that hold on this printer (T181, T182). | [`parts/samples.scad`](../models/bentobox/parts/samples.scad) |
+| **Sample plates** | Every sample on two plates, one ASA and one TPU, and a second ASA plate of the ones not yet tried (see *The samples*). | [`parts/samples.scad`](../models/bentobox/parts/samples.scad) |
+
+Each part's source is under `parts/`, and the model is laid out as scad-tools' project layout says - [its README](../models/bentobox/README.md) has the files. Each printed part's own file, the one `scad-check.sh` and `printables.py` take, is written into `models/bentobox/.check/` by `sh scripts/tools/part-files.sh`.
 
 **Not printed yet.** Every fit is checked in the model (see *Checking it*), not yet against printed parts.
 
@@ -475,8 +477,8 @@ filters ([`sim/bentobox-cfd/pleat.py`](../sim/bentobox-cfd/README.md#one-pleat-o
 ## The samples
 
 Some of the remix's fits are first guesses, and its big parts are long prints, so the samples come first: every
-one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bentobox-samples-asa.scad) and
-[`bentobox-samples-tpu.scad`](../models/bentobox/bentobox-samples-tpu.scad) (each sample has its own file too).
+one of them on two plates, `samples_asa` and `samples_tpu` in [`parts/samples.scad`](../models/bentobox/parts/samples.scad)
+(each sample is a part of its own too).
 
 - **The joint sample** and its TPU bead - one end of a sealed joint, and a fan nut's seat (see *The sealed
   joints*).
@@ -524,7 +526,7 @@ one of them on two plates, [`bentobox-samples-asa.scad`](../models/bentobox/bent
 - **The clamp's wedges and teeth** came out thin and fragile: hence the glue frame.
 
 **The second ASA plate**,
-[`bentobox-samples-asa-2.scad`](../models/bentobox/bentobox-samples-asa-2.scad) (10 Oct 2026): the glue sample
+`samples_asa_2` in [`parts/samples.scad`](../models/bentobox/parts/samples.scad) (10 Oct 2026): the glue sample
 (T185) and the nut coupon (T189), 1 h 25 m and 12 g. The grommet's coupon from the first plate is still as drawn,
 so it is not on it: it waits only on the TPU grommet.
 
@@ -553,7 +555,7 @@ Every part prints as its file draws it, standing on its bottom - the section, th
 the fan section, the carbon housing and the HEPA holder - the cover on its top face, the glue frame on its rim,
 the clamp's lower frame on its rim and its upper frame turned over onto its band, and a bead ring flat. With the C-MAG, its parts print from their
 own files: the tray on its floor, the lid on its top face, the grills flat. No supports, no brim. `sh scripts/tools/bentobox-print.sh` builds every one, checks it and slices
-it, and puts its STL and G-code in `models/bentobox/print/`; name parts to build only those - `samples-asa
+it, its STL and G-code beside its part file in `models/bentobox/.check/`; name parts to build only those - `samples-asa
 samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA one.
 
 | Part | Material | Count | Time | Filament |
@@ -717,7 +719,8 @@ billion, but they weigh micrograms.
 
 ## Checking it
 
-The model's rules are asserts and warnings in [`bentobox.layout.scad`](../models/bentobox/bentobox.layout.scad).
+The model's rules are asserts in [`checks/guards.scad`](../models/bentobox/checks/guards.scad) and warnings in
+[`checks/report.scad`](../models/bentobox/checks/report.scad); the fit checks' views are the model's `draw` menu.
 The fits are checked against the original's STLs, which have to be in
 [`models/bentobox/original/`](../models/bentobox/original/), with the Auto's written there from its STEP:
 
@@ -753,7 +756,9 @@ something broken on purpose that it must catch, and the run fails if one passes 
 62 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
-by sectioning its STLs, and every setting of the section and of the paper's frame.
+by sectioning its STLs, and every setting of the section and of the paper's frame; the bought parts' own numbers -
+the fans, their plug, the USB-C board, the screws and nuts, the magnets, the cartridge, the paper, the pellets -
+are under [`vitamins/`](../models/bentobox/vitamins/).
 
 ## Credit and licence
 

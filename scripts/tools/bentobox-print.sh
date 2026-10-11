@@ -2,7 +2,8 @@
 # SPDX-FileCopyrightText: 2026 Alon A. Rabinowitz
 # SPDX-License-Identifier: MPL-2.0
 # Every part the BentoBox remix prints - and the sample plates - rendered, checked and sliced by scad-tools'
-# scad-check.sh, each STL and its G-code collected in models/bentobox/print/, not left beside the sources.
+# scad-check.sh, from the part files scripts/tools/part-files.sh writes in models/bentobox/.check/, where each STL,
+# its G-code and its log stay.
 #
 #   sh scripts/tools/bentobox-print.sh               every part
 #   sh scripts/tools/bentobox-print.sh samples-asa samples-tpu
@@ -12,11 +13,12 @@
 # Exit status: 0 every part built and sliced clean; 1 one would not build; 2 one built with warnings to read.
 set -u
 cd "$(dirname "$0")/../.." || exit 1
-OUT=models/bentobox/print
+OUT=models/bentobox/.check
 PROFILE="0.2mm QUALITY @MK3 - no skirt, no brim, no crossing perimeter"
 ASA="Inslogic ASA"
 TPU="Inslogic TPU 95A"
 mkdir -p "$OUT"
+sh scripts/tools/part-files.sh > /dev/null || exit 1
 
 # Each part: its name, how many separate bodies its plate holds, and its filament.
 PARTS_LIST="section 1 ASA
@@ -46,14 +48,11 @@ summary=""
 build() {
     name=$1 bodies=$2 material=$3
     case $material in ASA) fil=$ASA ;; *) fil=$TPU ;; esac
-    src=models/bentobox/bentobox-$name.scad
+    src=$OUT/bentobox-$name.scad
     [ -f "$src" ] || { echo "no such part: $name ($src)"; worst=1; return; }
     log=$OUT/bentobox-$name.log
     PARTS=$bodies sh scad-tools/scripts/scad-check.sh "$src" "$PROFILE" "$fil" > "$log" 2>&1
     status=$?
-    for ext in stl gcode; do
-        [ -f "${src%.scad}.$ext" ] && mv -f "${src%.scad}.$ext" "$OUT/"
-    done
     line=$(grep -E "printing time|filament used \[g\]" "$log" | sed 's/.*= //' | tr '\n' ' ')
     case $status in
         0) summary="$summary

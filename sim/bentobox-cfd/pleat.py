@@ -13,7 +13,7 @@ count the clamp might take, and what each does to the whole box's flow. From the
         read the solved cases: the pleat's drop for each count, and the box's flow with the C-MAG filled to its
         line and filled full, by cfd.py's lumped model of the fans and the other filters
 
-The clamp holds n full pleats across 2 * pack_edge, and half a pleat more at each long edge (bentobox.layout.scad):
+The clamp holds n full pleats across 2 * pack_edge, and half a pleat more at each long edge (parts/paper-frame.scad):
 pitch = 2 * pack_edge / (n + 1). Each case is half a pitch wide, between two symmetry planes through a top fold and
 a bottom fold, with 5 mm of air above and below the pack. The paper is a porous band paper_t thick (Darcy), its
 middle running straight from the top fold to the bottom fold; where the two sheets of a fold meet, near its
@@ -48,7 +48,7 @@ GRADES = {"100": 100.0, "200": 200.0, "300": 300.0}   # Pa across the flat paper
 V_RATED = 0.0533                                      # m/s
 V_FACE = (0.1, 0.2, 0.35)                             # m/s into the pack's top face: the box runs near 0.2
 COUNTS = (8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 26)
-CLAMP_MAX = 18      # the most pleats the clamp builds: at 19 its half wedges come out under 3 mm (bentobox.layout.scad)
+CLAMP_MAX = 18      # the most pleats the clamp builds: at 19 its half wedges come out under 3 mm (parts/paper-frame.scad)
 PLENUM = 5.0                                          # mm of air above and below the pack
 DX, DY = 0.02, 0.05                                   # mm: 20 cells across the 0.4 mm paper, the band near upright
 
@@ -59,7 +59,7 @@ def clamp():
     src = ROOT / "models" / "bentobox" / "bentobox.scad"
     with tempfile.TemporaryDirectory() as tmp:
         f = Path(tmp) / "c.scad"
-        f.write_text(f"include <{src.as_posix()}>\ndraw_model = false;\nhepa_frame = \"clamp\";\n"
+        f.write_text(f"include <{src.as_posix()}>\ndraw = \"none\";\nhepa_frame = \"clamp\";\n"
                      "echo(pleat = [paper_t, paper_depth, 2 * pack_edge, 2 * comb_y - 2 * clamp_wedge_l, pack_n]);\n",
                      encoding="utf-8")
         out = Path(tmp) / "c.echo"
@@ -399,7 +399,7 @@ def results(out):
             wr.writerow([f"{r[k]:.6g}" if isinstance(r[k], float) else r[k] for k in keys])
     # Each count and grade: the drop as a function of the face velocity, then the box's flow with it.
     lay_line = cfd.LAYER_T
-    tray = 0.0214                                        # a tray, full: cmag_tray (bentobox.layout.scad)
+    tray = 0.0214                                        # a tray, full: cmag_tray (parts/cmag.scad)
     summary = {}
     print(f"{'grade':>6} {'pleats':>6} {'pitch':>6} {'Pa at 0.2':>9} {'lumped':>7} {'flow, line':>11} {'paper Pa':>8} "
           f"{'flow, full':>11} {'chamber every':>14}")

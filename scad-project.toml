@@ -4,18 +4,19 @@
 # What the shared OpenSCAD scripts (scad-tools) need to know about this repository.
 
 [printables]
-# Each printed part's own file - the one that includes the model and picks the part: the BentoBox remix's parts,
+# Each printed part's own file - the one that includes the model and picks the part, which scripts/tools/part-files.sh
+# writes in models/bentobox/.check/: run it first. The BentoBox remix's parts,
 # the C-MAG's (an option), and the samples a maker prints first. Not the fans' plug mate, on hold until the fan
 # connector it copies is settled, nor the shelved paper clamp, nor this build's own sample plates. Run printables.py
 # with OpenSCAD 2021.01, as scad-tools says: under the nightly's Manifold a part's corners differ from one render to the
 # next, and three of these then fail its same-solid test (11 Oct 2026); with the release all 18 pass.
-parts = ["models/bentobox/bentobox-section.scad", "models/bentobox/bentobox-auto-base.scad",
-         "models/bentobox/bentobox-auto-tray.scad", "models/bentobox/bentobox-auto-fans.scad",
-         "models/bentobox/bentobox-carbon.scad", "models/bentobox/bentobox-hepa.scad",
-         "models/bentobox/bentobox-cover.scad", "models/bentobox/bentobox-glue-frame.scad",
-         "models/bentobox/bentobox-bead-ring.scad", "models/bentobox/bentobox-grommet.scad",
-         "models/bentobox/bentobox-cmag-tray.scad", "models/bentobox/bentobox-cmag-lid.scad",
-         "models/bentobox/bentobox-cmag-grills.scad",
-         "models/bentobox/bentobox-joint-sample.scad", "models/bentobox/bentobox-joint-sample-bead.scad",
-         "models/bentobox/bentobox-glue-sample.scad", "models/bentobox/bentobox-bottom-sample.scad",
-         "models/bentobox/bentobox-nut-coupon.scad"]
+parts = ["models/bentobox/.check/bentobox-section.scad", "models/bentobox/.check/bentobox-auto-base.scad",
+         "models/bentobox/.check/bentobox-auto-tray.scad", "models/bentobox/.check/bentobox-auto-fans.scad",
+         "models/bentobox/.check/bentobox-carbon.scad", "models/bentobox/.check/bentobox-hepa.scad",
+         "models/bentobox/.check/bentobox-cover.scad", "models/bentobox/.check/bentobox-glue-frame.scad",
+         "models/bentobox/.check/bentobox-bead-ring.scad", "models/bentobox/.check/bentobox-grommet.scad",
+         "models/bentobox/.check/bentobox-cmag-tray.scad", "models/bentobox/.check/bentobox-cmag-lid.scad",
+         "models/bentobox/.check/bentobox-cmag-grills.scad",
+         "models/bentobox/.check/bentobox-joint-sample.scad", "models/bentobox/.check/bentobox-joint-sample-bead.scad",
+         "models/bentobox/.check/bentobox-glue-sample.scad", "models/bentobox/.check/bentobox-bottom-sample.scad",
+         "models/bentobox/.check/bentobox-nut-coupon.scad"]

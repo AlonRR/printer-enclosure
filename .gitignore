@@ -11,8 +11,8 @@ __pycache__/
 *.stl
 *.3mf
 *.gcode
-# ...collected, with their logs, where scripts/bentobox-print.sh puts them.
-models/bentobox/print/
+# The part files scripts/tools/part-files.sh writes for scad-check.sh and printables.py, and what they make.
+.check/
 
 # The one-file parts scad-tools/scripts/printables.py makes for Printables, from the sources.
 /printables/
