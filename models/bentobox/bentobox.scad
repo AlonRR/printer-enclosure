@@ -9,24 +9,26 @@ use <../../scad-tools/lib/fdm.scad>
 use <../../scad-tools/lib/nuts.scad>
 use <../../scad-tools/lib/gasket.scad>
 use <../../scad-tools/lib/shapes.scad>
+use <../../scad-tools/lib/patterns.scad>
 
 draw_model = true;   // a file that includes this one for its values sets it false after the include
 
 $fn = 64;
 
 // ------------------------------------------------------------------ outlines
-module rrect(w, l, r) {
+// A rounded rectangle centred on the origin (shapes.scad's rrect starts at its corner).
+module rrect_c(w, l, r) {
     offset(r = r) square([w - 2 * r, l - 2 * r], center = true);
 }
 // The inside's outline grown by d: a tongue or groove face d outside it, or inside for d < 0.
-module inside_offset(d) rrect(in_w + 2 * d, in_l + 2 * d, max(in_r + d, 0.01));
+module inside_offset(d) rrect_c(in_w + 2 * d, in_l + 2 * d, max(in_r + d, 0.01));
 
 module outline_solid(h) {
     // The outside, with its 0.4 mm chamfers at the bottom and top edges.
     hull() {
-        translate([0, 0, 0]) linear_extrude(eps) rrect(bb_w - 2 * bb_chamfer, bb_l - 2 * bb_chamfer, bb_r - bb_chamfer);
-        translate([0, 0, bb_chamfer]) linear_extrude(h - 2 * bb_chamfer) rrect(bb_w, bb_l, bb_r);
-        translate([0, 0, h - eps]) linear_extrude(eps) rrect(bb_w - 2 * bb_chamfer, bb_l - 2 * bb_chamfer, bb_r - bb_chamfer);
+        translate([0, 0, 0]) linear_extrude(eps) rrect_c(bb_w - 2 * bb_chamfer, bb_l - 2 * bb_chamfer, bb_r - bb_chamfer);
+        translate([0, 0, bb_chamfer]) linear_extrude(h - 2 * bb_chamfer) rrect_c(bb_w, bb_l, bb_r);
+        translate([0, 0, h - eps]) linear_extrude(eps) rrect_c(bb_w - 2 * bb_chamfer, bb_l - 2 * bb_chamfer, bb_r - bb_chamfer);
     }
 }
 
@@ -242,7 +244,7 @@ module hepa_body(dz = 0) let(f = duct_h + fans_h + carbon_h + dz) difference() {
     orig(hepa_stl, dz);
     if (hepa_full) {
         translate([0, 0, f + ledge_top]) linear_extrude(hepa_h) inside_offset(meet);
-        translate([0, 0, f - 1]) linear_extrude(hepa_ledge + 2) offset(delta = meet) rrect(open_wl[0], open_wl[1], hepa_open_r);
+        translate([0, 0, f - 1]) linear_extrude(hepa_ledge + 2) offset(delta = meet) rrect_c(open_wl[0], open_wl[1], hepa_open_r);
     }
 }
 // The C-MAG, from its own frame (L along X, W along Y, T along Z) to standing on end in the housing.
@@ -266,8 +268,8 @@ module fan_section() if (bottom == "auto") auto_fans(); else orig(fans_stl);
 // the wires' hole is the grommet's (fans_sealed cuts it).
 module fans_drawn() let(z0 = duct_h, z1 = duct_h + fans_h, c = bb_chamfer) difference() {
     hull() {
-        translate([0, 0, z0]) linear_extrude(z1 - z0 - c) rrect(bb_w, bb_l, bb_r);
-        translate([0, 0, z1 - eps]) linear_extrude(eps) rrect(bb_w - 2 * c, bb_l - 2 * c, bb_r - c);
+        translate([0, 0, z0]) linear_extrude(z1 - z0 - c) rrect_c(bb_w, bb_l, bb_r);
+        translate([0, 0, z1 - eps]) linear_extrude(eps) rrect_c(bb_w - 2 * c, bb_l - 2 * c, bb_r - c);
     }
     translate([0, 0, z0 + auto_floor_t]) linear_extrude(z1 - z0) inside_offset(0);
     for (y = fan_ys) translate([0, y, z0 - 1]) cylinder(d = auto_fan_air, h = auto_floor_t + 2, $fn = 96);
@@ -360,7 +362,7 @@ module auto_base() difference() {
     intersection() {
         union() {
             difference() {
-                translate([0, 0, auto_bay_top]) linear_extrude(duct_h - auto_bay_top) rrect(bb_w, bb_l, bb_r);
+                translate([0, 0, auto_bay_top]) linear_extrude(duct_h - auto_bay_top) rrect_c(bb_w, bb_l, bb_r);
                 duct_air();
             }
             translate([0, 0, auto_bay_top]) linear_extrude(duct_h - auto_bay_top) conduit2d();
@@ -377,8 +379,8 @@ module auto_base() difference() {
 // ------------------------------------------------------------------ the bay's tray (Alon, 8-9 Oct 2026)
 // The bottom under the bay's roof, a part of its own: the floor, the walls round the bay, the ends' blocks, the
 // magnets' holes, and the USB-C board's pocket in the -Y end. It prints on its floor, open at the top.
-module tray_outline() rrect(bb_w, bb_l, bb_r);
-module bay2d() translate([bay_x, 0]) rrect(bay_size[0], bay_size[1], bay_size[2]);
+module tray_outline() rrect_c(bb_w, bb_l, bb_r);
+module bay2d() translate([bay_x, 0]) rrect_c(bay_size[0], bay_size[1], bay_size[2]);
 // The USB-C board's pocket: the notch the socket goes through, round at its ends and open over its top; the board's
 // pocket behind the wall in front of it, from its floor on up, open to the bay - its far edge stops short of it.
 module usb_notch2d() hull() {
@@ -422,7 +424,7 @@ module say_auto_hardware() echo(str("auto: eight M3 nuts, the fans' four pulled 
 // top, an upper part's floor. A lower part's top: its magnets' holes filled, a collar round its edge, the bead's
 // groove, and a nut in each tab, on a bracket. An upper part's floor: its groove and magnets' holes filled, its edge
 // cut back at 45 degrees to sit in the collar, and each screw's head sunk in its tab.
-module outline_in(d) offset(delta = -d) rrect(bb_w, bb_l, bb_r);
+module outline_in(d) offset(delta = -d) rrect_c(bb_w, bb_l, bb_r);
 // The outline from above, as points, anticlockwise: the side faces at +-seal_x, the end walls at +-seal_y. Each is
 // built from its +X +Y corner by exact reflections, and every point where a curve meets a straight face is written
 // with that face's own number, so the two outlines below share their faces exactly.
@@ -628,7 +630,7 @@ module carbon_open2d() let(o = carbon_open) hull() {
 function in_rrect(c, size, r, margin) = let(dx = max(abs(c[0]) - (size[0] / 2 - r), 0), dy = max(abs(c[1]) - (size[1] / 2 - r), 0))
     norm([dx, dy]) <= r - margin + 1e-9;
 function bed_holes() = let(size = [in_w - 2 * bed_mesh[2], in_l - 2 * bed_mesh[2]], r = max(in_r - bed_mesh[2], 0.01))
-    [for (c = mesh_holes(size, bed_mesh[0], bed_web)) if (in_rrect(c, size, r, bed_hole_ac / 2)) c];
+    [for (c = honeycomb_centres(size, bed_mesh[0], bed_web)) if (in_rrect(c, size, r, bed_hole_ac / 2)) c];
 module bed_holes2d() for (c = bed_holes()) translate(c) rotate(90) circle(d = bed_hole_ac, $fn = 6);
 // A fill mark at the origin, on a wall in the XZ plane, standing out towards +Y: a slot's shape, its edges at 45
 // degrees; it starts 0.05 inside the wall, so it joins it. One in the middle of each inside wall, at the bed's top.
@@ -671,7 +673,7 @@ module hepa_drawn(z0) let(c = bb_chamfer, t = z0 + hepa_h) difference() {
         translate([0, 0, t - eps]) linear_extrude(eps) offset(delta = -c) polygon(outline_pts());
     }
     translate([0, 0, z0 + ledge_top]) linear_extrude(hepa_h) inside_offset(hepa_in_grow);
-    translate([0, 0, z0 - 1]) linear_extrude(hepa_ledge + 2) offset(delta = meet) rrect(open_wl[0], open_wl[1], hepa_open_r);
+    translate([0, 0, z0 - 1]) linear_extrude(hepa_ledge + 2) offset(delta = meet) rrect_c(open_wl[0], open_wl[1], hepa_open_r);
     magnet_holes(z0 + hepa_h, false, top_mag_xy, top_mag_d, magnet[1]);
 }
 module hepa_sealed() sealed_part(sst[3], undef, sst[3] - meet, sst[3] - meet + hepa_h, top_tabs) hepa_drawn(sst[3] - meet);
@@ -681,21 +683,17 @@ module hepa_sealed() sealed_part(sst[3], undef, sst[3] - meet, sst[3] - meet + h
 // with the hemp-leaf pattern.
 module cover_plate(z0) let(r = cover_round, c = bb_chamfer, t = z0 + cover_top, zc = t - r * sqrt(2))
     hull() for (s = concat([[z0, c], [z0 + c, 0]], [for (a = [0 : 9 : 45]) [zc + r * sin(a), r - r * cos(a)]], [[t - eps, r]]))
-        translate([0, 0, s[0]]) linear_extrude(eps) rrect(bb_w - 2 * s[1], bb_l - 2 * s[1], bb_r - s[1]);
-// The pattern's holes: each triangle of the lattice split in three by its spokes, each third shrunk by half a bar.
-// Its corners stand in rows cover_tile * sqrt(3) / 2 apart in Y, every other row moved half a side along X.
-function hemp_corner(k, j) = [(j + (k % 2 == 0 ? 0 : 0.5)) * cover_tile, k * cover_tile * sqrt(3) / 2];
-module hemp_holes2d() let(a = cover_tile, h = a * sqrt(3) / 2, n = ceil(cover_win[0] / a) + 1, m = ceil(cover_win[1] / h) + 1)
-    for (k = [-m : m - 1], j = [-n : n], up = [0, 1])
-        let(p = hemp_corner(up == 1 ? k : k + 1, j), q = p + [a, 0], o = (p + q) / 2 + [0, up == 1 ? h : -h], c = (p + q + o) / 3)
-            for (e = [[p, q], [q, o], [o, p]]) offset(delta = -cover_bar / 2) polygon([c, e[0], e[1]]);
+        translate([0, 0, s[0]]) linear_extrude(eps) rrect_c(bb_w - 2 * s[1], bb_l - 2 * s[1], bb_r - s[1]);
+// The pattern's holes: scad-tools' hemp-leaf lattice (patterns.scad), each triangle split in three by its spokes,
+// each third shrunk by half a bar, over the window.
+module hemp_holes2d() hemp_leaf_holes(2 * cover_win, cover_tile, cover_bar);
 module cover_drawn(z0) difference() {
     union() {
         cover_plate(z0);
-        translate([0, 0, z0 - cover_plug[3]]) linear_extrude(cover_plug[3] + eps) rrect(cover_plug[0], cover_plug[1], cover_plug[2]);
+        translate([0, 0, z0 - cover_plug[3]]) linear_extrude(cover_plug[3] + eps) rrect_c(cover_plug[0], cover_plug[1], cover_plug[2]);
     }
     translate([0, 0, z0 - cover_plug[3] - 1]) linear_extrude(cover_plug[3] + cover_top + 2, convexity = 10)
-        intersection() { rrect(2 * cover_win[0], 2 * cover_win[1], cover_win_r); hemp_holes2d(); }
+        intersection() { rrect_c(2 * cover_win[0], 2 * cover_win[1], cover_win_r); hemp_holes2d(); }
     for (sx = [-1, 1], sy = [-1, 1]) translate([sx * top_mag_xy[0], sy * top_mag_xy[1], z0 - 1]) cylinder(d = top_mag_d, h = 1 + magnet[1]);
 }
 // The cover on the sealed stack's HEPA holder.
@@ -761,18 +759,10 @@ module cmag_body() difference() {
 }
 module cmag_tray_drawn() intersection() { cmag_body(); translate([-1, -1, -1]) cube([cmag[0] + 2, cmag[1] + 2, cmag_split + 1]); }
 module cmag_lid_drawn() intersection() { cmag_body(); translate([-1, -1, cmag_split]) cube([cmag[0] + 2, cmag[1] + 2, cmag[2]]); }
-// A honeycomb of whole hexagonal holes inside the rectangle `size`, centred: holes `hole` across their flats, `web`
-// between every two neighbours, their flats facing along X. Rows run along X, an even number of them across Y, which
-// fits the most whole holes into a grill. (scad-tools lib/patterns.scad has it as honeycomb_centres; this copy stays
-// until the scad-tools pin moves past it.)
-function mesh_holes(size, hole, web) = let(p = hole + web, dy = p * sqrt(3) / 2, R = hole / sqrt(3),
-    hx = size[0] / 2, hy = size[1] / 2, m = ceil(hy / dy) + 1, k = ceil(hx / p) + 2)
-    [for (i = [-m : m], j = [-k : k]) let(c = [(j + (i % 2 == 0 ? 0 : 0.5)) * p, (i + 0.5) * dy])
-        if (abs(c[0]) + hole / 2 <= hx + 1e-9 && abs(c[1]) + R <= hy + 1e-9) c];
 // A grill, flat: the plate, and a honeycomb of whole holes inside its rim, their flats facing along W.
-function cmag_mesh_holes() = mesh_holes([cmag_grill[0] - 2 * cmag_rim, cmag_grill[1] - 2 * cmag_rim], cmag_mesh[0], cmag_web);
+function cmag_mesh_holes() = honeycomb_centres([cmag_grill[0] - 2 * cmag_rim, cmag_grill[1] - 2 * cmag_rim], cmag_mesh[0], cmag_web);
 module cmag_grill2d() difference() {
-    rrect(cmag_grill[0], cmag_grill[1], cmag_grill[2]);
+    rrect_c(cmag_grill[0], cmag_grill[1], cmag_grill[2]);
     for (c = cmag_mesh_holes()) translate(c) rotate(90) circle(d = cmag_hole_ac, $fn = 6);
 }
 // The four grills in their slots, in the C-MAG's frame.
