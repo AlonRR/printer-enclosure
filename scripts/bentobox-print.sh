@@ -8,6 +8,7 @@
 #   sh scripts/bentobox-print.sh samples-asa samples-tpu
 #
 # A part is its file's name without "bentobox-" and ".scad". OPENSCAD should name the nightly, as for the checks.
+# The fans' plug mate is left out: it is on hold until the fan connector it copies is settled (Alon, 11 Oct 2026).
 # Exit status: 0 every part built and sliced clean; 1 one would not build; 2 one built with warnings to read.
 set -u
 cd "$(dirname "$0")/.." || exit 1
@@ -30,7 +31,6 @@ clamp-lower 1 ASA
 clamp-upper 1 ASA
 bead-ring 1 TPU
 grommet 1 TPU
-fan-mate 1 ASA
 joint-sample 3 ASA
 joint-sample-bead 1 TPU
 glue-sample 1 ASA

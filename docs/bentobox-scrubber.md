@@ -51,7 +51,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **C-MAG** | An option, with `carbon = "cmag"`, in place of the bed. Drawn to ThrutheFrame's: the tray and the lid, with the grills' slots and rails, the fill line and the magnets' bosses; and its four grills, with a honeycomb of holes the 4 mm pellets cannot pass. | [`bentobox-cmag-tray.scad`](../models/bentobox/bentobox-cmag-tray.scad), [`bentobox-cmag-lid.scad`](../models/bentobox/bentobox-cmag-lid.scad), [`bentobox-cmag-grills.scad`](../models/bentobox/bentobox-cmag-grills.scad) |
 | **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`bentobox-bead-ring.scad`](../models/bentobox/bentobox-bead-ring.scad) |
 | **Grommet** | One TPU donut that clicks into the fan section's floor, the fans' leads pushed through the skin across its hole, sealing the wires' hole. | [`bentobox-grommet.scad`](../models/bentobox/bentobox-grommet.scad) |
-| **Fans' plug mate** | A block in the fan section that both fans' own plugs push onto, its pins the bared ends of 22 AWG solid wire. | [`bentobox-fan-mate.scad`](../models/bentobox/bentobox-fan-mate.scad) |
+| **Fans' plug mate** | A block in the fan section that both fans' own plugs push onto, its pins the bared ends of 22 AWG solid wire. **On hold, not to print**, until the fan connector it copies is settled. | [`bentobox-fan-mate.scad`](../models/bentobox/bentobox-fan-mate.scad) |
 | **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`bentobox-joint-sample.scad`](../models/bentobox/bentobox-joint-sample.scad), [`bentobox-joint-sample-bead.scad`](../models/bentobox/bentobox-joint-sample-bead.scad) |
 | **Bottom sample** | To print first: the tray's -Y end with the USB-C board's pocket, and the base's floor over it with the tray's nut slots - one ASA plate. | [`bentobox-bottom-sample.scad`](../models/bentobox/bentobox-bottom-sample.scad) |
 | **Nut coupon** | Five fan-nut seats and five tray-nut slots at graded fits and with three kinds of end, to find the ones that hold on this printer (T181, T182). | [`bentobox-nut-coupon.scad`](../models/bentobox/bentobox-nut-coupon.scad) |
@@ -244,7 +244,10 @@ fifth of its air. So the leads pass the floor in a **grommet** (Alon, 9 Oct 2026
 - **The fans' plugs stay in the fan section**, pushed onto their mate (below). Each is 8 mm across, a 2.54 mm
   KK 254-style housing, wider than the floor's 7.6 mm hole and the 6 mm tube, so only the mate's four leads pass.
 
-**The fans' plug mate** (Alon, 9 Oct 2026). Each fan keeps its own 3-pin plug and pushes it onto a printed block in
+**The fans' plug mate** (Alon, 9 Oct 2026). **On hold, not to print** (Alon, 11 Oct 2026): it copies the
+[fan connector](https://github.com/AlonRR/fan-connector)'s male, which is still being tried in print, and will take
+its hold and sizes once that is settled; `bentobox-print.sh` leaves it out until then.
+Each fan keeps its own 3-pin plug and pushes it onto a printed block in
 the fan section, so a fan comes out by unplugging it.
 
 ![The plug mate with both fans' plugs lifted off it: the pins, the bared ends of the wires, standing out of the block; walls on all four sides of each plug, a key on the back one and two ribs up each end; a + in front of each red pin](bentobox/fan-mate.png)
@@ -560,7 +563,7 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Joint sample | ASA | 1 plate | 1 h 7 m | 10 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
 | Grommet | TPU 95A | 1 | 2 m | under 1 g |
-| Fans' plug mate | ASA | 1 | 17 m | 1.7 g |
+| Fans' plug mate (on hold) | ASA | 1 | 17 m | 1.7 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
 | Nut coupon | ASA | 1 | 53 m | 8 g |
 | Samples, ASA | ASA | 1 plate | 2 h 29 m | 22 g |
