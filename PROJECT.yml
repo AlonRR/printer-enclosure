@@ -5,6 +5,6 @@ projects:
   - name:     Printer enclosure
     kind:     build
     state:    active
-    next:     "prove one ESP32 can carry fan PWM + tach + I2C, then build it"
+    next:     "print the BentoBox remix (docs/bentobox-scrubber.md): carbon housing, section, tray, HEPA holder, cover and bead rings are free to print; the fan section after the TPU grommet tries in its coupon (T184), the glue frame after the glue sample (T185); the fans' plug mate waits on the fan connector; the outlet sensors' mount is not drawn (D112); airflow re-run before publishing"
     trackers: [docs/chamber-sensor.md, docs/chamber-airflow.md, docs/bentobox-scrubber.md]
     review:   2026-10-07
