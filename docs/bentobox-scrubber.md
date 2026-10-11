@@ -211,7 +211,7 @@ tray under the base with its four screws; it comes off again from below, for the
 nuts, from the open top of the base: slide each nut in under its post, push it up the pocket, and pull
 it into the seat with a spare M3 screw from above; take the screw out, and the nut stays. The fans' leads down
 the tube; the fan section on the base, the fans in it, and their four screws down through them. The seat's
-fit is a first guess: try it on the joint sample first (see *The sealed joints*).
+fit was found with the nut coupon (T189; see *The samples*).
 
 **Magnets:** none at the fan section's top, whose joint is sealed. The base's underside has four holes for
 4 × 2 mm magnets, from the Auto; magnets there would hold the box to a steel floor. They are optional.
@@ -294,8 +294,8 @@ housing are sealed:
   [scad-tools' gasket](https://github.com/AlonRR/scad-tools/blob/main/lib/gasket.scad), lies in a groove
   2.5 × 1.6 mm in the lower part's top, round the inside. It stands 0.4 mm proud; the upper part's flat
   bottom presses it down as the two faces meet, a fifth of its height. Its hollow is vented through its
-  inner wall, to the box's inside: a dead end, and the outer wall and the ridge seal. The bead's size is a
-  first choice, not yet tried in print.
+  inner wall, to the box's inside: a dead end, and the outer wall and the ridge seal. On the joint sample the
+  bead printed about 0.2 mm under its drawn height and still sealed (T131; see *The samples*).
 - **The upper part sits in the lower one.** A collar 1 mm tall runs round the lower part's top edge, round
   the tabs too, its inner face at 45 degrees; the upper part's bottom edge, tabs and all, is cut back at 45
   degrees to sit in it, 0.2 mm clear. It centres the parts, and it is a second barrier outside the bead. Both
@@ -329,7 +329,7 @@ screws' before the HEPA holder is on, and find nothing in its way.
 The sheet in the section, the carbon and the HEPA come out by the same screws. Only the cover's joint keeps
 magnets: four in the HEPA holder's top and four in the cover.
 
-**Try one end first.** The bead's size and the seat's fit are first guesses, and the carbon housing is a
+**Try one end first.** The bead's size and the seat's fit were first guesses, and the carbon housing is a
 6-hour print. The joint sample is one end of the joint between the carbon housing and the HEPA holder, sliced
 off the parts themselves: the carbon housing's top 12 mm, with its nut tab, and the HEPA holder's bottom
 10 mm, with its counterbored tab, 30 mm in from the end wall. With them on the plate is a block holding
