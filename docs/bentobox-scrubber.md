@@ -23,7 +23,9 @@ honeycomb across its whole inside, 45 mm deep. The C-MAG stays an option.
 
 **It takes its HEPA as a cartridge:** a bought one, 80 × 40 × 15 mm, rests on a ledge in its holder. Or
 the HEPA paper this build already has, pleated 20.2 mm deep, in the remix's frame (see *Your own HEPA
-paper*).
+paper*). The cartridge chosen for the remix is a bigger one, the Xiaomi Mijia 1C / Dreame F9 robot vacuum's,
+150 × 49 × 15 mm (Alon, 12 Oct 2026: D241); its holder waits for one measured in hand (see *A bigger bought
+cartridge*).
 
 **Every part the remix prints is drawn here** (Alon, 9 Oct 2026; the cover and the C-MAG too, D142), to the
 originals' measurements, read by sectioning their STLs: the base, the tray and the fan section after the Auto's;
@@ -358,6 +360,28 @@ block's seat with an M3 × 8 and take the screw out: the nut should stay.
 `sealed = false` in [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) builds every part as
 the original has it: magnets, a tongue on each top, a groove under each bottom.
 
+## A bigger bought cartridge
+
+Alon, 12 Oct 2026 (D241): a bought cartridge bigger than the original's, the holder grown round it. The HEPA
+sets this box's flow (see *The air through it*), and what sets the HEPA's resistance is how much paper it holds:
+its face times how deep it is pleated. So a bigger frame pays only if it carries more paper than the glue
+frame's 37.4 × 94.1 mm pleated 20.2 mm deep, and its grade matters as much as its size. The cartridges looked
+at, sized as their sellers give them:
+
+| Cartridge | Size, frame included | Pleats | Grade, as sold | The holder it needs |
+|---|---|---|---|---|
+| **Xiaomi Mijia 1C / Dreame F9 robot vacuum: chosen** | 150 × 49 × 15 mm | up to 15 mm | 99.5 % at 0.3 µm | about 50 mm longer and 8 mm wider than the box's inside: past the box by about 19 mm at each end and 4 at each side |
+| Roomba 800 / 900 | about 111 × 52–54 × 10–13 mm | about 10 mm | iRobot's own: 99 % at 10 µm, not HEPA; others' "HEPA" unverified | about 13 mm wider and 10 mm longer; [two](https://www.printables.com/model/896307-bento-box-larger-hepa-filter-remix) [remixes](https://www.printables.com/model/551032-voron-24-roomba-800900-hepa-filter-box) already take it |
+| iLife V3 / V5: the original's | 80 × 40 × 15 mm | 15 mm | not stated | none, the original's ledge. The glue frame's paper moves 18 % more air on the middle grade, less on the 300 Pa one (see *How many pleats*) |
+| Your own paper, in the glue frame | 100.5 × 40.5 mm | 20.2 mm | not known | none: drawn |
+
+- **The Mijia cartridge is the only one sold with a HEPA grade**, and if its pleats are spaced like the paper's
+  it holds about a fifth more. Its holder, and the cover with it, run past the box's ends.
+- **It is not drawn yet.** Its size is a seller's title, and a cartridge's frame has a lip, tabs or a handle a
+  listing does not show, so the holder waits for one measured in hand. Until then the glue frame and the paper
+  are the HEPA. [`vitamins/hepa-cartridge.scad`](../models/bentobox/vitamins/hepa-cartridge.scad) keeps the
+  original's 80 × 40 × 15: the airflow model's HEPA zone is drawn from it.
+
 ## Your own HEPA paper
 
 Pleated HEPA paper off a roll can take the bought cartridge's place. The original holder's pocket is
@@ -613,6 +637,14 @@ For the sealed joints:
 | 4 | M3 × 30 socket head cap screw, ISO 4762: the carbon housing and the section to the fan section; any from 25 mm |
 | 2 | M3 × 12 socket head cap screw, ISO 4762: the HEPA holder to the carbon housing |
 | 8 | 6 × 2 mm magnet: the cover's joint, four in the HEPA holder and four in the cover |
+
+For the filters:
+
+| Quantity | Item |
+|---|---|
+| 1 | HEPA cartridge for the Xiaomi Mijia 1C / Dreame F9 robot vacuum, 150 × 49 × 15 mm: for the bigger holder, not drawn yet (see *A bigger bought cartridge*). Until then, the glue frame and a piece of pleated HEPA paper, 94.1 mm along the folds and 18 pleats across |
+| 1 | Polyester filter floss, about 5 mm thick loose: the section's sheet, cut 42 × 102 mm |
+| 184 cm³ | Activated carbon pellets: the housing's bed, 45 mm deep, about 83 g |
 
 With the C-MAG: eight 4 × 2 mm magnets, four in each half - its bosses are drawn round the original's. Its parts, in ASA: the tray 2 h 16 m and 25 g, the
 lid 1 h 49 m and 21 g, the four grills on one plate 1 h 51 m and 11 g.

@@ -348,7 +348,8 @@ condition it exists for.
 | ~~**Ducting**~~ + ~~a termination~~ | **Required** | **Duct selected, 9 Sep 2026.** ✅ **THE TERMINATION IS BEING PRINTED** — Alon, 9 Sep. Grille dropped; print it in **ASA**, see below — 100 mm × 2 m aluminium flex ₪14.96, plus a 100 mm stainless wall grille with insect mesh ₪17.94. **The diameter was not guessed** — see below |
 | ~~**3-wire (tach) 40 mm 24 V fans ×3**~~ | **Recommended** | **Shortlisted 9 Sep 2026** — 3-wire ball-bearing 24 V, about ₪15 each. ⚠️ **Two of this row's own claims were wrong; corrections below.** ⛔ **And the cart is not what was bought: checkout ordered 12 V Delta EFB0412VHD 4020 ×2** — neither the voltage nor the count survived the checkout. See *The fans* |
 | ~~**Activated carbon** media~~ | — | ✅ **REMOVED 8 Sep 2026 — ~20 kg is OWNED.** It was never in the order history, so no sweep could have found it; Alon reported it. The row is struck rather than deleted so the correction stays visible |
-| — | | **Both fans, HEPA paper, 20 kg of carbon, control board and PD trigger are all owned.** Nothing on this page is unpurchased. ~~Except the 24 V feed~~ — no 24 V feed is needed now that the ordered fans are 12 V |
+| **HEPA cartridge**, the Xiaomi Mijia 1C / Dreame F9 robot vacuum's, 150 × 49 × 15 mm | **Required** for the bigger HEPA holder | **Chosen 12 Oct 2026 (D241), not bought yet.** The BentoBox's holder grows round it once one is measured in hand; until then its HEPA is the owned paper in the glue frame. Why this one: [bentobox-scrubber.md, *A bigger bought cartridge*](bentobox-scrubber.md#a-bigger-bought-cartridge). Order status is kept outside this repository |
+| — | | **Both fans, HEPA paper, 20 kg of carbon, control board and PD trigger are all owned.** Everything on this page but the HEPA cartridge is bought. ~~Except the 24 V feed~~ — no 24 V feed is needed now that the ordered fans are 12 V |
 
 ### 🛒 What was bought, and the two things this buy list had wrong
 
