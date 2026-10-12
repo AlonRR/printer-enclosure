@@ -30,6 +30,7 @@ include <vitamins/fans.scad>
 include <vitamins/usb-c-trigger.scad>
 include <vitamins/fan-plug.scad>
 include <vitamins/wire.scad>
+include <vitamins/sensors.scad>
 include <lib/helpers.scad>           // the helpers the parts share; they set no values
 include <bentobox.layout.scad>       // the values more than one part reads
 include <parts/originals.scad>       // the originals' STLs, in the box's frame
