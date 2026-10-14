@@ -629,8 +629,9 @@ one of them on two plates, `samples_asa` and `samples_tpu` in [`parts/samples.sc
   pull together, the heads ending flush, and the base's flat bottom closing the socket's notch.
 - **The sensor sample** (Alon, 14 Oct 2026: D264) - the base's and the tray's +Y end, from 2 mm in front of the
   SPS30's pocket to the end face, the base cut 2 mm over the SGP41's recess and 2 mm behind the pocket - the back
-  wall and its fan post off, as only the area next to the sensors is tried (Alon, 14 Oct 2026): 1 h 56 m and 20 g,
-  where the base and the tray whole are 5 h 27 m and 56 g. The SPS30's pocket takes 41 mm of the box's 113, across
+  wall and its fan post off, and the tray's piece keeps only 2 mm of the bay's floor round its walls, as only the
+  area next to the sensors is tried (Alon, 14 Oct 2026): 1 h 47 m and 17 g, where the base and the tray whole are
+  5 h 27 m and 56 g. The SPS30's pocket takes 41 mm of the box's 113, across
   nearly all its width, so the sample cannot be much smaller and still hold it. In the order the box goes together: push the M2.5 nut into
   its seat from the end face, and the M2 nut into its slot; slide the SPS30 in from the outlet's face, its lead
   plugged in - its connector face should meet the end wall, the plug flush with it, the lead bent down the slot;
@@ -722,7 +723,7 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Grommet | TPU 95A | 1 | 2 m | under 1 g |
 | Fans' plug mate (on hold) | ASA | 1 | 17 m | 1.7 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
-| Sensor sample | ASA | 1 plate | 1 h 56 m | 20 g |
+| Sensor sample | ASA | 1 plate | 1 h 47 m | 17 g |
 | Nut coupon | ASA | 1 | 53 m | 8 g |
 | Grommet's coupon | ASA | 1 | 6 m | 0.9 g |
 | Samples, ASA | ASA | 1 plate | 2 h 29 m | 22 g |

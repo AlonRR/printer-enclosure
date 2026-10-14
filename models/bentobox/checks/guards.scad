@@ -9,6 +9,7 @@ assert([for (s = tray_screws) if (is_undef(kit_screw(s[4]))) s] == [], "a tray s
 assert(!is_undef(sgp41_screw_l), "no M2.5 in m25_screw_lengths is long enough for the SGP41");
 assert(sensor_sample_x < duct_in[0] && sensor_sample_x > max(sps30_back, tray_pin[0] + tray_pin[2] / 2, sgp41_x[1]),
     "the sensor sample's cut through the base must stand behind the SPS30's pocket, the nub and the SGP41, and inside the duct's back face");
+assert(sensor_sample_floor >= 2 * fdm_extrusion_w - 1e-9, "the sensor sample's tray keeps less than two lines of the bay's floor round its walls");
 assert(sensor_turn_z < post_foot - 0.1, "the sensor sample takes the back wall's posts off from their foot, which must stand over the turn at its cut");
 assert(head_sink >= 0, "a tray screw's head stands out of the tray's bottom face");
 assert(base_turn_r > base_fillet && base_floor + base_turn_r < duct_h, "the duct's turn must be rounder than its fillets and meet the +X wall under the top");

@@ -82,7 +82,8 @@ module bottom_sample() let(w = bb_w + sample_gap) {
 // its nut's pocket, the M2's slot and the nub - side by side, as they print. Both from sensor_sample_from in front of
 // the SPS30's pocket; the base cut sensor_sample_over over the SGP41's recess's 45-degree ceiling, and
 // sensor_sample_back behind the pocket, the back wall (+X) off - and with it the fans' posts that hang from it,
-// over the turn, which the cut would leave floating: from their foot up, where the turn stays under them.
+// over the turn, which the cut would leave floating: from their foot up, where the turn stays under them. The
+// tray's piece keeps only sensor_sample_floor of the bay's floor, round its walls.
 sensor_sample_y = sps30_yy[0] - sps30_fit - sensor_sample_from;
 sensor_sample_top = sgp41_z[1] + sgp41_fit + sgp41_recess_d + sensor_sample_over;
 sensor_sample_x = sps30_back + sensor_sample_back;
@@ -91,7 +92,10 @@ sensor_turn_z = base_floor + base_turn_r - sqrt(pow(base_turn_r, 2) - pow(sensor
 module _sensor_posts_off() for (s = auto_fan_screws) if (s[3] == 180)
     translate([s[0] - post_reach - 2, s[1] - post_r - post_fillet - 1, post_foot]) cube([bb_w, 2 * (post_r + post_fillet + 1), duct_h]);
 module sensor_sample() let(w = bb_w + sample_gap) {
-    translate([-w / 2, 0, -auto_base_z0]) intersection() { auto_tray(); _sensor_end(auto_base_z0 - 1, duct_h); }
+    translate([-w / 2, 0, -auto_base_z0]) difference() {
+        intersection() { auto_tray(); _sensor_end(auto_base_z0 - 1, duct_h); }
+        translate([0, 0, auto_base_z0 - 1]) linear_extrude(auto_seat_z - auto_base_z0 + 2) offset(delta = -sensor_sample_floor) bay2d();
+    }
     translate([w / 2, 0, -auto_bay_top]) difference() {
         intersection() { auto_base(); _sensor_end(auto_bay_top - 1, sensor_sample_top, sensor_sample_x); }
         _sensor_posts_off();
