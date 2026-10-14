@@ -194,6 +194,14 @@ grille at the other; its connector is on the face opposite, near the outlet end,
 
 ![The SPS30 in its pocket, from above: its inlets and outlet grille on the edge facing the duct's middle, the duct's air running to the outlet, its plug on the opposite face with 10 mm of room, and its lead going down a hole into the bay](diagrams/bentobox/outlet-sensors-top.png)
 
+**Not upright against the back wall, openings down** (Alon asked, 14 Oct 2026), though that is Sensirion's best
+way round. Upright it is 40.6 tall, with open air wanted under its openings, and the duct is 36 from floor to fan
+section; at the back the floor curves up into the wall, which is flat for only its top 10 mm, and above it the fans
+fill the fan section to the wall. Sunk into the curve and the bay instead, its openings would face the bottom of a
+slot, in still air or the bay's, not the filtered air leaving the box.
+
+![The SPS30 standing against the back wall with its openings down, cut through and seen from the side: it runs into the floor's curve below and the fan section and fan above](diagrams/bentobox/outlet-sensors-back.png)
+
 ![The base cut through the SPS30 and seen from the side, twice: the SPS30 in a pocket cut into the floor's turn, its inlets at the back and its outlet grille at the front; and on the flat floor, 20.8 mm of it out past the outlet's face](diagrams/bentobox/outlet-sensors-side.png)
 
 ![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's pocket under each post, the tray under it, and its four screws](diagrams/bentobox/auto-bottom.png)
