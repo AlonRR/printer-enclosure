@@ -39,7 +39,7 @@ sps30_in = sps30_front + bb_w / 2;                                    // how far
 sps30_plug_x = [sps30_x[0] + sps30_plug[0], sps30_x[0] + sps30_plug[1]];
 sps30_wires_x = [sps30_x[0] + sps30_wires[0], sps30_x[0] + sps30_wires[1]];
 sps30_stop_y = [for (s = [-1, 1]) (sps30_yy[0] + sps30_yy[1]) / 2 + s * sps30_stop[1] / 2];   // the stop, across
-sps30_slot_y = sps30_yy[1] + sps30_slot_depth;                        // the slot's back face, in the end wall
+sps30_slot_y = sps30_yy[1] + sps30_plug_out + sps30_lead_bend + sps30_slot_play;   // the slot's back face, in the end wall
 sps30_groove_x = [for (s = [-1, 1]) (sps30_wires_x[0] + sps30_wires_x[1]) / 2 + s * sps30_groove[0] / 2];
 
 // The Auto's fan section drawn (Alon, 9 Oct 2026: "rebuild all the parts that are not currently scad"), to its STL's

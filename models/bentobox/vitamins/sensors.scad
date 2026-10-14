@@ -25,9 +25,10 @@ sps30_wires = [3.0, 8.6];       /* ...and where its five leads leave the plug, a
                                    three are the air-quality monitor's (sps_nub, conn_from, conn_to), as are its rules:
                                    Sensirion's, in that repository's docs/design.md. */
 sps30_wire = 1.0;               /* A lead's outside, about: the monitor's "an SPS30 lead wire of about 1 mm". */
-sps30_plug_out = 4.0;           /* <<CONFIRM>> How far the plug, with its lead in it, stands out of the connector face
-                                   before the leads can turn: NOT MEASURED - a placeholder. The leads bend easily round
-                                   1 mm (Alon, 14 Oct 2026). */
+sps30_plug_out = 0;             /* How far the plug, with its lead in it, stands out of the connector face: it sits
+                                   flush. MEASURED (Alon, 14 Oct 2026: Q256)... */
+sps30_lead_bend = 1.95;         /* ...and the leads, turned down out of it, reach this far out of the face, all told.
+                                   MEASURED (Alon, 14 Oct 2026: Q256). */
 sgp41 = [13.14, 10.6, 3.24];    /* The GY-SGP41 module: long, wide, and thick with its parts - the sensor on one
                                    face, the rest of its electronics on the other. MEASURED 2 Oct 2026. */
 sgp41_hole = 3.13;              /* Its one mounting hole, for an M2.5. MEASURED 2 Oct 2026. */

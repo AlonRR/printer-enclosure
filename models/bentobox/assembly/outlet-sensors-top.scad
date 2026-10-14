@@ -83,11 +83,11 @@ for (y = [-24, -34]) {
 color(_d2_ink()) translate([-10, -30.4]) text("the duct's air, to the outlet", size = $txt * 0.75);
 
 // ---- its plug, in the end wall's slot; the lead down the slot and along the tray's groove into the bay
-color(C_PLUG) rect(sps30_plug_x, [sps30_yy[1], sps30_yy[1] + sps30_plug_out]);
+color(C_PLUG) rect(sps30_plug_x, [sps30_yy[1], sps30_yy[1] + sps30_plug_out + sps30_lead_bend]);
 dashed_box(sps30_groove_x, groove_y, C_OUT);
-color(_d2_ink()) hull() for (y = [groove_y[0] + 1, sps30_yy[1] + sps30_plug_out + sps30_wire / 2]) translate([lead_x, y]) circle(r = 0.35, $fn = 12);
+color(_d2_ink()) hull() for (y = [groove_y[0] + 1, sps30_yy[1] + sps30_plug_out + sps30_lead_bend - sps30_wire / 2]) translate([lead_x, y]) circle(r = 0.35, $fn = 12);
 arrow_at([lead_x, groove_y[0] + 0.6], 270);
-leader([bb_w / 2 + 6, sps30_slot_y + 4], [sps30_plug_x[1] + 0.6, sps30_yy[1] + sps30_plug_out / 2], "the plug, in the end wall's slot - open to the outlet", C_OUT);
+leader([bb_w / 2 + 6, sps30_slot_y + 4], [sps30_plug_x[1] + 0.6, sps30_yy[1] + sps30_lead_bend / 2], "its plug, flush, the leads bent down in the end wall's slot - open to the outlet", C_OUT);
 leader([bb_w / 2 + 6, groove_y[0] + 2], [sps30_groove_x[1] + 0.4, groove_y[0] + 6], "its lead, down the slot and along the tray's groove into the bay", C_OUT);
 
 // ---- the tray's stop, up through the floor's notch, in front of it
@@ -96,7 +96,7 @@ leader([face - 22, sps30_stop_y[0] - 6], [face + 0.4, (sps30_stop_y[0] + sps30_s
 
 // ---- dimensions and labels
 dim_h(face, body[0], sps30_yy[0] - 20, sps30_yy[0], str(sps30_in, " in"), C_SPS, above = false);
-dim_v(sps30_yy[1], sps30_slot_y, face - 4, face, str(sps30_slot_depth, " slot"), C_OUT, right = false);
+dim_v(sps30_yy[1], sps30_slot_y, face - 4, face, str(sps30_slot_y - sps30_yy[1], " slot"), C_OUT, right = false);
 leader([auto_conduit[0] + 14, auto_conduit[1] - 10], [auto_conduit[0] + 1, auto_conduit[1] - 2], "the fans' wires' tube", C_FAINT);
 color(_d2_ink()) translate([face - 4, -bb_l / 2 + 6]) rotate(90) text("outlet: the air leaves here", size = $txt * 0.8);
 heading("The SPS30 in its pocket, from above", [face - 14, bb_l / 2 + 8]);
@@ -104,7 +104,7 @@ color(_d2_ink()) translate([face - 14, -bb_l / 2 - 12]) {
     text("Its two inlets and its outlet grille are on one face, the edge facing the duct's middle (-Y): in at the back, out", size = $txt * 0.8);
     translate([0, -4]) text(str("at the front, and the duct's air carries that out of the outlet. In front of them the floor's turn is cut back ", sps30_air_room, " mm."), size = $txt * 0.8);
     translate([0, -8]) text(str("Its connector face is ", round(10 * (duct_in[1] - sps30_yy[1])) / 10, " mm off the +Y end wall, two beads clear of the tray's nut slots there; the plug"), size = $txt * 0.8);
-    translate([0, -12]) text(str("stands in a slot ", sps30_slot_depth, " mm deep from that face, open to the outlet, so it"), size = $txt * 0.8);
+    translate([0, -12]) text(str("sits flush, its leads bent down in a slot ", sps30_slot_y - sps30_yy[1], " mm out from that face, open to the outlet, so it"), size = $txt * 0.8);
     translate([0, -16]) text(str("slides in with its lead on, and the lead goes down the slot and along the tray's groove into the bay. Its front is ", sps30_in, " mm"), size = $txt * 0.8);
     translate([0, -20]) text("inside the outlet's face; the tray's stop, up through a notch in the floor's front edge, holds it in.", size = $txt * 0.8);
 }

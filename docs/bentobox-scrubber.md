@@ -186,10 +186,10 @@ grille at the other; its connector is on the face opposite, near the outlet end.
 - **Its connector side lies along the +Y end wall** (Alon, 14 Oct 2026: D255), its face 1.62 mm off the wall's face:
   the tray's two nut slots at that end reach 0.5 mm in under the duct's edge, and the pocket stops two beads short
   of them - cut to the wall, it would take away the fillet over them and open them into it.
-- **Its plug stands in a slot in the end wall**, 6 mm deep from the connector face - the plug's stand-out and 2 mm
-  for its leads to turn down, a 1 mm lead round a 1 mm bend - leaving 2.62 mm of wall behind it. The slot is open to
-  the outlet, so the SPS30 slides in from the front with its lead on, and runs down to the base's bottom face. How
-  far the plug stands out is not measured yet (Q256): 4 mm is a placeholder.
+- **Its plug sits flush in its face**, and the leads, turned down out of it, reach 1.95 mm out (Alon measured both,
+  14 Oct 2026: Q256). They turn down in a slot that runs 2.25 mm out from the connector face - into the 1.6 mm
+  between it and the wall, and 0.6 mm on into the wall, which keeps 6.4 mm behind it. The slot is open to the outlet,
+  so the SPS30 slides in from the front with its lead on, and runs down to the base's bottom face.
 - **Its lead goes down the slot and along a groove in the tray's top into the bay**, to the ESP32: the bay stops at
   Y 41.4, 8 mm short of the end wall, so the slot alone does not reach it. The groove is 6.2 mm across and 1.5 deep.
   The +Y end's -X tray screw moved from X -13 to -7, out of the slot's way.
@@ -208,6 +208,14 @@ grille at the other; its connector is on the face opposite, near the outlet end.
 ![The SPS30 in its pocket, from above: its inlets and outlet grille on the edge facing the duct's middle, the duct's air running to the outlet, its plug on the opposite face with 10 mm of room, and its lead going down a slot into the bay](diagrams/bentobox/outlet-sensors-top.png)
 
 ![The base cut through the SPS30's middle and seen from the side: the SPS30 in its pocket, its inlets at the back and its outlet grille at the front, the floor's turn as it was dashed over it](diagrams/bentobox/outlet-sensors-side.png)
+
+**The SGP41 goes beside the SPS30, its leads down the same slot** (Alon, 14 Oct 2026: Q248). Where, proposed and
+not yet drawn into the model: in a recess in the +Y end wall over the SPS30, its sensor flush with the wall's face in
+the air the +Y fan blows down to the outlet, behind the fan screw's post on that wall, so the post stands over neither
+its sensor nor its screw. Its pins face the outlet; its four leads run along a short groove in the wall into the
+SPS30's slot. It is held as on the air-quality monitor: an M2.5 through its hole into the wall.
+
+![The +Y end wall seen from inside the duct: the SPS30 and the fan screw's post in front of it, the tray's screws behind, and the SGP41 in a recess over the SPS30, its leads along a groove into the SPS30's slot](diagrams/bentobox/outlet-sensors-wall.png)
 
 **Not upright against the back wall, openings down** (Alon asked, 14 Oct 2026), though that is Sensirion's best
 way round. Upright it is 40.6 tall, with open air wanted under its openings, and the duct is 36 from floor to fan

@@ -116,7 +116,7 @@ CONTROLS = [
     # leads are drawn from the sensor's own values, apart from the slot and groove that take them; the open air in
     # front of its openings is the checks' own number, so cutting less of the turn leaves it in the way.
     ("check_sps30", [("sps30_shift", "[0.4, 0, 0]")], "the SPS30 moved 0.4 mm back, into its pocket's back face"),
-    ("check_sps30_plug", [("sps30_slot_depth", "3")], "the end wall's slot cut 3 mm deep, shallower than the plug stands"),
+    ("check_sps30_plug", [("sps30_slot_play", "-1")], "the end wall's slot cut 1 mm short of the leads' bend"),
     ("check_sps30_air", [("sps30_air_room", "5")], "the floor's turn cut back only 5 mm in front of its openings"),
     ("check_sps30_lead", [("sps30_groove", "[6.2, 0.5]")], "the tray's groove cut 0.5 mm deep, under the leads"),
     ("check_sps30_way", [("sps30_shift", "[0, 0, -0.3]")], "the SPS30 set 0.3 mm down: its way in drags through the floor"),
