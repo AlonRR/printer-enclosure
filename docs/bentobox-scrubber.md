@@ -581,6 +581,9 @@ fan section's +X wall leaves room for, 0.2 mm off it. Above the floor the hole's
 mouth: run on as a cone, as it was, it cut 0.65 mm into the foot of that wall (`check_grommet_wall`).
 `grommet-coupon` prints the coupon alone, to try the new entrance.
 
+**Tried, 12 Oct 2026** (T246), the same grommet in a `grommet-coupon` with the 0.6 mm entrance, printed in black
+PETG, which was loaded at the time: the entrance is good (Alon, 14 Oct 2026). Nothing changed.
+
 ## Printing
 
 Every part prints as its file draws it, standing on its bottom - the section, the base on its floor, the tray,
