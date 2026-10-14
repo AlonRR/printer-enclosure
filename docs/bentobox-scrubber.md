@@ -25,7 +25,8 @@ honeycomb across its whole inside, 45 mm deep. The C-MAG stays an option.
 the HEPA paper this build already has, pleated 20.2 mm deep, in the remix's frame (see *Your own HEPA
 paper*). The cartridge chosen for the remix is a bigger one, the Xiaomi Mijia 1C / Dreame F9 robot vacuum's,
 150 × 49 × 15 mm (Alon, 12 Oct 2026: D241); its holder waits for one measured in hand (see *A bigger bought
-cartridge*).
+cartridge*). It replaces the paper (Alon, 14 Oct 2026: Q271): the glue frame is shelved with the clamp, still buildable, and the
+HEPA holder and the cover as drawn wait to be redrawn round the cartridge.
 
 **Every part the remix prints is drawn here** (Alon, 9 Oct 2026; the cover and the C-MAG too, D142), to the
 originals' measurements, read by sectioning their STLs: the base, the tray and the fan section after the Auto's;
@@ -40,16 +41,16 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | | What it does | File |
 |---|---|---|
 | **Section** | Goes between the carbon housing and the fan section, holding a flat filter sheet that stops carbon dust reaching the fans. Sealed at both its faces, with a pillar at each corner that the carbon housing's screws pass through. `sealed = false` builds it with the original's tongue, groove and magnets, to drop into any BentoBox v2.0 stack. | [`parts/section.scad`](../models/bentobox/parts/section.scad) |
-| **Glue frame** | One ASA frame your own pleated HEPA paper is hot-glued into, standing on the HEPA holder's ledge in place of the cartridge (T131, Alon, 9 Oct 2026). | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
-| **Glue sample** | One end of the glue frame: to glue an offcut in before the whole frame. | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
+| **Glue frame** (shelved) | One ASA frame your own pleated HEPA paper is hot-glued into, standing on the HEPA holder's ledge in place of the cartridge (T131, Alon, 9 Oct 2026). Shelved for the bought cartridge (Alon, 14 Oct 2026: Q271). | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
+| **Glue sample** (shelved) | One end of the glue frame: to glue an offcut in before the whole frame. | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
 | **Paper clamp** (shelved) | Two ASA frames, screwed together with a cut piece of pleated paper between them, standing on the HEPA holder's ledge in place of the cartridge: wedges from above and teeth from below pinch the paper's cut ends, and a bar from each its long edges. | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
 | **Clamp sample** (shelved) | One end of each frame, on one plate: to try the pinch on an offcut before the whole clamp. | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
 | **Base** | In place of the duct, drawn to the Auto's: the duct over the bay's roof, the wires' tube, the fans' four nuts pulled up into pockets in posts, and three nuts in slots for the tray's screws, two M3 and an M2; at the +Y end, the SPS30's pocket in the outlet's floor and the SGP41's recess in the end wall, its nut pushed in from the end face. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
 | **Fan section** | In place of the fan case, drawn to the Auto's: its floor with the fans' openings and screws' holes, its top the sealed joint's, and its wires' hole opened out for the grommet. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
 | **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with three screws, their heads sunk in its bottom face, and a nub on its top that slots into the base; a stop that holds the SPS30 in, and a groove for the sensors' leads. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
 | **Carbon housing** | Drawn to ThrutheFrame's, with the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. Its floor is a honeycomb across the whole inside, and the pellets lie on it, 45 mm deep, to a mark on each inside wall (D146); with `carbon = "cmag"`, the original's two openings, for the C-MAG. | [`parts/carbon.scad`](../models/bentobox/parts/carbon.scad) |
-| **HEPA holder** | Drawn to ThrutheFrame's, its bottom sealed on the carbon housing, its pocket the box's whole inside, for a bigger piece of paper, and its top the original cover's, with its magnets, 6 × 2 mm here. | [`parts/hepa.scad`](../models/bentobox/parts/hepa.scad) |
-| **Cover** | Drawn to ThrutheFrame's hemp-leaf cover: its plate on the HEPA holder, the plug into the holder's top, the magnets' holes, and the window's pattern, drawn from its lattice of triangles. | [`parts/cover.scad`](../models/bentobox/parts/cover.scad) |
+| **HEPA holder** | Drawn to ThrutheFrame's, its bottom sealed on the carbon housing, its pocket the box's whole inside, for a bigger piece of paper, and its top the original cover's, with its magnets, 6 × 2 mm here. To be redrawn round the bought cartridge (Alon, 14 Oct 2026: Q271), once one is measured. | [`parts/hepa.scad`](../models/bentobox/parts/hepa.scad) |
+| **Cover** | Drawn to ThrutheFrame's hemp-leaf cover: its plate on the HEPA holder, the plug into the holder's top, the magnets' holes, and the window's pattern, drawn from its lattice of triangles. To be redrawn with the HEPA holder. | [`parts/cover.scad`](../models/bentobox/parts/cover.scad) |
 | **C-MAG** | An option, with `carbon = "cmag"`, in place of the bed. Drawn to ThrutheFrame's: the tray and the lid, with the grills' slots and rails, the fill line and the magnets' bosses; and its four grills, with a honeycomb of holes the 4 mm pellets cannot pass. | [`parts/cmag.scad`](../models/bentobox/parts/cmag.scad) |
 | **Bead ring** | Three, in TPU: the gasket in each sealed joint. | [`parts/joints.scad`](../models/bentobox/parts/joints.scad) |
 | **Grommet** | One TPU donut that clicks into the fan section's floor, the fans' leads pushed through the skin across its hole, sealing the wires' hole. | [`parts/grommet.scad`](../models/bentobox/parts/grommet.scad) |
@@ -473,11 +474,13 @@ at, sized as their sellers give them:
 - **The Mijia cartridge is the only one sold with a HEPA grade**, and if its pleats are spaced like the paper's
   it holds about a fifth more. Its holder, and the cover with it, run past the box's ends.
 - **It is not drawn yet.** Its size is a seller's title, and a cartridge's frame has a lip, tabs or a handle a
-  listing does not show, so the holder waits for one measured in hand. Until then the glue frame and the paper
-  are the HEPA. [`vitamins/hepa-cartridge.scad`](../models/bentobox/vitamins/hepa-cartridge.scad) keeps the
+  listing does not show, so the holder waits for one measured in hand. The paper does not stand in meanwhile
+  (Alon, 14 Oct 2026: Q271): the glue frame is shelved, and the HEPA holder and the cover wait for this one's holder. [`vitamins/hepa-cartridge.scad`](../models/bentobox/vitamins/hepa-cartridge.scad) keeps the
   original's 80 × 40 × 15: the airflow model's HEPA zone is drawn from it.
 
 ## Your own HEPA paper
+
+**Shelved** for the bought cartridge (Alon, 14 Oct 2026: Q271), and kept buildable, as the clamp is.
 
 Pleated HEPA paper off a roll can take the bought cartridge's place. The original holder's pocket is
 82 × 40.8 mm, sized for the 80 mm cartridge: its ends are solid, flaring out only 15.6 mm above the ledge. The
@@ -603,7 +606,7 @@ one of them on two plates, `samples_asa` and `samples_tpu` in [`parts/samples.sc
 - **The joint sample** and its TPU bead - one end of a sealed joint, and a fan nut's seat (see *The sealed
   joints*).
 - **The glue sample** - one end of the glue frame (see *The glue frame*). The clamp's sample still builds, but is
-  off the plate. Its trial, T185, was superseded (Alon, 14 Oct 2026).
+  off the plate. Its trial, T185, was superseded by the bought cartridge (Alon, 14 Oct 2026: Q271).
 - **The nut coupon** - on the second ASA plate (below), not the first: five fan-nut seats, numbered 1 to 5 on the top, and five
   tray-nut slots, 6 to 10, open at the front face over a 0.8 mm floor, as in the base. Pull a nut up into each seat
   with an M3 × 8 from the top and take the screw out: which keep their nut? Slide a nut into each slot and drive an
@@ -625,9 +628,10 @@ one of them on two plates, `samples_asa` and `samples_tpu` in [`parts/samples.sc
   piece, from the end face, set it on the tray's piece and drive the two M3 × 12 up from below: the pieces should
   pull together, the heads ending flush, and the base's flat bottom closing the socket's notch.
 - **The sensor sample** (Alon, 14 Oct 2026: D264) - the base's and the tray's +Y end, from 2 mm in front of the
-  SPS30's pocket to the end face, the base cut 2 mm over the SGP41's recess: 2 h 12 m and 23 g, where the base and
-  the tray whole are 5 h 27 m and 56 g. The SPS30's pocket takes 41 mm of the box's 113, across nearly all its width,
-  so the sample cannot be smaller and still hold it. In the order the box goes together: push the M2.5 nut into
+  SPS30's pocket to the end face, the base cut 2 mm over the SGP41's recess and 2 mm behind the pocket - the back
+  wall and its fan post off, as only the area next to the sensors is tried (Alon, 14 Oct 2026): 1 h 56 m and 20 g,
+  where the base and the tray whole are 5 h 27 m and 56 g. The SPS30's pocket takes 41 mm of the box's 113, across
+  nearly all its width, so the sample cannot be much smaller and still hold it. In the order the box goes together: push the M2.5 nut into
   its seat from the end face, and the M2 nut into its slot; slide the SPS30 in from the outlet's face, its lead
   plugged in - its connector face should meet the end wall, the plug flush with it, the lead bent down the slot;
   set the SGP41 in its recess, its leads down the bay into the slot, and drive its M2.5 × 8 with a 2 mm L-shaped hex
@@ -701,8 +705,8 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Part | Material | Count | Time | Filament |
 |---|---|---|---|---|
 | Section | ASA | 1 | 1 h 57 m | 17 g |
-| Glue frame | ASA | 1 | 1 h 22 m | 11 g |
-| Glue sample | ASA | 1 | 34 m | 3 g |
+| Glue frame (shelved) | ASA | 1 | 1 h 22 m | 11 g |
+| Glue sample (shelved) | ASA | 1 | 34 m | 3 g |
 | Clamp, lower frame (shelved) | ASA | 1 | 1 h 29 m | 10 g |
 | Clamp, upper frame (shelved) | ASA | 1 | 1 h 11 m | 8 g |
 | Clamp sample (shelved) | ASA | 1 plate | 1 h 7 m | 7 g |
@@ -710,15 +714,15 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Fan section | ASA | 1 | 3 h 43 m | 35 g |
 | Tray | ASA | 1 | 1 h 53 m | 20 g |
 | Carbon housing | ASA | 1 | 6 h 24 m | 56 g |
-| HEPA holder | ASA | 1 | 4 h 35 m | 44 g |
-| Cover | ASA | 1 | 1 h 53 m | 13 g |
+| HEPA holder (to be redrawn) | ASA | 1 | 4 h 35 m | 44 g |
+| Cover (to be redrawn) | ASA | 1 | 1 h 53 m | 13 g |
 | Bead ring | TPU 95A | 3 | 9 m each | 1 g each |
 | Joint sample | ASA | 1 plate | 1 h 8 m | 10 g |
 | Joint sample's bead | TPU 95A | 1 | 3 m | under 1 g |
 | Grommet | TPU 95A | 1 | 2 m | under 1 g |
 | Fans' plug mate (on hold) | ASA | 1 | 17 m | 1.7 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
-| Sensor sample | ASA | 1 plate | 2 h 12 m | 23 g |
+| Sensor sample | ASA | 1 plate | 1 h 56 m | 20 g |
 | Nut coupon | ASA | 1 | 53 m | 8 g |
 | Grommet's coupon | ASA | 1 | 6 m | 0.9 g |
 | Samples, ASA | ASA | 1 plate | 2 h 29 m | 22 g |
@@ -755,7 +759,7 @@ For the filters:
 
 | Quantity | Item |
 |---|---|
-| 1 | HEPA cartridge for the Xiaomi Mijia 1C / Dreame F9 robot vacuum, 150 × 49 × 15 mm: for the bigger holder, not drawn yet (see *A bigger bought cartridge*). Until then, the glue frame and a piece of pleated HEPA paper, 94.1 mm along the folds and 18 pleats across |
+| 1 | HEPA cartridge for the Xiaomi Mijia 1C / Dreame F9 robot vacuum, 150 × 49 × 15 mm: for the bigger holder, not drawn yet (see *A bigger bought cartridge*). It replaces the glue frame's paper (Alon, 14 Oct 2026: Q271) |
 | 1 | Polyester filter floss, about 5 mm thick loose: the section's sheet, cut 42 × 102 mm |
 | 184 cm³ | Activated carbon pellets: the housing's bed, 45 mm deep, about 83 g |
 
@@ -785,7 +789,7 @@ L-shaped hex key, from inside the duct. For the bottom sample: 2 M3 nuts,
 M2.5 × 8, the SPS30 with its lead and the SGP41. For the nut coupon: an M3 nut for each seat and slot, or one moved
 along, and an M3 × 8.
 
-For the glue frame: a hot-glue gun and sticks, high-temperature ones if the chamber runs hot.
+For the glue frame, shelved: a hot-glue gun and sticks, high-temperature ones if the chamber runs hot.
 
 For the paper's clamp, shelved:
 

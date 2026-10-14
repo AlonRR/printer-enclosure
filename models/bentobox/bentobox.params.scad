@@ -319,7 +319,8 @@ bottom_sample_h = 7;    /* ...and this much of the base over it, from the bay's 
 // Alon, 14 Oct 2026 (D264 a): a sample of the +Y end before the whole base - the outlet's sensors' pocket, recess,
 // slot, nuts and stop, none of them printed yet.
 sensor_sample_from = 2;   /* The sensor sample: the base and the tray from this far in front of the SPS30's pocket to the +Y end... */
-sensor_sample_over = 2;   /* ...the base up to this much over the SGP41's recess's ceiling, the rest of its walls off. */
+sensor_sample_over = 2;   /* ...the base up to this much over the SGP41's recess's ceiling, the rest of its walls off... */
+sensor_sample_back = 2;   /* ...and the base cut this far behind the SPS30's pocket, the back wall off: only the area next to the sensors is tried (Alon, 14 Oct 2026). Kept inside the duct's back face, so no sliver of the wall is left over the turn. The tray keeps its width: cut there, it would leave a sliver by its magnet's hole. */
 
 /* [The wires' grommet - Alon, 9 Oct 2026 (D117)] */
 // The fans' leads pass the fan section's floor in a TPU grommet: one piece, a donut (Alon, 9 Oct 2026, in place of

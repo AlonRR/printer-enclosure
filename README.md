@@ -21,8 +21,8 @@ there.
 [`docs/chamber-sensor.md`](docs/chamber-sensor.md) is the full status and the index to the topic pages;
 [`docs/chamber-airflow.md`](docs/chamber-airflow.md) is the filter and extraction build, and
 [`docs/bentobox-scrubber.md`](docs/bentobox-scrubber.md) the filter itself: ThrutheFrame's BentoBox v2.0,
-remixed, with a carbon-dust section, sealed joints, the BentoBox Auto's bottom and a frame the build's own
-HEPA paper is hot-glued into. The LunchBox remix it was weighed against is archived in [`archive/lunchbox/`](archive/lunchbox/).
+remixed, with a carbon-dust section, sealed joints, the BentoBox Auto's bottom, and a bought HEPA cartridge
+whose holder is still to be drawn; a frame for the build's own HEPA paper is shelved. The LunchBox remix it was weighed against is archived in [`archive/lunchbox/`](archive/lunchbox/).
 
 ## What is where
 

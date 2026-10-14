@@ -80,13 +80,22 @@ module bottom_sample() let(w = bb_w + sample_gap) {
 // The sensor sample (D264): the +Y end of the tray and of the base, where the outlet's sensors go - the SPS30's
 // pocket with the tray's stop up through its notch, the leads' slot and groove, the SGP41's recess with its rib and
 // its nut's pocket, the M2's slot and the nub - side by side, as they print. Both from sensor_sample_from in front of
-// the SPS30's pocket; the base cut sensor_sample_over over the SGP41's recess's 45-degree ceiling.
+// the SPS30's pocket; the base cut sensor_sample_over over the SGP41's recess's 45-degree ceiling, and
+// sensor_sample_back behind the pocket, the back wall (+X) off - and with it the fans' posts that hang from it,
+// over the turn, which the cut would leave floating: from their foot up, where the turn stays under them.
 sensor_sample_y = sps30_yy[0] - sps30_fit - sensor_sample_from;
 sensor_sample_top = sgp41_z[1] + sgp41_fit + sgp41_recess_d + sensor_sample_over;
-module _sensor_end(z0, z1) translate([-bb_w, sensor_sample_y, z0]) cube([2 * bb_w, bb_l / 2 + 1 - sensor_sample_y, z1 - z0]);
+sensor_sample_x = sps30_back + sensor_sample_back;
+module _sensor_end(z0, z1, x1 = bb_w) translate([-bb_w, sensor_sample_y, z0]) cube([bb_w + x1, bb_l / 2 + 1 - sensor_sample_y, z1 - z0]);
+sensor_turn_z = base_floor + base_turn_r - sqrt(pow(base_turn_r, 2) - pow(sensor_sample_x - (duct_in[0] - base_turn_r), 2));   // the turn's top at the cut
+module _sensor_posts_off() for (s = auto_fan_screws) if (s[3] == 180)
+    translate([s[0] - post_reach - 2, s[1] - post_r - post_fillet - 1, post_foot]) cube([bb_w, 2 * (post_r + post_fillet + 1), duct_h]);
 module sensor_sample() let(w = bb_w + sample_gap) {
     translate([-w / 2, 0, -auto_base_z0]) intersection() { auto_tray(); _sensor_end(auto_base_z0 - 1, duct_h); }
-    translate([w / 2, 0, -auto_bay_top]) intersection() { auto_base(); _sensor_end(auto_bay_top - 1, sensor_sample_top); }
+    translate([w / 2, 0, -auto_bay_top]) difference() {
+        intersection() { auto_base(); _sensor_end(auto_bay_top - 1, sensor_sample_top, sensor_sample_x); }
+        _sensor_posts_off();
+    }
 }
 // The bead for that end, in TPU, flat: the ring's run past the slice, open at both ends.
 module joint_sample_bead() translate([0, sample_l - seal_y, 0]) intersection() { bead_ring(); _sample_end(-1, 10); }

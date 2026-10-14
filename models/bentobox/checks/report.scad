@@ -46,7 +46,7 @@ module say_sps30() echo(str("sps30: in its pocket on the outlet's floor, label u
     " mm inside the outlet's face, behind the tray's stop; its plug flush, its leads bent down in the end wall's slot, ",
     sps30_slot_y - sps30_yy[1], " mm out from its face, then along the tray's groove into the bay"));
 
-module say_sensor_sample() echo(str("sensor sample: the tray's and the base's +Y end from Y ", sensor_sample_y,
+module say_sensor_sample() echo(str("sensor sample: the tray's and the base's +Y end from Y ", sensor_sample_y, ", the base to X ", sensor_sample_x,
     ", the base up to Z ", sensor_sample_top, " (", sensor_sample_top - auto_bay_top, " over its bottom face); an M2 x ",
     kit_screw(m2_kit), " and an M2 nut, an M2.5 x ", sgp41_screw_l, " and an M2.5 nut, the SPS30 with its lead, the SGP41"));
 module say_usb() echo(str("usb-c: the socket's face flush with the -Y end face, its axis at X ", usb_x, ", Z ", usb_axis_z,
