@@ -46,7 +46,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Clamp sample** (shelved) | One end of each frame, on one plate: to try the pinch on an offcut before the whole clamp. | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
 | **Base** | In place of the duct, drawn to the Auto's: the duct over the bay's roof, the wires' tube, the fans' four nuts pulled up into pockets in posts, and four nuts in slots for the tray's screws. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
 | **Fan section** | In place of the fan case, drawn to the Auto's: its floor with the fans' openings and screws' holes, its top the sealed joint's, and its wires' hole opened out for the grommet. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
-| **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with four screws, their heads sunk in its bottom face. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
+| **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with three screws, their heads sunk in its bottom face, and a nub on its top that slots into the base; a stop that holds the SPS30 in, and a groove for the sensors' leads. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
 | **Carbon housing** | Drawn to ThrutheFrame's, with the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. Its floor is a honeycomb across the whole inside, and the pellets lie on it, 45 mm deep, to a mark on each inside wall (D146); with `carbon = "cmag"`, the original's two openings, for the C-MAG. | [`parts/carbon.scad`](../models/bentobox/parts/carbon.scad) |
 | **HEPA holder** | Drawn to ThrutheFrame's, its bottom sealed on the carbon housing, its pocket the box's whole inside, for a bigger piece of paper, and its top the original cover's, with its magnets, 6 × 2 mm here. | [`parts/hepa.scad`](../models/bentobox/parts/hepa.scad) |
 | **Cover** | Drawn to ThrutheFrame's hemp-leaf cover: its plate on the HEPA holder, the plug into the holder's top, the magnets' holes, and the window's pattern, drawn from its lattice of triangles. | [`parts/cover.scad`](../models/bentobox/parts/cover.scad) |
@@ -209,13 +209,29 @@ grille at the other; its connector is on the face opposite, near the outlet end.
 
 ![The base cut through the SPS30's middle and seen from the side: the SPS30 in its pocket, its inlets at the back and its outlet grille at the front, the floor's turn as it was dashed over it](diagrams/bentobox/outlet-sensors-side.png)
 
-**The SGP41 goes beside the SPS30, its leads down the same slot** (Alon, 14 Oct 2026: Q248). Where, proposed and
-not yet drawn into the model: in a recess in the +Y end wall over the SPS30, its sensor flush with the wall's face in
-the air the +Y fan blows down to the outlet, behind the fan screw's post on that wall, so the post stands over neither
-its sensor nor its screw. Its pins face the outlet; its four leads run along a short groove in the wall into the
-SPS30's slot. It is held as on the air-quality monitor: an M2.5 through its hole into the wall.
+**The SGP41 goes beside the SPS30, its leads down the same slot** (Alon, 14 Oct 2026: Q248, A258). It sits in a
+recess in the +Y end wall over the SPS30 (`sgp41_cut` in [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad)),
+its long side along X, its pins towards the outlet and its sensor facing the duct, in the air the +Y fan blows down
+to the outlet. It stands behind the fan screw's post on that wall, so the post is over neither its sensor nor its
+screw, and the recess's ceiling slopes up 45° to the wall's face so it prints without support.
 
-![The +Y end wall seen from inside the duct: the SPS30 and the fan screw's post in front of it, the tray's screws behind, and the SGP41 in a recess over the SPS30, its leads along a groove into the SPS30's slot](diagrams/bentobox/outlet-sensors-wall.png)
+- **Held as on the air-quality monitor**: an M2.5 × 6 through its hole into a pilot it cuts its own thread in. Its
+  far end, where its underside is bare, bears on a rib in the recess, and the pilot runs through the rib into the
+  wall. The screw's tip stays two beads inside the end face, so the module stands 0.61 mm proud of the wall.
+- **The pilot is untested**: 2.1 mm was fine upright on the monitor (2.0 a little tight), but this one lies
+  sideways, and a horizontal hole prints tighter at its top. A coupon would settle it.
+- **Its leads** go down a bay at its pin end into the SPS30's slot, which now runs on to the SGP41's pin end, then
+  along the tray's groove into the bay with the SPS30's: the groove is 13.7 mm across and 1.9 deep, for the
+  SPS30's five 1 mm leads and the SGP41's four 1.56 mm ones side by side. The bay is wide enough for the four side
+  by side only low down, under the fan screw's nut pocket in that post.
+- **Checked** (`check_sgp41*`): clear of the base, 5 mm of open air in front of its face, and its four leads down
+  the bay, the slot and the groove into the bay, clear of the base, the tray, the SPS30 and itself.
+
+**The tray at the +Y end** (Alon, 14 Oct 2026: D257): one screw, at X 3, where there were two; in the other's
+stead a nub on the tray's top, 3 mm across and 2 tall, slots into a hole in the base's bottom face, at X 12. The
+sensors' lead slot runs where the other screw was.
+
+![The +Y end wall seen from inside the duct: the SPS30 and the fan screw's post in front of it, the tray's screw and nub behind, and the SGP41 in its recess over the SPS30, its leads' bay down into the sensors' slot](diagrams/bentobox/outlet-sensors-wall.png)
 
 **Not upright against the back wall, openings down** (Alon asked, 14 Oct 2026), though that is Sensirion's best
 way round. Upright it is 40.6 tall, with open air wanted under its openings, and the duct is 36 from floor to fan
@@ -225,7 +241,7 @@ slot, in still air or the bay's, not the filtered air leaving the box.
 
 ![The SPS30 standing against the back wall with its openings down, cut through and seen from the side: it runs into the floor's curve below and the fan section and fan above](diagrams/bentobox/outlet-sensors-back.png)
 
-![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's pocket under each post, the tray under it, and its four screws](diagrams/bentobox/auto-bottom.png)
+![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's pocket under each post, the tray under it, and its screws](diagrams/bentobox/auto-bottom.png)
 
 **Nuts, not heat-set inserts.** The fans' nuts are pull nuts; the tray's lie flat in slots that open one way.
 
@@ -243,7 +259,8 @@ slot, in still air or the bay's, not the filtered air leaving the box.
 the tray on its own floor, open at the top. Printed whole, as the Auto's is, the bay's roof would be a bridge 41 mm
 across and 83 long.
 
-- **Its four screws**, M3 × 12 socket head, two at each end, come up through counterbores in the tray, their
+- **Its three screws**, M3 × 12 socket head, two at the -Y end and one at the +Y end, come up through counterbores in
+  the tray, their
   heads sunk 0.2 mm inside its bottom face, into nuts in slots in the base's end walls, just over the bay's
   roof. Each slot opens out through the end face: a nut goes in from outside and slides to the slot's end, on
   its screw's axis. The slot's end is the nut's own shape, so the nut beds against four walls and stays in
@@ -279,9 +296,9 @@ across and 83 long.
   its band towards the fan: the switch is on the fans' black side, so when it is off their ground floats up to
   12 V and the tach line with it, and the diode keeps that off the pin.
 
-**Putting it together:** the USB-C board into its pocket, its wires soldered on; a nut in each of the four slots
+**Putting it together:** the USB-C board into its pocket, its wires soldered on; a nut in each of the three slots
  in the end faces, pushed to the slot's end, then the
-tray under the base with its four screws; it comes off again from below, for the electronics. Then the fans'
+tray under the base with its three screws; it comes off again from below, for the electronics. Then the fans'
 nuts, from the open top of the base: slide each nut in under its post, push it up the pocket, and pull
 it into the seat with a spare M3 screw from above; take the screw out, and the nut stays. The fans' leads down
 the tube; the fan section on the base, the fans in it, and their four screws down through them. The seat's
@@ -670,9 +687,9 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Clamp, lower frame (shelved) | ASA | 1 | 1 h 29 m | 10 g |
 | Clamp, upper frame (shelved) | ASA | 1 | 1 h 11 m | 8 g |
 | Clamp sample (shelved) | ASA | 1 plate | 1 h 7 m | 7 g |
-| Base | ASA | 1 | 3 h 32 m | 36 g |
+| Base | ASA | 1 | 3 h 34 m | 36 g |
 | Fan section | ASA | 1 | 3 h 43 m | 35 g |
-| Tray | ASA | 1 | 1 h 54 m | 21 g |
+| Tray | ASA | 1 | 1 h 53 m | 20 g |
 | Carbon housing | ASA | 1 | 6 h 24 m | 56 g |
 | HEPA holder | ASA | 1 | 4 h 35 m | 44 g |
 | Cover | ASA | 1 | 1 h 53 m | 13 g |
@@ -696,9 +713,10 @@ For the bottom:
 
 | Quantity | Item |
 |---|---|
-| 8 | M3 hex nut, ISO 4032 |
+| 7 | M3 hex nut, ISO 4032 |
 | 4 | M3 × 30 socket head cap screw, ISO 4762: the fans |
-| 4 | M3 × 12 socket head cap screw, ISO 4762: the tray, their heads sunk |
+| 3 | M3 × 12 socket head cap screw, ISO 4762: the tray, their heads sunk |
+| 1 | M2.5 × 6 socket head cap screw, ISO 4762: the SGP41, into a pilot in the end wall |
 | 4 | 6 × 2 mm magnet, optional: the tray's bottom, to hold the box to a steel floor |
 
 For the sealed joints:

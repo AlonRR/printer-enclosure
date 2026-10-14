@@ -79,7 +79,7 @@ module tray_slot_walls() let(g = 2 * bead, f = fdm_hole_comp + nut_fit, ac = nut
 // The base's air: the duct and the SPS30's pocket, inside the outline - a millimetre in, clear of the slots' mouths in
 // the end faces.
 module base_air() intersection() {
-    union() { duct_air(); sps30_cut(); }
+    union() { duct_air(); sps30_cut(); sgp41_cut(); }
     translate([0, 0, auto_bay_top]) linear_extrude(duct_h - auto_bay_top) offset(delta = -1) tray_outline();
 }
 
@@ -96,13 +96,23 @@ module sps30_plug_probe() translate(sps30_shift + [sps30_plug_x[0], sps30_yy[1] 
 module sps30_air_probe() translate(sps30_shift + [sps30_x[0] + sps30_open[1], sps30_yy[0] - sps30_air_need, base_floor + sep])
     cube([sps30[0] - sps30_open[0] - sps30_open[1], sps30_air_need - sep, sps30[2]]);
 module sps30_lead_probe() let(x = sps30_wires_x, w = sps30_wire, y = sps30_yy[1] + sps30_plug_out + sps30_lead_bend - w, y0 = bay_size[1] / 2 - 3,
-        z0 = tray_top - sps30_groove[1] + sep) translate(sps30_shift) {
+        z0 = tray_top - leads_groove_d + sep) translate(sps30_shift) {
     translate([x[0], y, z0]) cube([x[1] - x[0], w, base_floor + sps30[2] / 2 - z0]);
     translate([x[0], y0, z0]) cube([x[1] - x[0], y + w - y0, w]);
 }
 module sps30_way() for (plug = [false, true]) hull() for (x = [0, -50]) translate([x, 0, 0])
     if (plug) sps30_plug_probe(); else sps30_model();
 module sps30_tube() translate([0, 0, auto_bay_top]) linear_extrude(duct_h - auto_bay_top) conduit2d();
+// The outlet's SGP41 (Q248, A258): the open air in front of its face, from the checks' own number; and its four leads
+// side by side, from just below its pins down the bay and the slot, and along the tray's groove into the bay.
+sgp41_air_need = 5;     /* Open air in front of the SGP41's face. */
+module sgp41_air_probe() translate(sgp41_shift + [sgp41_x[0], sgp41_y - sgp41_air_need, sgp41_z[0]])
+    cube([sgp41[0], sgp41_air_need - sep, sgp41[1]]);
+module sgp41_leads_probe() let(w = sgp41_wire, x = [sgp41_x[0] - 4 * w - 0.2, sgp41_x[0] - sep], y = sps30_wall_y + 0.2,
+        y0 = bay_size[1] / 2 - 3, z0 = tray_top - leads_groove_d + sep) {
+    translate([x[0], y, z0]) cube([x[1] - x[0], w, sgp41_z[0] + 2 - z0]);
+    translate([x[0], y0, z0]) cube([x[1] - x[0], y + w - y0, w]);
+}
 
 // The air's way down under the paper, from the paper's own folds: between the combs, and between the second
 // bottom folds from the edges, inside the long teeth's channels. The lower frame must leave it open; its rim

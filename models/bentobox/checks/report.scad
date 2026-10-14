@@ -33,9 +33,14 @@ warns = [
     if (tray_magnet_wall < 2 * bead - 1e-9) str("a tray screw's counterbore leaves ", tray_magnet_wall, " mm to a magnet's hole, under two beads"),
     if (nut_floor < 4 * fdm_layer_h - 1e-9) str("a tray nut's slot has ", nut_floor, " mm under it, under four layers"),
     if (bb_l / 2 - sps30_slot_y < 2 * bead - 1e-9) str("the end wall behind the SPS30's lead slot is ", bb_l / 2 - sps30_slot_y, " mm, under two beads"),
+    if (bb_l / 2 - (duct_in[1] + sgp41_bay[1]) < 2 * bead - 1e-9) str("the end wall behind the SGP41's leads' bay is ", bb_l / 2 - duct_in[1] - sgp41_bay[1], " mm, under two beads"),
+    if (sgp41_y < duct_in[1] - 2) str("the SGP41 stands ", duct_in[1] - sgp41_y, " mm proud of the end wall: its screw is too long for the wall"),
 ];
 for (w = warns) echo(str("WARNING: ", w));
 
+module say_sgp41() echo(str("sgp41: in its recess in the +Y end wall over the SPS30, X ", sgp41_x[0], " to ", sgp41_x[1], ", Z ",
+    sgp41_z[0], " to ", sgp41_z[1], ", its front ", duct_in[1] - sgp41_y, " mm proud of the wall; an M2.5 x ", sgp41_screw[1],
+    " through its hole into a ", sgp41_pilot, " mm pilot (sideways - NOT TESTED); its leads down the bay into the SPS30's slot"));
 module say_sps30() echo(str("sps30: in its pocket on the outlet's floor, label up, its air face at Y ", sps30_yy[0],
     " facing the duct's middle, its connector face ", round(10 * (duct_in[1] - sps30_yy[1])) / 10, " mm off the +Y end wall; its front ", sps30_in,
     " mm inside the outlet's face, behind the tray's stop; its plug flush, its leads bent down in the end wall's slot, ",
@@ -43,14 +48,14 @@ module say_sps30() echo(str("sps30: in its pocket on the outlet's floor, label u
 
 module say_usb() echo(str("usb-c: the socket's face flush with the -Y end face, its axis at X ", usb_x, ", Z ", usb_axis_z,
     " (", usb_axis_z - auto_base_z0, " over the bottom face); the board on a floor ", usb_pcb_z - auto_base_z0, " over the bottom face"));
-module say_auto_hardware() echo(str("auto: eight M3 nuts, the fans' four pulled up into pockets, the tray's four in slots; the fans' four screws M3 x ",
-    fan_screw, " socket head, through the fans; the tray's four M3 x ", tray_screw, " socket head, sunk ", head_sink,
-    " mm into its bottom face"));
+module say_auto_hardware() let(n = len(tray_screws)) echo(str("auto: ", _count(4 + n), " M3 nuts, the fans' four pulled up into pockets, the tray's ",
+    _count(n), " in slots; the fans' four screws M3 x ", fan_screw, " socket head, through the fans; the tray's ", _count(n), " M3 x ",
+    tray_screw, " socket head, sunk ", head_sink, " mm into its bottom face, and a nub on its top in a hole in the base's"));
 
 module say_cmag() let(n = len(cmag_mesh_holes()), open = n * 3 * sqrt(3) / 8 * pow(cmag_hole_ac, 2))
     echo(str("C-MAG grills: ", n, " holes each, ", cmag_mesh[0], " mm across their flats, ", cmag_hole_ac, " across their corners, ",
         "for ", cmag_pellet, " mm pellets; ", round(open), " mm2 open, ", round(100 * open / (cmag_grill[0] * cmag_grill[1])), " % of a grill"));
-function _count(n) = n == 1 ? "one" : n == 2 ? "two" : n == 4 ? "four" : n == 6 ? "six" : n == 8 ? "eight" : str(n);
+function _count(n) = n == 1 ? "one" : n == 2 ? "two" : n == 3 ? "three" : n == 4 ? "four" : n == 6 ? "six" : n == 7 ? "seven" : n == 8 ? "eight" : str(n);
 module say_seal_hardware() echo(str("sealed joints: three TPU bead rings, ", seal_bead[0], " mm; ", _count(len(top_screws)),
     " M3 x ", j3_screw, " socket head into nuts, HEPA holder to carbon housing; four M3 x ", j12_screw,
     " through the carbon housing's tabs and the section's pillars into the fan section's nuts; ",

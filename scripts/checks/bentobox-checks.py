@@ -55,6 +55,7 @@ FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("
         ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", []),
         ("check_sps30", []), ("check_sps30_plug", []), ("check_sps30_air", []), ("check_sps30_lead", []), ("check_sps30_way", []),
         ("check_sps30_tube", []), ("check_sps30_stop", []), ("check_sps30_held", []),
+        ("check_sgp41", []), ("check_sgp41_air", []), ("check_sgp41_leads", []),
         ("check_seal_j1", []), ("check_seal_j2", []), ("check_seal_j3", []), ("check_seal_beads", []),
         ("check_seal_screws", []), ("check_seal_nuts", []), ("check_seal_nut_ways", []), ("check_seal_access", [])]
 
@@ -118,13 +119,18 @@ CONTROLS = [
     ("check_sps30", [("sps30_shift", "[0.4, 0, 0]")], "the SPS30 moved 0.4 mm back, into its pocket's back face"),
     ("check_sps30_plug", [("sps30_slot_play", "-1")], "the end wall's slot cut 1 mm short of the leads' bend"),
     ("check_sps30_air", [("sps30_air_room", "5")], "the floor's turn cut back only 5 mm in front of its openings"),
-    ("check_sps30_lead", [("sps30_groove", "[6.2, 0.5]")], "the tray's groove cut 0.5 mm deep, under the leads"),
+    ("check_sps30_lead", [("leads_groove_d", "0.5")], "the tray's groove cut 0.5 mm deep, under the leads"),
     ("check_sps30_way", [("sps30_shift", "[0, 0, -0.3]")], "the SPS30 set 0.3 mm down: its way in drags through the floor"),
     ("check_sps30_tube", [("sps30_air_past", "3")], "the cut in front of its openings run 3 mm past the inlets, into the tube"),
     ("check_sps30_stop", [("sps30_shift", "[-0.4, 0, 0]")], "the SPS30 moved 0.4 mm out, into the tray's stop"),
     ("check_sps30_held", [("sps30_stop", "[1.8, 10, 0]")], "the tray's stop cut down to the floor: nothing in front of the SPS30"),
     ("check_tray_slot_walls", [("tray_screws_x", "[[-13, 3], [-13, 3]]")], "the +Y end's -X tray screw back at -13, its slot into the SPS30's lead slot"),
     ("check_auto_tray", [("sps30_notch_fit", "-0.3")], "the floor's notch made narrower than the tray's stop"),
+    ("check_auto_tray", [("tray_pin_fit", "-0.3")], "the base's hole made narrower than the tray's nub"),
+    # The SGP41 is drawn from its own values and moved by sgp41_shift alone; its air and leads are the checks' own.
+    ("check_sgp41", [("sgp41_shift", "[0, 0.4, 0]")], "the SGP41 moved 0.4 mm into the wall, onto its rib"),
+    ("check_sgp41_air", [("sgp41_x0", "-12.5")], "the SGP41 moved 4.5 mm towards the outlet, under the fan screw's post"),
+    ("check_sgp41_leads", [("leads_groove_d", "1.2")], "the tray's groove cut 1.2 mm deep, under the SGP41's leads"),
     # The sealed joints. collar_play narrows the upper parts' chamfers, not the collars; bead_side the grooves,
     # not the beads. The top joint's tabs back at the corners stand over the lower joints' screws; a short blade
     # brings the driver's handle down against the HEPA holder.

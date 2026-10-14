@@ -84,11 +84,11 @@ color(_d2_ink()) translate([-10, -30.4]) text("the duct's air, to the outlet", s
 
 // ---- its plug, in the end wall's slot; the lead down the slot and along the tray's groove into the bay
 color(C_PLUG) rect(sps30_plug_x, [sps30_yy[1], sps30_yy[1] + sps30_plug_out + sps30_lead_bend]);
-dashed_box(sps30_groove_x, groove_y, C_OUT);
+dashed_box(leads_groove_x, groove_y, C_OUT);
 color(_d2_ink()) hull() for (y = [groove_y[0] + 1, sps30_yy[1] + sps30_plug_out + sps30_lead_bend - sps30_wire / 2]) translate([lead_x, y]) circle(r = 0.35, $fn = 12);
 arrow_at([lead_x, groove_y[0] + 0.6], 270);
 leader([bb_w / 2 + 6, sps30_slot_y + 4], [sps30_plug_x[1] + 0.6, sps30_yy[1] + sps30_lead_bend / 2], "its plug, flush, the leads bent down in the end wall's slot - open to the outlet", C_OUT);
-leader([bb_w / 2 + 6, groove_y[0] + 2], [sps30_groove_x[1] + 0.4, groove_y[0] + 6], "its lead, down the slot and along the tray's groove into the bay", C_OUT);
+leader([bb_w / 2 + 6, groove_y[0] + 2], [leads_groove_x[1] + 0.4, groove_y[0] + 6], "its lead, down the slot and along the tray's groove into the bay", C_OUT);
 
 // ---- the tray's stop, up through the floor's notch, in front of it
 color(C_TRAY) rect([face + sps30_stop_in, face + sps30_stop_in + sps30_stop[0]], sps30_stop_y);

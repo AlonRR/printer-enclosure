@@ -40,7 +40,17 @@ sps30_plug_x = [sps30_x[0] + sps30_plug[0], sps30_x[0] + sps30_plug[1]];
 sps30_wires_x = [sps30_x[0] + sps30_wires[0], sps30_x[0] + sps30_wires[1]];
 sps30_stop_y = [for (s = [-1, 1]) (sps30_yy[0] + sps30_yy[1]) / 2 + s * sps30_stop[1] / 2];   // the stop, across
 sps30_slot_y = sps30_yy[1] + sps30_plug_out + sps30_lead_bend + sps30_slot_play;   // the slot's back face, in the end wall
-sps30_groove_x = [for (s = [-1, 1]) (sps30_wires_x[0] + sps30_wires_x[1]) / 2 + s * sps30_groove[0] / 2];
+
+// The outlet's SGP41 in its recess (Q248, A258): its board's front - where its screw's head bears - as near the end
+// wall's face as the screw allows, its tip two beads inside the end face; its front proud of the wall by the rest.
+sgp41_x = [sgp41_x0, sgp41_x0 + sgp41[0]];
+sgp41_z = [sps30_top + sgp41_over, sps30_top + sgp41_over + sgp41[1]];
+sgp41_pcb_y = min(duct_in[1] + sgp41[2] - sgp41_back, bb_l / 2 - 2 * bead - sgp41_screw[1]);
+sgp41_y = sgp41_pcb_y - (sgp41[2] - sgp41_back);                    // its front, the sensor's side
+sgp41_tip_y = sgp41_pcb_y + sgp41_screw[1];
+sgp41_hole_xz = [sgp41_x[1] - sgp41_hole_at[0], sgp41_z[1] - sgp41_hole_at[1]];   // its hole: at its far end, by its top
+leads_slot_x1 = max(sps30_plug_x[1] + sps30_fit, sgp41_x[0] + 0.5);   // the leads' slot in the end wall runs to here
+leads_groove_x = [sps30_wires_x[0] - 0.4, sgp41_x[0] + 0.3];         // the leads' groove in the tray's top, across
 
 // The Auto's fan section drawn (Alon, 9 Oct 2026: "rebuild all the parts that are not currently scad"), to its STL's
 // measurements: the box's outline and inside, its top edge chamfered bb_chamfer outside; the floor auto_floor_t,
@@ -137,7 +147,7 @@ module sps30_cut() let(f = sps30_fit, x0 = -bb_w / 2 - 2, z = [base_floor, sps30
     translate([x0, sps30_yy[0] - f - sps30_air_room, z[0]])
         cube([sps30_x[1] - sps30_open[0] + sps30_air_past - x0, sps30_air_room + eps, z[1] - z[0]]);
     translate([x0, sps30_wall_y - eps, auto_bay_top - 1])
-        cube([sps30_plug_x[1] + f - x0, sps30_slot_y - sps30_wall_y + eps, z[1] - auto_bay_top + 1]);
+        cube([leads_slot_x1 - x0, sps30_slot_y - sps30_wall_y + eps, z[1] - auto_bay_top + 1]);
     translate([x0, sps30_stop_y[0] - nf, auto_bay_top - 1])
         cube([-bb_w / 2 + sps30_stop_in + sps30_stop[0] + nf - x0, sps30_stop[1] + 2 * nf, base_floor - auto_bay_top + 2]);
 }
@@ -145,11 +155,34 @@ module sps30_cut() let(f = sps30_fit, x0 = -bb_w / 2 - 2, z = [base_floor, sps30
 // notch to sps30_stop[2] over the floor, in front of the SPS30. The tray goes on after the SPS30; off, it lets it out.
 module sps30_stop_block() translate([-bb_w / 2 + sps30_stop_in, sps30_stop_y[0], tray_top - 1])
     cube([sps30_stop[0], sps30_stop[1], base_floor + sps30_stop[2] - tray_top + 1]);
-// The lead's groove along the tray's top, from the foot of the end wall's slot into the bay.
-module sps30_groove_cut() let(y0 = bay_size[1] / 2 - 4) translate([sps30_groove_x[0], y0, tray_top - sps30_groove[1]])
-    cube([sps30_groove[0], sps30_slot_y - y0, sps30_groove[1] + 1]);
+// The leads' groove along the tray's top, from the foot of the end wall's slot into the bay.
+module leads_groove_cut() let(y0 = bay_size[1] / 2 - 4) translate([leads_groove_x[0], y0, tray_top - leads_groove_d])
+    cube([leads_groove_x[1] - leads_groove_x[0], sps30_slot_y - y0, leads_groove_d + 1]);
+// The nub in the +Y end's other screw's stead, and its hole in the base's bottom face (D257).
+module tray_pin_nub() translate([tray_pin[0], tray_pin[1], tray_top - 1]) cylinder(d = tray_pin[2], h = tray_pin[3] + 1, $fn = 32);
+module tray_pin_hole() translate([tray_pin[0], tray_pin[1], auto_bay_top - 1])
+    cylinder(d = tray_pin[2] + 2 * tray_pin_fit, h = tray_pin[3] + tray_pin_fit + 1, $fn = 32);
+// The SGP41's recess in the +Y end wall: a prism from the wall's face in, its ceiling sloping up 45 degrees to the face
+// so it prints without support. Seen across X: Y and Z.
+module wall_recess(x, z, depth) translate([x[0], 0, 0]) rotate([90, 0, 90]) linear_extrude(x[1] - x[0])
+    polygon([[duct_in[1] - eps, z[0]], [duct_in[1] + depth, z[0]], [duct_in[1] + depth, z[1]], [duct_in[1] - eps, z[1] + depth + eps]]);
+// Its place, sgp41_fit round it, less the rib at its far end that it bears on, where its board's underside is bare;
+// the pilot for its screw, through the rib into the wall; and at its pin end the leads' bay, down into the slot -
+// as wide as the four leads side by side only low down, under the fan screw's nut pocket.
+module sgp41_cut() let(f = sgp41_fit, d = sgp41_y + sgp41[2] + f - duct_in[1], z = [sgp41_z[0] - f, sgp41_z[1] + f],
+        back = sgp41_pcb_y + sgp41_pcb, bz0 = sps30_top + sps30_fit - 1) {
+    difference() {
+        wall_recess([sgp41_x[0] - eps, sgp41_x[1] + f], z, d);
+        translate([sgp41_x[1] - sgp41_bare + 0.25, back, z[0] - 1]) cube([sgp41_bare + 1, d + 1, z[1] - z[0] + d + 2]);
+    }
+    translate([sgp41_hole_xz[0], back - eps, sgp41_hole_xz[1]]) rotate([-90, 0, 0])
+        cylinder(d = sgp41_pilot, h = sgp41_tip_y + 0.3 - back + eps, $fn = 24);
+    wall_recess([sgp41_x[0] - sgp41_bay[0], sgp41_x[0] + eps], [bz0, z[1]], sgp41_bay[1]);
+    wall_recess([sgp41_x[0] - 4 * sgp41_wire - 1, sgp41_x[0] + eps], [bz0, sgp41_z[0] + 2.5], sgp41_bay[1]);
+}
 // The base: the duct's walls and floor over the bay's roof, the tube and the posts; the outlet's rim rounded; the
-// wires' hole down the tube to the bay, the fans' nut pockets, the tray's screws' slots, and the SPS30's pocket.
+// wires' hole down the tube to the bay, the fans' nut pockets, the tray's screws' slots and the nub's hole, and the
+// sensors' pocket and recess.
 module auto_base() difference() {
     intersection() {
         union() {
@@ -167,6 +200,8 @@ module auto_base() difference() {
     for (s = auto_fan_screws) fan_screw_cut(s);
     for (s = tray_screws) tray_slot_cut(s);
     sps30_cut();
+    sgp41_cut();
+    tray_pin_hole();
 }
 
 // ------------------------------------------------------------------ the bay's tray (Alon, 8-9 Oct 2026)
@@ -200,10 +235,11 @@ module auto_tray() union() {
         usb_pocket();
         for (m = auto_magnets, sy = [-1, 1]) translate([m[0], sy * m[1], auto_base_z0 - 1]) cylinder(d = auto_magnet[0], h = auto_magnet[1] + 1);
         for (s = tray_screws) tray_screw_cut(s);
-        sps30_groove_cut();
+        leads_groove_cut();
     }
     usb_stop_block();
     sps30_stop_block();
+    tray_pin_nub();
 }
 
 // The fan section with its sealed joint, before the grommet's hole is cut; and with it.

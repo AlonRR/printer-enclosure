@@ -229,10 +229,12 @@ head_room = 0.4;    /* ...in a counterbore this much wider than the head, past f
 // end walls, just over the bay's roof, that open out through the end faces: a nut goes in from outside and slides to
 // the slot's end, on its screw's axis. Out through the box's sides, the -X slots would break out of the end walls'
 // round tips, at the outlet.
-tray_screws_x = [[-13, 3], [-7, 3]];   /* The tray's screws, X: at the -Y end and at the +Y end. Clear of the magnets, of the USB-C board's pocket at the -Y end, and at the +Y end of the SPS30's lead slot, which the -X screw there moved in from -13 for (Alon, 14 Oct 2026)... */
+tray_screws_x = [[-13, 3], [3]];   /* The tray's screws, X: at the -Y end and at the +Y end. Clear of the magnets and of the USB-C board's pocket at the -Y end; at the +Y end, one is enough, and the sensors' lead slot runs where the other was (Alon, 14 Oct 2026: D257)... */
 tray_screw_y = 52.4;    /* ...and Y: in the end wall, as far out as the head's counterbore keeps two beads of the end face, so the slot's back keeps two beads under the fillet. */
 tray_slot_past = 1; /* Each tray nut's slot runs on this far past the end face: its mouth. */
 tray_screw_max = 20;    /* The longest screw each tray hole takes: the hole runs on up past where its tip would end (D213). */
+tray_pin = [12, 52.4, 3, 2];   /* In the +Y end's other screw's stead, a nub on the tray's top that slots into a hole in the base's bottom face (Alon, 14 Oct 2026: D257): X, Y, d and how far it stands up... */
+tray_pin_fit = 0.2;     /* ...and round it in its hole, which runs this much deeper too. */
 
 /* [The USB-C power: a PD trigger board, its socket flush in the tray's -Y end - Alon, 9 Oct 2026 (D133, D135)] */
 
@@ -253,10 +255,20 @@ sps30_fit = 0.2;        /* Round the SPS30 in its pocket: the air-quality monito
 sps30_air_room = 10;    /* In front of its air face, the floor's turn is cut back this far, so its openings face open air - Sensirion: a large opening, little depth in front... */
 sps30_air_past = 0.5;   /* ...from the outlet's face to this far past the inlets' end, short of the fans' wires' tube. */
 sps30_slot_play = 0.3;  /* The lead's slot into the end wall runs this far past the leads' bend out of the connector face. */
-sps30_groove = [6.2, 1.5];  /* The lead's groove along the tray's top, from the slot's foot into the bay: across, and deep. The five leads lie side by side in it. */
+leads_groove_d = 1.9;   /* The leads' groove along the tray's top, from the slot's foot into the bay, deep: the SPS30's five 1 mm leads and the SGP41's four 1.56 mm ones lie side by side in it. */
 sps30_stop = [1.8, 10, 5];  /* The tray's stop in front of the SPS30, up through the floor's front edge: thick (four beads), wide, and how far it stands over the floor. */
 sps30_notch_fit = 0.2;  /* Round the stop in its notch. */
 sps30_stop_in = 0.2;    /* The stop's front, this far behind the outlet's face: flush, its face would merge with the tray's front face and leave degenerate facets. */
+
+/* [The outlet's SGP41, in a recess in the +Y end wall - Alon, 14 Oct 2026 (Q248, A258)] */
+// Over the SPS30, behind the fan screw's post on that wall, its long side along X and its pins towards the outlet, its
+// sensor facing the duct. Its far end bears on a rib in the recess, and an M2.5 x 6 holds it, through its hole into
+// a pilot in the rib, as on the air-quality monitor; its leads go down a bay at its pin end into the SPS30's slot.
+sgp41_x0 = -8;          /* Its pin end, X: past the fan screw's post, whose nut pocket runs up the wall from Z 38.5 to X -12.5. */
+sgp41_over = 1.8;       /* Its bottom, this far over the SPS30's top: two beads over the round top of the +Y tray screw's hole under it. */
+sgp41_fit = 0.2;        /* Round it in its recess. */
+sgp41_pilot = 2.1;      /* <<CONFIRM>> The pilot its M2.5 cuts its own thread in: 2.1 was fine as an upright hole on the air-quality monitor (2.0 a little tight); this one lies sideways, and a horizontal hole prints tighter at its top. Untested: a coupon would settle it. */
+sgp41_bay = [3.5, 3.6]; /* The leads' bay at its pin end: wide, and deep into the wall. Low down, just over the SPS30's slot, it runs as wide as its four leads side by side. */
 
 /* [The sealed joints - Alon, 8 Oct 2026: D114, D116, D118, D119, D120; seamless tabs, flush heads] */
 // The three joints under suction - the section on the fan section, the carbon housing on the section, the HEPA
@@ -349,4 +361,5 @@ screw_shift = [0, 0];   /* Controls only: the screws moved off their holes. */
 wire_shift = 0;         /* Controls only: the wires' probe moved off the tube, along X. */
 usb_shift = [0, 0, 0];  /* Controls only: the board moved in its pocket. */
 sps30_shift = [0, 0, 0];   /* Controls only: the SPS30 moved in its pocket. */
+sgp41_shift = [0, 0, 0];   /* Controls only: the SGP41 moved in its recess. */
 fans_drop = 0;          /* Controls only: the fan section set this much down onto its base. */
