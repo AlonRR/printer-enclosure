@@ -167,14 +167,34 @@ the wires' grommet stands in the gap too. Above the fans there is 11.6 mm under 
 fans' intakes. The SGP41, 13.1 × 10.6 × 3.2, would fit there, but its four leads would need room in the grommet,
 which takes the fans' four.
 
-**The SPS30 goes on the outlet's floor, inside** (Alon, 14 Oct 2026: D247). The floor is flat for only 19.8 mm
-in from the outlet's face before it turns up into the +X wall on a 26 mm radius, and the SPS30 is 40.6 deep. So
-it either lies in a pocket cut into the turn, all inside - turned, its 40.69 along the box and its air face to the
-duct's middle, at Y 4.5 to 45.1, clear of the wires' tube, the fans' posts and the end wall, the pocket taking
-2.7 cm3 from the base - or it lies on the flat floor with 20.8 mm of it out past the face, on a shelf (D252).
-Either way it blocks 14 % of the outlet, under the +Y fan.
+**The SPS30 goes on the outlet's floor, inside, in a pocket** (Alon, 14 Oct 2026: D247, D252). The floor is flat
+for only 19.8 mm in from the outlet's face before it turns up into the +X wall on a 26 mm radius, and the SPS30 is
+40.6 deep, so the pocket is cut into the turn. Laid on the flat floor instead, 20.8 mm of it would stand out past
+the face, on a shelf. Either way it blocks 14 % of the outlet, under the +Y fan.
 
-![The base cut through the SPS30 and seen from the side, twice: the SPS30 in a pocket cut into the floor's turn, all inside, its inlets at the back and its outlet grille at the front; and on the flat floor, 20.8 mm of it out past the outlet's face](diagrams/bentobox/outlet-sensors-side.png)
+How it lies follows Sensirion's rules, as the [air-quality monitor](https://github.com/AlonRR/air-quality-monitor/blob/main/docs/design.md)
+lists them. Its two inlets and its outlet grille are all on one 40.69 x 12.2 face, the inlets at one end and the
+grille at the other; its connector is on the face opposite, near the outlet end, and the plugged lead needs about
+10 mm in front of it (the monitor's measurement).
+
+- **Label up**: one inlet wraps round onto the label face's edge, so that face stays open.
+- **Its openings face the duct's middle (-Y)**, into the moving air, with the inlets at the back, upstream, and the
+  grille at the front: the duct's air carries what the grille blows out away from the inlets. Sensirion's best is
+  openings facing down; that needs it on edge, 40.6 tall, and the duct is 36.
+- **Its connector faces the +Y end wall**, so the SPS30 sits towards the middle, Y -1.5 to 39.1, leaving the plug its
+  10 mm before the wall. All inside, at Y 4.5 to 45.1, the plug would have 4.3. Its back then has to clear the
+  fans' wires' tube, so it stands 2.2 mm out past the outlet's face.
+- **Its lead goes down a hole into the bay**, to the ESP32: 3 mm, at X -17 and Y 39.5, beside the plug and just
+  inside the bay's end.
+- Checked against the base: the SPS30 with 0.2 mm round it, and the plug's room, leave nothing with the wires' tube,
+  the fans' posts or the end wall, and the hole opens into the bay, not the tray; moved 0.5 mm into the tube, or the
+  hole 3.5 mm off the bay, each leaves something. The pocket and the plug's room take 2.0 cm3 from the base.
+- The duct's air past it: at the simulated 0.65 L/s, the outlet's mean is about 0.2 m/s, under Sensirion's 1 m/s.
+  Keep the ESP32 out from under it in the bay: Sensirion wants the sensor away from, and below, a warm board.
+
+![The SPS30 in its pocket, from above: its inlets and outlet grille on the edge facing the duct's middle, the duct's air running to the outlet, its plug on the opposite face with 10 mm of room, and its lead going down a hole into the bay](diagrams/bentobox/outlet-sensors-top.png)
+
+![The base cut through the SPS30 and seen from the side, twice: the SPS30 in a pocket cut into the floor's turn, its inlets at the back and its outlet grille at the front; and on the flat floor, 20.8 mm of it out past the outlet's face](diagrams/bentobox/outlet-sensors-side.png)
 
 ![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's pocket under each post, the tray under it, and its four screws](diagrams/bentobox/auto-bottom.png)
 

@@ -9,7 +9,7 @@
 // standing out past the outlet's face. A drawing to decide from: the mount is not drawn.
 // Not included by bentobox.scad: it includes it. Render from this folder:
 //
-//   openscad -o ../../../docs/diagrams/bentobox/outlet-sensors-side.png --imgsize=2200,2200 \
+//   openscad -o ../../../docs/diagrams/bentobox/outlet-sensors-side.png --imgsize=2200,2600 \
 //     --camera=0,0,0,0,0,0,250 --viewall --autocenter --projection=ortho outlet-sensors-side.scad
 
 include <../bentobox.scad>
@@ -29,10 +29,11 @@ face = -bb_w / 2;                           // the outlet's face
 turn_x = duct_in[0] - base_turn_r;          // where the floor starts to turn up into the +X wall
 fan_z = duct_h + auto_floor_t;              // the fans stand on the fan section's floor
 sps_z = [base_floor, base_floor + sps30[2]];
-// (1) in a pocket: turned, its 40.69 along X from the outlet's face, its air face to the duct's middle (-Y), from
-// Y 4.5 - clear of the wires' tube, 4 in radius round Y 0 - to 45.1, 4.3 short of the end wall
-pocket_y = [4.5, 4.5 + sps30[1]];
-inside = [face, face + sps30[0]];
+// (1) in a pocket (D252, Alon, 14 Oct 2026): turned, its 40.69 along X, its air face to the duct's middle (-Y), from
+// Y -1.5 to 39.1, so its connector, on the face opposite, has 10 mm before the end wall for the plug; its back then
+// clears the wires' tube with its front 2.2 mm out past the outlet's face (outlet-sensors-top.scad)
+pocket_y = [-1.5, -1.5 + sps30[1]];
+inside = [face - 2.2, face - 2.2 + sps30[0]];
 inlets = [inside[1] - sps30_air[0], inside[1]];       // its inlets at the back, upstream...
 grille = [inside[0], inside[1] - sps30_air[1]];       // ...its outlet grille and its connector at the front
 // (2) on the flat floor: its back where the turn starts, the rest standing out past the outlet's face
@@ -40,7 +41,6 @@ flat = [turn_x - sps30[1], turn_x];
 out = face - flat[0];
 cut_y = (pocket_y[0] + pocket_y[1]) / 2;
 gap = 130;                                   // between the two views, down the page
-hole_x = -18;                               // a wire hole under the connector's end lands in the bay: X -21.4 to 19.4
 
 module cut(y) projection(cut = true) rotate([-90, 0, 0]) translate([0, -y, 0]) children();
 module rect(x, z) translate([x[0], z[0]]) square([x[1] - x[0], z[1] - z[0]]);
@@ -73,15 +73,13 @@ color(_d2_ink()) {
     translate([inlets[0] + 1, sps_z[0] + 4.6]) text("inlets", size = $txt * 0.75);
     translate([grille[0] + 1, sps_z[0] + 4.6]) text("outlet grille", size = $txt * 0.75);
 }
-dashed([hole_x - 3, base_floor], [hole_x + 3, base_floor], dash = 1.0, gap = 0.6, col = C_CUT);
-leader([face - 22, auto_base_z0 - 4], [hole_x - 1, base_floor - 0.5], "wire hole to the bay", C_CUT);
 leader([duct_in[0] + base_wall + 4, sps_z[1] + 8], [inside[1] - 3, sps_z[0] + 5], "the pocket cuts this from the turn", C_CUT);
-dim_h(inside[0], inside[1], sps_z[1] + 5, sps_z[1], str(sps30[0], ", all inside"), C_SPS);
-heading("(1) In a pocket cut into the floor's turn: all inside", [face - 24, duct_h + fans_h + 8]);
+dim_h(inside[0], inside[1], sps_z[1] + 5, sps_z[1], str(sps30[0], ", 2.2 out past the face"), C_SPS);
+heading("(1) In a pocket cut into the floor's turn (D252)", [face - 24, duct_h + fans_h + 8]);
 color(_d2_ink()) translate([face - 24, auto_base_z0 - 14]) {
     text(str("Turned, its ", sps30[0], " along the box, its air face to the duct's middle (-Y, towards you here): Y ", pocket_y[0], " to ", pocket_y[1], "."), size = $txt * 0.8);
-    translate([0, -4]) text("Clear of the wires' tube, the fans' posts and the end wall. The pocket takes 2.7 cm3 from the base and holds it.", size = $txt * 0.8);
-    translate([0, -8]) text("Its inlets at the back, upstream; its outlet grille and connector at the front, so the air carries its own out.", size = $txt * 0.8);
+    translate([0, -4]) text("Its connector faces the end wall, with 10 mm for the plug; its lead goes down a hole into the bay (outlet-sensors-top.png).", size = $txt * 0.8);
+    translate([0, -8]) text("Its inlets at the back, upstream; its outlet grille at the front, on the same face, so the air carries its own out.", size = $txt * 0.8);
 }
 
 // ---- (2) on the flat floor, standing out past the outlet's face
