@@ -42,13 +42,16 @@ sps30_wires_x = [sps30_x[0] + sps30_wires[0], sps30_x[0] + sps30_wires[1]];
 sps30_stop_y = [for (s = [-1, 1]) (sps30_yy[0] + sps30_yy[1]) / 2 + s * sps30_stop[1] / 2];   // the stop, across
 sps30_slot_y = sps30_yy[1] + sps30_plug_out + sps30_lead_bend + sps30_slot_play;   // the slot's back face, in the end wall
 
-// The outlet's SGP41 in its recess (Q248, A258): its board's front - where its screw's head bears - as near the end
-// wall's face as the screw allows, its tip two beads inside the end face; its front proud of the wall by the rest.
+// The outlet's SGP41 in its recess (Q248, A258, A260): its board's front - where its screw's head bears - as near the
+// end wall's face as the screw allows, its tip no further out than the end face; its front proud of the wall by the rest.
 sgp41_x = [sgp41_x0, sgp41_x0 + sgp41[0]];
 sgp41_z = [sps30_top + sgp41_over, sps30_top + sgp41_over + sgp41[1]];
-sgp41_pcb_y = min(duct_in[1] + sgp41[2] - sgp41_back, bb_l / 2 - 2 * bead - sgp41_screw[1]);
+sgp41_nut_h = m25_nut[1] + 2 * nut_fit;                               // its nut's seat, along its axis
+sgp41_screw_l = [for (l = m25_screw_lengths) if (l >= sgp41_back + sgp41_fit + sgp41_roof + m25_nut[1] + screw_tip - 1e-9) l][0];
+sgp41_pcb_y = min(duct_in[1] + sgp41[2] - sgp41_back, bb_l / 2 - sgp41_screw_l);
 sgp41_y = sgp41_pcb_y - (sgp41[2] - sgp41_back);                    // its front, the sensor's side
-sgp41_tip_y = sgp41_pcb_y + sgp41_screw[1];
+sgp41_tip_y = sgp41_pcb_y + sgp41_screw_l;                            // at the end face, at most
+sgp41_seat_y = sgp41_y + sgp41[2] + sgp41_fit + sgp41_roof;            // its nut's seat's roof
 sgp41_hole_xz = [sgp41_x[1] - sgp41_hole_at[0], sgp41_z[1] - sgp41_hole_at[1]];   // its hole: at its far end, by its top
 leads_slot_x1 = max(sps30_plug_x[1] + sps30_fit, sgp41_x[0] + 0.5);   // the leads' slot in the end wall runs to here
 leads_groove_x = [sps30_wires_x[0] - 0.4, sgp41_x[0] + 0.3];         // the leads' groove in the tray's top, across
@@ -171,7 +174,8 @@ module tray_pin_hole() translate([tray_pin[0], tray_pin[1], auto_bay_top - 1])
 module wall_recess(x, z, depth) translate([x[0], 0, 0]) rotate([90, 0, 90]) linear_extrude(x[1] - x[0])
     polygon([[duct_in[1] - eps, z[0]], [duct_in[1] + depth, z[0]], [duct_in[1] + depth, z[1]], [duct_in[1] - eps, z[1] + depth + eps]]);
 // Its place, sgp41_fit round it, less the rib at its far end that it bears on, where its board's underside is bare;
-// the pilot for its screw, through the rib into the wall; and at its pin end the leads' bay, down into the slot -
+// its screw's hole through the rib and on through sgp41_roof to its nut's pocket, a corner up so it needs no bridge,
+// its tight seat by the roof and its way out through the end face; and at its pin end the leads' bay, down into the slot -
 // as wide as the four leads side by side only low down, under the fan screw's nut pocket.
 module sgp41_cut() let(f = sgp41_fit, d = sgp41_y + sgp41[2] + f - duct_in[1], z = [sgp41_z[0] - f, sgp41_z[1] + f],
         back = sgp41_pcb_y + sgp41_pcb, bz0 = sps30_top + sps30_fit - 1) {
@@ -179,8 +183,11 @@ module sgp41_cut() let(f = sgp41_fit, d = sgp41_y + sgp41[2] + f - duct_in[1], z
         wall_recess([sgp41_x[0] - eps, sgp41_x[1] + f], z, d);
         translate([sgp41_x[1] - sgp41_bare + 0.25, back, z[0] - 1]) cube([sgp41_bare + 1, d + 1, z[1] - z[0] + d + 2]);
     }
-    translate([sgp41_hole_xz[0], back - eps, sgp41_hole_xz[1]]) rotate([-90, 0, 0])
-        cylinder(d = sgp41_pilot, h = sgp41_tip_y + 0.3 - back + eps, $fn = 24);
+    translate([sgp41_hole_xz[0], 0, sgp41_hole_xz[1]]) {
+        translate([0, back - eps, 0]) rotate([-90, 0, 0]) cylinder(d = sgp41_screw[0] + 2 * fdm_hole_comp, h = sgp41_seat_y - back + 2 * eps, $fn = 24);
+        translate([0, sgp41_seat_y, 0]) rotate([90, 0, 0]) rotate(90)
+            pull_nut_pocket(m25_nut[0], sgp41_nut_h, bb_l / 2 + 1 - sgp41_seat_y - sgp41_nut_h, fdm_hole_comp + pull_fit, fdm_hole_comp + pull_way_fit, eps);
+    }
     wall_recess([sgp41_x[0] - sgp41_bay[0], sgp41_x[0] + eps], [bz0, z[1]], sgp41_bay[1]);
     wall_recess([sgp41_x[0] - 4 * sgp41_wire - 1, sgp41_x[0] + eps], [bz0, sgp41_z[0] + 2.5], sgp41_bay[1]);
 }

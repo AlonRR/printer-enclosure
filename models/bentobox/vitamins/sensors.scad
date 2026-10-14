@@ -41,9 +41,10 @@ sgp41_hole_at = [1.32 + sgp41_hole / 2, 1.25 + sgp41_hole / 2];  /* The hole's c
 sgp41_bare = 3.31;              /* Behind, no part comes within this of its far end, across its width: what it can bear
                                    on. MEASURED 2 Oct 2026. */
 sgp41_wire = 1.56;              /* Its leads: 22 AWG solid hookup wire over its insulation. MEASURED 2 Oct 2026. */
-sgp41_screw = [2.5, 6, 4.5, 2.5];   /* Its screw, M2.5 x 6 socket head (ISO 4762): thread, length, head diameter and
-                                   height. The last six are the air-quality monitor's (gy_back, gy_pcb_t, gy_hole_far,
-                                   gy_hole_side, gy_bare, gy_wd, gy_screw_l, gy_head_d, gy_head_h). */
+sgp41_screw = [2.5, 4.5, 2.5];  /* Its screw, M2.5 socket head (ISO 4762): thread, head diameter and height; its length
+                                   is the shortest of m25_screw_lengths that stands screw_tip out of its nut. The last
+                                   six are the air-quality monitor's (gy_back, gy_pcb_t, gy_hole_far, gy_hole_side,
+                                   gy_bare, gy_wd, gy_head_d, gy_head_h). */
 /* [Hidden] */
 
 // The SPS30 as it lies in its pocket (parts/bottom.scad): label up, its body and the nubs on its ends, sep off the

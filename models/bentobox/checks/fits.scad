@@ -107,6 +107,14 @@ module sps30_tube() translate([0, 0, auto_bay_top]) linear_extrude(duct_h - auto
 // The outlet's SGP41 (Q248, A258): the open air in front of its face, from the checks' own number; and its four leads
 // side by side, from just below its pins down the bay and the slot, and along the tray's groove into the bay.
 sgp41_air_need = 5;     /* Open air in front of the SGP41's face. */
+// Its screw, head on its board's front and shank to its tip, and its nut against its seat's roof, sep off it - or,
+// with way, slid out along its way past the end face. A corner up, as its pocket is.
+module sgp41_fixings(way = false) translate([sgp41_hole_xz[0], 0, sgp41_hole_xz[1]]) {
+    translate([0, sgp41_pcb_y - sgp41_screw[2] - sep, 0]) rotate([-90, 0, 0]) cylinder(d = sgp41_screw[1], h = sgp41_screw[2]);
+    translate([0, sgp41_pcb_y, 0]) rotate([-90, 0, 0]) cylinder(d = sgp41_screw[0], h = sgp41_screw_l);
+    hull() for (y = [sgp41_seat_y + sep, way ? bb_l / 2 + 1 : sgp41_seat_y + sep]) translate([0, y, 0])
+        rotate([-90, 0, 0]) rotate(90) hex_nut(m25_nut[0], m25_nut[1]);
+}
 module sgp41_air_probe() translate(sgp41_shift + [sgp41_x[0], sgp41_y - sgp41_air_need, sgp41_z[0]])
     cube([sgp41[0], sgp41_air_need - sep, sgp41[1]]);
 module sgp41_leads_probe() let(w = sgp41_wire, x = [sgp41_x[0] - 4 * w - 0.2, sgp41_x[0] - sep], y = sps30_wall_y + 0.2,

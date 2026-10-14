@@ -216,11 +216,13 @@ its long side along X, its pins towards the outlet and its sensor facing the duc
 to the outlet. It stands behind the fan screw's post on that wall, so the post is over neither its sensor nor its
 screw, and the recess's ceiling slopes up 45° to the wall's face so it prints without support.
 
-- **Held as on the air-quality monitor**: an M2.5 × 6 through its hole into a pilot it cuts its own thread in. Its
-  far end, where its underside is bare, bears on a rib in the recess, and the pilot runs through the rib into the
-  wall. The screw's tip stays two beads inside the end face, so the module stands 0.61 mm proud of the wall.
-- **The pilot is untested**: 2.1 mm was fine upright on the monitor (2.0 a little tight), but this one lies
-  sideways, and a horizontal hole prints tighter at its top. A coupon would settle it.
+- **Held by a nut** (Alon, 14 Oct 2026: A260): an M2.5 × 8 through its hole into an M2.5 nut in the end wall. Its
+  far end, where its underside is bare, bears on a rib in the recess; the screw goes on through the rib and 1.2 mm
+  of wall into the nut's pocket, which runs out through the end face, a corner up so it needs no bridge. Push the
+  nut in from outside: it stops in a tight seat, as the fans' pull nuts do, and the screw pulls it home. The screw
+  stands 2 mm out of the nut and its tip reaches the end face, so the module stands 1.71 mm proud of the wall. A
+  nut, not a self-threading pilot as on the air-quality monitor: the monitor tried a sideways pilot once, and its
+  peg did not print, so no sideways pilot size was ever found.
 - **Its leads** go down a bay at its pin end into the SPS30's slot, which now runs on to the SGP41's pin end, then
   along the tray's groove into the bay with the SPS30's: the groove is 13.7 mm across and 1.9 deep, for the
   SPS30's five 1 mm leads and the SGP41's four 1.56 mm ones side by side. The bay is wide enough for the four side
@@ -689,7 +691,7 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Clamp, lower frame (shelved) | ASA | 1 | 1 h 29 m | 10 g |
 | Clamp, upper frame (shelved) | ASA | 1 | 1 h 11 m | 8 g |
 | Clamp sample (shelved) | ASA | 1 plate | 1 h 7 m | 7 g |
-| Base | ASA | 1 | 3 h 33 m | 36 g |
+| Base | ASA | 1 | 3 h 34 m | 36 g |
 | Fan section | ASA | 1 | 3 h 43 m | 35 g |
 | Tray | ASA | 1 | 1 h 53 m | 20 g |
 | Carbon housing | ASA | 1 | 6 h 24 m | 56 g |
@@ -720,7 +722,8 @@ For the bottom:
 | 4 | M3 × 30 socket head cap screw, ISO 4762: the fans |
 | 2 | M3 × 12 socket head cap screw, ISO 4762: the tray's -Y end, their heads sunk |
 | 1 | M2 × 16 socket head cap screw, ISO 4762: the tray's +Y end, its head sunk |
-| 1 | M2.5 × 6 socket head cap screw, ISO 4762: the SGP41, into a pilot in the end wall |
+| 1 | M2.5 × 8 socket head cap screw, ISO 4762: the SGP41 |
+| 1 | M2.5 hex nut, ISO 4032: the SGP41's, pushed into its seat from the +Y end face |
 | 4 | 6 × 2 mm magnet, optional: the tray's bottom, to hold the box to a steel floor |
 
 For the sealed joints:

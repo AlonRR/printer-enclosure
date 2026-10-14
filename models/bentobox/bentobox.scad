@@ -146,6 +146,8 @@ else if (draw == "check_sps30_held") intersection() { auto_tray(); translate([-1
 // The SGP41 sits in its recess clear of the base, its face to open air, and its leads pass down to the bay.
 else if (draw == "check_sgp41") intersection() { union() { auto_base(); fans_printed(); } sgp41_model(); }
 else if (draw == "check_sgp41_air") intersection() { union() { auto_base(); fans_printed(); } sgp41_air_probe(); }
+else if (draw == "check_sgp41_screw") intersection() { union() { auto_base(); fans_printed(); } sgp41_fixings(); }
+else if (draw == "check_sgp41_nut_way") intersection() { auto_base(); sgp41_fixings(true); }
 else if (draw == "check_sgp41_leads") intersection() { union() { auto_base(); auto_tray(); sps30_model(); sgp41_model(); } sgp41_leads_probe(); }
 else if (draw == "bottom") bottom_exploded(explode);
 else if (draw == "joints") joints_exploded(explode);

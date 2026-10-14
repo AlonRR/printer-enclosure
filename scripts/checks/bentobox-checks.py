@@ -55,7 +55,7 @@ FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("
         ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", []),
         ("check_sps30", []), ("check_sps30_plug", []), ("check_sps30_air", []), ("check_sps30_lead", []), ("check_sps30_way", []),
         ("check_sps30_tube", []), ("check_sps30_stop", []), ("check_sps30_held", []),
-        ("check_sgp41", []), ("check_sgp41_air", []), ("check_sgp41_leads", []),
+        ("check_sgp41", []), ("check_sgp41_air", []), ("check_sgp41_screw", []), ("check_sgp41_nut_way", []), ("check_sgp41_leads", []),
         ("check_seal_j1", []), ("check_seal_j2", []), ("check_seal_j3", []), ("check_seal_beads", []),
         ("check_seal_screws", []), ("check_seal_nuts", []), ("check_seal_nut_ways", []), ("check_seal_access", [])]
 
@@ -131,6 +131,8 @@ CONTROLS = [
     # The SGP41 is drawn from its own values and moved by sgp41_shift alone; its air and leads are the checks' own.
     ("check_sgp41", [("sgp41_shift", "[0, 0.4, 0]")], "the SGP41 moved 0.4 mm into the wall, onto its rib"),
     ("check_sgp41_air", [("sgp41_x0", "-12.5")], "the SGP41 moved 4.5 mm towards the outlet, under the fan screw's post"),
+    ("check_sgp41_screw", [("pull_fit", "-0.25")], "the SGP41's nut seat made narrower than its nut"),
+    ("check_sgp41_nut_way", [("pull_way_fit", "-0.25")], "the SGP41's nut's way made narrower than its nut: no way in"),
     ("check_sgp41_leads", [("leads_groove_d", "1.2")], "the tray's groove cut 1.2 mm deep, under the SGP41's leads"),
     # The sealed joints. collar_play narrows the upper parts' chamfers, not the collars; bead_side the grooves,
     # not the beads. The top joint's tabs back at the corners stand over the lower joints' screws; a short blade

@@ -7,6 +7,7 @@
 /* [Screws and nuts, by their standards] */
 small_screw = [2, 3.8, 2];      /* The clamp's screws, M2 socket head, ISO 4762: the thread, the head's diameter and height. */
 small_nut = [4, 1.6];           /* The M2 hex nut, ISO 4032: across its flats, and its height. */
+m25_nut = [5, 2];               /* The M2.5 hex nut, ISO 4032: across its flats, and its height - the SGP41's. */
 
 screw_d   = 3.0;    /* M3. */
 nut_af    = 5.5;    /* The M3 hex nut, across its flats - ISO 4032... */

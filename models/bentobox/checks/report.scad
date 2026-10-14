@@ -39,8 +39,8 @@ warns = [
 for (w = warns) echo(str("WARNING: ", w));
 
 module say_sgp41() echo(str("sgp41: in its recess in the +Y end wall over the SPS30, X ", sgp41_x[0], " to ", sgp41_x[1], ", Z ",
-    sgp41_z[0], " to ", sgp41_z[1], ", its front ", duct_in[1] - sgp41_y, " mm proud of the wall; an M2.5 x ", sgp41_screw[1],
-    " through its hole into a ", sgp41_pilot, " mm pilot (sideways - NOT TESTED); its leads down the bay into the SPS30's slot"));
+    sgp41_z[0], " to ", sgp41_z[1], ", its front ", duct_in[1] - sgp41_y, " mm proud of the wall; an M2.5 x ", sgp41_screw_l,
+    " socket head through its hole into an M2.5 nut, pushed into its seat from the end face; its leads down the bay into the SPS30's slot"));
 module say_sps30() echo(str("sps30: in its pocket on the outlet's floor, label up, its air face at Y ", sps30_yy[0],
     " facing the duct's middle, its connector face ", round(10 * (duct_in[1] - sps30_yy[1])) / 10, " mm off the +Y end wall; its front ", sps30_in,
     " mm inside the outlet's face, behind the tray's stop; its plug flush, its leads bent down in the end wall's slot, ",

@@ -71,7 +71,7 @@ for (i = [0 : 3]) color(_d2_ink()) translate([sgp_x[0] + 0.9, sgp_z[0] + 1.6 + i
 // ---- labels
 leader([sgp_x[1] + 14, sgp_z[1] + 8], [sgp_x[1] - 2, sgp_z[1] - 1], "SGP41, in a recess in the wall", C_SGP);
 leader([sgp_x[1] + 14, sgp_z[0] - 4], [sensor[0] + 1.4, sensor[1]], "its sensor, facing the duct", C_SGP);
-leader([sgp_x[1] + 14, sgp_z[1] + 3], [hole[0] + 1.6, hole[1]], "its hole: an M2.5 into the wall", C_SGP);
+leader([sgp_x[1] + 14, sgp_z[1] + 3], [hole[0] + 1.6, hole[1]], "its hole: an M2.5 into a nut in the wall", C_SGP);
 leader([sgp_x[0] - 22, sgp_z[0] + 14], [sgp_x[0] + 0.9, sgp_z[0] + 6], "its four pins, towards the outlet", _d2_ink());
 leader([face - 16, sgp_z[0] + 3], [sgp_x[0] - 2, sgp_z[0]], "its leads' bay, down into the sensors' slot", C_CUT);
 leader([face - 16, base_floor - 3], [sps30_plug_x[0] + 2, base_floor + 6], "the sensors' slot, open to the outlet", C_CUT);
@@ -82,7 +82,7 @@ heading("The SGP41 in the +Y end wall, from inside the duct", [face - 16, duct_h
 leader([tray_pin[0] + 10, auto_bay_top - 10], [tray_pin[0], auto_bay_top + 1], "the tray's nub, in its hole", C_CUT);
 color(_d2_ink()) translate([face - 16, auto_base_z0 - 20]) {
     text("Over the SPS30 and behind the fan screw's post, the SGP41 sits in a recess in the end wall, its sensor facing the duct,", size = $txt * 0.8);
-    translate([0, -4]) text(str("its front ", duct_in[1] - sgp41_y, " mm proud. Its far end bears on a rib; an M2.5 x ", sgp41_screw[1], " goes through its hole into a pilot in the rib."), size = $txt * 0.8);
+    translate([0, -4]) text(str("its front ", duct_in[1] - sgp41_y, " mm proud. Its far end bears on a rib; an M2.5 x ", sgp41_screw_l, " goes through its hole into a nut in the wall."), size = $txt * 0.8);
     translate([0, -8]) text("Its pins face the outlet; its leads go down the bay at its pin end into the sensors' slot, and along the tray's groove into the bay.", size = $txt * 0.8);
     translate([0, -12]) text("At the +Y end the tray has one screw, and a nub that slots into a hole in the base where the other was.", size = $txt * 0.8);
 }

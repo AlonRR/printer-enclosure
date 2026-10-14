@@ -163,6 +163,7 @@ clamp_blk = 6.5;    /* Each end block, along the pleats: room for an M2 nut's po
 clamp_screw_x = 13; /* Each end's two screws, this far either side of the middle. */
 
 small_screw_lengths = [6, 8, 12, 16, 20];   /* The M2 lengths HomeBox records, 8 Oct 2026. */
+m25_screw_lengths = [3, 4, 5, 6, 8, 10, 12, 16];   /* The M2.5 lengths HomeBox records, 14 Oct 2026. */
 small_nut_roof = 1.6;           /* Over each nut, under the end block's split: eight layers. */
 
 /* [The bottom: Strangwooduk's BentoBox Auto, or ThrutheFrame's duct and fan case] */
@@ -263,12 +264,12 @@ sps30_stop_in = 0.2;    /* The stop's front, this far behind the outlet's face: 
 
 /* [The outlet's SGP41, in a recess in the +Y end wall - Alon, 14 Oct 2026 (Q248, A258)] */
 // Over the SPS30, behind the fan screw's post on that wall, its long side along X and its pins towards the outlet, its
-// sensor facing the duct. Its far end bears on a rib in the recess, and an M2.5 x 6 holds it, through its hole into
-// a pilot in the rib, as on the air-quality monitor; its leads go down a bay at its pin end into the SPS30's slot.
+// sensor facing the duct. Its far end bears on a rib in the recess, and an M2.5 holds it, through its hole and the
+// rib into a nut in the wall; its leads go down a bay at its pin end into the SPS30's slot.
 sgp41_x0 = -8;          /* Its pin end, X: past the fan screw's post, whose nut pocket runs up the wall from Z 38.5 to X -12.5. */
 sgp41_over = 1.8;       /* Its bottom, this far over the SPS30's top: two beads over the round top of the +Y tray screw's hole under it. */
 sgp41_fit = 0.2;        /* Round it in its recess. */
-sgp41_pilot = 2.1;      /* <<CONFIRM>> The pilot its M2.5 cuts its own thread in: 2.1 was fine as an upright hole on the air-quality monitor (2.0 a little tight); this one lies sideways, and a horizontal hole prints tighter at its top. Untested: a coupon would settle it. */
+sgp41_roof = 1.2;       /* Between its recess's back and its nut's seat, the wall the screw pulls the nut against. The nut is an M2.5, pushed into a tight seat from the end face and pulled home by the screw, as the fans' pull nuts are (Alon, 14 Oct 2026: A260 - a nut, not a self-threading pilot). */
 sgp41_bay = [3.5, 3.6]; /* The leads' bay at its pin end: wide, and deep into the wall. Low down, just over the SPS30's slot, it runs as wide as its four leads side by side. */
 
 /* [The sealed joints - Alon, 8 Oct 2026: D114, D116, D118, D119, D120; seamless tabs, flush heads] */
