@@ -16,7 +16,7 @@ module print_part(name) {
     else if (name == "clamp_upper") { assert(!glue, "the clamp's parts: hepa_frame = \"clamp\""); translate([0, 0, cas_h]) mirror([0, 0, 1]) clamp_up(); say_paper_cut(); }
     else if (name == "clamp_sample") { assert(!glue, "the clamp's parts: hepa_frame = \"clamp\""); clamp_sample(); say_paper_cut(); }
     // The Auto's parts as they print, standing: the base on its floor, the tray on its own.
-    else if (name == "auto_base") { translate([0, 0, -auto_bay_top]) auto_base(); say_auto_hardware(); }
+    else if (name == "auto_base") { translate([0, 0, -auto_bay_top]) auto_base(); say_auto_hardware(); say_sps30(); }
     else if (name == "auto_tray") { translate([0, 0, -auto_base_z0]) auto_tray(); say_auto_hardware(); say_usb(); }
     else if (name == "auto_fans") translate([0, 0, -duct_h]) if (sealed) fans_sealed(); else auto_fans();
     // The sealed stack's remixed originals and the bead ring, as they print: standing, the ring flat.

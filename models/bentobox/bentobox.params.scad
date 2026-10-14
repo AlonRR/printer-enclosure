@@ -241,6 +241,19 @@ usb_play = 0.1;     /* Round the board in its pocket, on top of fdm_hole_comp; a
 usb_stop = [3, 1.5];    /* Behind the board, between its pads, a stop that takes the plug's push: its width and depth. */
 meet = 0.05;        /* A new face kept this far off an imported one it would otherwise share: the STL's float32 corners are not where the same number computed here is, and faces a hair apart make slivers the slicer removes. */
 
+/* [The outlet's SPS30, in a pocket on the floor - Alon, 14 Oct 2026 (D247, D252)] */
+// It lies on the floor at the +Y end, label up, its 40.69 along X and its air face to the duct's middle (-Y): its
+// inlets at the back, upstream, its grille at the front, so the duct's air carries what it blows out away from its
+// inlets. Its connector, on the face opposite, faces the +Y end wall. The pocket is cut into the floor's turn; its back
+// stands clear of the wires' tube, and the SPS30's front stands out past the outlet's face (vitamins/sensors.scad).
+
+sps30_fit = 0.2;        /* Round the SPS30 in its pocket: the air-quality monitor's, tried in ASA on an MK3S - of 0.2, 0.3 and 0.4 it took 0.2, snug. */
+sps30_y = -1.5;         /* Its air face, Y. Its connector face is sps30[1] on, and the plug needs sps30_lead_room before the end wall. */
+sps30_tube_clear = 0.3; /* The pocket's back face, this far off the wires' tube: its X follows, and so how far the SPS30 stands out past the outlet's face. */
+sps30_air_room = 10;    /* In front of its air face, the floor's turn is cut back this far, so its openings face open air - Sensirion: a large opening, little depth in front. */
+sps30_lead = [-17, -10, 3.6];  /* The lead's slot down through the floor into the bay, beside the plug: its ends' middles in X, and its width. The SPS30's five leads, about 1 mm each, lie side by side in it... */
+sps30_lead_in = 0.5;    /* ...its +Y side this far inside the bay's end. */
+
 /* [The sealed joints - Alon, 8 Oct 2026: D114, D116, D118, D119, D120; seamless tabs, flush heads] */
 // The three joints under suction - the section on the fan section, the carbon housing on the section, the HEPA
 // holder on the carbon housing - are sealed. A TPU bead lies in a groove in the lower part's top; the upper part's
@@ -331,4 +344,5 @@ cmag_lid_move = [0, 0, 0];
 screw_shift = [0, 0];   /* Controls only: the screws moved off their holes. */
 wire_shift = 0;         /* Controls only: the wires' probe moved off the tube, along X. */
 usb_shift = [0, 0, 0];  /* Controls only: the board moved in its pocket. */
+sps30_shift = [0, 0, 0];   /* Controls only: the SPS30 moved in its pocket. */
 fans_drop = 0;          /* Controls only: the fan section set this much down onto its base. */

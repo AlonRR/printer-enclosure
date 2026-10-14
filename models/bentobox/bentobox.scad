@@ -131,6 +131,13 @@ else if (draw == "check_auto_screws") intersection() { union() { auto_base(); fa
 else if (draw == "check_auto_wires") intersection() { union() { auto_base(); fans_printed(); } wire_probe(); }
 // Nothing of the base stands under the fans' openings in the floor, its posts included.
 else if (draw == "check_auto_air") intersection() { auto_base(); fan_air(8); }
+// The outlet's SPS30 lies in its pocket clear of the base and the fan section; its plug has its room before the end
+// wall; its openings face open air; its lead passes its slot into the bay; and it slides in from the outlet.
+else if (draw == "check_sps30") intersection() { union() { auto_base(); fans_printed(); } sps30_model(); }
+else if (draw == "check_sps30_plug") intersection() { auto_base(); sps30_plug_probe(); }
+else if (draw == "check_sps30_air") intersection() { auto_base(); sps30_air_probe(); }
+else if (draw == "check_sps30_lead") intersection() { union() { auto_base(); auto_tray(); } sps30_lead_probe(); }
+else if (draw == "check_sps30_way") intersection() { union() { auto_base(); fans_printed(); } sps30_way(); }
 else if (draw == "bottom") bottom_exploded(explode);
 else if (draw == "joints") joints_exploded(explode);
 // The sealed joints: each upper part on its lower one - flat on the land, its chamfer in the collar, tab on tab.

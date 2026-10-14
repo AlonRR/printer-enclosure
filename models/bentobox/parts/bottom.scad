@@ -24,6 +24,18 @@ usb_pocket = [usb_board[1] + 2 * usb_c, usb_pcb_y0];  // the board's pocket: acr
 
 auto_magnet = [magnet[0] + 0.2, magnet[1] + 0.2];      // the tray's magnets' holes, d and depth
 
+// The outlet's SPS30 in its pocket (D252): its back - nub and fit - sps30_tube_clear off the wires' tube, its front out
+// past the outlet's face; its air face at sps30_y, its connector face sps30[1] on, the plug's room from there to the
+// end wall; the lead's slot down into the bay, its +Y side sps30_lead_in inside the bay's end.
+sps30_back = auto_conduit[0] - conduit_wall[0] - sps30_tube_clear;   // the pocket's back face
+sps30_x = [sps30_back - sps30_fit - sps30_nub - sps30[0], sps30_back - sps30_fit - sps30_nub];   // its body, along X
+sps30_yy = [sps30_y, sps30_y + sps30[1]];                             // its air face, and its connector face
+sps30_top = base_floor + sps30[2];
+sps30_out = -bb_w / 2 - (sps30_x[0] - sps30_nub);                     // how far its front stands out past the outlet's face
+sps30_room = duct_in[1] - (sps30_yy[1] + sps30_fit);                  // the plug's room, to the end wall
+sps30_plug_x = [sps30_x[0] + sps30_plug[0], sps30_x[0] + sps30_plug[1]];
+sps30_lead_y = bay_size[1] / 2 - sps30_lead_in - sps30_lead[2] / 2;   // the lead's slot's middle, Y
+
 // The Auto's fan section drawn (Alon, 9 Oct 2026: "rebuild all the parts that are not currently scad"), to its STL's
 // measurements: the box's outline and inside, its top edge chamfered bb_chamfer outside; the floor auto_floor_t,
 // with each fan's opening and its two screws' holes. Its top is the sealed joint's (sealed_part cuts it there), and
@@ -108,8 +120,17 @@ module conduit2d() let(r = conduit_wall[0], f = conduit_wall[1]) offset(r = -f) 
     translate([auto_conduit[0], auto_conduit[1]]) circle(r = r);
     translate([duct_in[0] + post_blend, auto_conduit[1] - r - f - 0.5]) square([3 - post_blend, 2 * (r + f + 0.5)]);
 }
+// The SPS30's pocket: its place with sps30_fit round it, from out past the outlet's face to its back, and on in front
+// of its air face sps30_air_room, cut down through the floor's turn to the floor and up to its top; the plug's room in
+// front of its connector face, out to the end wall and half a millimetre into it, so the wall's fillet leaves no skin;
+// and the lead's slot down through the floor into the bay. The floor stays flat under it all; nothing hangs over.
+module sps30_cut() let(f = sps30_fit, x0 = sps30_x[0] - sps30_nub - f - 2, z = [base_floor, sps30_top + f]) {
+    translate([x0, sps30_yy[0] - f - sps30_air_room, z[0]]) cube([sps30_back - x0, sps30[1] + 2 * f + sps30_air_room, z[1] - z[0]]);
+    translate([sps30_plug_x[0] - f, sps30_yy[1] + f - eps, z[0]]) cube([sps30_plug[1] - sps30_plug[0] + 2 * f, sps30_room + 0.5 + eps, z[1] - z[0]]);
+    hull() for (x = [sps30_lead[0], sps30_lead[1]]) translate([x, sps30_lead_y, auto_bay_top - 1]) cylinder(d = sps30_lead[2], h = base_floor - auto_bay_top + 2, $fn = 24);
+}
 // The base: the duct's walls and floor over the bay's roof, the tube and the posts; the outlet's rim rounded; the
-// wires' hole down the tube to the bay, the fans' nut pockets, and the tray's screws' slots.
+// wires' hole down the tube to the bay, the fans' nut pockets, the tray's screws' slots, and the SPS30's pocket.
 module auto_base() difference() {
     intersection() {
         union() {
@@ -126,6 +147,7 @@ module auto_base() difference() {
     translate([auto_conduit[0], auto_conduit[1], auto_bay_top - 1]) cylinder(d = auto_conduit[2], h = duct_h - auto_bay_top + 2);
     for (s = auto_fan_screws) fan_screw_cut(s);
     for (s = tray_screws) tray_slot_cut(s);
+    sps30_cut();
 }
 
 // ------------------------------------------------------------------ the bay's tray (Alon, 8-9 Oct 2026)

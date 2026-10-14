@@ -32,8 +32,14 @@ warns = [
     if (tray_usb_wall < 2 * bead - 1e-9) str("a tray screw's hole leaves ", tray_usb_wall, " mm to the USB-C board's pocket, under two beads"),
     if (tray_magnet_wall < 2 * bead - 1e-9) str("a tray screw's counterbore leaves ", tray_magnet_wall, " mm to a magnet's hole, under two beads"),
     if (nut_floor < 4 * fdm_layer_h - 1e-9) str("a tray nut's slot has ", nut_floor, " mm under it, under four layers"),
+    if (sps30_room < sps30_lead_room - 1e-9) str("the SPS30's plug has ", sps30_room, " mm before the end wall, under the ", sps30_lead_room, " its lead needs"),
+    if (sps30_tube_clear < 0) str("the SPS30's pocket cuts ", -sps30_tube_clear, " mm into the wires' tube"),
 ];
 for (w = warns) echo(str("WARNING: ", w));
+
+module say_sps30() echo(str("sps30: in its pocket on the outlet's floor, label up, its air face at Y ", sps30_y,
+    " facing the duct's middle; its front ", sps30_out, " mm out past the outlet's face; ", sps30_room,
+    " mm before the end wall for its plug; its lead down the slot into the bay"));
 
 module say_usb() echo(str("usb-c: the socket's face flush with the -Y end face, its axis at X ", usb_x, ", Z ", usb_axis_z,
     " (", usb_axis_z - auto_base_z0, " over the bottom face); the board on a floor ", usb_pcb_z - auto_base_z0, " over the bottom face"));

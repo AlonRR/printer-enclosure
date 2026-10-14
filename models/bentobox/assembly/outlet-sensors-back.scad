@@ -4,8 +4,8 @@
 
 // assembly/outlet-sensors-back.scad - THE SPS30 STANDING AGAINST THE BACK WALL, OPENINGS DOWN: Sensirion's best
 // orientation, asked about by Alon (14 Oct 2026). The base, the fan section, a fan and the tray cut through where it
-// would stand (Y 25) and seen from -Y, the outlet to the left; in red, what it would run into. A drawing to decide
-// from: nothing here is in the model.
+// would stand (Y -25, clear of the SPS30's pocket at the +Y end) and seen from -Y, the outlet to the left; in red,
+// what it would run into. Not built: it is why the SPS30 lies in its pocket (D252).
 // Not included by bentobox.scad: it includes it. Render from this folder:
 //
 //   openscad -o ../../../docs/diagrams/bentobox/outlet-sensors-back.png --imgsize=2200,2200 \
@@ -24,7 +24,7 @@ C_SPS = [0.85, 0.45, 0.10];
 C_CUT = [0.80, 0.15, 0.10];
 C_AIR = [0.98, 0.93, 0.80];
 
-cut_y = 25;
+cut_y = -25;
 air_gap = 3;                                // open air under its openings
 fan_z = duct_h + auto_floor_t;
 back = duct_in[0];                          // the back wall's inside face
@@ -53,7 +53,7 @@ color(_d2_ink()) translate([fan[0][0], fan[1][0]]) difference() {
     square([2 * fan_t, fan_t]);
     offset(delta = -$lw) square([2 * fan_t, fan_t]);
 }
-color(_d2_ink()) translate([-fan_t + 2, fan_z + fan_t / 2 - 1]) text("the +Y fan", size = $txt * 0.8);
+color(_d2_ink()) translate([-fan_t + 2, fan_z + fan_t / 2 - 1]) text("the -Y fan", size = $txt * 0.8);
 
 // ---- the SPS30 standing against the back wall, its openings down, and what it runs into
 color(C_SPS, 0.85) rect(sps_x, sps_z);
@@ -79,7 +79,7 @@ color(_d2_ink()) translate([-bb_w / 2 - 20, auto_base_z0 - 14]) {
     translate([0, -8]) text("Above it the fans fill the fan section to the wall. Sunk instead into the curve and the bay, its openings would face", size = $txt * 0.8);
     translate([0, -12]) text("down into the bottom of that slot - still air, or the bay's - not the filtered air leaving the box.", size = $txt * 0.8);
 }
-heading("The SPS30 against the back wall, openings down - cut at Y 25, seen from -Y", [-bb_w / 2 - 20, duct_h + fans_h + 8]);
+heading(str("The SPS30 against the back wall, openings down - cut at Y ", cut_y, ", seen from -Y"), [-bb_w / 2 - 20, duct_h + fans_h + 8]);
 
 translate([back + base_wall + 40, auto_base_z0]) {
     axis("X", 0, 10);

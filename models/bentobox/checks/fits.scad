@@ -76,14 +76,28 @@ module tray_slot_walls() let(g = 2 * bead, f = fdm_hole_comp + nut_fit, ac = nut
         hull() for (x = [-(ac / 2 + f), s[3]], y = [-1, 1] * (nut_af / 2 + f), z = [0, nut_slot_h]) translate([x, y, z]) sphere(r = g, $fn = 12);
         hull() for (z = [0, tray_room_z - tray_slot_bot]) translate([0, 0, z]) sphere(r = hole_d / 2 + g, $fn = 16);
     }
-// The base's air: the duct, inside the outline - a millimetre in, clear of the slots' mouths in the end faces.
+// The base's air: the duct and the SPS30's pocket, inside the outline - a millimetre in, clear of the slots' mouths in
+// the end faces.
 module base_air() intersection() {
-    duct_air();
+    union() { duct_air(); sps30_cut(); }
     translate([0, 0, auto_bay_top]) linear_extrude(duct_h - auto_bay_top) offset(delta = -1) tray_outline();
 }
 
 module wire_probe() translate([auto_conduit[0] + wire_shift, auto_conduit[1], auto_conduit_z[0] - 2])
     cylinder(d = wire_d, h = auto_conduit_z[1] - auto_conduit_z[0] + 3);
+
+// The outlet's SPS30 (D252). Its plug's room, from the sensor's own values, in front of its connector face; the open
+// air its openings want, in front of them along the air face, from the checks' own number; its lead, a bundle from
+// over the floor down its slot into the bay; and its way in, slid in from out past the outlet's face.
+sps30_air_need = 10;    /* Open air in front of the SPS30's openings: kept apart from sps30_air_room, which cuts it, so a control can cut less. */
+sps30_lead_d = 3;       /* The SPS30's five leads, side by side: its slot must pass a rod this thick along it. */
+module sps30_plug_probe() translate(sps30_shift + [sps30_plug_x[0], sps30_yy[1] + sep, base_floor + sep])
+    cube([sps30_plug[1] - sps30_plug[0], sps30_lead_room, sps30[2]]);
+module sps30_air_probe() translate(sps30_shift + [sps30_x[0] + sps30_open[1], sps30_yy[0] - sps30_air_need, base_floor + sep])
+    cube([sps30[0] - sps30_open[0] - sps30_open[1], sps30_air_need - sep, sps30[2]]);
+module sps30_lead_probe() hull() for (x = [sps30_lead[0], sps30_lead[1]])
+    translate([x, sps30_lead_y, auto_seat_z + 1]) cylinder(d = sps30_lead_d, h = base_floor + 1 - auto_seat_z, $fn = 16);
+module sps30_way() hull() for (x = [0, -50]) translate([x, 0, 0]) sps30_model();
 
 // The air's way down under the paper, from the paper's own folds: between the combs, and between the second
 // bottom folds from the edges, inside the long teeth's channels. The lower frame must leave it open; its rim
