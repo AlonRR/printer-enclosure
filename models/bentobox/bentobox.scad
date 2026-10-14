@@ -148,6 +148,9 @@ else if (draw == "check_sgp41") intersection() { union() { auto_base(); fans_pri
 else if (draw == "check_sgp41_air") intersection() { union() { auto_base(); fans_printed(); } sgp41_air_probe(); }
 else if (draw == "check_sgp41_screw") intersection() { union() { auto_base(); fans_printed(); } sgp41_fixings(); }
 else if (draw == "check_sgp41_nut_way") intersection() { auto_base(); sgp41_fixings(true); }
+// The hex key reaches the SGP41's screw and turns it, the fan section not on yet: through the duct, clear of the
+// base, the SPS30 and the SGP41.
+else if (draw == "check_sgp41_key") intersection() { union() { auto_base(); sps30_model(); sgp41_model(); } sgp41_key_sweep(); }
 else if (draw == "check_sgp41_leads") intersection() { union() { auto_base(); auto_tray(); sps30_model(); sgp41_model(); } sgp41_leads_probe(); }
 else if (draw == "bottom") bottom_exploded(explode);
 else if (draw == "joints") joints_exploded(explode);

@@ -52,6 +52,7 @@ sgp41_pcb_y = min(duct_in[1] + sgp41[2] - sgp41_back, bb_l / 2 - sgp41_screw_l);
 sgp41_y = sgp41_pcb_y - (sgp41[2] - sgp41_back);                    // its front, the sensor's side
 sgp41_tip_y = sgp41_pcb_y + sgp41_screw_l;                            // at the end face, at most
 sgp41_seat_y = sgp41_y + sgp41[2] + sgp41_fit + sgp41_roof;            // its nut's seat's roof
+sgp41_recess_d = sgp41_y + sgp41[2] + sgp41_fit - duct_in[1];        // its recess, into the wall from the wall's face
 sgp41_hole_xz = [sgp41_x[1] - sgp41_hole_at[0], sgp41_z[1] - sgp41_hole_at[1]];   // its hole: at its far end, by its top
 leads_slot_x1 = max(sps30_plug_x[1] + sps30_fit, sgp41_x[0] + 0.5);   // the leads' slot in the end wall runs to here
 leads_groove_x = [sps30_wires_x[0] - 0.4, sgp41_x[0] + 0.3];         // the leads' groove in the tray's top, across
@@ -177,7 +178,7 @@ module wall_recess(x, z, depth) translate([x[0], 0, 0]) rotate([90, 0, 90]) line
 // its screw's hole through the rib and on through sgp41_roof to its nut's pocket, a corner up so it needs no bridge,
 // its tight seat by the roof and its way out through the end face; and at its pin end the leads' bay, down into the slot -
 // as wide as the four leads side by side only low down, under the fan screw's nut pocket.
-module sgp41_cut() let(f = sgp41_fit, d = sgp41_y + sgp41[2] + f - duct_in[1], z = [sgp41_z[0] - f, sgp41_z[1] + f],
+module sgp41_cut() let(f = sgp41_fit, d = sgp41_recess_d, z = [sgp41_z[0] - f, sgp41_z[1] + f],
         back = sgp41_pcb_y + sgp41_pcb, bz0 = sps30_top + sps30_fit - 1) {
     difference() {
         wall_recess([sgp41_x[0] - eps, sgp41_x[1] + f], z, d);

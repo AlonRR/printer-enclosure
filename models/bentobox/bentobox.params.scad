@@ -32,7 +32,7 @@ exported in place, assembled, in one frame of their own, which bentobox.layout.s
 */
 
 /* [What to draw] */
-draw = "section";   /* A printed part, as it prints (parts/print.scad: "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "grommet_coupon", "fan_mate", "bottom_sample", "nut_coupon", "samples_asa", "samples_asa_2", "samples_tpu"); the assembled views (assembly/stack.scad: "stack", "exploded", "cut", "section_fig", "cmag", "frame", "glue", "clamp_print", "paper_cut", "glue_cut", "bottom", "joints", "grommet_fig", "fan_mate_fig"); one of the checks' views (checks/fits.scad, "check_..."), each a solid that must come out empty; or "none", for a file that includes this one to draw its own. */
+draw = "section";   /* A printed part, as it prints (parts/print.scad: "section", "auto_base", "auto_fans", "auto_tray", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "joint_sample", "joint_sample_bead", "grommet", "grommet_coupon", "fan_mate", "bottom_sample", "sensor_sample", "nut_coupon", "samples_asa", "samples_asa_2", "samples_tpu"); the assembled views (assembly/stack.scad: "stack", "exploded", "cut", "section_fig", "cmag", "frame", "glue", "clamp_print", "paper_cut", "glue_cut", "bottom", "joints", "grommet_fig", "fan_mate_fig"); one of the checks' views (checks/fits.scad, "check_..."), each a solid that must come out empty; or "none", for a file that includes this one to draw its own. */
 
 /* [The assembled views] */
 with_section = true;
@@ -301,6 +301,7 @@ tab_lower_t = 6;    /* The lower part's tab, with the nut in it. */
 tab_upper_t = 5;    /* The upper part's tab under the screw's head; the tab stands a head's counterbore higher, so the head sinks flush. */
 top_tabs = "middle";    /* The top joint's tabs, the HEPA holder on the carbon housing (Alon, 9 Oct 2026: D147): "middle", one screw in the middle of each end, so nothing stands over the lower joints' screws at the corners, which go in first; "corners", four, over them, as the lower joints'. */
 driver = [4, 75, 30];   /* The screws are driven with a hex screwdriver (Alon, 9 Oct 2026: Q148), 2.5 mm for the M3 socket heads: the room its blade needs, the blade's length, and the handle's diameter. Nothing may stand in its way to any screw's head. */
+sgp41_key = [3, 16, 50, 30];   /* The SGP41's M2.5 is turned with an L-shaped hex key, 2 mm (ISO 2936), from inside the duct with the fan section off: the room its legs need, its short leg - in the head - and its long one, the handle, and how far the handle swings each way from straight up, in degrees: a hex key is reset every sixth of a turn. */
 
 /* [The joint sample - Alon, 8 Oct 2026: D121] */
 // Before the 6-hour carbon housing, one end of a sealed joint to try: sliced off the parts themselves, the carbon
@@ -315,6 +316,10 @@ sample_gap = 8;     /* Between the pieces on the plate. */
 // samples go on two plates, one ASA and one TPU (T131).
 bottom_sample_l = 18;   /* The bottom sample: this much of the tray's -Y end, past the board's stop... */
 bottom_sample_h = 7;    /* ...and this much of the base over it, from the bay's roof: the nut slots and the screws' tips. */
+// Alon, 14 Oct 2026 (D264 a): a sample of the +Y end before the whole base - the outlet's sensors' pocket, recess,
+// slot, nuts and stop, none of them printed yet.
+sensor_sample_from = 2;   /* The sensor sample: the base and the tray from this far in front of the SPS30's pocket to the +Y end... */
+sensor_sample_over = 2;   /* ...the base up to this much over the SGP41's recess's ceiling, the rest of its walls off. */
 
 /* [The wires' grommet - Alon, 9 Oct 2026 (D117)] */
 // The fans' leads pass the fan section's floor in a TPU grommet: one piece, a donut (Alon, 9 Oct 2026, in place of

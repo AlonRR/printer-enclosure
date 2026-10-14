@@ -6,7 +6,7 @@
 // that scripts/tools/part-files.sh writes in .check/ for scad-tools' scad-check.sh and printables.py. Included by
 // bentobox.scad; not a model on its own.
 
-printed = ["section", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "auto_base", "auto_tray", "auto_fans", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "joint_sample", "joint_sample_bead", "grommet", "grommet_coupon", "fan_mate", "bottom_sample", "nut_coupon", "samples_asa", "samples_asa_2", "samples_tpu"];
+printed = ["section", "glue_frame", "glue_sample", "clamp_lower", "clamp_upper", "clamp_sample", "auto_base", "auto_tray", "auto_fans", "carbon", "hepa", "cover", "cmag_tray", "cmag_lid", "cmag_grills", "bead_ring", "joint_sample", "joint_sample_bead", "grommet", "grommet_coupon", "fan_mate", "bottom_sample", "sensor_sample", "nut_coupon", "samples_asa", "samples_asa_2", "samples_tpu"];
 module print_part(name) {
     if (name == "section") section();
     // The clamp's two frames as they print: the lower standing, the upper on its band; and its sample.
@@ -37,6 +37,7 @@ module print_part(name) {
     // The fans' plug mate, in ASA, on its underside.
     else if (name == "fan_mate") { fan_mate(); say_fan_mate(); }
     else if (name == "bottom_sample") { bottom_sample(); say_auto_hardware(); say_usb(); }
+    else if (name == "sensor_sample") { sensor_sample(); say_sensor_sample(); say_sps30(); say_sgp41(); }
     else if (name == "nut_coupon") { nut_coupon(); say_nut_coupon(); }
     else if (name == "samples_asa") { samples_asa(); say_sample_hardware(); say_auto_hardware(); }
     else if (name == "samples_asa_2") { assert(glue, "the glue sample's plate: hepa_frame = \"glue\""); samples_asa_2(); say_nut_coupon(); say_paper_cut(); }

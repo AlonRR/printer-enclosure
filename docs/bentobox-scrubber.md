@@ -56,6 +56,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Fans' plug mate** | A block in the fan section that both fans' own plugs push onto, its pins the bared ends of 22 AWG solid wire. **On hold, not to print**, until the fan connector it copies is settled. | [`parts/fan-mate.scad`](../models/bentobox/parts/fan-mate.scad) |
 | **Joint sample** | To print first: one end of a sealed joint, sliced off the parts, and a block with one fan nut's pocket - one ASA plate - and its bead, in TPU. | [`parts/samples.scad`](../models/bentobox/parts/samples.scad) |
 | **Bottom sample** | To print first: the tray's -Y end with the USB-C board's pocket, and the base's floor over it with the tray's nut slots - one ASA plate. | [`parts/samples.scad`](../models/bentobox/parts/samples.scad) |
+| **Sensor sample** | To print before the base (Alon, 14 Oct 2026: D264): the base's and the tray's +Y end, where the outlet's sensors go - the SPS30's pocket and the tray's stop, the leads' slot and groove, the SGP41's recess and its nut, the M2's slot and the nub - one ASA plate. | [`parts/samples.scad`](../models/bentobox/parts/samples.scad) |
 | **Nut coupon** | Five fan-nut seats and five tray-nut slots at graded fits and with three kinds of end, to find the ones that hold on this printer (T181, T182). | [`parts/samples.scad`](../models/bentobox/parts/samples.scad) |
 | **Sample plates** | Every sample on two plates, one ASA and one TPU, and a second ASA plate of the ones not yet tried (see *The samples*). | [`parts/samples.scad`](../models/bentobox/parts/samples.scad) |
 
@@ -301,8 +302,12 @@ across and 83 long.
   12 V and the tach line with it, and the diode keeps that off the pin.
 
 **Putting it together:** the USB-C board into its pocket, its wires soldered on; a nut in each of the three slots
- in the end faces, pushed to the slot's end, then the
-tray under the base with its three screws; it comes off again from below, for the electronics. Then the fans'
+in the end faces, pushed to the slot's end. The outlet's sensors next, with the tray off and the fan section not
+on yet: the SGP41's M2.5 nut pushed into its seat from the +Y end face; the SPS30, its lead plugged in, slid in
+from the outlet's face, the lead bent down the end wall's slot; the SGP41 into its recess, its leads down the bay
+into the same slot, and its M2.5 × 8 driven from inside the duct with a 2 mm L-shaped hex key, which pulls the nut
+home; all the leads laid along the tray's groove. Then the tray under the base with its three screws, its stop up
+in front of the SPS30; it comes off again from below, for the electronics, and lets the SPS30 out. Then the fans'
 nuts, from the open top of the base: slide each nut in under its post, push it up the pocket, and pull
 it into the seat with a spare M3 screw from above; take the screw out, and the nut stays. The fans' leads down
 the tube; the fan section on the base, the fans in it, and their four screws down through them. The seat's
@@ -598,7 +603,7 @@ one of them on two plates, `samples_asa` and `samples_tpu` in [`parts/samples.sc
 - **The joint sample** and its TPU bead - one end of a sealed joint, and a fan nut's seat (see *The sealed
   joints*).
 - **The glue sample** - one end of the glue frame (see *The glue frame*). The clamp's sample still builds, but is
-  off the plate.
+  off the plate. Its trial, T185, was superseded (Alon, 14 Oct 2026).
 - **The nut coupon** - on the second ASA plate (below), not the first: five fan-nut seats, numbered 1 to 5 on the top, and five
   tray-nut slots, 6 to 10, open at the front face over a 0.8 mm floor, as in the base. Pull a nut up into each seat
   with an M3 × 8 from the top and take the screw out: which keep their nut? Slide a nut into each slot and drive an
@@ -619,6 +624,16 @@ one of them on two plates, `samples_asa` and `samples_tpu` in [`parts/samples.sc
   all the way in, the stop behind the board taking the push. Slide a nut into each of the two slots in the base's
   piece, from the end face, set it on the tray's piece and drive the two M3 × 12 up from below: the pieces should
   pull together, the heads ending flush, and the base's flat bottom closing the socket's notch.
+- **The sensor sample** (Alon, 14 Oct 2026: D264) - the base's and the tray's +Y end, from 2 mm in front of the
+  SPS30's pocket to the end face, the base cut 2 mm over the SGP41's recess: 2 h 12 m and 23 g, where the base and
+  the tray whole are 5 h 27 m and 56 g. The SPS30's pocket takes 41 mm of the box's 113, across nearly all its width,
+  so the sample cannot be smaller and still hold it. In the order the box goes together: push the M2.5 nut into
+  its seat from the end face, and the M2 nut into its slot; slide the SPS30 in from the outlet's face, its lead
+  plugged in - its connector face should meet the end wall, the plug flush with it, the lead bent down the slot;
+  set the SGP41 in its recess, its leads down the bay into the slot, and drive its M2.5 × 8 with a 2 mm L-shaped hex
+  key from the duct's side: the nut should pull home; lay the leads along the tray's groove, then set the tray's
+  piece on, its nub in the base's hole and its stop up through the floor's notch in front of the SPS30, and drive
+  the M2 × 16 up from below. The SPS30 should not slide out past the stop.
 - **The grommet's coupon and the grommet** - a 3 mm square of the fan section's floor with its grommet hole, in
   ASA, and the grommet, in TPU. Push the grommet into the coupon's hole until it clicks: it should sit flush both
   sides and hold. Then push four spare leads like the fans' through it, one down each groove and through its hole
@@ -703,6 +718,7 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Grommet | TPU 95A | 1 | 2 m | under 1 g |
 | Fans' plug mate (on hold) | ASA | 1 | 17 m | 1.7 g |
 | Bottom sample | ASA | 1 plate | 45 m | 7 g |
+| Sensor sample | ASA | 1 plate | 2 h 12 m | 23 g |
 | Nut coupon | ASA | 1 | 53 m | 8 g |
 | Grommet's coupon | ASA | 1 | 6 m | 0.9 g |
 | Samples, ASA | ASA | 1 plate | 2 h 29 m | 22 g |
@@ -763,9 +779,10 @@ With the C-MAG: eight 4 × 2 mm magnets, four in each half - its bosses are draw
 lid 1 h 49 m and 21 g, the four grills on one plate 1 h 51 m and 11 g.
 
 For the joint sample, from the same stock: 2 M3 nuts, 1 M3 × 12 and 1 M3 × 8. Every M3 is turned with a
-2.5 mm hex screwdriver, its blade 75 mm or longer; the tray's M2 takes a 1.5 mm one and the SGP41's M2.5 a 2 mm
-one. For the bottom sample: 2 M3 nuts,
-2 M3 × 12 and the USB-C trigger board. For the nut coupon: an M3 nut for each seat and slot, or one moved
+2.5 mm hex screwdriver, its blade 75 mm or longer; the tray's M2 takes a 1.5 mm one, and the SGP41's M2.5 a 2 mm
+L-shaped hex key, from inside the duct. For the bottom sample: 2 M3 nuts,
+2 M3 × 12 and the USB-C trigger board. For the sensor sample: an M2 nut and an M2 × 16, an M2.5 nut and an
+M2.5 × 8, the SPS30 with its lead and the SGP41. For the nut coupon: an M3 nut for each seat and slot, or one moved
 along, and an M3 × 8.
 
 For the glue frame: a hot-glue gun and sticks, high-temperature ones if the chamber runs hot.
@@ -900,16 +917,21 @@ upper frame on the lower one - meeting only at the end blocks - lays a model of 
 values at the slot's thickness, in the frames' zigzag, keeps the air's way down under the paper open, and
 runs the four screws through the end blocks and the nuts into their seats and down out of them. It sets the
 grommet in the fan section's floor, lip in groove. It seats the fans' plugs, drawn from their measurements, on
-their mate, ribs either side of each key and clear of the walls; finds the grip's ribs biting their ends (the one check that must not come out empty) and, the bite taken off, clear of them; and runs the wires' cores up through the block
+their mate, ribs either side of each key and clear of the walls; finds the grip's ribs biting their ends (a check that must not come out empty) and, the bite taken off, clear of them; and runs the wires' cores up through the block
 into the plugs' holes. For the bottom it stands the fan
 section on the base and the base on the tray, lays the USB-C board in its pocket - its socket through its notch,
 flush with the end face - sets a nut in each of the tray's slots and slides it out through
 the end face, and one in each fan screw's seat and draws it down its pocket and out under its post, keeps two
 beads of the end wall round each tray slot and its screw's hole, runs each screw from its head to its tip, and
 the wires down the tube, and the fans' air down into the base past the posts, and keeps the grommet's hole from
-cutting into the fan section's wall above the floor. Each must come out empty. Every check has a positive control,
-something broken on purpose that it must catch, and the run fails if one passes unnoticed: 45 fits and
-63 controls.
+cutting into the fan section's wall above the floor. For the outlet's sensors it lays the SPS30 in its pocket and
+the SGP41 in its recess, clear of the base and the fan section, with open air in front of each; stands the SPS30's
+plug in the end wall's slot; slides the SPS30 in from the outlet, the tray off, and finds the tray's stop in front
+of it, close enough that 1 mm out the SPS30 meets it (the other check that must not come out empty); runs both sensors' leads down the slot and along the tray's groove; seats the SGP41's screw and nut and
+slides the nut in from the end face; and swings a 2 mm L-shaped hex key on its screw, the fan section off. Each
+must come out empty. Every check has a positive control,
+something broken on purpose that it must catch, and the run fails if one passes unnoticed: 59 fits and
+81 controls.
 
 [`bentobox.params.scad`](../models/bentobox/bentobox.params.scad) holds the original's dimensions, measured
 by sectioning its STLs, and every setting of the section and of the paper's frame; the bought parts' own numbers -

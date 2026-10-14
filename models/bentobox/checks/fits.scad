@@ -115,6 +115,13 @@ module sgp41_fixings(way = false) translate([sgp41_hole_xz[0], 0, sgp41_hole_xz[
     hull() for (y = [sgp41_seat_y + sep, way ? bb_l / 2 + 1 : sgp41_seat_y + sep]) translate([0, y, 0])
         rotate([-90, 0, 0]) rotate(90) hex_nut(m25_nut[0], m25_nut[1]);
 }
+// The L-shaped hex key on its screw's head (D264): the short leg out of the head along the screw's axis, then the
+// long leg, the handle, swung sgp41_key[3] degrees each way about that axis from straight up - one stroke.
+module sgp41_key_sweep() let(r = sgp41_key[0] / 2, y0 = sgp41_pcb_y - sgp41_screw[2] - sep, y1 = y0 - sgp41_key[1])
+    translate([sgp41_hole_xz[0], 0, sgp41_hole_xz[1]]) {
+        translate([0, y1, 0]) rotate([-90, 0, 0]) cylinder(r = r, h = y0 - y1, $fn = 24);
+        hull() for (a = [-sgp41_key[3], sgp41_key[3]]) translate([0, y1, 0]) rotate([0, a, 0]) cylinder(r = r, h = sgp41_key[2], $fn = 24);
+    }
 module sgp41_air_probe() translate(sgp41_shift + [sgp41_x[0], sgp41_y - sgp41_air_need, sgp41_z[0]])
     cube([sgp41[0], sgp41_air_need - sep, sgp41[1]]);
 module sgp41_leads_probe() let(w = sgp41_wire, x = [sgp41_x[0] - 4 * w - 0.2, sgp41_x[0] - sep], y = sps30_wall_y + 0.2,
