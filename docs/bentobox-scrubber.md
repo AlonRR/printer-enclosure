@@ -184,8 +184,9 @@ grille at the other; its connector is on the face opposite, near the outlet end,
   grille at the front: the duct's air carries what the grille blows out away from the inlets. In front of them the
   turn is cut back 10 mm too, so they face open air. Sensirion's best is openings facing down; that needs it on
   edge, 40.6 tall, and the duct is 36.
-- **Its connector faces the +Y end wall**, so the SPS30 sits towards the middle, its air face at Y -1.5, leaving the
-  plug 10.1 mm before the wall; all inside, at Y 4.5 to 45.1, the plug would have 4.3. The plug's room is cut on to
+- **Its connector faces the +Y end wall**, so the SPS30 sits towards the middle, its air face at Y -4, leaving the
+  plug 12.6 mm before the wall, and its lead's slot, which must lie inside the bay's end, wholly past its connector
+  face; all inside, at Y 4.5 to 45.1, the plug would have 4.3. The plug's room is cut on to
   the end wall and half a millimetre into it, so the wall's fillet leaves no skin. The pocket's back stands 0.3 mm
   off the fans' wires' tube, so the SPS30's front, with its nubs, stands 2.72 mm out past the outlet's face.
 - **Its lead goes down a slot into the bay**, to the ESP32: 3.6 mm wide, from X -17 to -10, beside the plug, its
@@ -195,7 +196,7 @@ grille at the other; its connector is on the face opposite, near the outlet end,
   the outlet (D255).
 - **Checked** (`check_sps30*`): the SPS30 clear of the base and the fan section; the plug's room clear of the end
   wall; 10 mm of open air in front of its openings; a 3 mm bundle down the lead's slot into the bay, clear of the
-  tray; and its way in, slid in from the outlet. Each has a control that the check catches.
+  tray and of the SPS30; and its way in, slid in from the outlet. Each has a control that the check catches.
 - The duct's air past it: at the simulated 0.65 L/s, the outlet's mean is about 0.2 m/s, under Sensirion's 1 m/s.
   The simulation predates the pocket. Keep the ESP32 out from under it in the bay: Sensirion wants the sensor away
   from, and below, a warm board.

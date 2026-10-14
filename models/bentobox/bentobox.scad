@@ -136,7 +136,7 @@ else if (draw == "check_auto_air") intersection() { auto_base(); fan_air(8); }
 else if (draw == "check_sps30") intersection() { union() { auto_base(); fans_printed(); } sps30_model(); }
 else if (draw == "check_sps30_plug") intersection() { auto_base(); sps30_plug_probe(); }
 else if (draw == "check_sps30_air") intersection() { auto_base(); sps30_air_probe(); }
-else if (draw == "check_sps30_lead") intersection() { union() { auto_base(); auto_tray(); } sps30_lead_probe(); }
+else if (draw == "check_sps30_lead") intersection() { union() { auto_base(); auto_tray(); sps30_model(); } sps30_lead_probe(); }
 else if (draw == "check_sps30_way") intersection() { union() { auto_base(); fans_printed(); } sps30_way(); }
 else if (draw == "bottom") bottom_exploded(explode);
 else if (draw == "joints") joints_exploded(explode);

@@ -34,6 +34,8 @@ warns = [
     if (nut_floor < 4 * fdm_layer_h - 1e-9) str("a tray nut's slot has ", nut_floor, " mm under it, under four layers"),
     if (sps30_room < sps30_lead_room - 1e-9) str("the SPS30's plug has ", sps30_room, " mm before the end wall, under the ", sps30_lead_room, " its lead needs"),
     if (sps30_tube_clear < 0) str("the SPS30's pocket cuts ", -sps30_tube_clear, " mm into the wires' tube"),
+    if (sps30_lead_y - sps30_lead[2] / 2 < sps30_yy[1] + sps30_fit)
+        str("the lead's slot runs ", sps30_yy[1] + sps30_fit - (sps30_lead_y - sps30_lead[2] / 2), " mm under the SPS30's connector face"),
 ];
 for (w = warns) echo(str("WARNING: ", w));
 

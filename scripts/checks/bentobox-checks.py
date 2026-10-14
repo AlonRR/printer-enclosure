@@ -118,6 +118,7 @@ CONTROLS = [
     ("check_sps30_plug", [("sps30_y", "0.5")], "the SPS30 moved 2 mm towards the end wall: its plug's room into the wall"),
     ("check_sps30_air", [("sps30_air_room", "5")], "the floor's turn cut back only 5 mm in front of its openings"),
     ("check_sps30_lead", [("sps30_lead_in", "-2.5")], "the lead's slot moved 3 mm out, past the bay's end into the tray"),
+    ("check_sps30_lead", [("sps30_y", "-1.5")], "the SPS30 moved 2.5 mm towards the end wall, its edge over the lead's slot"),
     ("check_sps30_way", [("sps30_shift", "[0, 0, -0.3]")], "the SPS30 set 0.3 mm down: its way in drags through the floor"),
     # The sealed joints. collar_play narrows the upper parts' chamfers, not the collars; bead_side the grooves,
     # not the beads. The top joint's tabs back at the corners stand over the lower joints' screws; a short blade

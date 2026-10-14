@@ -248,7 +248,7 @@ meet = 0.05;        /* A new face kept this far off an imported one it would oth
 // stands clear of the wires' tube, and the SPS30's front stands out past the outlet's face (vitamins/sensors.scad).
 
 sps30_fit = 0.2;        /* Round the SPS30 in its pocket: the air-quality monitor's, tried in ASA on an MK3S - of 0.2, 0.3 and 0.4 it took 0.2, snug. */
-sps30_y = -1.5;         /* Its air face, Y. Its connector face is sps30[1] on, and the plug needs sps30_lead_room before the end wall. */
+sps30_y = -4;           /* Its air face, Y. Its connector face is sps30[1] on: far enough from the end wall that the plug has its sps30_lead_room, and that the lead's slot, inside the bay's end, lies wholly past it, 0.5 mm clear. */
 sps30_tube_clear = 0.3; /* The pocket's back face, this far off the wires' tube: its X follows, and so how far the SPS30 stands out past the outlet's face. */
 sps30_air_room = 10;    /* In front of its air face, the floor's turn is cut back this far, so its openings face open air - Sensirion: a large opening, little depth in front. */
 sps30_lead = [-17, -10, 3.6];  /* The lead's slot down through the floor into the bay, beside the plug: its ends' middles in X, and its width. The SPS30's five leads, about 1 mm each, lie side by side in it... */
