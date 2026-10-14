@@ -44,7 +44,7 @@ The remix adds four parts, takes its bottom from the BentoBox Auto, and seals th
 | **Glue sample** | One end of the glue frame: to glue an offcut in before the whole frame. | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
 | **Paper clamp** (shelved) | Two ASA frames, screwed together with a cut piece of pleated paper between them, standing on the HEPA holder's ledge in place of the cartridge: wedges from above and teeth from below pinch the paper's cut ends, and a bar from each its long edges. | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
 | **Clamp sample** (shelved) | One end of each frame, on one plate: to try the pinch on an offcut before the whole clamp. | [`parts/paper-frame.scad`](../models/bentobox/parts/paper-frame.scad) |
-| **Base** | In place of the duct, drawn to the Auto's: the duct over the bay's roof, the wires' tube, the fans' four nuts pulled up into pockets in posts, and four nuts in slots for the tray's screws. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
+| **Base** | In place of the duct, drawn to the Auto's: the duct over the bay's roof, the wires' tube, the fans' four nuts pulled up into pockets in posts, and three nuts in slots for the tray's screws, two M3 and an M2; at the +Y end, the SPS30's pocket in the outlet's floor and the SGP41's recess in the end wall, its nut pushed in from the end face. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
 | **Fan section** | In place of the fan case, drawn to the Auto's: its floor with the fans' openings and screws' holes, its top the sealed joint's, and its wires' hole opened out for the grommet. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
 | **Tray** | The bay under the base, 8 mm tall: its floor and walls, the USB-C trigger board in a pocket in the -Y end with its socket flush with the end face, and four magnet holes; screwed on under the base with three screws, their heads sunk in its bottom face, and a nub on its top that slots into the base; a stop that holds the SPS30 in, and a groove for the sensors' leads. | [`parts/bottom.scad`](../models/bentobox/parts/bottom.scad) |
 | **Carbon housing** | Drawn to ThrutheFrame's, with the sealed joints: a collar, the bead's groove and the nuts' tabs on top, the screws' tabs underneath. Its floor is a honeycomb across the whole inside, and the pellets lie on it, 45 mm deep, to a mark on each inside wall (D146); with `carbon = "cmag"`, the original's two openings, for the C-MAG. | [`parts/carbon.scad`](../models/bentobox/parts/carbon.scad) |
@@ -157,7 +157,7 @@ The Auto also has a spacer for a sensor between the HEPA holder and the carbon h
 controller in the bay. Neither is used here. This build's sensors (the same as the
 [air-quality monitor's](https://github.com/AlonRR/air-quality-monitor), an SPS30 and an SGP41) will go
 **in the base's outlet**, where they read the air after the carbon; the chamber's own monitor reads the air
-before it. Their mount is not drawn yet.
+before it. Where each goes is below.
 
 The SPS30 cannot go between the fans instead (Alon asked, 14 Oct 2026). Cut from the fan section's mesh, the
 space there is 20 mm along the box, between the two fans, 40.8 mm across, wall to wall, and 31.6 mm from the
@@ -743,11 +743,28 @@ For the filters:
 | 1 | Polyester filter floss, about 5 mm thick loose: the section's sheet, cut 42 × 102 mm |
 | 184 cm³ | Activated carbon pellets: the housing's bed, 45 mm deep, about 83 g |
 
+For the electronics, as the circuit draws them (see *The bottom*):
+
+| Quantity | Item |
+|---|---|
+| 2 | Delta EFB0412VHD fan, 40 × 40 × 20 mm, 12 V, 3-pin with tach |
+| 1 | USB-C PD trigger board, 12 V: in the tray's -Y end |
+| 1 | MP1584EN step-down module, 5 V out: for the ESP32 and the SPS30 |
+| 1 | ESP32-C3 SuperMini |
+| 1 | IRLZ44N N-channel MOSFET: switches both fans |
+| 3 | 1N5819 Schottky diode: one across the fans, one in each fan's tach line |
+| 1 | 100 Ω resistor: the MOSFET's gate |
+| 1 | 10 kΩ resistor: the gate to ground |
+| 1 | Sensirion SPS30 particle sensor, and a 5-wire lead for its plug: in the outlet's pocket |
+| 1 | Sensirion SGP41 on a GY-SGP41 module: in the end wall's recess |
+| | Hookup wire, and a USB-C charger that offers 12 V: many offer 5, 9, 15 and 20 V only |
+
 With the C-MAG: eight 4 × 2 mm magnets, four in each half - its bosses are drawn round the original's. Its parts, in ASA: the tray 2 h 16 m and 25 g, the
 lid 1 h 49 m and 21 g, the four grills on one plate 1 h 51 m and 11 g.
 
-For the joint sample, from the same stock: 2 M3 nuts, 1 M3 × 12 and 1 M3 × 8. Every screw is turned with a
-2.5 mm hex screwdriver, its blade 75 mm or longer. For the bottom sample: 2 M3 nuts,
+For the joint sample, from the same stock: 2 M3 nuts, 1 M3 × 12 and 1 M3 × 8. Every M3 is turned with a
+2.5 mm hex screwdriver, its blade 75 mm or longer; the tray's M2 takes a 1.5 mm one and the SGP41's M2.5 a 2 mm
+one. For the bottom sample: 2 M3 nuts,
 2 M3 × 12 and the USB-C trigger board. For the nut coupon: an M3 nut for each seat and slot, or one moved
 along, and an M3 × 8.
 
