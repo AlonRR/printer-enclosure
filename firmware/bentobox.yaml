@@ -46,6 +46,8 @@
 #           printer board's fan header.
 #   GPIO5   I2C SDA  } the outlet's sensors (D112), pull-ups to 3V3, never 5V
 #   GPIO6   I2C SCL  }
+#           Their power: the SPS30's VDD from the step-down's 5 V, beside the SuperMini's 5V pin (D249, 14 Oct
+#           2026), its SEL to GND for I2C; the SGP41's VIN from 3V3, never 5V.
 #   GPIO8   the onboard LED, active-low: the node's status
 #   GPIO18/19 are the USB lines: wire nothing to them, or flashing and the console are gone.
 

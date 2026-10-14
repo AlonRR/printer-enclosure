@@ -83,7 +83,8 @@ color(_d2_ink()) translate([-bb_l / 2 - 16, -30]) {
     text(str("(a) inside, on the floor: it blocks ", round(blocked), " mm2, ", round(100 * blocked / open_area), " % of the outlet; it reads the air after the carbon, undiluted"), size = $txt * 0.8);
     translate([0, -4]) text("(b) outside, against the end wall: it blocks nothing; it reads the edge of the outlet's air, mixed with the room's; the box is 12.2 mm longer there", size = $txt * 0.8);
     translate([0, -8]) text("The SPS30 cannot stand in the outlet: its 40.6 mm face is taller than the 36 mm opening. Under the outlet there is 12.5 mm, under the air, not in it.", size = $txt * 0.8);
-    translate([0, -12]) text("Not settled: which end (Q248), and the 5 V the SPS30 needs - the bay has only the trigger's 12 V (D249).", size = $txt * 0.8, font = "DejaVu Sans:style=Bold");
+    translate([0, -12]) text("Nor between the fans: the space there is 20 x 40.8 x 31.6 mm (14 Oct). Its 5 V comes from the ESP32's step-down in the bay (D249).", size = $txt * 0.8);
+    translate([0, -16]) text("Not settled: which end (Q248).", size = $txt * 0.8, font = "DejaVu Sans:style=Bold");
 }
 heading("The outlet's sensors: where they could go - from in front (-X)", [-bb_l / 2 - 16, base_top + fans_h + 8]);
 

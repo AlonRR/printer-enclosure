@@ -106,10 +106,20 @@ with schemdraw.Drawing(show=False) as d:
         d += elm.Tag().right().label(f"TACH {n}", fontsize=9)
     run = 5.4
     d += elm.Line().at(mini.sda).right(run)
-    sens = box("outlet sensor(s), D112:\nSGP41 (3V3), maybe\nSPS30 (5 V)", (5.2, 2.6), [
-        pin("SDA", "left", "2/2", "sda"), pin("SCL", "left", "1/2", "scl")], fontsize=9)
+    # the outlet's sensors (D112): the SPS30 on the step-down's 5 V, beside the SuperMini (D249), its SEL to ground
+    # for I2C; the SGP41 on 3V3, never 5 V (the air-quality monitor's wiring)
+    sens = box("the outlet's\nsensors, D112", (8.4, 3.0), [
+        pin("SDA", "left", "2/2", "sda"), pin("SCL", "left", "1/2", "scl"),
+        pin("SPS30 VDD", "right", "3/3", "v5"), pin("SGP41 VIN", "right", "2/3", "v33"),
+        pin("GND, SEL", "right", "1/3", "g")], fontsize=9)
     d += sens.anchor("sda").at((mini.sda[0] + run, mini.sda[1]))
     d += elm.Wire("-|").at(mini.scl).to(sens.scl)
+    d += elm.Line().at(sens.v5).right(0.6)
+    d += elm.Vdd().theta(0).label("+5 V")
+    d += elm.Line().at(sens.v33).right(1.8)
+    d += elm.Vdd().theta(0).label("3V3")
+    d += elm.Line().at(sens.g).right(1.0)
+    d += elm.Ground().theta(0)
     d += elm.Line().at(mini.led).right(0.6)
     d += elm.Label().label("the onboard LED, active-low", loc="right", fontsize=8)
 

@@ -159,6 +159,14 @@ controller in the bay. Neither is used here. This build's sensors (the same as t
 **in the base's outlet**, where they read the air after the carbon; the chamber's own monitor reads the air
 before it. Their mount is not drawn yet.
 
+The SPS30 cannot go between the fans instead (Alon asked, 14 Oct 2026). Cut from the fan section's mesh, the
+space there is 20 mm along the box, between the two fans, 40.8 mm across, wall to wall, and 31.6 mm from the
+floor to the fan section's top. The SPS30 is 40.69 × 40.6 × 12.2: standing on its edge in the gap, one of its
+long sides goes across, leaving 0.2 mm of the 40.8, and the other stands 40.7 tall, 9 mm more than there is;
+the wires' grommet stands in the gap too. Above the fans there is 11.6 mm under the carbon housing, against its 12.2 mm, and it would sit over the
+fans' intakes. The SGP41, 13.1 × 10.6 × 3.2, would fit there, but its four leads would need room in the grommet,
+which takes the fans' four.
+
 ![The bottom pulled apart, from the outlet's side: the fan section, the screws, the base with a nut's pocket under each post, the tray under it, and its four screws](diagrams/bentobox/auto-bottom.png)
 
 **Nuts, not heat-set inserts.** The fans' nuts are pull nuts; the tray's lie flat in slots that open one way.
@@ -196,13 +204,16 @@ across and 83 long.
   bottom face, so a plug's moulding clears whatever the box stands on.
 - **In the bay**, not drawn yet: the step-down (an MP1584EN, 5 V out), an ESP32-C3 SuperMini, and an IRLZ44N
   that switches both fans from the ESP32 (Alon, 9 Oct 2026), a diode across them; the fans' tach wires go to
-  two of the ESP32's pins. Lying flat, they fit the 8 mm. Before wiring, check that the charger offers 12 V:
+  two of the ESP32's pins. Lying flat, they fit the 8 mm. The outlet's SPS30 takes its 5 V from the same
+  step-down, beside the ESP32 (Alon, 14 Oct 2026: D249): it draws 45 to 65 mA, 80 mA for the first 200 ms as
+  its fan starts, against the MP1584EN's 3 A. Its SEL pin goes to ground, for I2C. The SGP41 goes on the
+  ESP32's 3V3, never 5 V, as in the air-quality monitor. Before wiring, check that the charger offers 12 V:
   many offer 5, 9, 15 and 20 V only. The SuperMini's firmware is
   [`firmware/bentobox.yaml`](../firmware/bentobox.yaml), with the pin for each wire in its header: flashed
   9 Oct 2026 and updated over the air since, it reports to Home Assistant over MQTT, and the fans are on unless
   switched off there.
 
-  ![The bay's circuit: the USB-C trigger's 12 V, the step-down's 5 V, both fans in parallel on the IRLZ44N with a flyback Schottky across them, the gate from GPIO10 through 100 ohm with 10 kohm to ground, each fan's tach to its own pin through a Schottky, the outlet's sensors on I2C](diagrams/bentobox/circuit.png)
+  ![The bay's circuit: the USB-C trigger's 12 V, the step-down's 5 V, both fans in parallel on the IRLZ44N with a flyback Schottky across them, the gate from GPIO10 through 100 ohm with 10 kohm to ground, each fan's tach to its own pin through a Schottky, the outlet's sensors on I2C, the SPS30 on the step-down's 5 V and the SGP41 on 3V3](diagrams/bentobox/circuit.png)
 
   The circuit, drawn by [`scripts/figures/bentobox-circuit.py`](../scripts/figures/bentobox-circuit.py) (`uv run
   scripts/figures/bentobox-circuit.py`) - its pins are the firmware's, so a change goes into both. The fans share the
