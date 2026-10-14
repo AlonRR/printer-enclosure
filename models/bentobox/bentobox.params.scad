@@ -229,7 +229,7 @@ head_room = 0.4;    /* ...in a counterbore this much wider than the head, past f
 // end walls, just over the bay's roof, that open out through the end faces: a nut goes in from outside and slides to
 // the slot's end, on its screw's axis. Out through the box's sides, the -X slots would break out of the end walls'
 // round tips, at the outlet.
-tray_screws_x = [-13, 3];   /* The tray's screws, X, at each end: clear of the magnets, and of the USB-C board's pocket at the -Y end... */
+tray_screws_x = [[-13, 3], [-7, 3]];   /* The tray's screws, X: at the -Y end and at the +Y end. Clear of the magnets, of the USB-C board's pocket at the -Y end, and at the +Y end of the SPS30's lead slot, which the -X screw there moved in from -13 for (Alon, 14 Oct 2026)... */
 tray_screw_y = 52.4;    /* ...and Y: in the end wall, as far out as the head's counterbore keeps two beads of the end face, so the slot's back keeps two beads under the fillet. */
 tray_slot_past = 1; /* Each tray nut's slot runs on this far past the end face: its mouth. */
 tray_screw_max = 20;    /* The longest screw each tray hole takes: the hole runs on up past where its tip would end (D213). */
@@ -241,18 +241,22 @@ usb_play = 0.1;     /* Round the board in its pocket, on top of fdm_hole_comp; a
 usb_stop = [3, 1.5];    /* Behind the board, between its pads, a stop that takes the plug's push: its width and depth. */
 meet = 0.05;        /* A new face kept this far off an imported one it would otherwise share: the STL's float32 corners are not where the same number computed here is, and faces a hair apart make slivers the slicer removes. */
 
-/* [The outlet's SPS30, in a pocket on the floor - Alon, 14 Oct 2026 (D247, D252)] */
+/* [The outlet's SPS30, in a pocket on the floor - Alon, 14 Oct 2026 (D247, D252, D255)] */
 // It lies on the floor at the +Y end, label up, its 40.69 along X and its air face to the duct's middle (-Y): its
 // inlets at the back, upstream, its grille at the front, so the duct's air carries what it blows out away from its
-// inlets. Its connector, on the face opposite, faces the +Y end wall. The pocket is cut into the floor's turn; its back
-// stands clear of the wires' tube, and the SPS30's front stands out past the outlet's face (vitamins/sensors.scad).
+// inlets. Its connector, on the face opposite, sits against the +Y end wall; the plug stands in a slot in the wall,
+// open to the outlet, so the SPS30 slides in from the front with its lead on, and the lead goes down the slot and
+// along a groove in the tray's top into the bay. The pocket is cut into the floor's turn. A stop on the tray, up
+// through a notch in the floor's front edge, stands in front of it and holds it in (vitamins/sensors.scad).
 
 sps30_fit = 0.2;        /* Round the SPS30 in its pocket: the air-quality monitor's, tried in ASA on an MK3S - of 0.2, 0.3 and 0.4 it took 0.2, snug. */
-sps30_y = -4;           /* Its air face, Y. Its connector face is sps30[1] on: far enough from the end wall that the plug has its sps30_lead_room, and that the lead's slot, inside the bay's end, lies wholly past it, 0.5 mm clear. */
-sps30_tube_clear = 0.3; /* The pocket's back face, this far off the wires' tube: its X follows, and so how far the SPS30 stands out past the outlet's face. */
-sps30_air_room = 10;    /* In front of its air face, the floor's turn is cut back this far, so its openings face open air - Sensirion: a large opening, little depth in front. */
-sps30_lead = [-17, -10, 3.6];  /* The lead's slot down through the floor into the bay, beside the plug: its ends' middles in X, and its width. The SPS30's five leads, about 1 mm each, lie side by side in it... */
-sps30_lead_in = 0.5;    /* ...its +Y side this far inside the bay's end. */
+sps30_air_room = 10;    /* In front of its air face, the floor's turn is cut back this far, so its openings face open air - Sensirion: a large opening, little depth in front... */
+sps30_air_past = 0.5;   /* ...from the outlet's face to this far past the inlets' end, short of the fans' wires' tube. */
+sps30_slot_depth = 6;   /* The lead's slot into the end wall, from the SPS30's connector face: the plug's stand-out, and 2 mm for its leads to turn down - a 1 mm lead round a 1 mm bend. */
+sps30_groove = [6.2, 1.5];  /* The lead's groove along the tray's top, from the slot's foot into the bay: across, and deep. The five leads lie side by side in it. */
+sps30_stop = [1.8, 10, 5];  /* The tray's stop in front of the SPS30, up through the floor's front edge: thick (four beads), wide, and how far it stands over the floor. */
+sps30_notch_fit = 0.2;  /* Round the stop in its notch. */
+sps30_stop_in = 0.2;    /* The stop's front, this far behind the outlet's face: flush, its face would merge with the tray's front face and leave degenerate facets. */
 
 /* [The sealed joints - Alon, 8 Oct 2026: D114, D116, D118, D119, D120; seamless tabs, flush heads] */
 // The three joints under suction - the section on the fan section, the carbon housing on the section, the HEPA

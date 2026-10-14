@@ -176,27 +176,31 @@ past the face. It blocks 14 % of the outlet, under the +Y fan.
 
 How it lies follows Sensirion's rules, as the [air-quality monitor](https://github.com/AlonRR/air-quality-monitor/blob/main/docs/design.md)
 lists them. Its two inlets and its outlet grille are all on one 40.69 x 12.2 face, the inlets at one end and the
-grille at the other; its connector is on the face opposite, near the outlet end, and the plugged lead needs about
-10 mm in front of it (the monitor's measurement).
+grille at the other; its connector is on the face opposite, near the outlet end.
 
 - **Label up**: one inlet wraps round onto the label face's edge, so that face stays open.
 - **Its openings face the duct's middle (-Y)**, into the moving air, with the inlets at the back, upstream, and the
   grille at the front: the duct's air carries what the grille blows out away from the inlets. In front of them the
-  turn is cut back 10 mm too, so they face open air. Sensirion's best is openings facing down; that needs it on
-  edge, 40.6 tall, and the duct is 36.
-- **Its connector faces the +Y end wall**, so the SPS30 sits towards the middle, its air face at Y -4, leaving the
-  plug 12.6 mm before the wall, and its lead's slot, which must lie inside the bay's end, wholly past its connector
-  face; all inside, at Y 4.5 to 45.1, the plug would have 4.3. The plug's room is cut on to
-  the end wall and half a millimetre into it, so the wall's fillet leaves no skin. The pocket's back stands 0.3 mm
-  off the fans' wires' tube, so the SPS30's front, with its nubs, stands 2.72 mm out past the outlet's face.
-- **Its lead goes down a slot into the bay**, to the ESP32: 3.6 mm wide, from X -17 to -10, beside the plug, its
-  +Y side 0.5 mm inside the bay's end.
-- **It sits in the pocket with 0.2 mm round it**, the monitor's tried fit. The pocket locates it at the back only:
-  its sides are open - the air face's must be - and its front stands proud, so nothing yet stops it sliding out of
-  the outlet (D255).
-- **Checked** (`check_sps30*`): the SPS30 clear of the base and the fan section; the plug's room clear of the end
-  wall; 10 mm of open air in front of its openings; a 3 mm bundle down the lead's slot into the bay, clear of the
-  tray and of the SPS30; and its way in, slid in from the outlet. Each has a control that the check catches.
+  turn is cut back 10 mm too, as far back as just past the inlets, short of the fans' wires' tube, so they face open
+  air. Sensirion's best is openings facing down; that needs it on edge, 40.6 tall, and the duct is 36.
+- **Its connector side lies along the +Y end wall** (Alon, 14 Oct 2026: D255), its face 1.62 mm off the wall's face:
+  the tray's two nut slots at that end reach 0.5 mm in under the duct's edge, and the pocket stops two beads short
+  of them - cut to the wall, it would take away the fillet over them and open them into it.
+- **Its plug stands in a slot in the end wall**, 6 mm deep from the connector face - the plug's stand-out and 2 mm
+  for its leads to turn down, a 1 mm lead round a 1 mm bend - leaving 2.62 mm of wall behind it. The slot is open to
+  the outlet, so the SPS30 slides in from the front with its lead on, and runs down to the base's bottom face. How
+  far the plug stands out is not measured yet (Q256): 4 mm is a placeholder.
+- **Its lead goes down the slot and along a groove in the tray's top into the bay**, to the ESP32: the bay stops at
+  Y 41.4, 8 mm short of the end wall, so the slot alone does not reach it. The groove is 6.2 mm across and 1.5 deep.
+  The +Y end's -X tray screw moved from X -13 to -7, out of the slot's way.
+- **It does not stand out**: its front is 2.2 mm inside the outlet's face, and its back 2.4 mm short of the +X wall.
+- **The tray holds it in**: a stop on the tray's front wall, 1.8 mm thick and 10 wide, comes up through a notch in
+  the floor's front edge and stands 5 mm over the floor in front of it. Put the SPS30 in, its lead down the slot,
+  then the tray on; the tray off lets it out. It sits with 0.2 mm round it, the monitor's tried fit.
+- **Checked** (`check_sps30*`): the SPS30 clear of the base and the fan section; the plug in the end wall's slot; 10
+  mm of open air in front of its openings; its leads down the slot and along the groove into the bay, clear of the
+  base, the tray and the SPS30; its way in from the outlet with the tray off; the wires' tube left whole; the stop
+  clear of it in place, and in its way 1 mm out. Each has a control that the check catches.
 - The duct's air past it: at the simulated 0.65 L/s, the outlet's mean is about 0.2 m/s, under Sensirion's 1 m/s.
   The simulation predates the pocket. Keep the ESP32 out from under it in the bay: Sensirion wants the sensor away
   from, and below, a warm board.
@@ -660,7 +664,7 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Clamp sample (shelved) | ASA | 1 plate | 1 h 7 m | 7 g |
 | Base | ASA | 1 | 3 h 32 m | 36 g |
 | Fan section | ASA | 1 | 3 h 43 m | 35 g |
-| Tray | ASA | 1 | 1 h 48 m | 20 g |
+| Tray | ASA | 1 | 1 h 54 m | 21 g |
 | Carbon housing | ASA | 1 | 6 h 24 m | 56 g |
 | HEPA holder | ASA | 1 | 4 h 35 m | 44 g |
 | Cover | ASA | 1 | 1 h 53 m | 13 g |

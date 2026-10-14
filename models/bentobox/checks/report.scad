@@ -5,8 +5,8 @@
 // checks/report.scad - THE REPORT: the warnings - builds, but compromised - and the echoes each part prints, with the values only they read. Included by bentobox.scad; not a model on its own.
 
 // What a tray screw leaves: its hole to the board's pocket, beside it; its counterbore to the magnets' holes.
-tray_usb_wall = min([for (x = tray_screws_x) abs(x - usb_x) - usb_pocket[0] / 2 - hole_d / 2]);
-tray_magnet_wall = min([for (x = tray_screws_x, m = auto_magnets) norm([x, tray_screw_y] - m) - (m3_cb[0] + auto_magnet[0]) / 2]);
+tray_usb_wall = min([for (x = tray_screws_x[0]) abs(x - usb_x) - usb_pocket[0] / 2 - hole_d / 2]);
+tray_magnet_wall = min([for (e = tray_screws_x, x = e, m = auto_magnets) norm([x, tray_screw_y] - m) - (m3_cb[0] + auto_magnet[0]) / 2]);
 
 // How far a hex reaches towards theta, ac across its corners, a flat facing `flat`.
 function hex_reach(theta, flat, ac) = let(d = ((theta - flat) % 60 + 60) % 60) ac / 2 * cos(30 - min(d, 60 - d));
@@ -32,16 +32,16 @@ warns = [
     if (tray_usb_wall < 2 * bead - 1e-9) str("a tray screw's hole leaves ", tray_usb_wall, " mm to the USB-C board's pocket, under two beads"),
     if (tray_magnet_wall < 2 * bead - 1e-9) str("a tray screw's counterbore leaves ", tray_magnet_wall, " mm to a magnet's hole, under two beads"),
     if (nut_floor < 4 * fdm_layer_h - 1e-9) str("a tray nut's slot has ", nut_floor, " mm under it, under four layers"),
-    if (sps30_room < sps30_lead_room - 1e-9) str("the SPS30's plug has ", sps30_room, " mm before the end wall, under the ", sps30_lead_room, " its lead needs"),
-    if (sps30_tube_clear < 0) str("the SPS30's pocket cuts ", -sps30_tube_clear, " mm into the wires' tube"),
-    if (sps30_lead_y - sps30_lead[2] / 2 < sps30_yy[1] + sps30_fit)
-        str("the lead's slot runs ", sps30_yy[1] + sps30_fit - (sps30_lead_y - sps30_lead[2] / 2), " mm under the SPS30's connector face"),
+    if (sps30_slot_depth < sps30_plug_out + sps30_wire + 1 - 1e-9)
+        str("the SPS30's lead slot is ", sps30_slot_depth, " mm deep, under the plug's ", sps30_plug_out, " and the leads' turn"),
+    if (bb_l / 2 - sps30_slot_y < 2 * bead - 1e-9) str("the end wall behind the SPS30's lead slot is ", bb_l / 2 - sps30_slot_y, " mm, under two beads"),
 ];
 for (w = warns) echo(str("WARNING: ", w));
 
-module say_sps30() echo(str("sps30: in its pocket on the outlet's floor, label up, its air face at Y ", sps30_y,
-    " facing the duct's middle; its front ", sps30_out, " mm out past the outlet's face; ", sps30_room,
-    " mm before the end wall for its plug; its lead down the slot into the bay"));
+module say_sps30() echo(str("sps30: in its pocket on the outlet's floor, label up, its air face at Y ", sps30_yy[0],
+    " facing the duct's middle, its connector face against the +Y end wall; its front ", sps30_in,
+    " mm inside the outlet's face, behind the tray's stop; its plug in the end wall's slot, ", sps30_slot_depth,
+    " mm deep for a plug standing ", sps30_plug_out, " out (NOT MEASURED), the lead down it and along the tray's groove into the bay"));
 
 module say_usb() echo(str("usb-c: the socket's face flush with the -Y end face, its axis at X ", usb_x, ", Z ", usb_axis_z,
     " (", usb_axis_z - auto_base_z0, " over the bottom face); the board on a floor ", usb_pcb_z - auto_base_z0, " over the bottom face"));

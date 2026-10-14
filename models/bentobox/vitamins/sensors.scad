@@ -20,11 +20,14 @@ sps30_open = [5.2, 1.0];        /* Along the air face, how much of each end has 
 sps30_nub = 0.155;              /* Each end of the air face: the plastic nubs on the faces there. MEASURED 3 Oct 2026:
                                    41.00 across them. */
 sps30_plug = [2.0, 10.5];       /* Its plug and lead, along the connector face - the face opposite the air face - from
-                                   the outlet end. From a photo, 2 Oct 2026, scaled against the sensor. */
-sps30_lead_room = 10;           /* Room in front of the connector face for the plugged lead, bent over as tightly as it
-                                   comfortably goes. MEASURED 2 Oct 2026. The last four are the air-quality monitor's
-                                   (sps_nub, conn_from, conn_to, cable_zone_h), as are its rules: Sensirion's, in that
-                                   repository's docs/design.md. */
+                                   the outlet end. From a photo, 2 Oct 2026, scaled against the sensor... */
+sps30_wires = [3.0, 8.6];       /* ...and where its five leads leave the plug, along the face from the same end. The last
+                                   three are the air-quality monitor's (sps_nub, conn_from, conn_to), as are its rules:
+                                   Sensirion's, in that repository's docs/design.md. */
+sps30_wire = 1.0;               /* A lead's outside, about: the monitor's "an SPS30 lead wire of about 1 mm". */
+sps30_plug_out = 4.0;           /* <<CONFIRM>> How far the plug, with its lead in it, stands out of the connector face
+                                   before the leads can turn: NOT MEASURED - a placeholder. The leads bend easily round
+                                   1 mm (Alon, 14 Oct 2026). */
 sgp41 = [13.14, 10.6, 3.24];    /* The GY-SGP41 module: long, wide, and thick with its parts - the sensor on one
                                    face, the rest of its electronics on the other. MEASURED 2 Oct 2026. */
 sgp41_hole = 3.13;              /* Its one mounting hole, for an M2.5. MEASURED 2 Oct 2026. */

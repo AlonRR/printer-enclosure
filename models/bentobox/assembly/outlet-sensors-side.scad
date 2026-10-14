@@ -61,16 +61,18 @@ color(_d2_ink()) {
 }
 
 // ---- dimensions
-dim_h(body[0], face, sps_z[1] + 4, sps_z[1], str(sps30_out, " out"), C_SPS);
+dim_h(face, body[0], sps_z[1] + 4, sps_z[1], str(sps30_in, " in"), C_SPS);
 dim_h(body[0], body[1], sps_z[1] + 10, sps_z[1], str(body[1] - body[0], " with its nubs"), C_SPS);
 dim_h(face, turn_x, auto_base_z0 - 6, base_floor, str("flat floor ", turn_x - face), above = false);
 leader([duct_in[0] + base_wall + 4, sps_z[1] + 6], [turn_x + 9, base_floor + 2.4], "the turn as it was, cut back to the floor", C_TURN);
+leader([face - 16, base_floor + sps30_stop[2] + 8], [face + sps30_stop[0] / 2, base_floor + sps30_stop[2] - 1], "the tray's stop", _d2_ink());
 
 // ---- what it says
 color(_d2_ink()) translate([face - 6, auto_base_z0 - 20]) {
     text(str("The floor is flat for ", turn_x - face, " mm in from the outlet's face, then turns up into the +X wall on a ", base_turn_r, " mm radius."), size = $txt * 0.8);
-    translate([0, -4]) text(str("The SPS30 is ", sps30[1], " deep: the pocket cuts the turn back to the floor, and its front stands ", sps30_out, " mm out past the face."), size = $txt * 0.8);
-    translate([0, -8]) text(str("Its air face, towards you here, faces the duct's middle (-Y). Cut at Y ", cut_y, ", seen from -Y."), size = $txt * 0.8);
+    translate([0, -4]) text(str("The SPS30 is ", sps30[1], " deep: the pocket cuts the turn back to the floor, and its front stands ", sps30_in, " mm inside the face,"), size = $txt * 0.8);
+    translate([0, -8]) text("behind the tray's stop, which comes up through a notch in the floor's front edge.", size = $txt * 0.8);
+    translate([0, -12]) text(str("Its air face, towards you here, faces the duct's middle (-Y). Cut at Y ", round(10 * cut_y) / 10, ", seen from -Y."), size = $txt * 0.8);
 }
 heading("The SPS30 in its pocket, from the side", [face - 6, duct_h + fans_h + 8]);
 

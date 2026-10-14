@@ -85,7 +85,7 @@ color(_d2_ink()) translate([-bb_l / 2 - 16, -30]) {
     translate([0, -8]) text("The SPS30 cannot stand in the outlet: its 40.6 mm face is taller than the 36 mm opening. Under the outlet there is 12.5 mm, under the air, not in it.", size = $txt * 0.8);
     translate([0, -12]) text("Nor between the fans: the space there is 20 x 40.8 x 31.6 mm (14 Oct). Its 5 V comes from the ESP32's step-down in the bay (D249).", size = $txt * 0.8);
     translate([0, -16]) text("(a), Alon, 14 Oct (D247): it lies in a pocket cut into the floor's turn, which is flat for only 19.8 of its 40.6 depth (D252) - outlet-sensors-top.png.", size = $txt * 0.8);
-    translate([0, -20]) text("Not settled: where the SGP41 goes (Q248), and what holds the SPS30 at the front (D255).", size = $txt * 0.8, font = "DejaVu Sans:style=Bold");
+    translate([0, -20]) text("Not settled: where the SGP41 goes (Q248), and how far the SPS30's plug stands out of its face (Q256).", size = $txt * 0.8, font = "DejaVu Sans:style=Bold");
 }
 heading("The outlet's sensors: where they could go - from in front (-X)", [-bb_l / 2 - 16, base_top + fans_h + 8]);
 

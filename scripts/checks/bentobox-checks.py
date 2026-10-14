@@ -54,6 +54,7 @@ FITS = [("check_section_carbon", UNSEALED), ("check_section_fans", UNSEALED), ("
         ("check_auto_nuts", []), ("check_auto_nut_ways", []),
         ("check_auto_screws", []), ("check_auto_wires", []), ("check_auto_air", []),
         ("check_sps30", []), ("check_sps30_plug", []), ("check_sps30_air", []), ("check_sps30_lead", []), ("check_sps30_way", []),
+        ("check_sps30_tube", []), ("check_sps30_stop", []), ("check_sps30_held", []),
         ("check_seal_j1", []), ("check_seal_j2", []), ("check_seal_j3", []), ("check_seal_beads", []),
         ("check_seal_screws", []), ("check_seal_nuts", []), ("check_seal_nut_ways", []), ("check_seal_access", [])]
 
@@ -111,15 +112,19 @@ CONTROLS = [
     ("check_auto_screws", [("screw_shift", "[1, 0]")], "the screws moved 1 mm off their holes"),
     ("check_auto_wires", [("wire_shift", "1.5")], "the wires moved 1.5 mm off the tube"),
     ("check_auto_air", [("post_clear_air", "false")], "the fan screws' posts left round, under the fans' openings"),
-    # The SPS30's pocket is cut from its own place, so moving the SPS30 by sps30_shift moves it alone; sps30_y moves
-    # the pocket with it, but not the end wall its plug's room runs to; the open air in front of its openings is the
-    # checks' own number, so cutting less of the turn leaves it in the way.
+    # The SPS30's pocket is cut from its own place, so moving the SPS30 by sps30_shift moves it alone; its plug and
+    # leads are drawn from the sensor's own values, apart from the slot and groove that take them; the open air in
+    # front of its openings is the checks' own number, so cutting less of the turn leaves it in the way.
     ("check_sps30", [("sps30_shift", "[0.4, 0, 0]")], "the SPS30 moved 0.4 mm back, into its pocket's back face"),
-    ("check_sps30_plug", [("sps30_y", "0.5")], "the SPS30 moved 2 mm towards the end wall: its plug's room into the wall"),
+    ("check_sps30_plug", [("sps30_slot_depth", "3")], "the end wall's slot cut 3 mm deep, shallower than the plug stands"),
     ("check_sps30_air", [("sps30_air_room", "5")], "the floor's turn cut back only 5 mm in front of its openings"),
-    ("check_sps30_lead", [("sps30_lead_in", "-2.5")], "the lead's slot moved 3 mm out, past the bay's end into the tray"),
-    ("check_sps30_lead", [("sps30_y", "-1.5")], "the SPS30 moved 2.5 mm towards the end wall, its edge over the lead's slot"),
+    ("check_sps30_lead", [("sps30_groove", "[6.2, 0.5]")], "the tray's groove cut 0.5 mm deep, under the leads"),
     ("check_sps30_way", [("sps30_shift", "[0, 0, -0.3]")], "the SPS30 set 0.3 mm down: its way in drags through the floor"),
+    ("check_sps30_tube", [("sps30_air_past", "3")], "the cut in front of its openings run 3 mm past the inlets, into the tube"),
+    ("check_sps30_stop", [("sps30_shift", "[-0.4, 0, 0]")], "the SPS30 moved 0.4 mm out, into the tray's stop"),
+    ("check_sps30_held", [("sps30_stop", "[1.8, 10, 0]")], "the tray's stop cut down to the floor: nothing in front of the SPS30"),
+    ("check_tray_slot_walls", [("tray_screws_x", "[[-13, 3], [-13, 3]]")], "the +Y end's -X tray screw back at -13, its slot into the SPS30's lead slot"),
+    ("check_auto_tray", [("sps30_notch_fit", "-0.3")], "the floor's notch made narrower than the tray's stop"),
     # The sealed joints. collar_play narrows the upper parts' chamfers, not the collars; bead_side the grooves,
     # not the beads. The top joint's tabs back at the corners stand over the lower joints' screws; a short blade
     # brings the driver's handle down against the HEPA holder.
@@ -146,7 +151,7 @@ CONTROLS = [
 ]
 MISSING = "Can't open import file"
 # The checks that must NOT come out empty: the mate's grip must bite the plugs. Their controls must empty them.
-MEETS = {"check_fan_mate_grip"}
+MEETS = {"check_fan_mate_grip", "check_sps30_held"}
 
 # The checks hold parts that meet face to face 0.01 mm apart (checks/fits.scad, `sep`), so a good fit
 # leaves NOTHING; DUST is only float noise.

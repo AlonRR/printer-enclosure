@@ -72,7 +72,7 @@ tray_screw = screw_for(tray_slot_bot + nut_h + screw_tip - tray_head_z);
 tray_tip_z = tray_head_z + tray_screw;
 tray_room_z = tray_head_z + tray_screw_max + 0.5;     // ...and the top of its hole: room for a screw up to tray_screw_max
 // Each: X, Y, the way out of its slot, through its end face, and how far past the axis the slot runs.
-tray_screws = [for (x = tray_screws_x, sy = [-1, 1]) [x, sy * tray_screw_y, sy > 0 ? 90 : 270, bb_l / 2 - tray_screw_y + tray_slot_past]];
+tray_screws = [for (e = [0, 1], x = tray_screws_x[e]) let(sy = e == 0 ? -1 : 1) [x, sy * tray_screw_y, sy > 0 ? 90 : 270, bb_l / 2 - tray_screw_y + tray_slot_past]];
 // The duct's inside: the +X wall's face and the end walls' faces; the turn's centre, X and Z.
 duct_in = [bb_w / 2 - base_wall, bb_l / 2 - base_wall];
 turn_c = [duct_in[0] - base_turn_r, base_floor + base_turn_r];

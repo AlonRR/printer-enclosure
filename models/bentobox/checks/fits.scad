@@ -86,18 +86,23 @@ module base_air() intersection() {
 module wire_probe() translate([auto_conduit[0] + wire_shift, auto_conduit[1], auto_conduit_z[0] - 2])
     cylinder(d = wire_d, h = auto_conduit_z[1] - auto_conduit_z[0] + 3);
 
-// The outlet's SPS30 (D252). Its plug's room, from the sensor's own values, in front of its connector face; the open
-// air its openings want, in front of them along the air face, from the checks' own number; its lead, a bundle from
-// over the floor down its slot into the bay; and its way in, slid in from out past the outlet's face.
+// The outlet's SPS30 (D252, D255). Its plug, from the sensor's own values, out of its connector face; the open air
+// its openings want, in front of them along the air face, from the checks' own number; its five leads, a flat bundle
+// side by side, from just past the plug down the end wall's slot and along the tray's groove into the bay; its way in,
+// slid in from out past the outlet's face with its plug on; and the fans' wires' tube, which its pocket must not cut.
 sps30_air_need = 10;    /* Open air in front of the SPS30's openings: kept apart from sps30_air_room, which cuts it, so a control can cut less. */
-sps30_lead_d = 3;       /* The SPS30's five leads, side by side: its slot must pass a rod this thick along it. */
 module sps30_plug_probe() translate(sps30_shift + [sps30_plug_x[0], sps30_yy[1] + sep, base_floor + sep])
-    cube([sps30_plug[1] - sps30_plug[0], sps30_lead_room, sps30[2]]);
+    cube([sps30_plug[1] - sps30_plug[0], sps30_plug_out + sps30_wire, sps30[2]]);
 module sps30_air_probe() translate(sps30_shift + [sps30_x[0] + sps30_open[1], sps30_yy[0] - sps30_air_need, base_floor + sep])
     cube([sps30[0] - sps30_open[0] - sps30_open[1], sps30_air_need - sep, sps30[2]]);
-module sps30_lead_probe() hull() for (x = [sps30_lead[0], sps30_lead[1]])
-    translate([x, sps30_lead_y, auto_seat_z + 1]) cylinder(d = sps30_lead_d, h = base_floor + 1 - auto_seat_z, $fn = 16);
-module sps30_way() hull() for (x = [0, -50]) translate([x, 0, 0]) sps30_model();
+module sps30_lead_probe() let(x = sps30_wires_x, y = sps30_yy[1] + sps30_plug_out, w = sps30_wire, y0 = bay_size[1] / 2 - 3,
+        z0 = tray_top - sps30_groove[1] + sep) translate(sps30_shift) {
+    translate([x[0], y, z0]) cube([x[1] - x[0], w, base_floor + sps30[2] / 2 - z0]);
+    translate([x[0], y0, z0]) cube([x[1] - x[0], y + w - y0, w]);
+}
+module sps30_way() for (plug = [false, true]) hull() for (x = [0, -50]) translate([x, 0, 0])
+    if (plug) sps30_plug_probe(); else sps30_model();
+module sps30_tube() translate([0, 0, auto_bay_top]) linear_extrude(duct_h - auto_bay_top) conduit2d();
 
 // The air's way down under the paper, from the paper's own folds: between the combs, and between the second
 // bottom folds from the edges, inside the long teeth's channels. The lower frame must leave it open; its rim
