@@ -6,7 +6,7 @@
 
 // What a tray screw leaves: its hole to the board's pocket, beside it; its counterbore to the magnets' holes.
 tray_usb_wall = min([for (x = tray_screws_x[0]) abs(x - usb_x) - usb_pocket[0] / 2 - hole_d / 2]);
-tray_magnet_wall = min([for (e = tray_screws_x, x = e, m = auto_magnets) norm([x, tray_screw_y] - m) - (m3_cb[0] + auto_magnet[0]) / 2]);
+tray_magnet_wall = min([for (s = tray_screws, m = auto_magnets) norm([s[0], abs(s[1])] - m) - (kit_cb(s[4])[0] + auto_magnet[0]) / 2]);
 
 // How far a hex reaches towards theta, ac across its corners, a flat facing `flat`.
 function hex_reach(theta, flat, ac) = let(d = ((theta - flat) % 60 + 60) % 60) ac / 2 * cos(30 - min(d, 60 - d));
@@ -48,9 +48,11 @@ module say_sps30() echo(str("sps30: in its pocket on the outlet's floor, label u
 
 module say_usb() echo(str("usb-c: the socket's face flush with the -Y end face, its axis at X ", usb_x, ", Z ", usb_axis_z,
     " (", usb_axis_z - auto_base_z0, " over the bottom face); the board on a floor ", usb_pcb_z - auto_base_z0, " over the bottom face"));
-module say_auto_hardware() let(n = len(tray_screws)) echo(str("auto: ", _count(4 + n), " M3 nuts, the fans' four pulled up into pockets, the tray's ",
-    _count(n), " in slots; the fans' four screws M3 x ", fan_screw, " socket head, through the fans; the tray's ", _count(n), " M3 x ",
-    tray_screw, " socket head, sunk ", head_sink, " mm into its bottom face, and a nub on its top in a hole in the base's"));
+module say_auto_hardware() let(m3 = [for (s = tray_screws) if (s[4] == m3_kit) s], m2 = [for (s = tray_screws) if (s[4] == m2_kit) s])
+    echo(str("auto: ", _count(4 + len(m3)), " M3 nuts, the fans' four pulled up into pockets, the tray's ", _count(len(m3)),
+    " in slots; the fans' four screws M3 x ", fan_screw, " socket head, through the fans; the tray's ", _count(len(m3)), " M3 x ",
+    kit_screw(m3_kit), len(m2) > 0 ? str(" and ", _count(len(m2)), " M2 x ", kit_screw(m2_kit), ", with an M2 nut,") : "",
+    " socket head, sunk ", head_sink, " mm into its bottom face; and a nub on its top in a hole in the base's"));
 
 module say_cmag() let(n = len(cmag_mesh_holes()), open = n * 3 * sqrt(3) / 8 * pow(cmag_hole_ac, 2))
     echo(str("C-MAG grills: ", n, " holes each, ", cmag_mesh[0], " mm across their flats, ", cmag_hole_ac, " across their corners, ",

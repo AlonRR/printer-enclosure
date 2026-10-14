@@ -60,21 +60,22 @@ module auto_nuts(way = 0) {
             hull() for (x = [0, way]) translate([x * cos(s[3]), x * sin(s[3]), 0]) pull_frame(s, pull_bot + sep) hex_nut(nut_af, nut_h);
         }
     // A tray nut on its screw's axis; its way in: along its slot and out through the end face.
-    for (s = tray_screws) hull() for (x = [0, way == 0 ? 0 : s[3] + 1]) translate([x * cos(s[2]), x * sin(s[2]), 0]) nut_at(s, tray_slot_bot);
+    for (s = tray_screws) hull() for (x = [0, way == 0 ? 0 : s[3] + 1]) translate([x * cos(s[2]), x * sin(s[2]), 0])
+        slot_frame(s, tray_slot_bot + (kit_slot_h(s[4]) - s[4][4]) / 2) hex_nut(s[4][3], s[4][4]);
 }
 module auto_screws() translate([screw_shift[0], screw_shift[1], 0]) {
     for (s = auto_fan_screws) translate([s[0], s[1], fan_tip_z]) cylinder(d = screw_d, h = fan_screw);
-    for (s = tray_screws) translate([s[0], s[1], tray_head_z]) {
-        cylinder(d = screw_d, h = tray_screw);
-        translate([0, 0, -m3_head[1]]) cylinder(d = m3_head[0], h = m3_head[1]);
+    for (s = tray_screws) let(k = s[4]) translate([s[0], s[1], kit_head_z(k)]) {
+        cylinder(d = k[0], h = kit_screw(k));
+        translate([0, 0, -k[2]]) cylinder(d = k[1], h = k[2]);
     }
 }
 // Round each tray screw's slot, two beads every way, and round its hole on to past the screw's tip: all inside the
 // original's end wall, nothing of it open to the duct. Grown by spheres, so a corner keeps two beads, not more.
-module tray_slot_walls() let(g = 2 * bead, f = fdm_hole_comp + nut_fit, ac = nut_af / cos(30)) for (s = tray_screws)
+module tray_slot_walls() let(g = 2 * bead, f = fdm_hole_comp + nut_fit) for (s = tray_screws) let(k = s[4], ac = k[3] / cos(30))
     slot_frame(s, tray_slot_bot) {
-        hull() for (x = [-(ac / 2 + f), s[3]], y = [-1, 1] * (nut_af / 2 + f), z = [0, nut_slot_h]) translate([x, y, z]) sphere(r = g, $fn = 12);
-        hull() for (z = [0, tray_room_z - tray_slot_bot]) translate([0, 0, z]) sphere(r = hole_d / 2 + g, $fn = 16);
+        hull() for (x = [-(ac / 2 + f), s[3]], y = [-1, 1] * (k[3] / 2 + f), z = [0, kit_slot_h(k)]) translate([x, y, z]) sphere(r = g, $fn = 12);
+        hull() for (z = [0, kit_room_z(k) - tray_slot_bot]) translate([0, 0, z]) sphere(r = kit_hole(k) / 2 + g, $fn = 16);
     }
 // The base's air: the duct and the SPS30's pocket, inside the outline - a millimetre in, clear of the slots' mouths in
 // the end faces.

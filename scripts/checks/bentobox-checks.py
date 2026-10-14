@@ -124,7 +124,8 @@ CONTROLS = [
     ("check_sps30_tube", [("sps30_air_past", "3")], "the cut in front of its openings run 3 mm past the inlets, into the tube"),
     ("check_sps30_stop", [("sps30_shift", "[-0.4, 0, 0]")], "the SPS30 moved 0.4 mm out, into the tray's stop"),
     ("check_sps30_held", [("sps30_stop", "[1.8, 10, 0]")], "the tray's stop cut down to the floor: nothing in front of the SPS30"),
-    ("check_tray_slot_walls", [("tray_screws_x", "[[-13, 3], [-13, 3]]")], "the +Y end's -X tray screw back at -13, its slot into the SPS30's lead slot"),
+    ("check_tray_slot_walls", [("tray_screws_x", "[[-13, 3], [-13, 3]]")], "a tray screw at the +Y end's -13 too, its slot into the sensors' lead slot"),
+    ("check_tray_slot_walls", [("tray_screw_kind", '["M3", "M3"]'), ("sps30_wall_y", "49.4")], "the +Y end's screw an M3, the SPS30 held flush: its slot under the pocket"),
     ("check_auto_tray", [("sps30_notch_fit", "-0.3")], "the floor's notch made narrower than the tray's stop"),
     ("check_auto_tray", [("tray_pin_fit", "-0.3")], "the base's hole made narrower than the tray's nub"),
     # The SGP41 is drawn from its own values and moved by sgp41_shift alone; its air and leads are the checks' own.

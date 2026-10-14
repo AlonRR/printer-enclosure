@@ -103,7 +103,7 @@ heading("The SPS30 in its pocket, from above", [face - 14, bb_l / 2 + 8]);
 color(_d2_ink()) translate([face - 14, -bb_l / 2 - 12]) {
     text("Its two inlets and its outlet grille are on one face, the edge facing the duct's middle (-Y): in at the back, out", size = $txt * 0.8);
     translate([0, -4]) text(str("at the front, and the duct's air carries that out of the outlet. In front of them the floor's turn is cut back ", sps30_air_room, " mm."), size = $txt * 0.8);
-    translate([0, -8]) text(str("Its connector face is ", round(10 * (duct_in[1] - sps30_yy[1])) / 10, " mm off the +Y end wall, two beads clear of the tray's nut slots there; the plug"), size = $txt * 0.8);
+    translate([0, -8]) text(str("Its connector face is ", round(10 * (duct_in[1] - sps30_yy[1])) / 10, " mm off the +Y end wall, the tray's M2 there clear of it (D259); the plug"), size = $txt * 0.8);
     translate([0, -12]) text(str("sits flush, its leads bent down in a slot ", sps30_slot_y - sps30_yy[1], " mm out from that face, open to the outlet, so it"), size = $txt * 0.8);
     translate([0, -16]) text(str("slides in with its lead on, and the lead goes down the slot and along the tray's groove into the bay. Its front is ", sps30_in, " mm"), size = $txt * 0.8);
     translate([0, -20]) text("inside the outlet's face; the tray's stop, up through a notch in the floor's front edge, holds it in.", size = $txt * 0.8);

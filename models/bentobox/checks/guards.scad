@@ -5,6 +5,7 @@
 // checks/guards.scad - THE GUARDS: the asserts that stop a render whose geometry is impossible, and the values only they read. Included by bentobox.scad; not a model on its own.
 
 assert(!is_undef(fan_screw) && !is_undef(tray_screw), "no screw in screw_lengths is long enough");
+assert([for (s = tray_screws) if (is_undef(kit_screw(s[4]))) s] == [], "a tray screw has no length long enough in its set");
 assert(head_sink >= 0, "a tray screw's head stands out of the tray's bottom face");
 assert(base_turn_r > base_fillet && base_floor + base_turn_r < duct_h, "the duct's turn must be rounder than its fillets and meet the +X wall under the top");
 assert([for (s = auto_fan_screws) if (abs(min(duct_in[0] - s[0], duct_in[1] - abs(s[1])) - auto_post_wall) > 1e-6) s] == [],

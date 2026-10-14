@@ -71,8 +71,23 @@ tray_slot_top = tray_slot_bot + nut_slot_h;
 tray_screw = screw_for(tray_slot_bot + nut_h + screw_tip - tray_head_z);
 tray_tip_z = tray_head_z + tray_screw;
 tray_room_z = tray_head_z + tray_screw_max + 0.5;     // ...and the top of its hole: room for a screw up to tray_screw_max
-// Each: X, Y, the way out of its slot, through its end face, and how far past the axis the slot runs.
-tray_screws = [for (e = [0, 1], x = tray_screws_x[e]) let(sy = e == 0 ? -1 : 1) [x, sy * tray_screw_y, sy > 0 ? 90 : 270, bb_l / 2 - tray_screw_y + tray_slot_past]];
+// A tray screw's set: the thread, the head's diameter and height, the nut's flats and height, and the lengths there
+// are. Its hole, counterbore, nut slot and length follow from the set.
+m3_kit = [screw_d, m3_head[0], m3_head[1], nut_af, nut_h, screw_lengths];
+m2_kit = [small_screw[0], small_screw[1], small_screw[2], small_nut[0], small_nut[1], small_screw_lengths];
+function kit_hole(k) = 2 * (k[0] / 2 + fdm_hole_comp);
+function kit_cb(k) = [k[1] + 2 * fdm_hole_comp + head_room, k[2] + head_sink];
+function kit_slot_w(k) = k[3] + 2 * (fdm_hole_comp + nut_fit);
+function kit_slot_h(k) = up_to_layer(k[4] + 2 * nut_fit);
+function kit_head_z(k) = auto_base_z0 + kit_cb(k)[1];
+function kit_screw(k) = [for (l = k[5]) if (l >= tray_slot_bot + k[4] + screw_tip - kit_head_z(k) - 1e-9) l][0];
+function kit_room_z(k) = kit_head_z(k) + tray_screw_max + 0.5;
+// Each: X, Y, the way out of its slot, through its end face, how far past the axis the slot runs, and its set. An
+// M2 stands as far out as its counterbore keeps two beads of the end face, as the M3's tray_screw_y does.
+tray_kits = [for (k = tray_screw_kind) k == "M2" ? m2_kit : m3_kit];
+tray_screws = [for (e = [0, 1], x = tray_screws_x[e]) let(sy = e == 0 ? -1 : 1, k = tray_kits[e],
+        y = k == m2_kit ? bb_l / 2 - kit_cb(k)[0] / 2 - 2 * bead : tray_screw_y)
+    [x, sy * y, sy > 0 ? 90 : 270, bb_l / 2 - y + tray_slot_past, k]];
 // The duct's inside: the +X wall's face and the end walls' faces; the turn's centre, X and Z.
 duct_in = [bb_w / 2 - base_wall, bb_l / 2 - base_wall];
 turn_c = [duct_in[0] - base_turn_r, base_floor + base_turn_r];

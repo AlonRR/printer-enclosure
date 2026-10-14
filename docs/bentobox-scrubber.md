@@ -183,12 +183,13 @@ grille at the other; its connector is on the face opposite, near the outlet end.
   grille at the front: the duct's air carries what the grille blows out away from the inlets. In front of them the
   turn is cut back 10 mm too, as far back as just past the inlets, short of the fans' wires' tube, so they face open
   air. Sensirion's best is openings facing down; that needs it on edge, 40.6 tall, and the duct is 36.
-- **Its connector side lies along the +Y end wall** (Alon, 14 Oct 2026: D255), its face 1.62 mm off the wall's face:
-  the tray's two nut slots at that end reach 0.5 mm in under the duct's edge, and the pocket stops two beads short
-  of them - cut to the wall, it would take away the fillet over them and open them into it.
+- **Its connector side lies flush along the +Y end wall** (Alon, 14 Oct 2026: D255, D257, D259), its face 0.2 mm
+  off the wall's. An M3 tray screw under it would not let it: an M3 nut's slot reaches 0.5 mm in under the duct's
+  edge, where the pocket takes away the fillet that covers it. So the +Y end's one tray screw is an M2, whose
+  smaller nut and head let it stand 0.85 mm further out, its slot two beads clear of the pocket.
 - **Its plug sits flush in its face**, and the leads, turned down out of it, reach 1.95 mm out (Alon measured both,
-  14 Oct 2026: Q256). They turn down in a slot that runs 2.25 mm out from the connector face - into the 1.6 mm
-  between it and the wall, and 0.6 mm on into the wall, which keeps 6.4 mm behind it. The slot is open to the outlet,
+  14 Oct 2026: Q256). They turn down in a slot that runs 2.25 mm out from the connector face, 2.05 mm into the
+  wall, which keeps 4.95 mm behind it. The slot is open to the outlet,
   so the SPS30 slides in from the front with its lead on, and runs down to the base's bottom face.
 - **Its lead goes down the slot and along a groove in the tray's top into the bay**, to the ESP32: the bay stops at
   Y 41.4, 8 mm short of the end wall, so the slot alone does not reach it. The groove is 6.2 mm across and 1.5 deep.
@@ -227,7 +228,8 @@ screw, and the recess's ceiling slopes up 45° to the wall's face so it prints w
 - **Checked** (`check_sgp41*`): clear of the base, 5 mm of open air in front of its face, and its four leads down
   the bay, the slot and the groove into the bay, clear of the base, the tray, the SPS30 and itself.
 
-**The tray at the +Y end** (Alon, 14 Oct 2026: D257): one screw, at X 3, where there were two; in the other's
+**The tray at the +Y end** (Alon, 14 Oct 2026: D257, D259): one screw, an M2 × 16, at X 3, where there were two
+M3s; in the other's
 stead a nub on the tray's top, 3 mm across and 2 tall, slots into a hole in the base's bottom face, at X 12. The
 sensors' lead slot runs where the other screw was.
 
@@ -259,8 +261,8 @@ slot, in still air or the bay's, not the filtered air leaving the box.
 the tray on its own floor, open at the top. Printed whole, as the Auto's is, the bay's roof would be a bridge 41 mm
 across and 83 long.
 
-- **Its three screws**, M3 × 12 socket head, two at the -Y end and one at the +Y end, come up through counterbores in
-  the tray, their
+- **Its three screws** - two M3 × 12 at the -Y end and an M2 × 16 at the +Y end (D259), socket head - come up
+  through counterbores in the tray, their
   heads sunk 0.2 mm inside its bottom face, into nuts in slots in the base's end walls, just over the bay's
   roof. Each slot opens out through the end face: a nut goes in from outside and slides to the slot's end, on
   its screw's axis. The slot's end is the nut's own shape, so the nut beds against four walls and stays in
@@ -687,7 +689,7 @@ samples-tpu` for the first two sample plates, `samples-asa-2` for the second ASA
 | Clamp, lower frame (shelved) | ASA | 1 | 1 h 29 m | 10 g |
 | Clamp, upper frame (shelved) | ASA | 1 | 1 h 11 m | 8 g |
 | Clamp sample (shelved) | ASA | 1 plate | 1 h 7 m | 7 g |
-| Base | ASA | 1 | 3 h 34 m | 36 g |
+| Base | ASA | 1 | 3 h 33 m | 36 g |
 | Fan section | ASA | 1 | 3 h 43 m | 35 g |
 | Tray | ASA | 1 | 1 h 53 m | 20 g |
 | Carbon housing | ASA | 1 | 6 h 24 m | 56 g |
@@ -713,9 +715,11 @@ For the bottom:
 
 | Quantity | Item |
 |---|---|
-| 7 | M3 hex nut, ISO 4032 |
+| 6 | M3 hex nut, ISO 4032 |
+| 1 | M2 hex nut, ISO 4032: the tray's +Y end |
 | 4 | M3 × 30 socket head cap screw, ISO 4762: the fans |
-| 3 | M3 × 12 socket head cap screw, ISO 4762: the tray, their heads sunk |
+| 2 | M3 × 12 socket head cap screw, ISO 4762: the tray's -Y end, their heads sunk |
+| 1 | M2 × 16 socket head cap screw, ISO 4762: the tray's +Y end, its head sunk |
 | 1 | M2.5 × 6 socket head cap screw, ISO 4762: the SGP41, into a pilot in the end wall |
 | 4 | 6 × 2 mm magnet, optional: the tray's bottom, to hold the box to a steel floor |
 

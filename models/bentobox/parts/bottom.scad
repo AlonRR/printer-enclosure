@@ -27,9 +27,10 @@ auto_magnet = [magnet[0] + 0.2, magnet[1] + 0.2];      // the tray's magnets' ho
 // The outlet's SPS30 in its pocket (D252, D255): its front - nub and fit - behind the tray's stop, flush with the
 // outlet's face; its connector face sps30_fit off the pocket's +Y face, the plug in the slot in the end wall; its back,
 // with the pocket's, wherever its length puts it. The pocket's +Y face is the end wall's, or two beads short of the
-// tray's nut slots at the +Y end, whose backs reach in under the duct's edge: cut to the wall, the pocket would take
-// away the fillet over them and open them into it.
-sps30_wall_y = min(duct_in[1], tray_screw_y - (nut_af / 2 + fdm_hole_comp + nut_fit) / cos(30) - 2 * bead);
+// tray's nut slots at the +Y end, if their backs reach in under the duct's edge: cut to the wall, the pocket would
+// take away the fillet over them and open them into it. The +Y end's M2 stands clear (D259), so it is the wall's.
+sps30_wall_y = min(concat([duct_in[1]], [for (s = tray_screws) if (s[1] > 0)
+    s[1] - (s[4][3] / 2 + fdm_hole_comp + nut_fit) / cos(30) - 2 * bead]));
 sps30_front = -bb_w / 2 + sps30_stop_in + sps30_stop[0] + sps30_fit;  // its front, the nubs'
 sps30_x = [sps30_front + sps30_nub, sps30_front + sps30_nub + sps30[0]];   // its body, along X
 sps30_back = sps30_x[1] + sps30_nub + sps30_fit;                      // the pocket's back face
@@ -106,9 +107,12 @@ module fan_screw_cut(s) pull_frame(s, pull_top) pull_pocket(pull_seat - pull_bot
 // A tray screw's way in the base: its hole up from the base's bottom face through the floor to its slot, the slot
 // out through the end face, and the hole on up through the slot's roof, bridged, to past the tip of the longest
 // screw it takes (D213).
-module tray_slot_cut(s) {
-    translate([s[0], s[1], auto_bay_top - 1]) cylinder(d = hole_d, h = tray_slot_bot - auto_bay_top + 1 + eps);
-    slot_frame(s, tray_slot_bot) { slot(s[3]); roof_hole(tray_room_z - tray_slot_top); }
+module tray_slot_cut(s) let(k = s[4], h = kit_slot_h(k)) {
+    translate([s[0], s[1], auto_bay_top - 1]) cylinder(d = kit_hole(k), h = tray_slot_bot - auto_bay_top + 1 + eps);
+    slot_frame(s, tray_slot_bot) {
+        nut_slot_hex_end(k[3], h, s[3], fdm_hole_comp + nut_fit);
+        translate([0, 0, h]) rotate(90) bridged_hole(kit_slot_w(k), kit_hole(k), kit_room_z(k) - tray_slot_bot - h, fdm_layer_h, eps);
+    }
 }
 // The duct's air: its floor flat from the outlet, then turning up into the +X wall on base_turn_r, tangent to both,
 // between the end walls; every edge where these meet rounded by base_fillet. It is a convex core, base_fillet in
@@ -224,9 +228,9 @@ module usb_stop_block() translate([usb_x - usb_stop[0] / 2, usb_pcb_y1 + usb_c, 
     cube([usb_stop[0], usb_stop[1], usb_pcb_z + usb_board[2] + 0.5 - auto_seat_z + eps]);
 // A tray screw's way in the tray: its head's counterbore up from the bottom face, and its hole bridged up through
 // the counterbore's roof and on through the tray.
-module tray_screw_cut(s) translate([s[0], s[1], 0]) {
-    translate([0, 0, auto_base_z0 - 1]) cylinder(d = m3_cb[0], h = m3_cb[1] + 1);
-    translate([0, 0, tray_head_z]) bridged_hole(m3_cb[0], hole_d, tray_top - tray_head_z + 1, fdm_layer_h, eps);
+module tray_screw_cut(s) let(k = s[4], cb = kit_cb(k)) translate([s[0], s[1], 0]) {
+    translate([0, 0, auto_base_z0 - 1]) cylinder(d = cb[0], h = cb[1] + 1);
+    translate([0, 0, kit_head_z(k)]) bridged_hole(cb[0], kit_hole(k), tray_top - kit_head_z(k) + 1, fdm_layer_h, eps);
 }
 module auto_tray() union() {
     difference() {

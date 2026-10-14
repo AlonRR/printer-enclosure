@@ -230,6 +230,7 @@ head_room = 0.4;    /* ...in a counterbore this much wider than the head, past f
 // the slot's end, on its screw's axis. Out through the box's sides, the -X slots would break out of the end walls'
 // round tips, at the outlet.
 tray_screws_x = [[-13, 3], [3]];   /* The tray's screws, X: at the -Y end and at the +Y end. Clear of the magnets and of the USB-C board's pocket at the -Y end; at the +Y end, one is enough, and the sensors' lead slot runs where the other was (Alon, 14 Oct 2026: D257)... */
+tray_screw_kind = ["M3", "M2"];   /* The tray's screws at the -Y end and at the +Y end. The +Y end's is an M2 (Alon, 14 Oct 2026: D259): its smaller nut lets it stand far enough out that its slot keeps two beads from the SPS30, flush against the end wall over it, where an M3's slot reaches in under the duct's edge. An M2's Y follows from its counterbore, as the M3's below does... */
 tray_screw_y = 52.4;    /* ...and Y: in the end wall, as far out as the head's counterbore keeps two beads of the end face, so the slot's back keeps two beads under the fillet. */
 tray_slot_past = 1; /* Each tray nut's slot runs on this far past the end face: its mouth. */
 tray_screw_max = 20;    /* The longest screw each tray hole takes: the hole runs on up past where its tip would end (D213). */
