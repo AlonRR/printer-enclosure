@@ -3,7 +3,7 @@
 > **Not to be built as drawn here** (Alon, 15 Oct 2026: D282 a). The scrubber becomes the enclosure's left wall,
 > printed, standing between the floor and the roof: one flat HEPA panel across its top row and its carbon lying
 > flat across its bottom row, for about five times this box's air with two Deltas (D294 a, D302 a; see *One panel
-> and one carbon row*). The same wall holds a purge to the window (D300); nothing stands on the top.
+> and one carbon row*). The same wall holds a purge to the window (D300 a); nothing stands on the top.
 > The base, the tray and the sensor sample here stop; the two Deltas, the sealed joints and the outlet sensors'
 > mounts carry over into the wall. The rest of this page is the remix as it was drawn, and the analysis the
 > wall is sized from.
@@ -1112,7 +1112,7 @@ carbon at the back, the extraction's vent at the door's end.
   the HEPA module takes the four standing side by side, 49 mm wide each, for 3.03 L/s, 4.2 times today's, and 3.5
   times at an H13-like grade. The bed is 42 mm deep across 84 × 219 mm, about 770 cm³ and 350 g of the pellets.
   With the extraction's own filter, drawn round one more, the wall takes five cartridges; as one unit, four.
-- **One filter unit** (Alon, 15 Oct 2026, proposed: D300): no filter of the extraction's own; a purge on the clean
+- **One filter unit** (Alon, 15 Oct 2026: D300 a, two Deltas now): no filter of the extraction's own; a purge on the clean
   side, after the fans, sends a little of the cleaned air out the 100 mm duct to the window. Either the JUMPEAK
   pulls through a small valve, or *"double the deltas. with a servo to control the outflow"*: four Deltas push,
   and a servo's damper sets how much goes out, and shuts it. What leaves was cleaned already, so the purge holds
@@ -1162,7 +1162,8 @@ across the whole bottom row.
   session's search, 15 Oct 2026) is the size of Sharp's FZ-D40HFE: 400 × 220 × 27 to 28 mm, most in a rigid frame,
   their grade mostly unstated; the 237 × 451 × 43 once quoted for it is its packaging. IKEA's STARKVIND particle
   filter, 370 × 290 × 40 and EPA12, is 35 mm too tall unless the rows re-split. Measure the panel bought before its
-  frame is printed. At 28 mm it leaves a 19 mm plenum behind it in the 50 mm wall.
+  frame is printed. At 28 mm it leaves a 19 mm plenum behind it in the 50 mm wall. Two medium panels side by side,
+  each up to about 210 × 230, would give about the same face, so the same air.
 - **The rows**: the panel's 245 tall, the carbon's 165, on rails of 25 on the floor and under the roof. The
   panel's frame prints in pieces, and a hatch outside changes the panel.
 - **The carbon row need not stand out into the room.** At the panel's H13 grade
@@ -1175,9 +1176,12 @@ across the whole bottom row.
   | 90 mm, 40 out past the edge | 4.16 L/s, 5.8 × | 5.86 L/s, 8.1 × |
 
   At 50 mm and two Deltas the bed is 47 mm deep, about 910 cm³ and 410 g; with four, 60 mm, 1.17 L and 530 g.
-- **Drawn with the options recommended and still open**: the wall 50 deep, all within the Lack (D301); two Deltas
-  in a plate cut for four, and a servo's damper on the purge (D300). The electronics go in a box on the outer
-  face, the top row being the panel's.
+- **The target is four times today's air** (D276 b), and the panel meets it at every depth with two Deltas.
+- **Two Deltas now, in a plate cut for four, and a servo's damper on the purge** (Alon, 15 Oct 2026: D300 a).
+- **The carbon row 90 deep, 40 of it out past the edge** (D301: Alon, *"all are ok. more important to hit the
+  filtration target"*, so the deepest): 4.16 L/s, 5.8 times today's at H13, the bed 29 mm deep, about 1.06 L
+  and 480 g; with four Deltas, 8.1 times.
+- **The electronics** go in a box on the outer face, the top row being the panel's.
 
 Drawn by [`scripts/figures/filter-wall.py`](../scripts/figures/filter-wall.py): the Lack and the chamber to
 scale; the panel at 400 × 220 × 30 until one is chosen; the rest placed, not designed.
