@@ -1,9 +1,10 @@
 # The other scrubber — BentoBox v2.0, with the C-MAG
 
 > **Not to be built as drawn here** (Alon, 15 Oct 2026: D282 a). The scrubber becomes the enclosure's left wall,
-> printed, standing between the floor and the roof: one flat HEPA panel across its top row and its carbon lying
-> flat across its bottom row, for about five times this box's air with two Deltas (D294 a, D302 a; see *One panel
-> and one carbon row*). The same wall holds a purge to the window (D300 a); nothing stands on the top.
+> printed, standing between the floor and the roof: IKEA's STARKVIND particle filter across its top row and its
+> carbon lying flat across its bottom row, for six to seven times this box's air with two Deltas (D294 a, D302 a,
+> D303 a; see *One panel and one carbon row* and *Which panel*). The same wall holds a purge to the window
+> (D300 a); nothing stands on the top.
 > The base, the tray and the sensor sample here stop; the two Deltas, the sealed joints and the outlet sensors'
 > mounts carry over into the wall. The rest of this page is the remix as it was drawn, and the analysis the
 > wall is sized from.
@@ -1157,6 +1158,9 @@ time):
 **Chosen** (Alon, 15 Oct 2026: D302 a): one flat purifier HEPA panel across the wall's top row, the carbon lying flat
 across the whole bottom row.
 
+> **The panel is IKEA's STARKVIND** since D303 a (*Which panel*, below): the rows re-split to 306 and 124 round it,
+> on rails of 15, and the whole wall is 90 deep. The bullets on the 400 × 220 panel stay as the comparison.
+
 - **The panel is not chosen yet.** Wanted: at most 430 × 255 × 45 mm, its face as large as fits, a rigid frame or a
   flat edge for the gasket, H13, or EPA12 if that is what is sold here. What is sold at this size (the inventory
   session's search, 15 Oct 2026) is the size of Sharp's FZ-D40HFE: 400 × 220 × 27 to 28 mm, most in a rigid frame,
@@ -1186,12 +1190,13 @@ across the whole bottom row.
 Drawn by [`scripts/figures/filter-wall.py`](../scripts/figures/filter-wall.py): the Lack and the chamber to
 scale; the panel at 400 × 220 × 30 until one is chosen; the rest placed, not designed.
 
-![The filter wall, standing on the floor and under the roof between the legs, a TPU seal round it. Seen from inside: the top row one flat HEPA panel, drawn at 400 by 220 mm, its frame in pieces; the bottom row the carbon lying flat across the whole width with the carbon-dust floss under it, a plate with places for four Deltas and two fitted, the SPS30 and SGP41, the clean air's louvre low, and on the outer face the purge, a servo's damper to a 100 mm collar. Cut across at a Delta: the wall 50 mm deep within the Lack's edge, the panel in its inner face, a hatch outside; the plume drawn in under the roof, down through the carbon, the floss and the Delta; most of it back in low, a little out through the purge](diagrams/filter-wall/layout.png)
+![The filter wall, standing on the floor and under the roof between the legs, a TPU seal round it. Seen from inside: the top row IKEA's STARKVIND particle filter, 370 by 290 mm, uncut, its frame in pieces; the bottom row the carbon lying flat across the whole width with the carbon-dust floss under it, a plate with places for four Deltas and two fitted, the SPS30 and SGP41, the clean air's louvre low, and on the outer face the purge, a servo's damper to a 100 mm collar. Cut across at a Delta: the wall 90 mm deep, 50 within the Lack's edge and 40 out, the filter 40 thick in its inner face with a plenum behind it and a hatch outside; the plume drawn in under the roof, down through the carbon, the floss and the Delta; most of it back in low, a little out through the purge](diagrams/filter-wall/layout.png)
 
 ### Which panel
 
 Alon, 15 Oct 2026: the panel found comes with a carbon panel, and *"due to the cost and grade it may be worth
-looking into cutting/gluing the filter into the exact size we need"*. Weighed, not chosen (D303):
+looking into cutting/gluing the filter into the exact size we need"*. **Chosen** (Alon, 15 Oct 2026: D303 a): IKEA's
+STARKVIND particle filter, uncut, the first below.
 
 - **IKEA's STARKVIND particle filter fits uncut now.** With the carbon row 90 deep its bed is about 31 mm, so the
   rows can re-split, the panel's about 305 tall and the carbon's 105, to take its 370 × 290 × 40. Its grade is
@@ -1207,11 +1212,16 @@ looking into cutting/gluing the filter into the exact size we need"*. Weighed, n
   the BentoBox's glue frame was drawn for the owned paper. The media would come from a graded panel cut down, or
   from sheet media pleated in a printed comb. It is more work than a panel that fits, and the grade is only as good
   as the seal.
-- **The JUMPEAK's rating is not recorded.** Its title gives 120 mm, 12 V, 4-pin PWM, 3200 RPM; its pressure and
-  flow would be on its listing. A 3000 RPM 120 mm fan sold elsewhere is rated 3.5 to 5 mmH₂O (34 to 49 Pa) and
-  70 to 106 CFM, not this one's figures. If the JUMPEAK is like it, it would hold some 35 to 50 Pa at the wall's few
-  L/s, more than the Deltas' 35 there; but an axial fan at a tenth of its free flow runs near its stall, so it
-  wants its own curve, or a test, before it drives the wall.
+- **The JUMPEAK's pressure is not published.** Its listing gives a 12025 SE, 12 V, 4-pin PWM, 1500 to 3200 RPM,
+  two ball bearings, and claims 110 CFM and 40 dBA: as a pair, at 3200 RPM on a 25 mm fan, more marketing than
+  rating. No static pressure, current or curve (the inventory session read its order and listing, 15 Oct 2026).
+  A 3000 RPM 120 mm fan sold elsewhere is rated 3.5 to 5 mmH₂O (34 to 49 Pa) and 70 to 106 CFM, not this one's
+  figures. If the JUMPEAK is like it, it would hold some 35 to 50 Pa at the wall's few L/s, more than the Deltas'
+  35 there; but an axial fan at a tenth of its free flow runs near its stall, so it wants its own curve, measured
+  against a known restriction, before it drives the wall.
+- **The wall round STARKVIND**: the filter is 40 thick, so the whole wall goes 90 deep, 40 of it out past the edge,
+  to leave a 47 mm plenum behind it; the rows are 306 for the filter and 124 for the carbon, on rails of 15. At
+  mid grade the bed is 36 mm deep with two Deltas, 48 with four, and the carbon row keeps room for both.
 
 ## How long the carbon lasts
 
