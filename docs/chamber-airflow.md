@@ -337,6 +337,20 @@ Read from their pages on 15 Oct 2026; what each says of itself is relayed, not t
   so it would want aftermarket ones of a stated grade, or the bought Mijia cartridge in a box drawn round
   it.
 
+**Decided** (Alon, 15 Oct 2026: D278 b): a box of this build's own, in FlyBy Tom's layout through the
+Lack's top, drawn round the bought Mijia cartridge, with a bed of the owned pellets and Goller's flaps.
+FlyBy Tom's v2 files, measured (downloaded 15 Oct 2026, A279; not kept in this repository - they are
+his, CC BY-NC):
+
+| | FlyBy Tom's v2 |
+|---|---|
+| Footprint | 126 × 132 mm, square to the Lack's top; the covers over the hole 134 × 139 mm |
+| HEPA | Two Roomba filters in a 15 mm frame, behind two windows of 57 × 115 mm: 132 cm² of face |
+| Fan | 120 × 120 × 25, between the HEPA and the carbon, pushing through the carbon |
+| Carbon | A chamber 121 × 126 mm inside, 39 mm deep over a printed mesh floor: about 600 cm³, 270 g. A reduced one is 25.5 mm overall |
+
+By the scrubber's table, at 1 L/s that carbon keeps the air 0.6 s, more than twice the scrubber's.
+
 ## Control and sensing
 
 **A dedicated node — explicitly NOT the S3 camera.** Reasoning recorded on 3 Sep 2026: the camera is
