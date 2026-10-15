@@ -9,6 +9,8 @@ From the repository's root:
 
   uv run scripts/analysis/scrubber-sizing.py          the sizes, per fan pressure and flow
   uv run scripts/analysis/scrubber-sizing.py check    this loss model against cfd.py's, run both ways, and a control
+  uv run scripts/analysis/scrubber-sizing.py candidates
+        filters that can be bought, flat or round, and the flow the two Deltas would draw through each (D276)
 
 THE ORDER, as asked: the HEPA's face first, then the carbon under it. During a print the chamber's air settles
 at the emissions over the box's flow, so the flow is the target: today's 0.72 L/s, and two, four and eight times
@@ -124,6 +126,46 @@ def show():
     print("the face scales with the paper's grade: about x0.5 for an H11-like paper, x5/3 for an H13-like one.")
 
 
+# Filters that can be bought, as their listings size them (read 15 Oct 2026; a listing's size can be its box's):
+# name, the face the air enters by [m2], and the pleats' depth [mm]. A round filter takes its air in round its
+# side, so its face is its side's area. Every pleat depth not stated is taken as the model's 15 mm: deeper pleats
+# carry more paper per face, so those flows are low if anything.
+CANDIDATES = [
+    ("Mijia 1C / Dreame F9, flat: the chosen", 0.150 * 0.049, 15),
+    ("two Mijia cartridges, standing as two walls", 2 * 0.150 * 0.049, 15),
+    ("120 x 120 x 15 pad", 0.120 * 0.120, 15),
+    ("two 120 x 120 x 15 pads, as two walls", 2 * 0.120 * 0.120, 15),
+    ("FlyBy Tom's two Roomba filters", 0.0132, 10),
+    ("Levoit Core 300, round, 193 x 147", 3.14159 * 0.193 * 0.147, 15),
+    ("Xiaomi Mi purifier, round, 200 x 293", 3.14159 * 0.200 * 0.293, 15),
+]
+BED_FACE = 0.020                 # m2: the carbon under every candidate, 14 cm square, as deep as keeps EBCT
+
+
+def flow_through(face, pleat_mm, grade):
+    """The flow at which the two Deltas' pressure meets the losses of this HEPA face, the carbon and the floss."""
+    k = cfd.MEDIA["hepa"]["dp_at_1"] * grade * 15 / pleat_mm
+    lo, hi = 0.0, 2 * cfd.FAN["q_max"]
+    for _ in range(100):
+        q = (lo + hi) / 2
+        loss = sum(losses(q, face, BED_FACE, q * EBCT / BED_FACE, BED_FACE, hepa_at_1=k))
+        lo, hi = (q, hi) if deltas(q) > loss else (lo, q)
+    return lo
+
+
+def show_candidates():
+    print(f"the two Deltas through each filter, with {BED_FACE * 1e4:.0f} cm2 of carbon kept at {EBCT:.2f} s and the floss;")
+    print(f"flows in L/s, and as a multiple of today's {Q_NOW * 1000:.2f}")
+    print(f"{'filter':>46} {'face':>9} {'pleats':>7} {'mid grade':>17} {'H13-like (x5/3)':>17}")
+    for name, face, pleat in CANDIDATES:
+        cells = []
+        for grade in (1.0, 5 / 3):
+            q = flow_through(face, pleat, grade)
+            cells.append(f"{q * 1000:>5.2f} ({q / Q_NOW:>3.1f} x) {deltas(q):>3.0f} Pa")
+        print(f"{name:>46} {face * 1e4:>5.0f} cm2 {pleat:>4} mm " + " ".join(f"{c:>17}" for c in cells))
+    print(f"no face lets the two Deltas past {2 * cfd.FAN['q_max'] * 1000:.1f} L/s, their flow with nothing in the way")
+
+
 def check():
     """The loss model against cfd.py's lumped network on its own geometry, both ways, and a control that must
     break the agreement."""
@@ -150,6 +192,9 @@ def check():
 if __name__ == "__main__":
     if sys.argv[1:] == ["check"]:
         sys.exit(0 if check() else 1)
+    if sys.argv[1:] == ["candidates"]:
+        show_candidates()
+        sys.exit(0)
     if sys.argv[1:]:
         sys.exit(__doc__)
     show()

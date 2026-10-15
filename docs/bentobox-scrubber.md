@@ -925,6 +925,40 @@ The floss takes the rest, 1 to 12 Pa.
   today's air, if its paper is mid grade.
 - **The paper's grade scales the face**: about half for an H11-like paper, 5/3 for an H13-like one.
 
+### Four times the air: which filter, and how it stands
+
+Alon, 15 Oct 2026 (D276 b): four times today's air with the two Deltas, looking at how the filters could
+stand, and at larger and round ones. `uv run scripts/analysis/scrubber-sizing.py candidates` puts each through
+the Deltas' curve, with 200 cm² of carbon kept at 0.26 s; sizes are their listings' (read 15 Oct 2026, a
+listing's size can be its box's), and every pleat depth not stated is taken as 15 mm, so those flows are low if
+anything.
+
+| Filter, and how it stands | Face | Mid grade | H13-like |
+|---|---|---|---|
+| Mijia 1C / Dreame F9, flat: the chosen | 74 cm² | 1.6 L/s, 2.2 × | 1.0 L/s, 1.5 × |
+| Two Mijia cartridges, standing as two walls | 147 cm² | 2.6 L/s, 3.5 × | 1.8 L/s, 2.5 × |
+| One 120 × 120 × 15 pad, flat | 144 cm² | 2.5 L/s, 3.5 × | 1.8 L/s, 2.5 × |
+| Two 120 × 120 × 15 pads, standing as two walls | 288 cm² | 3.5 L/s, 4.9 × | 2.8 L/s, 3.9 × |
+| FlyBy Tom's two Roomba filters, 10 mm pleats | 132 cm² | 1.8 L/s, 2.5 × | 1.2 L/s, 1.7 × |
+| Levoit Core 300, round, 193 mm across, 147 tall | 891 cm² | 4.6 L/s, 6.4 × | 4.2 L/s, 5.8 × |
+| Xiaomi Mi purifier, round, 200 mm across, 293 tall | 1841 cm² | 4.9 L/s, 6.8 × | 4.7 L/s, 6.5 × |
+
+- **Standing the filters up is what doubles the face**: lying flat, a filter can be no larger than the box's
+  inside; standing as its two long walls, two filters take the air from both sides over the same floor, and
+  the Deltas draw it down between them. A V of two filters does the same, a little deeper.
+- **A round filter has the most face for its size**: the air comes in all round its side and leaves by the hole
+  in its end, where the fans can sit. Air purifiers are built so. Past about 5 L/s the face no longer matters:
+  the carbon's 200 cm² sets the flow, and a bigger bed would let more through. Most come with a thin carbon
+  layer of their own, and are sold as H13.
+- **The fans' curve is a straight line here.** A real axial fan's curve can dip in its middle, around half its
+  pressure, which is where the larger faces put the Deltas: read their published curve there before believing
+  the larger filters' flows.
+- **Room is the question for the larger ones**: a 193 mm round filter takes much of the Lack's 55 cm square
+  beside a printer. A box on the Lack's top, outside the chamber, with a duct down and one back, would not.
+- **With the extraction drawing through a filter of its own** (D278 b, [chamber-airflow.md](chamber-airflow.md)),
+  its flow adds: two Mijia standing, at 2.5 to 3.5 ×, plus an extraction near today's 0.72 L/s comes to about
+  four times.
+
 ## How long the carbon lasts
 
 An estimate, from [`scripts/analysis/carbon-life.py`](../scripts/analysis/carbon-life.py), which says where each number comes
