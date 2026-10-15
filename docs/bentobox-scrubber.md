@@ -877,12 +877,16 @@ air the box delivers, reached in three or four turnovers, about ten minutes.
 - **So the room is kept clean by containment, not by the filter** (see [chamber-airflow.md](chamber-airflow.md)):
   the extraction holds the chamber below the room's pressure, so its leaks run inward, and the door stays shut
   until the box has cleared the chamber - 99 % in about 15 minutes after the print, 99.9 % in about 22, at 0.72 L/s.
-  Opened straight away, the chamber's 139 L would add about 2 × 10⁴ particles per cm³ to a 30 m³ room.
+  Opened straight away, the chamber's 139 L would add about 2 × 10⁴ particles per cm³ to a 30 m³ room. Neither
+  the box nor the extraction is built yet (steps 3 to 6 of chamber-airflow.md's build order): until they are, the
+  closed chamber has nothing taking its fumes out but its own leaks and the door.
 - **What lowers the level during a print**, each in proportion: the emission rate - ASA at the low end of its
   temperature range, since the rate climbs steeply with the nozzle's temperature
-  ([Stabile et al., Indoor Air 27, 2017](https://doi.org/10.1111/ina.12310)); the extraction's flow, which
-  removes as surely as a perfect filter, at the cost of the chamber's heat; and this box's flow, which its HEPA's
-  area sets - the bought cartridge holds about a fifth more paper, so expect little more than that.
+  ([Stabile et al., Indoor Air 27, 2017](https://doi.org/10.1111/ina.12310)); and this box's flow, which its
+  HEPA's area sets - the bought cartridge holds about a fifth more paper, so expect little more than that. The
+  extraction adds nothing here as planned: taken off the scrubber's clean side, it holds the chamber's pressure
+  down but removes only what the box has already cleaned. Drawing on the chamber's own air instead, its flow would
+  add to the box's one for one, at the cost of the chamber's heat.
 - **None of it is measured yet.** The chamber's air-quality monitor has logged no particle or VOC readings (to 15 Oct
   2026), and an SPS30 counts from 0.3 µm, so it sees few of a print's particles, which peak at 10 to 30 nm
   (Stabile et al.).
