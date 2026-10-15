@@ -915,33 +915,37 @@ The floss takes the rest, 1 to 12 Pa.
 - **The carbon is set by the flow alone**: 256 cm³ for each L/s keeps the air 0.26 s in it. The fans' pressure
   decides only how deep it lies - shallow under a big face, deep under a small one, and past about 200 Pa its
   drop climbs fast, so a box for strong fans wants its bed wider than its HEPA.
-- **The HEPA's face is what limits this box, not its fans.** On their curve, taken as a straight line, the two
-  Deltas still give 72 Pa at four times today's air (2.88 L/s): a HEPA face of 171 cm², 13 cm square, over 331 g
-  of carbon 30 mm deep. At eight times (5.76 L/s) they give 41 Pa: a face of 582 cm², 24 cm square, over 662 g
-  18 mm deep. The chamber's level during a print falls to a quarter or an eighth, and so does the wait before
-  opening. A real fan's curve dips between its ends, so these hold only once the Deltas' published curve is read
-  there.
+- **The HEPA's face is what limits this box, not its fans.** On Delta's published curve (below), the two
+  Deltas still give 58 Pa at four times today's air (2.88 L/s): a HEPA face of 209 cm², 15 cm square, over 331 g
+  of carbon. At eight times (5.76 L/s) they give 28 Pa: a face of 836 cm², 29 cm square, over 662 g. The
+  chamber's level during a print falls to a quarter or an eighth, and so does the wait before opening.
 - **The chosen cartridge** is 150 × 49 mm with its frame, at most 73 cm² of face: with the Deltas, about twice
   today's air, if its paper is mid grade.
+- **The Deltas' own curve** (Alon, 15 Oct 2026: D280). Delta's EFB 40 × 40 × 20 datasheet draws the
+  EFB0412VHD's pressure against its flow at rated voltage; the script holds its points (`DELTA_VH`), read from
+  the PDF's vector drawing, and their ends land on the table's 10.57 mmH₂O and 0.286 m³/min. The curve sags
+  under the straight line the simulation draws between the same ends - by about a quarter at a third of its
+  flow, a third at half - and meets it again near the end. At today's flow the two agree to 2 %, so the
+  simulation's figures stand; at four times, the face needed grows from 171 cm² to 209.
 - **The paper's grade scales the face**: about half for an H11-like paper, 5/3 for an H13-like one.
 
 ### Four times the air: which filter, and how it stands
 
 Alon, 15 Oct 2026 (D276 b): four times today's air with the two Deltas, looking at how the filters could
 stand, and at larger and round ones. `uv run scripts/analysis/scrubber-sizing.py candidates` puts each through
-the Deltas' curve, with 200 cm² of carbon kept at 0.26 s; sizes are their listings' (read 15 Oct 2026, a
-listing's size can be its box's), and every pleat depth not stated is taken as 15 mm, so those flows are low if
-anything.
+the Deltas' published curve, with 200 cm² of carbon kept at 0.26 s; sizes are their listings' (read 15 Oct
+2026, a listing's size can be its box's), and every pleat depth not stated is taken as 15 mm, so those flows are
+low if anything.
 
 | Filter, and how it stands | Face | Mid grade | H13-like |
 |---|---|---|---|
-| Mijia 1C / Dreame F9, flat: the chosen | 74 cm² | 1.6 L/s, 2.2 × | 1.0 L/s, 1.5 × |
-| Two Mijia cartridges, standing as two walls | 147 cm² | 2.6 L/s, 3.5 × | 1.8 L/s, 2.5 × |
-| One 120 × 120 × 15 pad, flat | 144 cm² | 2.5 L/s, 3.5 × | 1.8 L/s, 2.5 × |
-| Two 120 × 120 × 15 pads, standing as two walls | 288 cm² | 3.5 L/s, 4.9 × | 2.8 L/s, 3.9 × |
-| FlyBy Tom's two Roomba filters, 10 mm pleats | 132 cm² | 1.8 L/s, 2.5 × | 1.2 L/s, 1.7 × |
-| Levoit Core 300, round, 193 mm across, 147 tall | 891 cm² | 4.6 L/s, 6.4 × | 4.2 L/s, 5.8 × |
-| Xiaomi Mi purifier, round, 200 mm across, 293 tall | 1841 cm² | 4.9 L/s, 6.8 × | 4.7 L/s, 6.5 × |
+| Mijia 1C / Dreame F9, flat: the chosen | 74 cm² | 1.5 L/s, 2.1 × | 1.0 L/s, 1.4 × |
+| Two Mijia cartridges, standing as two walls | 147 cm² | 2.3 L/s, 3.2 × | 1.7 L/s, 2.4 × |
+| One 120 × 120 × 15 pad, flat | 144 cm² | 2.3 L/s, 3.2 × | 1.7 L/s, 2.4 × |
+| Two 120 × 120 × 15 pads, standing as two walls | 288 cm² | 3.1 L/s, 4.3 × | 2.5 L/s, 3.5 × |
+| FlyBy Tom's two Roomba filters, 10 mm pleats | 132 cm² | 1.7 L/s, 2.4 × | 1.2 L/s, 1.6 × |
+| Levoit Core 300, round, 193 mm across, 147 tall | 891 cm² | 3.9 L/s, 5.5 × | 3.6 L/s, 5.0 × |
+| Xiaomi Mi purifier, round, 200 mm across, 293 tall | 1841 cm² | 4.2 L/s, 5.9 × | 4.0 L/s, 5.6 × |
 
 - **Standing the filters up is what doubles the face**: lying flat, a filter can be no larger than the box's
   inside; standing as its two long walls, two filters take the air from both sides over the same floor, and
@@ -950,14 +954,30 @@ anything.
   in its end, where the fans can sit. Air purifiers are built so. Past about 5 L/s the face no longer matters:
   the carbon's 200 cm² sets the flow, and a bigger bed would let more through. Most come with a thin carbon
   layer of their own, and are sold as H13.
-- **The fans' curve is a straight line here.** A real axial fan's curve can dip in its middle, around half its
-  pressure, which is where the larger faces put the Deltas: read their published curve there before believing
-  the larger filters' flows.
+- **On the published curve the larger faces lose most**: the round filters put the Deltas at about 40 Pa, where
+  the curve sags furthest under the straight line, and come down from 6.4 to 5.5 times.
 - **Room is the question for the larger ones**: a 193 mm round filter takes much of the Lack's 55 cm square
   beside a printer. A box on the Lack's top, outside the chamber, with a duct down and one back, would not.
 - **With the extraction drawing through a filter of its own** (D278 b, [chamber-airflow.md](chamber-airflow.md)),
-  its flow adds: two Mijia standing, at 2.5 to 3.5 ×, plus an extraction near today's 0.72 L/s comes to about
-  four times.
+  its flow adds: two Mijia standing, at 2.4 to 3.2 ×, plus an extraction near today's 0.72 L/s comes to 3.4 to
+  4.2 times. **Chosen** (Alon, 15 Oct 2026: D280 a): two Mijia cartridges standing as the box's two long walls.
+
+### Where it stands: outside the chamber
+
+Alon, 15 Oct 2026 (Q281): it could stand outside the enclosure - under it as a platform, or on its top as a
+chimney, with the extraction's vent and duct in a back corner.
+
+- **On top, as a chimney**, is the better of the two. Its intake is the chamber's ceiling, where the print's hot
+  plume rises; its clean air goes back down a duct in a back corner to the floor, and crosses the whole chamber
+  on its way up again. The extraction's box (D278) stands beside it through the same top, its duct out of the
+  other back corner. Filters change from above with the door shut, and the chamber's floor stays the printer's.
+- **Under it, as a platform**, the printer stands on the box and shakes it; its intake is the chamber's floor,
+  where strings and dust fall and the plume never reaches; and it sits by the electronics bay, where the
+  makeup air is to come in (see [chamber-airflow.md](chamber-airflow.md)).
+- **Either way its walls are outside**, and lose the chamber's heat: about 0.2 m² of thin printed wall at 20 °C
+  over the room loses some 20 to 30 W, about what 1 L/s of extraction costs, unless its walls are doubled or
+  lined. A return duct kept inside the chamber, down its back corner, loses nothing more.
+- **The Lack's top takes the holes**: the chimney's intake and its return, and the extraction's.
 
 ## How long the carbon lasts
 

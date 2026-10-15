@@ -25,10 +25,13 @@ floss linear. The paper's grade is not known, and the face needed scales with it
 paper, 5/3 for an H13-like one. The walls, the plenums and the duct are left out: at these speeds they take a
 few pascals.
 
-THE FANS: a fan's pressure at a flow is read off its curve. For the two Deltas, cfd.py's straight line from
-103.6 Pa at no flow to 9.5 L/s at no pressure; their row gives what they give at each flow.
+THE FANS: a fan's pressure at a flow is read off its curve. For the two Deltas, Delta's own: the VH curve of the
+EFB 40 x 40 x 20 series' P & Q graph, at rated voltage, taken from the datasheet's vector drawing (15 Oct 2026,
+D280). It sags well under the straight line cfd.py draws between the same two ends - a third less pressure at half
+the flow - and its row gives what the two give at each flow, side by side.
 """
 import importlib.util
+import itertools
 import sys
 from pathlib import Path
 
@@ -77,8 +80,40 @@ def solve(q, p, bed=scaled_bed):
     return hi
 
 
+# One EFB0412VHD at rated voltage: (m3/min, mmH2O), its datasheet's VH curve. The graph's own points, read from the
+# PDF's vector path against its tick labels, less the 0.13 mmH2O by which the path's end sits over the zero line;
+# its ends then land on the table's 10.57 mmH2O and 0.286 m3/min.
+DELTA_VH = [
+    (0.000, 10.58), (0.010, 10.11), (0.018, 9.71), (0.025, 9.35), (0.032, 9.04), (0.037, 8.77), (0.042, 8.53),
+    (0.046, 8.32), (0.050, 8.13), (0.053, 7.94), (0.056, 7.77), (0.059, 7.61), (0.062, 7.45), (0.064, 7.31),
+    (0.067, 7.16), (0.069, 7.03), (0.071, 6.89), (0.073, 6.76), (0.075, 6.63), (0.077, 6.50), (0.079, 6.37),
+    (0.081, 6.24), (0.084, 6.10), (0.086, 5.97), (0.088, 5.83), (0.091, 5.68), (0.093, 5.53), (0.096, 5.38),
+    (0.099, 5.22), (0.102, 5.06), (0.105, 4.91), (0.107, 4.75), (0.110, 4.60), (0.113, 4.45), (0.115, 4.30),
+    (0.118, 4.16), (0.121, 4.01), (0.124, 3.87), (0.129, 3.73), (0.134, 3.59), (0.140, 3.45), (0.147, 3.31),
+    (0.155, 3.16), (0.164, 3.02), (0.173, 2.87), (0.183, 2.72), (0.193, 2.56), (0.202, 2.39), (0.212, 2.22),
+    (0.221, 2.04), (0.231, 1.84), (0.239, 1.62), (0.248, 1.37), (0.257, 1.09), (0.267, 0.78), (0.276, 0.41),
+    (0.286, 0.00),
+]
+MMH2O = 9.80665                  # Pa
+M3MIN = 1 / 60                   # m3/s
+
+
+def one_delta(q):
+    """One Delta's pressure [Pa] at flow q [m3/s], straight between the curve's points; none past its end."""
+    x = q / M3MIN
+    for (x0, y0), (x1, y1) in itertools.pairwise(DELTA_VH):
+        if x <= x1:
+            return (y0 + (y1 - y0) * (max(x, x0) - x0) / (x1 - x0)) * MMH2O
+    return 0.0
+
+
 def deltas(q):
-    """The two Deltas' pressure at q, on cfd.py's straight line."""
+    """The two Deltas side by side at total flow q: each takes half, at the same pressure."""
+    return one_delta(q / 2)
+
+
+def deltas_line(q):
+    """cfd.py's straight line between the same ends, for comparison."""
     return cfd.FAN["p_max"] * (1 - q / (2 * cfd.FAN["q_max"]))
 
 
@@ -107,7 +142,7 @@ def show():
     print("\nfor today's flow and its multiples - the chamber's level during a print falls as 1/multiple:")
     print("each cell: HEPA face cm2 (as a square, mm side), carbon g")
     print(f"{'fans give':>14}" + "".join(f"{f'{m} x, {m * Q_NOW * 1000:.2f} L/s':>26}" for m in MULTIPLES))
-    rows = [(f"{p} Pa", lambda q, p=p: p) for p in PRESSURES] + [("two Deltas", deltas)]
+    rows = [(f"{p} Pa", lambda q, p=p: p) for p in PRESSURES] + [("two Deltas", deltas), ("on a line", deltas_line)]
     for label, pressure in rows:
         cells = []
         for m in MULTIPLES:
@@ -118,11 +153,11 @@ def show():
                 continue
             a, a_bed, depth, vol, _ = size(q, p)
             txt = f"{a * 1e4:.0f} ({a ** 0.5 * 1000:.0f}), {vol * RHO_BED * 1000:.0f} g"
-            if label == "two Deltas":
+            if label in ("two Deltas", "on a line"):
                 txt = f"{p:.0f} Pa: " + txt
             cells.append(f"{txt:>26}")
         print(f"{label:>14}" + "".join(cells))
-    print("\nthe two Deltas' pressure is on a straight line between their end points; a real curve dips between them.")
+    print("\n'two Deltas' is on Delta's published curve; 'on a line', cfd.py's straight line between its ends.")
     print("the face scales with the paper's grade: about x0.5 for an H11-like paper, x5/3 for an H13-like one.")
 
 
@@ -142,26 +177,28 @@ CANDIDATES = [
 BED_FACE = 0.020                 # m2: the carbon under every candidate, 14 cm square, as deep as keeps EBCT
 
 
-def flow_through(face, pleat_mm, grade):
-    """The flow at which the two Deltas' pressure meets the losses of this HEPA face, the carbon and the floss."""
+def flow_through(face, pleat_mm, grade, fans=deltas):
+    """The flow at which the fans' pressure meets the losses of this HEPA face, the carbon and the floss."""
     k = cfd.MEDIA["hepa"]["dp_at_1"] * grade * 15 / pleat_mm
     lo, hi = 0.0, 2 * cfd.FAN["q_max"]
     for _ in range(100):
         q = (lo + hi) / 2
         loss = sum(losses(q, face, BED_FACE, q * EBCT / BED_FACE, BED_FACE, hepa_at_1=k))
-        lo, hi = (q, hi) if deltas(q) > loss else (lo, q)
+        lo, hi = (q, hi) if fans(q) > loss else (lo, q)
     return lo
 
 
 def show_candidates():
-    print(f"the two Deltas through each filter, with {BED_FACE * 1e4:.0f} cm2 of carbon kept at {EBCT:.2f} s and the floss;")
-    print(f"flows in L/s, and as a multiple of today's {Q_NOW * 1000:.2f}")
-    print(f"{'filter':>46} {'face':>9} {'pleats':>7} {'mid grade':>17} {'H13-like (x5/3)':>17}")
+    print(f"the two Deltas through each filter, on Delta's published curve, with {BED_FACE * 1e4:.0f} cm2 of carbon kept at "
+          f"{EBCT:.2f} s and the floss; flows in L/s, and as a multiple of today's {Q_NOW * 1000:.2f}")
+    print(f"{'filter':>46} {'face':>9} {'pleats':>7} {'mid grade':>17} {'H13-like (x5/3)':>17} {'mid, on a line':>15}")
     for name, face, pleat in CANDIDATES:
         cells = []
         for grade in (1.0, 5 / 3):
             q = flow_through(face, pleat, grade)
             cells.append(f"{q * 1000:>5.2f} ({q / Q_NOW:>3.1f} x) {deltas(q):>3.0f} Pa")
+        q_line = flow_through(face, pleat, 1.0, deltas_line)
+        cells.append(f"{q_line * 1000:>5.2f} ({q_line / Q_NOW:>3.1f} x)")
         print(f"{name:>46} {face * 1e4:>5.0f} cm2 {pleat:>4} mm " + " ".join(f"{c:>17}" for c in cells))
     print(f"no face lets the two Deltas past {2 * cfd.FAN['q_max'] * 1000:.1f} L/s, their flow with nothing in the way")
 
@@ -179,14 +216,30 @@ def check():
     a = solve(q, p, fixed)
     results.append(("the face solved back from that point = cfd.py's HEPA opening", abs(a / cfd.A_HEPA - 1) < 1e-3,
                     f"{a * 1e4:.3f} vs {cfd.A_HEPA * 1e4:.3f} cm2"))
+    results.append(("the Deltas' curve ends on the datasheet's 10.57 mmH2O and 0.286 m3/min, and only falls",
+                    curve_ok(DELTA_VH), f"{DELTA_VH[0][1]} mmH2O, {DELTA_VH[-1][0]} m3/min"))
     for name, ok, detail in results:
         print(f"{'ok' if ok else 'FAILED':>6}  {name}: {detail}")
+    controls = []
     wrong = sum(losses(q, cfd.A_HEPA, *bed, hepa_at_1=2 * cfd.MEDIA["hepa"]["dp_at_1"]))
-    caught = abs(wrong - p) >= 0.01
-    print(f"{'ok' if caught else 'MISSED':>6}  control, the HEPA's drop doubled here only: {wrong:.1f} vs {p:.1f} Pa")
+    controls.append(("the HEPA's drop doubled here only", abs(wrong - p) >= 0.01, f"{wrong:.1f} vs {p:.1f} Pa"))
+    bumped = DELTA_VH[:20] + [(DELTA_VH[20][0], DELTA_VH[19][1] + 0.5)] + DELTA_VH[21:]
+    controls.append(("a curve that rises once", not curve_ok(bumped), "refused" if not curve_ok(bumped) else "passed"))
+    shifted = [(x, y + 0.3) for x, y in DELTA_VH]
+    controls.append(("a curve 0.3 mmH2O high", not curve_ok(shifted), "refused" if not curve_ok(shifted) else "passed"))
+    for name, caught, detail in controls:
+        print(f"{'ok' if caught else 'MISSED':>6}  control, {name}: {detail}")
     passed = sum(ok for _, ok, _ in results)
-    print(f"checks: {passed} of {len(results)} agree; controls: {int(caught)} of 1 caught")
-    return passed == len(results) and caught
+    caught = sum(c for _, c, _ in controls)
+    print(f"checks: {passed} of {len(results)} agree; controls: {caught} of {len(controls)} caught")
+    return passed == len(results) and caught == len(controls)
+
+
+def curve_ok(curve):
+    """A fan curve that starts on the datasheet's no-flow pressure, ends on its free-air flow, and only falls."""
+    ends = abs(curve[0][1] - 10.57) <= 0.1 and abs(curve[-1][0] - 0.286) <= 0.002 and abs(curve[-1][1]) <= 0.05
+    falls = all(y1 < y0 and x1 > x0 for (x0, y0), (x1, y1) in itertools.pairwise(curve))
+    return ends and falls
 
 
 if __name__ == "__main__":
