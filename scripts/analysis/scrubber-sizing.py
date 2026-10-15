@@ -11,6 +11,8 @@ From the repository's root:
   uv run scripts/analysis/scrubber-sizing.py check    this loss model against cfd.py's, run both ways, and a control
   uv run scripts/analysis/scrubber-sizing.py candidates
         filters that can be bought, flat or round, and the flow the two Deltas would draw through each (D276)
+  uv run scripts/analysis/scrubber-sizing.py wall
+        the filter wall: the pressure its filters need at each flow, and two or four Deltas through each layout
 
 THE ORDER, as asked: the HEPA's face first, then the carbon under it. During a print the chamber's air settles
 at the emissions over the box's flow, so the flow is the target: today's 0.72 L/s, and two, four and eight times
@@ -229,6 +231,35 @@ def show_candidates():
               + f"   bed at mid grade {q * EBCT / bed * 1000:.0f} mm, {q * EBCT * 1e6:.0f} cm3")
 
 
+# The filter wall's layouts (Alon, 15 Oct 2026): its HEPA - four Mijia in one module, or one flat purifier panel
+# across the top row, sold at 400 x 220 x 30 mm and so on - over its carbon, in one module or across the whole bottom
+# row. A panel is modelled as the paper is, at 15 mm pleats; it is sold as H13, so read its H13-like column.
+WALL_HEPA = {"four Mijia": 4 * 0.150 * 0.049, "a 400 x 220 panel": 0.400 * 0.220}
+WALL_BED = {"carbon in one module": 0.084 * 0.219, "carbon across the bottom row": 0.084 * 0.444}
+WALL_FLOWS = (2, 3, 4, 5, 6, 8)  # L/s
+
+
+def wall_need(q, face, bed, grade=1.0):
+    """The pressure [Pa] the wall's HEPA, carbon and floss take at flow q, the carbon kept at today's dwell time."""
+    k = cfd.MEDIA["hepa"]["dp_at_1"] * grade
+    return sum(losses(q, face, bed, q * EBCT / bed, bed, hepa_at_1=k))
+
+
+def show_wall():
+    print(f"the filter wall: Pa its filters take at each flow (mid grade), the carbon kept at {EBCT:.2f} s")
+    print(f"{'':>50} " + " ".join(f"{q:>5} L/s" for q in WALL_FLOWS))
+    for (hname, face), (bname, bed) in itertools.product(WALL_HEPA.items(), WALL_BED.items()):
+        cells = " ".join(f"{wall_need(q / 1000, face, bed):>6.0f} Pa" for q in WALL_FLOWS)
+        print(f"{hname + ', ' + bname:>50} " + cells)
+    print("\nthe Deltas through each, on Delta's published curve:")
+    for (hname, face), (bname, bed) in itertools.product(WALL_HEPA.items(), WALL_BED.items()):
+        for gname, grade in (("mid grade", 1.0), ("H13-like", 5 / 3)):
+            for fname, fans in (("two Deltas", deltas), ("four Deltas", four_deltas)):
+                q = flow_through(face, 15, grade, fans, bed)
+                print(f"{hname + ', ' + bname:>50}  {gname:9} {fname:11} {q * 1000:5.2f} L/s, {q / Q_NOW:4.1f} x,"
+                      f" {fans(q):3.0f} Pa; carbon {q * EBCT * 1e6:5.0f} cm3, {q * EBCT * RHO_BED * 1000:4.0f} g")
+
+
 def check():
     """The loss model against cfd.py's lumped network on its own geometry, both ways, and a control that must
     break the agreement."""
@@ -273,6 +304,9 @@ if __name__ == "__main__":
         sys.exit(0 if check() else 1)
     if sys.argv[1:] == ["candidates"]:
         show_candidates()
+        sys.exit(0)
+    if sys.argv[1:] == ["wall"]:
+        show_wall()
         sys.exit(0)
     if sys.argv[1:]:
         sys.exit(__doc__)

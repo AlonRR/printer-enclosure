@@ -1125,6 +1125,36 @@ size to scale; what is in them placed, not designed.
 
 ![The filter wall as one unit, seen from inside: it stands on the floor and under the roof, between the legs, four modules of 225 by 205 mm on rails, a TPU seal round it. Top left, free: filler or a window. Top right, four Mijia cartridges standing side by side. Bottom right, behind the skin, the carbon lying flat with the carbon-dust floss under it, four Deltas, the SPS30 and SGP41 in the clean air, the outlet louvre low, and the purge: a servo's damper and a 100 mm collar out to the window. Bottom left, the electronics. Cut across the right column: the HEPA module 50 mm deep within the Lack's edge over the carbon module 90 mm deep, 40 of it out past the edge, joined by a gasketed port; the plume drawn in under the roof, down through the carbon, the floss and the Deltas; most of it back in low past the sensors, a little out through the purge](diagrams/filter-wall/layout.png)
 
+### Stronger fans, or one large filter
+
+Alon asked, 15 Oct 2026: *"what if we used larger/stronger fans? can we buy 1 large filter instead of 4 small
+filters?"* The pressure the filters take at each flow decides both, from
+[`scrubber-sizing.py wall`](../scripts/analysis/scrubber-sizing.py) (mid grade, the carbon kept at today's dwell
+time):
+
+| The wall's filters | 2 L/s | 4 L/s | 6 L/s | 8 L/s |
+|---|---|---|---|---|
+| Four Mijia, the carbon in one module (as drawn) | 33 Pa | 82 Pa | 156 Pa | 264 Pa |
+| Four Mijia, the carbon across the bottom row | 28 Pa | 59 Pa | 93 Pa | 133 Pa |
+| One 400 × 220 panel, the carbon in one module | 16 Pa | 47 Pa | 104 Pa | 195 Pa |
+| One 400 × 220 panel, the carbon across the bottom row | 11 Pa | 24 Pa | 42 Pa | 64 Pa |
+
+- **A fan's pressure, not its size, sets the flow here.** As drawn, the filters take 82 Pa at 4 L/s and 156 at
+  6. Ordinary large, quiet fans give some 15 to 30 Pa at most, so they would move less air than the Deltas, not
+  more. A stronger fan has to hold 100 Pa or more at a few L/s: a server-class high-pressure fan or a blower,
+  about as loud as the Deltas. The JUMPEAK's pressure is not recorded.
+- **Less resistance is the better lever.** Purifiers' flat H13 replacement panels are sold at about 400 × 220 ×
+  30 mm and 370 × 230 × 33 mm: one across the top row is some 880 cm² of face, three times the four Mijia's 294.
+  With the carbon across the whole bottom row too, the stack takes 24 Pa at 4 L/s. At its H13 grade:
+  - two Deltas, 4.16 L/s, 5.8 times today's, at 38 Pa;
+  - four Deltas, 5.86 L/s, 8.1 times, at 57 Pa;
+  - and at so little pressure a quieter fan could do the work, if its curve says so.
+- **What it costs**: the rows re-split round a 220 to 230 mm panel (the HEPA row about 240 tall, the carbon row
+  about 170); the electronics need another place; the carbon grows to 1.1 to 1.5 L, 480 to 670 g. One part to
+  change and one seal, in place of four.
+- **Not chosen yet** (D302). A panel is modelled as the Mijia's paper is, at 15 mm pleats, and read at H13; its
+  own pleats and grade move it.
+
 ## How long the carbon lasts
 
 An estimate, from [`scripts/analysis/carbon-life.py`](../scripts/analysis/carbon-life.py), which says where each number comes
