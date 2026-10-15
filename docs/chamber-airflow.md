@@ -283,8 +283,25 @@ while the choice is still free.
   recirculation with extra steps.
 - **Keep it short and straight.** Every bend costs static pressure, and the bleed is the first thing
   to suffer.
-- **No filter in the duct.** Already argued in `chamber-sensor.md`: the air has been through HEPA
-  many times over the print, and an axial fan cannot push a HEPA element in series anyway.
+- **No filter in the duct, as planned.** The duct takes its air off the scrubber's clean side, air that
+  has been through HEPA many times over the print: a second filter there cleans nothing the chamber
+  would miss, and spends pressure the bleed needs.
+- **Unless the duct draws on the chamber itself** (Alon asked, 15 Oct 2026). With its own HEPA and
+  carbon at its intake, the extraction is a second scrubber that sends its air outside, and its flow
+  adds to the scrubber's one for one ([bentobox-scrubber.md](bentobox-scrubber.md#against-a-prints-emissions)).
+  - **What it costs is the chamber's heat.** Room air comes in to replace what leaves: 23 to 25 W for
+    each L/s at the 19 to 21 °C an ASA print holds the chamber over the room
+    ([measurements](chamber-sensor/measurements.md)). At the scrubber's own 0.72 L/s that is 17 to 18 W,
+    and it halves both the chamber's level during a print and the wait before opening; at four times
+    that, 66 to 73 W. If the box's walls lose 5 to 10 W for each °C - inferred from that rise on bed heat
+    whose power is not measured - the first runs the chamber 1.5 to 3 °C cooler, the second 5 to 9 °C,
+    to the bottom of ASA's 40 to 60 °C band or under it. The electronics bay gains the same margin.
+  - **Its filter is sized by [the scrubber's table](bentobox-scrubber.md#bigger-for-more-air)**: per L/s,
+    84 cm² of HEPA face at 50 Pa or 45 at 100, and 256 cm³ of carbon. At 0.72 L/s and 50 Pa, a 60 cm²
+    face over the BentoBox's 184 cm³. The JUMPEAK's pressure at so small a flow is near its no-flow
+    figure, which is not recorded; the filter then meters the bleed itself, in place of the orifice.
+  - **It also frees the duct from the scrubber**, and lets the intake sit high over the print, in the
+    plume that rises from it, catching the fumes before they mix: better than the well-mixed figures.
 
 ## Control and sensing
 
