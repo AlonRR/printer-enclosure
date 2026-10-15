@@ -3,8 +3,8 @@
 > **Not to be built as drawn here** (Alon, 15 Oct 2026: D282 a). The scrubber becomes a chimney on the Lack's
 > top, outside the chamber: two of the bought Mijia cartridges standing as its two long walls, for about four
 > times this box's air with the extraction's (D280 a, D283 a; see *Four times the air* and *Where it stands*).
-> Its clean air returns down a side wall, its duct and the extraction's vent built into part of that wall, to
-> spend less heat and room. The base, the tray and the sensor sample here stop; the two Deltas' fan section, the
+> A printed left wall carries its intake, its return and the extraction's vent, so the top is not drilled and
+> less heat and room are spent. The base, the tray and the sensor sample here stop; the two Deltas' fan section, the
 > sealed joints and the outlet sensors' mounts carry over into the new box. The rest of this page is the remix as
 > it was drawn, and the analysis the chimney is sized from.
 
@@ -986,7 +986,8 @@ chimney, with the extraction's vent and duct in a back corner.
 - **Either way its walls are outside**, and lose the chamber's heat: about 0.2 m² of thin printed wall at 20 °C
   over the room loses some 20 to 30 W, about what 1 L/s of extraction costs, unless its walls are doubled or
   lined. A return duct built into the wall, in place of the sheet, loses little more than the sheet did.
-- **The Lack's top takes the holes**: the chimney's intake and its return, and the extraction's.
+- **The Lack's top need not be drilled**: the chimney's intake and return, and the extraction, can all run in a
+  printed wall (D287 a, below).
 
 **Chosen** (Alon, 15 Oct 2026: D283 a): on top, as a chimney. And in his words, *"we can have the vent replace
 part of a wall"*, to limit the heat lost and the room it takes: the return duct and the extraction's vent are
@@ -1004,19 +1005,32 @@ enclosure's back, and the enclosure stands against the room's wall.
 | The duct outside [E] | 100 mm flex to the 120 mm fan already in the window, on the enclosure's left | Alon's photos (T286) |
 | On the top [I] | the drybox, about 40 × 30 cm with its tubes down through the top, and the electronics beside it; they can move | Alon (T286) |
 | The makeup inlet [F] | low, at the Einsy, by [chamber-airflow.md](chamber-airflow.md) | not confirmed |
+| The left sheet [K] | in printed clips on the legs; the front panel hangs on a hinge at the front-right leg | Alon's photos; the sheet's size not measured |
 
-- **[A] the return** runs in the wall's plane, outside the leg line, so it takes no room from the chamber. It
-  rises past the top's 50 mm edge into the chimney's side, so only the chimney's intake goes through the top.
-- **[B] the extraction's vent** stands in the same wall, high and forward of the return: the HEPA facing the
-  chamber, the carbon behind it, a 100 mm collar outside for the flex to the window's fan.
-- **The window's side is drawn**, the left: the shortest run for [B]'s flex. The chimney then takes the top's
-  back-left corner, where the drybox stands now. Which side is still open (D287, 15 Oct 2026).
+**The printed wall** (Alon, 15 Oct 2026: D287 a): the left wall, on the window's side, the shortest run for the
+extraction's flex, is replaced by a printed one that carries all three:
+
+- **[J] the chimney's intake**: a slot on the wall's inner face just under the top, where the plume spreads,
+  and a duct up past the top's 50 mm edge into the chimney. The top is not drilled.
+- **[A] the return** comes back down beside it and out low.
+- **[B] the extraction's vent**: the HEPA facing the chamber, the carbon behind it, a 100 mm collar outside for
+  the flex to the window's fan.
+- **A TPU seal round the wall's edge**, against the legs, the top's edge and the floor's: with the intake drawing
+  just under the top, a gap beside it would bring the room's air straight in.
+- **It swaps with the right wall** if the printer moves to a room with the window on that side. Turned round to
+  go there, the wall's back end becomes its front: drawn here with the chimney's two ducts centred along the
+  wall and the chimney mid-edge on the top, so a swap leaves them where they were (D292, open).
+- **The ducts stand outside the leg line**, in the wall's own depth, so they take little room from the chamber;
+  how far the wall may reach inward is the printer's narrowest gap to it [H].
+- **For size**: the wall is about 550 mm long and 460 to 510 tall, as the sheet it replaces [K]. At 3 mm thick
+  that is 760 to 840 cm³, 0.8 to 0.9 kg of ASA before any ribs, in about nine pieces on the printer's 250 ×
+  210 mm bed.
 
 Drawn to the enclosure by [`scripts/figures/chimney-concept.py`](../scripts/figures/chimney-concept.py): the
-Lack, its top, the legs and the walls to scale; the chimney, the duct and the vent placed, not designed. The
-lettered labels are what is still open.
+Lack, its top and the legs to scale; the wall's parts and the chimney placed, not designed. The lettered labels
+are what is still open.
 
-![The chimney drawn to the enclosure. From above: the 550 mm Lack top with a leg in each corner and the plexiglass walls outside them, the room's wall behind; the chimney at the top's back-left corner where the drybox stands now; the return duct and the extraction's vent outside the left wall, the vent's flex out to the window's fan; the makeup air in at the right, at the Einsy; the printer's gaps to the side walls, about 5 to 8 cm and about 10. From inside, the left wall: the chamber 460 tall between the floor and the 50 mm top, the plume rising through the top into the chimney, the return duct coming down past the top's edge near the back leg and out low, and the extraction's vent high toward the front](diagrams/chimney/concept.png)
+![The chimney drawn to the enclosure. From above: the 550 mm Lack top with a leg in each corner, the room's wall behind, plexiglass walls at the back, the right and the front, and a printed wall on the left, sealed round its edge; the chimney mid-way along the top's left edge, the top not drilled, where the drybox stands now; outside the printed wall, the chimney's intake and return ducts side by side at its middle, and the extraction's vent toward the front with its flex out to the window's fan; the makeup air in at the right, at the Einsy; the printer's gaps to the side walls, about 5 to 8 cm and about 10. From inside, the printed wall: the chamber 460 tall between the floor and the 50 mm top, the plume drawn in through a slot just under the top and up past the top's edge into the chimney, the clean air back down beside it and out low, the extraction's vent high toward the front, and the TPU seal round the wall's edge](diagrams/chimney/concept.png)
 
 ## How long the carbon lasts
 
