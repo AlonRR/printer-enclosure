@@ -891,6 +891,40 @@ air the box delivers, reached in three or four turnovers, about ten minutes.
   2026), and an SPS30 counts from 0.3 µm, so it sees few of a print's particles, which peak at 10 to 30 nm
   (Stabile et al.).
 
+### Bigger, for more air
+
+Alon, 15 Oct 2026 (D275 c): how large the box must be for more air, from the HEPA's face to the carbon's depth,
+at each pressure a fan might give. [`scripts/analysis/scrubber-sizing.py`](../scripts/analysis/scrubber-sizing.py)
+works it on the simulation's own physics (`uv run scripts/analysis/scrubber-sizing.py`; its `check` runs that
+model back to today's box). The HEPA is a pack like the bought cartridge, mid grade, 15 mm pleats; the carbon
+keeps the remix's 0.26 s and lies under the HEPA on the box's inside, in today's proportion.
+
+At one pressure every speed through every face is fixed, so each size grows in step with the flow. Per litre a
+second:
+
+| The fans give, at that flow | HEPA face | Box inside | Carbon | Its depth | HEPA takes | Carbon takes |
+|---|---|---|---|---|---|---|
+| 25 Pa | 163 cm² | 234 cm² | 256 cm³, 115 g | 11 mm | 23 Pa | 0.5 Pa |
+| 50 Pa | 84 cm² | 120 cm² | 256 cm³, 115 g | 21 mm | 45 Pa | 2.4 Pa |
+| 100 Pa | 45 cm² | 64 cm² | 256 cm³, 115 g | 40 mm | 85 Pa | 11 Pa |
+| 200 Pa | 26 cm² | 37 cm² | 256 cm³, 115 g | 70 mm | 149 Pa | 44 Pa |
+| 400 Pa | 16 cm² | 23 cm² | 256 cm³, 115 g | 112 mm | 238 Pa | 151 Pa |
+
+The floss takes the rest, 1 to 12 Pa.
+
+- **The carbon is set by the flow alone**: 256 cm³ for each L/s keeps the air 0.26 s in it. The fans' pressure
+  decides only how deep it lies - shallow under a big face, deep under a small one, and past about 200 Pa its
+  drop climbs fast, so a box for strong fans wants its bed wider than its HEPA.
+- **The HEPA's face is what limits this box, not its fans.** On their curve, taken as a straight line, the two
+  Deltas still give 72 Pa at four times today's air (2.88 L/s): a HEPA face of 171 cm², 13 cm square, over 331 g
+  of carbon 30 mm deep. At eight times (5.76 L/s) they give 41 Pa: a face of 582 cm², 24 cm square, over 662 g
+  18 mm deep. The chamber's level during a print falls to a quarter or an eighth, and so does the wait before
+  opening. A real fan's curve dips between its ends, so these hold only once the Deltas' published curve is read
+  there.
+- **The chosen cartridge** is 150 × 49 mm with its frame, at most 73 cm² of face: with the Deltas, about twice
+  today's air, if its paper is mid grade.
+- **The paper's grade scales the face**: about half for an H11-like paper, 5/3 for an H13-like one.
+
 ## How long the carbon lasts
 
 An estimate, from [`scripts/analysis/carbon-life.py`](../scripts/analysis/carbon-life.py), which says where each number comes

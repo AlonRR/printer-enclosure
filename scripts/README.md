@@ -8,6 +8,6 @@ LunchBox's scripts stay under [`archive/lunchbox/`](../archive/lunchbox/).
 | Folder | What is in it |
 |---|---|
 | `checks/` | `bentobox-checks.py`: the BentoBox remix's fit checks, each with a positive control, and its pictures (`figures`); exits non-zero on a failure |
-| `analysis/` | `carbon-life.py`: how many print hours the carbon lasts, from its isotherm and the fumes' rates |
+| `analysis/` | `carbon-life.py`: how many print hours the carbon lasts, from its isotherm and the fumes' rates; `scrubber-sizing.py`: how large the HEPA's face and the carbon's bed must be for a flow, at each fan pressure |
 | `figures/` | `bentobox-circuit.py`: the bay's circuit, drawn into `docs/diagrams/bentobox/` |
 | `tools/` | `bentobox-print.sh`: every part built, checked and sliced; `bentobox-auto-stl.py`: the BentoBox Auto's STLs from its STEP; `chamber-log.py`, `chamber-serial-log.py`: the chamber sensor's readings logged from MQTT or its serial port |
