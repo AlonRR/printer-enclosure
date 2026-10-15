@@ -988,6 +988,13 @@ chimney, with the extraction's vent and duct in a back corner.
   lined. A return duct kept inside the chamber, down its back corner, loses nothing more.
 - **The Lack's top takes the holes**: the chimney's intake and its return, and the extraction's.
 
+**Chosen** (Alon, 15 Oct 2026: D283 a): on top, as a chimney. And in his words, *"we can have the vent replace
+part of a wall"*, to limit the heat lost and the room it takes. Drawn below as a concept, not to scale, by
+[`scripts/figures/chimney-concept.py`](../scripts/figures/chimney-concept.py): the lettered labels are what the
+enclosure itself has to answer before anything is drawn to it.
+
+![The chimney's concept: from the side, the chimney on the Lack's top over the back, the print's plume rising into it, its clean air back down a duct that is part of the back wall in one back corner and out low; the extraction's vent part of the wall in the other back corner, to the duct outside; the makeup air in low at the front. From above, the chimney over one back corner and the vent in the other](diagrams/chimney/concept.png)
+
 ## How long the carbon lasts
 
 An estimate, from [`scripts/analysis/carbon-life.py`](../scripts/analysis/carbon-life.py), which says where each number comes
