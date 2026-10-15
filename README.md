@@ -78,7 +78,7 @@ Code — `firmware/`, `scripts/` and `sim/`, and the archive's — is MPL-2.0. T
 `archive/lunchbox/models/lunchbox/` and its pictures in `archive/lunchbox/docs/lunchbox/` — is CC-BY-SA-4.0, as the [LunchBox](https://www.printables.com/model/468166) it builds
 on is. The BentoBox remix — `models/bentobox/` and its pictures in `docs/diagrams/bentobox/` — is
 CC-BY-NC-SA-4.0, as [BentoBox v2.0](https://www.printables.com/model/272525) is, and the
-[BentoBox Auto](https://makerworld.com/en/models/1882240) its bottom comes from. Everything else, the docs, the data and this README, is CC-BY-4.0. Every file states its own
+[BentoBox Auto](https://makerworld.com/en/models/1882240) its bottom comes from. Everything else, the filter wall's model in `models/filter-wall/`, the docs, the data and this README, is CC-BY-4.0. Every file states its own
 licence, following [REUSE](https://reuse.software/): an `SPDX-License-Identifier` header, or an entry in
 `REUSE.toml`. Full texts are in [`LICENSES/`](LICENSES/).
 

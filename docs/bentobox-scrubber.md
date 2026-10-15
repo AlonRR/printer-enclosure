@@ -1219,6 +1219,10 @@ STARKVIND particle filter, uncut, the first below.
   figures. If the JUMPEAK is like it, it would hold some 35 to 50 Pa at the wall's few L/s, more than the Deltas'
   35 there; but an axial fan at a tenth of its free flow runs near its stall, so it wants its own curve, measured
   against a known restriction, before it drives the wall.
+- **Modelled**, its first increment, in [models/filter-wall/](../models/filter-wall/README.md) (Alon, 15 Oct 2026: A304
+  y and "model the wall to the best available info"): the ring, the cassette and the carbon trays to scale, in
+  the pieces they print in. Its rows are set apart from the filter's measures, so a filter in hand changes only
+  the cassette.
 - **The wall round STARKVIND**: the filter is 40 thick, so the whole wall goes 90 deep, 40 of it out past the edge,
   to leave a 47 mm plenum behind it; the rows are 306 for the filter and 124 for the carbon, on rails of 15. At
   mid grade the bed is 36 mm deep with two Deltas, 48 with four, and the carbon row keeps room for both.
