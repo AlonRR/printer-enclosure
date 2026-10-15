@@ -13,7 +13,7 @@ module carbon_piece(name) let(p = piece(name), y0 = p[1], y1 = p[2]) difference(
     translate([x_out, y0, 0]) cube([depth, y1 - y0, z_row]);
     translate([x_out - e, y0 + wall_t, wall_t]) cube([depth - face_t + e, y1 - y0 - 2 * wall_t, z_row - 2 * wall_t]);
     // the port, from the filter row's plenum
-    translate([x_out + wall_t, y0 + wall_t, z_row - wall_t - e]) cube([plenum_d, y1 - y0 - 2 * wall_t, wall_t + 2 * e]);
+    translate([x_out + face_t, y0 + wall_t, z_row - wall_t - e]) cube([plenum_d, y1 - y0 - 2 * wall_t, wall_t + 2 * e]);
     // the clean air's outlet, low in the inner face
     translate([x_in - face_t - e, (y0 + y1) / 2 - louvre[0] / 2, wall_t + louvre_z]) cube([face_t + 2 * e, louvre[0], louvre[1]]);
 }

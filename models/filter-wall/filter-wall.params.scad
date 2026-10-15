@@ -25,17 +25,17 @@ split_y = 225;      /* Where the wall splits along its length, from the front le
 filter_row_h = 310; /* The filter row, tall, and the carbon row the rest. Set, not derived from the filter, so
                        that measuring the filter changes only the cassette's pocket. */
 cass_l = 390;       /* The cassette's outside, along the wall; its height is the filter row's inside. */
-cass_depth = 50;    /* ...and how deep it is, from the inner face: the land, the seal, the filter and the room
-                       for its retainers. Set, so the ports behind it do not move with the filter's thickness. */
+cass_depth = 50;    /* ...and how deep it is, from the inner face: the retainers' room, the filter, the seal and
+                       the land. Set, so the ports behind it do not move with the filter's thickness. */
 
 /* [The filter's pocket] */
 clearance = 4;      /* The pocket over the filter's listed size, each side: IKEA's whole centimetres hide up to
                        5 mm either way; measure the filter, then set this and starkvind (vitamins/starkvind.scad). */
-land_layers = 10;   /* The stop at the inner face the filter rests on: its thickness in layers. */
-seal_t = 3;         /* The seal on the filter's downstream face, before it is squeezed: foam tape or a printed TPU
-                       strip, not chosen. */
+land_layers = 10;   /* The land at the pocket's back that the filter seals on: its thickness in layers. */
+seal_t = 3;         /* The seal on the land, before it is squeezed: TPU, printed in lengths (Alon, 15 Oct 2026:
+                       D306 b). */
 seal_squeeze = 0.25;/* How much of the seal the filter squeezes. */
-retain_min = 4;     /* Behind the filter and its seal, the least room the seal's frame (not drawn yet) may take. */
+retain_min = 4;     /* In front of the filter, at the inner face, the least room its retainers (not drawn yet) take. */
 
 /* [The carbon row] */
 bed_depth = 36;     /* The carbon's depth: two Deltas through STARKVIND at mid grade, kept at today's dwell time

@@ -9,12 +9,12 @@ for (p = pieces) let(s = print_size(p))
     assert(s[0] <= bed[0] + 1e-6 && s[1] <= bed[1] + 1e-6 && s[2] <= bed[2] + 1e-6,
            str(p[0], " is ", s, " as it prints: past the bed's ", bed));
 
-// The filter, with its clearance, fits the pocket, and the stop overlaps its rim.
+// The filter, with its clearance, fits the pocket, and the land overlaps its rim.
 assert(pocket[0] >= starkvind[0] && pocket[1] >= starkvind[1], "the filter is larger than its pocket");
 assert(cass_wall[0] >= wall_t - 1e-6 && cass_wall[1] >= wall_t - 1e-6,
        str("the cassette's walls round the pocket are ", cass_wall, ", under a wall's ", wall_t,
            ": the filter, with its clearance, outgrows the cassette - make the filter row taller"));
-assert(window[0] > 0 && window[1] > 0, "the stop's window has closed: the filter's rim is wider than half the filter");
+assert(window[0] > 0 && window[1] > 0, "the land's window has closed: the filter's rim is wider than half the filter");
 assert(cass_d <= depth - wall_t, "the cassette is deeper than the wall");
 assert(retain >= retain_min - 1e-6, str("behind the filter only ", retain, " for its retainers: the filter is too thick ",
                                        "for the cassette's depth"));

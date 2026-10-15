@@ -109,7 +109,7 @@ for y in range(int(py0) + 10, int(py0 + pl), 12):
     wall.plot([y, y], [pz0 + 6, pz0 + ph - 6], color="#e0c060", lw=0.5)
 label(wall, LACK / 2, pz0 + ph / 2 + 12, "IKEA STARKVIND particle filter, 370 × 290 × 40, EPA12, uncut [D303 a]",
       color="#9a6a00", fontsize=8.5, bbox={"facecolor": HEPA_C, "edgecolor": "none"})
-label(wall, LACK / 2, pz0 + ph / 2 - 14, "its frame in pieces; a hatch outside to change it", color="#c26a1b",
+label(wall, LACK / 2, pz0 + ph / 2 - 14, "its frame in pieces; it changes from the chamber", color="#c26a1b",
       fontsize=7.5, bbox={"facecolor": HEPA_C, "edgecolor": "none"})
 # the bottom row: carbon, floss, Deltas, sensors, outlet, purge
 box(wall, LEG + 8, BED_Z, LACK - 2 * LEG - 16, BED_D, "none", ec=CARBON_C, ls="--")
@@ -164,7 +164,6 @@ for z0, z1 in (HEPA_ROW, CARB_ROW):
     box(cut, x0 + SKIN, z0 + SKIN, DEPTH - x0 - 2 * SKIN, z1 - z0 - 2 * SKIN, "white", ec="none")
 box(cut, x0 + SKIN, HEPA_ROW[0] - 4, DEPTH - x0 - 2 * SKIN, 8, "white", ec="none")   # open between the rows
 box(cut, DEPTH - pt, pz0, pt, ph, HEPA_C, ec="#9a6a00")
-box(cut, x0 - 2, pz0 - 5, SKIN + 2, ph + 10, "white", ec="#c26a1b", ls="--")          # the hatch
 box(cut, x0 + SKIN, BED_Z, DEPTH - x0 - 2 * SKIN, BED_D, CARBON_C)
 box(cut, x0 + SKIN, FLOSS_Z, DEPTH - x0 - 2 * SKIN, 6, FLOSS_C, ec="#777")
 box(cut, x0 + SKIN, FAN_Z - 3, DEPTH - x0 - 2 * SKIN, 3, MOD_C, ec="#c26a1b")
@@ -182,7 +181,8 @@ flow(cut, (DEPTH + 2, 37), (210, 26), "tab:blue")
 flow(cut, (x0 - 30, 39), (x0 - 100, 39), PURGE_C)
 label(cut, 175, 52, "most back in, low", color="tab:blue", fontsize=8)
 label(cut, -105, 85, "a little out: the\npurge, a servo's\ndamper", color=PURGE_C, fontsize=7.5)
-label(cut, x0 - 10, pz0 + ph / 2, "a hatch:\nthe filter\nchanges\nfrom outside", color="#c26a1b", fontsize=7, ha="right")
+label(cut, x0 - 10, pz0 + ph / 2, "closed on the\nroom's side:\nthe filter\nchanges from\nthe chamber", color="#c26a1b",
+      fontsize=7, ha="right")
 label(cut, 75, pz0 + 25, "the filter, 40 thick;\nthe plenum behind it", color="#9a6a00", fontsize=8, ha="left")
 label(cut, 75, BED_Z + 22, "carbon, lying flat,\nthe air down through it", color=CARBON_C, fontsize=8, ha="left")
 label(cut, 75, FLOSS_Z + 2, "carbon-dust floss", color="#555", fontsize=8, ha="left")

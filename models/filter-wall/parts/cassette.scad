@@ -1,29 +1,28 @@
 // SPDX-FileCopyrightText: 2026 Alon A. Rabinowitz
 // SPDX-License-Identifier: CC-BY-4.0
 
-// parts/cassette.scad - THE FILTER'S FRAME: a pocket the filter drops into from the room's side, and at the inner
-// face a stop, with a window, that it rests on. It is the one part whose fit hangs on the filter in hand, so it is
-// apart from the ring and cheap to print again once the filter is measured. Four corners, each on the bed.
-// Included by filter-wall.scad; not a model on its own. Drawn where it sits.
+// parts/cassette.scad - THE FILTER'S FRAME: a pocket open to the chamber, and at its back a land, with a window,
+// that the filter seals on. It is the one part whose fit hangs on the filter in hand, so it is apart from the ring
+// and cheap to print again once the filter is measured. Four corners, each on the bed, the land down. Included by
+// filter-wall.scad; not a model on its own. Drawn where it sits.
 //
-// WHICH WAY THE AIR PUSHES: the fans draw from under the carbon, so the plenum behind the filter is below the
-// chamber's pressure, and the air pushes the filter away from the stop, towards the room. So the filter seals on
-// its downstream face: a seal on a frame of its own, behind the filter, clamped in from the room's side through
-// the hatch; the air then presses the filter onto it. The stop takes no seal and no load; it only places the
-// filter. The seal's frame, its clamps, and how the corners join and fix into the ring are not drawn yet.
+// WHICH WAY THE AIR PUSHES: the fans draw from under the carbon, so the plenum behind the land is below the
+// chamber's pressure, and the air presses the filter onto the land's seal. The filter goes in and out from the
+// chamber (Alon, 15 Oct 2026), held at the inner face by retainers that carry no seal. The seal (TPU, D306 b),
+// the retainers, and how the corners join and fix into the ring are not drawn yet.
 
 // The land is a plate as large as the row's inside, so the cassette's outline is set; the pocket's walls stand on
-// it round the filter, and move with the filter's measures.
+// it round the filter, towards the chamber, and move with the filter's measures.
 module cassette_whole() {
     difference() {
-        translate([x_in - land_t, cass_y0, cass_z0]) cube([land_t, cass[0], cass[1]]);
-        translate([x_in - land_t - e, cass_c[0] - window[0] / 2, cass_c[1] - window[1] / 2])
+        translate([x_cass_back, cass_y0, cass_z0]) cube([land_t, cass[0], cass[1]]);
+        translate([x_cass_back - e, cass_c[0] - window[0] / 2, cass_c[1] - window[1] / 2])
             cube([land_t + 2 * e, window[0], window[1]]);
     }
     difference() {
-        translate([x_cass_back, cass_c[0] - pocket[0] / 2 - wall_t, cass_c[1] - pocket[1] / 2 - wall_t])
+        translate([x_cass_back + land_t - e, cass_c[0] - pocket[0] / 2 - wall_t, cass_c[1] - pocket[1] / 2 - wall_t])
             cube([cass_d - land_t + e, pocket[0] + 2 * wall_t, pocket[1] + 2 * wall_t]);
-        translate([x_cass_back - e, cass_c[0] - pocket[0] / 2, cass_c[1] - pocket[1] / 2])
+        translate([x_cass_back + land_t - 2 * e, cass_c[0] - pocket[0] / 2, cass_c[1] - pocket[1] / 2])
             cube([cass_d - land_t + 3 * e, pocket[0], pocket[1]]);
     }
 }

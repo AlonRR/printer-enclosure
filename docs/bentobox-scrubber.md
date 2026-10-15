@@ -1169,7 +1169,7 @@ across the whole bottom row.
   frame is printed. At 28 mm it leaves a 19 mm plenum behind it in the 50 mm wall. Two medium panels side by side,
   each up to about 210 × 230, would give about the same face, so the same air.
 - **The rows**: the panel's 245 tall, the carbon's 165, on rails of 25 on the floor and under the roof. The
-  panel's frame prints in pieces, and a hatch outside changes the panel.
+  panel's frame prints in pieces, and the panel changes from the chamber (below, *Which panel*).
 - **The carbon row need not stand out into the room.** At the panel's H13 grade
   ([`scrubber-sizing.py wall`](../scripts/analysis/scrubber-sizing.py)):
 
@@ -1226,6 +1226,11 @@ STARKVIND particle filter, uncut, the first below.
 - **The wall round STARKVIND**: the filter is 40 thick, so the whole wall goes 90 deep, 40 of it out past the edge,
   to leave a 47 mm plenum behind it; the rows are 306 for the filter and 124 for the carbon, on rails of 15. At
   mid grade the bed is 36 mm deep with two Deltas, 48 with four, and the carbon row keeps room for both.
+- **The filter changes from inside the chamber** (Alon, 15 Oct 2026): *"one less thing to seal. also then the
+  airflow pulls it into the seal strengthening the seal."* The plenum behind it is below the chamber's pressure,
+  so the air presses it onto a land at the pocket's back; the filter row is closed on the room's side, with no
+  hatch. The printer moves right to make room in front of it (Q307), and the seals are TPU, printed in lengths
+  and joined (D306 b).
 
 ## How long the carbon lasts
 
