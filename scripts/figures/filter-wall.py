@@ -5,15 +5,15 @@
 # requires-python = ">=3.11"
 # dependencies = ["matplotlib"]
 # ///
-"""The filter wall's layout (Alon, 15 Oct 2026: D294 a, Q295, Q290): the enclosure's left wall, printed and about
-50 mm thick, is the scrubber - two Mijia cartridges in its inner face at the top, the carbon lying flat across its
-channel, the two Deltas under it, the clean air out low - with the extraction's vent at its front end and the makeup
-air in at its back end, at the Einsy. From the repository's root:
+"""The filter wall's layout (Alon, 15 Oct 2026: D294 a, Q295, Q290, D291 a, T293): the enclosure's left wall, printed,
+is the scrubber, built as a frame and four modules, one job each - seen from inside, the HEPA top right, the carbon,
+the Deltas and the outlet bottom right, the extraction's vent top left, and the bottom left still to choose. From the
+repository's root:
 
   uv run scripts/figures/filter-wall.py       writes docs/diagrams/filter-wall/layout.png
 
-The Lack, its legs and the chamber are to scale; the wall's parts are placed, not designed, and its outline is the
-chamber's side until the sheet it replaces is measured [K]. The lettered labels are what is still open.
+The Lack, its legs and the chamber are to scale, and so is the modules' size against the printer's bed; what is in
+them is placed, not designed. The lettered labels are what is still open.
 """
 from pathlib import Path
 
@@ -31,24 +31,27 @@ LACK = 550          # the top, square
 TOP = 50            # its thickness (T286)
 LEG = 50            # the legs, square
 CH_H = 460          # the chamber (Q157)
+BED_XY = (250, 210)  # the printer's bed
 # placed, not designed
-SKIN = 3            # each of the wall's two skins
-CHAN = 44           # the channel between them: the Deltas' 40 mm and a wall each side
-MIJIA = (150, 49, 15)            # a cartridge: long, wide, its pleats deep
-HEPA_Y = 250                     # the two cartridges, one above the other, from here along the wall
-HEPA_Z = (334, 389)              # the bottom of each row
-BED_Z, BED_D, FLOSS = 230, 30, 6  # the carbon: its floor, its depth, the floss under it
-FAN_Z, DELTA = 140, (40, 20)     # the fans' plate, and a Delta: square, deep
-FANS_Y = (205, 305)
-OUTLET = (120, 400, 25, 85)      # the clean air's louvre: y from, to, z from, to
-VENT = (60, 195, 300, 435, 30)   # the extraction's vent: y from, to, z from, to, and how far past the outer skin
-MAKEUP = (430, 490, 20, 95)      # the makeup air's grille, across the channel in a sleeve
-HATCH_Z = (200, 450)             # the outer skin's hatch, for the filters
+OVER = 20           # the frame's rails over the top's and the floor's edges, where the seal presses
+MOD = (225, 205)    # a module: along the wall, tall; face down on the bed
+COLS = (LEG, LEG + MOD[0])        # the modules' columns, from the front
+ROWS = (25, 25 + MOD[1])          # the modules' rows, from the floor
+SKIN = 3
+DEPTH = {"hepa": 50, "carbon": 90}  # the right column's two modules, deep
+SLOT = (49, 150)                  # a Mijia cartridge standing: wide, tall; four slots across the module
+FITTED = 2
+BED_Z, BED_D, FLOSS_Z = 168, 40, 150   # in the carbon module: the bed's floor and depth, the floss's frame
+FAN_Z, DELTA = 100, (40, 20)
+FANS_Y = (COLS[1] + 25, COLS[1] + 75)
+OUTLET = (COLS[1] + 10, COLS[1] + 125, 35, 80)
+SENSORS = (COLS[1] + 20, COLS[1] + 110, 88, 100)
+MAKEUP = (COLS[1] + 172, COLS[1] + 218, 35, 125)
 
 WOOD, WOOD_EDGE = "#e6d3b1", "#8a6d3b"
-PRINTED, SEAL = "#fde0c5", "#2d7d46"
-HEPA_C, CARBON_C, FLOSS_C, FAN_C = "#fff3b0", "#555555", "#f2f2f2", "#9ecae1"
-VENT_C, MAKEUP_C = "#f5d0cf", "#c7e9c0"
+FRAME_C, MOD_C, SEAL = "#f2b98a", "#fde0c5", "#2d7d46"
+HEPA_C, CARBON_C, FLOSS_C, FAN_C = "#fff3b0", "#555555", "#e8e8e8", "#9ecae1"
+VENT_C, MAKEUP_C, ELEC_C = "#f5d0cf", "#c7e9c0", "#e5dcf2"
 
 
 def arrows(ax, origin, a, b, size=60):
@@ -68,8 +71,8 @@ def label(ax, x, y, text, **kw):
     ax.text(x, y, text, fontsize=kw.pop("fontsize", 8.5), ha=kw.pop("ha", "center"), va="center", **kw)
 
 
-def flow(ax, a, b, color, lw=2, style="->"):
-    ax.annotate("", b, a, arrowprops={"arrowstyle": style, "color": color, "lw": lw})
+def flow(ax, a, b, color, lw=2):
+    ax.annotate("", b, a, arrowprops={"arrowstyle": "->", "color": color, "lw": lw})
 
 
 def dim(ax, a, b, text, color="black", **kw):
@@ -78,102 +81,132 @@ def dim(ax, a, b, text, color="black", **kw):
     label(ax, (a[0] + b[0]) / 2 + kw.pop("dx", 0), (a[1] + b[1]) / 2 + kw.pop("dy", 0), text, color=color, **kw)
 
 
-fig, (wall, cut) = plt.subplots(1, 2, figsize=(16, 8.8), gridspec_kw={"width_ratios": [1.45, 1]})
+fig, (wall, cut) = plt.subplots(1, 2, figsize=(17, 9.2), gridspec_kw={"width_ratios": [1.5, 1]})
 
 # ---- the wall seen from inside the chamber: Y right (front to back), Z up
-box(wall, 0, -TOP, LACK, TOP, WOOD, ec=WOOD_EDGE)
-label(wall, LACK / 2, -TOP / 2, "the floor")
-box(wall, 0, CH_H, LACK, TOP, WOOD, ec=WOOD_EDGE)
-label(wall, LACK / 2, CH_H + TOP / 2, "the Lack's top: nothing on it, not drilled")
-box(wall, 0, 0, LACK, CH_H, PRINTED, ec="#c26a1b")
-wall.add_patch(mp.Rectangle((6, 6), LACK - 12, CH_H - 12, fill=False, ec=SEAL, lw=2.5, ls="--"))
+box(wall, 0, -OVER, LACK, CH_H + 2 * OVER, FRAME_C, ec="#c26a1b")          # the frame, under everything
+wall.add_patch(mp.Rectangle((4, -OVER + 4), LACK - 8, CH_H + 2 * OVER - 8, fill=False, ec=SEAL, lw=2.5, ls="--"))
+for y, z in ((COLS[0], ROWS[0]), (COLS[0], ROWS[1]), (COLS[1], ROWS[0]), (COLS[1], ROWS[1])):
+    box(wall, y, z, MOD[0], MOD[1], MOD_C, ec="#c26a1b", lw=1.6)
 for y in (0, LACK - LEG):
-    box(wall, y, 0, LEG, CH_H, WOOD, ec=WOOD_EDGE)
-label(wall, LEG / 2, CH_H / 2, "leg", rotation=90, color=WOOD_EDGE)
-label(wall, LACK - LEG / 2, CH_H / 2, "leg", rotation=90, color=WOOD_EDGE)
-# the bed and the fans' plate lie behind the inner skin: dashed
-box(wall, LEG + 2, BED_Z, LACK - 2 * LEG - 4, BED_D, "none", ec=CARBON_C, ls="--", lw=1.2)
-label(wall, LACK / 2 + 70, BED_Z + BED_D / 2, "carbon, lying flat across the channel, behind the skin", color=CARBON_C,
+    box(wall, y, 0, LEG, CH_H, WOOD, ec=WOOD_EDGE, alpha=0.55)
+box(wall, 0, -TOP, LACK, TOP, WOOD, ec=WOOD_EDGE, alpha=0.9)
+box(wall, 0, CH_H, LACK, TOP, WOOD, ec=WOOD_EDGE, alpha=0.9)
+label(wall, LACK / 2, -TOP / 2, "the floor: the frame's rail behind its edge, the seal on it")
+label(wall, LACK / 2, CH_H + TOP / 2, "the top: the same at its edge; nothing on it, not drilled")
+# top left: the extraction's vent
+y0, z0 = COLS[0], ROWS[1]
+box(wall, y0 + 25, z0 + 25, 175, 155, VENT_C, ec="darkred")
+wall.add_patch(mp.Circle((y0 + 112, z0 + 102), 50, fill=False, ec="darkred", ls="--", lw=1.2))
+label(wall, y0 + 112, z0 + 102, "[B] extraction:\nits own HEPA and\ncarbon; the 100 mm\ncollar outside,\nto the window", color="darkred",
       fontsize=7.5)
+# top right: the scrubber's HEPA, four slots
+y0 = COLS[1]
+gap = (MOD[0] - 4 * SLOT[0]) / 5
+z_slot = ROWS[1] + (MOD[1] - SLOT[1]) / 2
+for i in range(4):
+    ys = y0 + gap + i * (SLOT[0] + gap)
+    fitted = i < FITTED
+    box(wall, ys, z_slot, SLOT[0], SLOT[1], HEPA_C if fitted else "white", ec="#9a6a00", ls="-" if fitted else "--")
+    label(wall, ys + SLOT[0] / 2, z_slot + SLOT[1] / 2, "Mijia" if fitted else "blank", rotation=90,
+          color="#9a6a00", fontsize=8)
+label(wall, y0 + MOD[0] / 2, ROWS[1] + 12, "the scrubber's HEPA: four slots, two fitted [D297]", color="#9a6a00",
+      fontsize=7.5)
+# bottom right: the carbon, its dust filter, the Deltas, the clean air out, the sensors, the makeup air
+box(wall, y0 + 8, BED_Z, MOD[0] - 16, BED_D, "none", ec=CARBON_C, ls="--")
+label(wall, y0 + MOD[0] / 2, BED_Z + BED_D / 2, "carbon, lying flat, behind the skin", color=CARBON_C, fontsize=7.5)
+box(wall, y0 + 8, FLOSS_Z, MOD[0] - 16, 8, FLOSS_C, ec="#777", ls="--")
+label(wall, y0 + MOD[0] / 2, FLOSS_Z - 9, "carbon-dust filter: floss, on its own frame", color="#555", fontsize=7.5)
 for fy in FANS_Y:
-    box(wall, fy, FAN_Z, DELTA[0], DELTA[1], FAN_C, ls="--")
-label(wall, FANS_Y[0] - 85, FAN_Z + 10, "the two Deltas, in a plate\nacross the channel", color="#3182bd", fontsize=7.5)
-long, wide, _ = MIJIA
-for z in HEPA_Z:
-    box(wall, HEPA_Y, z, long, wide, HEPA_C, ec="#9a6a00")
-label(wall, HEPA_Y + long / 2, HEPA_Z[1] + wide / 2, "Mijia", color="#9a6a00", fontsize=8)
-label(wall, HEPA_Y + long / 2, HEPA_Z[0] + wide / 2, "Mijia", color="#9a6a00", fontsize=8)
-label(wall, HEPA_Y + long / 2 + 20, HEPA_Z[0] - 28, "the scrubber's intake: two cartridges, stacked",
-      color="#9a6a00", fontsize=8)
-y0, y1, z0, z1 = OUTLET
-box(wall, y0, z0, y1 - y0, z1 - z0, "white", ec="tab:blue")
-for y in range(y0 + 15, y1, 20):
-    wall.plot([y, y + 8], [z0 + 6, z1 - 6], color="tab:blue", lw=0.8)
-label(wall, (y0 + y1) / 2, z1 + 14, "the clean air out low, across the floor", color="tab:blue", fontsize=8)
-y0, y1, z0, z1, _ = VENT
-box(wall, y0, z0, y1 - y0, z1 - z0, VENT_C, ec="darkred")
-label(wall, (y0 + y1) / 2, (z0 + z1) / 2, "[B] extraction:\nits own HEPA\nand carbon, a\n100 mm collar\nout to the window", color="darkred",
-      fontsize=7.5)
-y0, y1, z0, z1 = MAKEUP
-box(wall, y0, z0, y1 - y0, z1 - z0, MAKEUP_C, ec=SEAL)
-label(wall, (y0 + y1) / 2, z1 + 30, "[F] makeup\nair in, at\nthe Einsy", color=SEAL, fontsize=7.5)
-label(wall, LACK / 2, CH_H + TOP + 15, "dashed green: the TPU seal round the wall's edge", color=SEAL, fontsize=8)
-dim(wall, (LACK + 30, 0), (LACK + 30, CH_H), "460", dx=25)
-dim(wall, (0, -TOP - 30), (LACK, -TOP - 30), "550, the outline until the sheet is measured [K]", dy=-16)
-label(wall, 25, -TOP - 75, "front\n(door)")
-label(wall, LACK - 25, -TOP - 75, "back")
-arrows(wall, (-110, -120), "+Y", "+Z")
-wall.set_xlim(-140, LACK + 90)
-wall.set_ylim(-160, CH_H + TOP + 30)
+    box(wall, fy, FAN_Z + 10, DELTA[0], DELTA[1], FAN_C, ls="--")
+label(wall, COLS[1] + 145, FAN_Z + 20, "the Deltas", color="#3182bd", fontsize=7)
+y_a, y_b, z_a, z_b = SENSORS
+box(wall, y_a, z_a, y_b - y_a, z_b - z_a, "#fdd0a2", ec="#d94801", ls="--")
+label(wall, COLS[1] + 145, (z_a + z_b) / 2, "SPS30,\nSGP41", color="#d94801", fontsize=7)
+y_a, y_b, z_a, z_b = OUTLET
+box(wall, y_a, z_a, y_b - y_a, z_b - z_a, "white", ec="tab:blue")
+for y in range(int(y_a) + 12, int(y_b), 16):
+    wall.plot([y, y + 7], [z_a + 6, z_b - 6], color="tab:blue", lw=0.8)
+label(wall, (y_a + y_b) / 2, z_a - 17, "the clean air out, across the floor", color="tab:blue", fontsize=7.5)
+y_a, y_b, z_a, z_b = MAKEUP
+box(wall, y_a, z_a, y_b - y_a, z_b - z_a, MAKEUP_C, ec=SEAL)
+label(wall, (y_a + y_b) / 2, (z_a + z_b) / 2, "[F]\nmakeup\nair in,\nat the\nEinsy", color=SEAL, fontsize=7)
+# bottom left: still to choose
+y0, z0 = COLS[0], ROWS[0]
+box(wall, y0 + 25, z0 + 30, 175, 140, ELEC_C, ec="#6a51a3", ls="--")
+label(wall, y0 + 112, z0 + 100, "[D298] the electronics:\nthe SuperMini, the USB-C\ntrigger, the fans' and\nsensors' connectors\n- or filler",
+      color="#6a51a3", fontsize=7.5)
+# the modules' size against the bed
+dim(wall, (COLS[0], ROWS[1] + MOD[1] + 6), (COLS[1], ROWS[1] + MOD[1] + 6), "225", dy=9, fontsize=7.5)
+dim(wall, (COLS[0] - 8, ROWS[1]), (COLS[0] - 8, ROWS[1] + MOD[1]), "205", dx=-16, fontsize=7.5, rotation=90)
+dim(wall, (LACK + 30, -OVER), (LACK + 30, CH_H + OVER), f"{CH_H + 2 * OVER}\n(460 and\n{OVER} over\neach edge)", dx=32)
+dim(wall, (0, -TOP - 30), (LACK, -TOP - 30), "550", dy=-16)
+label(wall, LACK / 2, -TOP - 80,
+      f"each module {MOD[0]} × {MOD[1]}, face down on the {BED_XY[0]} × {BED_XY[1]} bed; the frame in pieces; "
+      "dashed green: the TPU seal, and at every joint", fontsize=8)
+label(wall, 25, -TOP - 115, "front\n(door)")
+label(wall, LACK - 25, -TOP - 115, "back")
+arrows(wall, (-120, -150), "+Y", "+Z")
+wall.set_xlim(-150, LACK + 110)
+wall.set_ylim(-185, CH_H + TOP + 20)
 wall.set_aspect("equal")
 wall.axis("off")
-wall.set_title("The filter wall, seen from inside: the door on the left, the back (and the Einsy) on the right",
+wall.set_title("The filter wall, seen from inside: the door on the left, the back and the Einsy on the right",
                fontsize=10)
 
-# ---- a section through the wall at a fan, seen from the front: X right (the room left, the chamber right), Z up
-out_x = -(2 * SKIN + CHAN)
-box(cut, 0, -TOP, 220, TOP, WOOD, ec=WOOD_EDGE)
-label(cut, 110, -TOP / 2, "the floor")
-box(cut, 0, CH_H, 220, TOP, WOOD, ec=WOOD_EDGE)
-label(cut, 110, CH_H + TOP / 2, "the top")
-box(cut, out_x, 0, SKIN, CH_H, PRINTED, ec="#c26a1b")
-box(cut, -SKIN, 0, SKIN, CH_H, PRINTED, ec="#c26a1b")
-box(cut, out_x, 0, 2 * SKIN + CHAN, 3, PRINTED, ec="#c26a1b")
-box(cut, out_x, CH_H - 3, 2 * SKIN + CHAN, 3, PRINTED, ec="#c26a1b")
-box(cut, out_x - 2, HATCH_Z[0], SKIN + 4, HATCH_Z[1] - HATCH_Z[0], "white", ec="#c26a1b", ls="--")
-label(cut, out_x - 50, (HATCH_Z[0] + HATCH_Z[1]) / 2, "a hatch in\nthe outer skin:\nthe filters\nchange from\noutside", fontsize=7.5,
-      color="#c26a1b")
-box(cut, -SKIN - MIJIA[2], HEPA_Z[0], MIJIA[2] + SKIN, HEPA_Z[1] + MIJIA[1] - HEPA_Z[0], HEPA_C, ec="#9a6a00")
-box(cut, out_x + SKIN, BED_Z, CHAN, BED_D, CARBON_C, ec="black")
-box(cut, out_x + SKIN, BED_Z - FLOSS, CHAN, FLOSS, FLOSS_C, ec="#777")
-box(cut, out_x + SKIN, FAN_Z - 3, CHAN, 3, PRINTED, ec="#c26a1b")
-box(cut, out_x + SKIN + 2, FAN_Z, DELTA[0], DELTA[1], FAN_C)
+# ---- cut across the right column, seen from the front: X right (the room left, the chamber right), Z up
+hd, cd = DEPTH["hepa"], DEPTH["carbon"]
+box(cut, 0, -TOP, 200, TOP, WOOD, ec=WOOD_EDGE)
+label(cut, 100, -TOP / 2, "the floor")
+box(cut, 0, CH_H, 200, TOP, WOOD, ec=WOOD_EDGE)
+label(cut, 100, CH_H + TOP / 2, "the top")
+box(cut, -hd, -OVER, hd, ROWS[0] + OVER, FRAME_C, ec="#c26a1b")                # the bottom rail
+box(cut, -hd, ROWS[1] + MOD[1], hd, CH_H + OVER - ROWS[1] - MOD[1], FRAME_C, ec="#c26a1b")  # the top rail
+box(cut, -cd, ROWS[0], cd, MOD[1], MOD_C, ec="#c26a1b", lw=1.6)                # the carbon module, deeper
+box(cut, -hd, ROWS[1], hd, MOD[1], MOD_C, ec="#c26a1b", lw=1.6)                # the HEPA module
+box(cut, -cd + SKIN, ROWS[0] + SKIN, cd - 2 * SKIN, MOD[1] - 2 * SKIN, "white", ec="none")
+box(cut, -hd + SKIN, ROWS[1] + SKIN, hd - 2 * SKIN, MOD[1] - 2 * SKIN, "white", ec="none")
+box(cut, -hd + SKIN, ROWS[1] - 4, hd - 2 * SKIN, 8, "white", ec="none")       # the port between them
+label(cut, -cd - 8, ROWS[1] + 10, "port,\ngasketed", fontsize=7, ha="right", color="#c26a1b")
+for z in (-OVER, CH_H + 5):
+    box(cut, -2, z, 2, OVER - 5, SEAL, ec=SEAL)
+box(cut, -SKIN - 15, z_slot, 15 + SKIN, SLOT[1], HEPA_C, ec="#9a6a00")
+box(cut, -cd + SKIN, BED_Z, cd - 2 * SKIN, BED_D, CARBON_C)
+box(cut, -cd + SKIN, FLOSS_Z, cd - 2 * SKIN, 8, FLOSS_C, ec="#777")
+box(cut, -cd + SKIN, FAN_Z, cd - 2 * SKIN, 3, MOD_C, ec="#c26a1b")
+box(cut, -cd / 2 - DELTA[0] / 2, FAN_Z + 3, DELTA[0], DELTA[1], FAN_C)
+box(cut, -SKIN - 12, SENSORS[2], 12, SENSORS[3] - SENSORS[2], "#fdd0a2", ec="#d94801")
 box(cut, -SKIN - 1, OUTLET[2], SKIN + 2, OUTLET[3] - OUTLET[2], "white", ec="tab:blue")
-flow(cut, (120, 400), (2, 400), "tab:orange")
-label(cut, 120, 425, "the plume, drawn in\nunder the top", color="tab:orange", fontsize=8)
-mid = out_x + SKIN + CHAN / 2
-flow(cut, (mid, 380), (mid, BED_Z + BED_D + 5), "tab:orange")
-flow(cut, (mid, BED_Z - FLOSS - 2), (mid, FAN_Z + DELTA[1] + 3), "tab:blue")
-flow(cut, (mid, FAN_Z - 5), (mid, 60), "tab:blue")
-flow(cut, (2, 55), (150, 40), "tab:blue")
-label(cut, 120, 85, "out low,\nacross the floor", color="tab:blue", fontsize=8)
-label(cut, 70, HEPA_Z[0] + 25, "two Mijia,\n15 mm pleats", color="#9a6a00", fontsize=8, ha="left")
-label(cut, 70, BED_Z + 10, "carbon, 30 mm deep,\nlying flat: the air\ndown through it", color=CARBON_C, fontsize=8, ha="left")
-label(cut, 70, FAN_Z + 10, "a Delta in the\nfans' plate", color="#3182bd", fontsize=8, ha="left")
-label(cut, 70, BED_Z - 25, "the floss under it", color="#777", fontsize=7.5, ha="left")
-dim(cut, (out_x, -TOP - 25), (0, -TOP - 25), "50: two 3 mm skins, a 44 mm channel", dy=-16)
-label(cut, -140, 30, "the room:\nthe wall stands\nout into it (Q295)", fontsize=8, color="#555")
-label(cut, 160, 315, "the chamber", fontsize=9, color="#555")
-cut.plot([0, 0], [-TOP, CH_H + TOP], color=SEAL, lw=1, ls=":")
-label(cut, 6, CH_H + TOP + 18, "where the sheet's inner face is now", color=SEAL, fontsize=7.5, ha="left")
-arrows(cut, (-190, -130), "+X", "+Z")
-cut.set_xlim(-210, 230)
-cut.set_ylim(-170, CH_H + TOP + 40)
+box(cut, -cd - 2, ROWS[0] + 20, SKIN + 4, MOD[1] - 40, "white", ec="#c26a1b", ls="--")
+flow(cut, (110, 400), (2, 400), "tab:orange")
+label(cut, 110, 425, "the plume, drawn in\nunder the top", color="tab:orange", fontsize=8)
+flow(cut, (-hd / 2, 380), (-hd / 2, BED_Z + BED_D + 6), "tab:orange")
+flow(cut, (-cd / 2, FLOSS_Z - 3), (-cd / 2, FAN_Z + DELTA[1] + 6), "tab:blue")
+flow(cut, (-cd / 2 + 25, FAN_Z - 4), (-cd / 2 + 25, 62), "tab:blue")
+flow(cut, (2, 58), (140, 45), "tab:blue")
+label(cut, 135, 22, "out low, across the floor", color="tab:blue", fontsize=8)
+label(cut, 30, z_slot + 40, "the cartridges,\nstanding", color="#9a6a00", fontsize=8, ha="left")
+label(cut, 30, BED_Z + 22, "carbon, lying flat,\nthe air down through it", color=CARBON_C, fontsize=8, ha="left")
+label(cut, 30, FLOSS_Z - 4, "carbon-dust filter (floss)", color="#555", fontsize=8, ha="left")
+label(cut, 30, FAN_Z + 14, "a Delta, in the fans' plate", color="#3182bd", fontsize=8, ha="left")
+label(cut, 30, SENSORS[2] + 4, "the sensors, in the clean air", color="#d94801", fontsize=7.5, ha="left")
+label(cut, -cd - 12, ROWS[0] + MOD[1] / 2 - 20, "a hatch:\nthe carbon\nand the floss\nchange from\noutside", fontsize=7,
+      color="#c26a1b", ha="right")
+label(cut, 30, CH_H - 8, "the seal on the top's edge", color=SEAL, fontsize=7, ha="left")
+label(cut, 30, -8, "and on the floor's", color=SEAL, fontsize=7, ha="left")
+dim(cut, (-hd, CH_H + TOP + 20), (0, CH_H + TOP + 20), f"{hd}", dy=12, fontsize=7.5)
+dim(cut, (-cd, -TOP - 22), (0, -TOP - 22), f"{cd}: the carbon module, deeper [D297]", dy=-15, fontsize=7.5)
+label(cut, 165, 355, "the chamber", fontsize=9, color="#555")
+label(cut, -170, 330, "the room", fontsize=9, color="#555")
+arrows(cut, (-215, -150), "+X", "+Z")
+cut.set_xlim(-235, 215)
+cut.set_ylim(-185, CH_H + TOP + 45)
 cut.set_aspect("equal")
 cut.axis("off")
-cut.set_title("Cut across the wall at a fan, seen from the front: the room left, the chamber right", fontsize=10)
+cut.set_title("Cut across the right column, seen from the front: the room left, the chamber right", fontsize=10)
 
-fig.suptitle("The filter wall - the Lack and the chamber to scale; the wall's parts placed, not designed", fontsize=12)
+fig.suptitle("The filter wall: a frame and four modules - the Lack, the chamber and the modules' size to scale; "
+             "what is in them placed, not designed", fontsize=12)
 fig.tight_layout(rect=(0, 0, 1, 0.95))
 OUT.parent.mkdir(parents=True, exist_ok=True)
 fig.savefig(OUT, dpi=110)

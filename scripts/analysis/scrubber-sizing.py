@@ -165,11 +165,18 @@ def show():
 # name, the face the air enters by [m2], and the pleats' depth [mm]. A round filter takes its air in round its
 # side, so its face is its side's area. Every pleat depth not stated is taken as the model's 15 mm: deeper pleats
 # carry more paper per face, so those flows are low if anything. A fourth value, where given, is the carbon's face
-# in place of BED_FACE: the filter wall's bed lies across its channel, 44 mm thick between the legs' 450 mm.
+# in place of BED_FACE: the filter wall's bed lies across its channel, 44 mm thick between the legs' 450 mm; in
+# its modules (Alon, 15 Oct 2026), across one module's inside, 219 mm by the module's depth less two 3 mm skins.
 CANDIDATES = [
     ("Mijia 1C / Dreame F9, flat: the chosen", 0.150 * 0.049, 15),
     ("two Mijia cartridges, standing as two walls", 2 * 0.150 * 0.049, 15),
     ("two Mijia in a filter wall, a 44 x 450 bed", 2 * 0.150 * 0.049, 15, 0.044 * 0.450),
+    ("two Mijia, a 50 mm carbon module", 2 * 0.150 * 0.049, 15, 0.044 * 0.219),
+    ("two Mijia, a 70 mm carbon module", 2 * 0.150 * 0.049, 15, 0.064 * 0.219),
+    ("two Mijia, a 90 mm carbon module", 2 * 0.150 * 0.049, 15, 0.084 * 0.219),
+    ("four Mijia, a 50 mm carbon module", 4 * 0.150 * 0.049, 15, 0.044 * 0.219),
+    ("four Mijia, a 70 mm carbon module", 4 * 0.150 * 0.049, 15, 0.064 * 0.219),
+    ("four Mijia, a 90 mm carbon module", 4 * 0.150 * 0.049, 15, 0.084 * 0.219),
     ("120 x 120 x 15 pad", 0.120 * 0.120, 15),
     ("two 120 x 120 x 15 pads, as two walls", 2 * 0.120 * 0.120, 15),
     ("FlyBy Tom's two Roomba filters", 0.0132, 10),
