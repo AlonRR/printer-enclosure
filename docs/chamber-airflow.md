@@ -391,7 +391,7 @@ condition it exists for.
    heater is ever needed — answer it before buying one.
 3. **Build the SCRUBBER** — ⚠️ **since 15 Oct 2026 a chimney on the Lack's top, not the BentoBox remix inside**
    (D282 a, D283 a): two bought Mijia cartridges standing as its long walls, the carbon pellets, the Deltas'
-   fan section and the remix's sealed joints, its return down a back corner built into part of the wall
+   fan section and the remix's sealed joints, its return down a side wall, built into part of it
    ([bentobox-scrubber.md](bentobox-scrubber.md#where-it-stands-outside-the-chamber)). Not drawn yet.
    It was the BentoBox remix (the
    Auto's base and fan section, the carbon-dust section, the carbon housing with the C-MAG, the HEPA holder

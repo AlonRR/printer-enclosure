@@ -3,7 +3,7 @@
 > **Not to be built as drawn here** (Alon, 15 Oct 2026: D282 a). The scrubber becomes a chimney on the Lack's
 > top, outside the chamber: two of the bought Mijia cartridges standing as its two long walls, for about four
 > times this box's air with the extraction's (D280 a, D283 a; see *Four times the air* and *Where it stands*).
-> Its clean air returns down a back corner, its duct and the extraction's vent built into part of the wall, to
+> Its clean air returns down a side wall, its duct and the extraction's vent built into part of that wall, to
 > spend less heat and room. The base, the tray and the sensor sample here stop; the two Deltas' fan section, the
 > sealed joints and the outlet sensors' mounts carry over into the new box. The rest of this page is the remix as
 > it was drawn, and the analysis the chimney is sized from.
@@ -977,23 +977,46 @@ Alon, 15 Oct 2026 (Q281): it could stand outside the enclosure - under it as a p
 chimney, with the extraction's vent and duct in a back corner.
 
 - **On top, as a chimney**, is the better of the two. Its intake is the chamber's ceiling, where the print's hot
-  plume rises; its clean air goes back down a duct in a back corner to the floor, and crosses the whole chamber
+  plume rises; its clean air goes back down a duct in a side wall to the floor, and crosses the whole chamber
   on its way up again. The extraction's box (D278) stands beside it through the same top, its duct out of the
-  other back corner. Filters change from above with the door shut, and the chamber's floor stays the printer's.
+  same wall. Filters change from above with the door shut, and the chamber's floor stays the printer's.
 - **Under it, as a platform**, the printer stands on the box and shakes it; its intake is the chamber's floor,
   where strings and dust fall and the plume never reaches; and it sits by the electronics bay, where the
   makeup air is to come in (see [chamber-airflow.md](chamber-airflow.md)).
 - **Either way its walls are outside**, and lose the chamber's heat: about 0.2 m² of thin printed wall at 20 °C
   over the room loses some 20 to 30 W, about what 1 L/s of extraction costs, unless its walls are doubled or
-  lined. A return duct kept inside the chamber, down its back corner, loses nothing more.
+  lined. A return duct built into the wall, in place of the sheet, loses little more than the sheet did.
 - **The Lack's top takes the holes**: the chimney's intake and its return, and the extraction's.
 
 **Chosen** (Alon, 15 Oct 2026: D283 a): on top, as a chimney. And in his words, *"we can have the vent replace
-part of a wall"*, to limit the heat lost and the room it takes. Drawn below as a concept, not to scale, by
-[`scripts/figures/chimney-concept.py`](../scripts/figures/chimney-concept.py): the lettered labels are what the
-enclosure itself has to answer before anything is drawn to it.
+part of a wall"*, to limit the heat lost and the room it takes: the return duct and the extraction's vent are
+both built into a wall (Q285). **A side wall, not the back**: *"No clearance behind"*; the printer reaches the
+enclosure's back, and the enclosure stands against the room's wall.
 
-![The chimney's concept: from the side, the chimney on the Lack's top over the back, the print's plume rising into it, its clean air back down a duct that is part of the back wall in one back corner and out low; the extraction's vent part of the wall in the other back corner, to the duct outside; the makeup air in low at the front. From above, the chimney over one back corner and the vent in the other](diagrams/chimney/concept.png)
+| What | Value | From |
+|---|---|---|
+| The Lack's top [D] | 550 × 550 mm, 50 thick | a caliper: 50.07 (Alon, 15 Oct 2026: T286) |
+| The legs | 50 mm square, one in each corner | the Lack's |
+| The walls [G] | 3 mm plexiglass sheets, outside the legs | Alon (T286) |
+| The chamber | 460 mm tall: the 400 under the top and 60 more | Alon (9 Oct 2026: Q157) |
+| Behind [C] | nothing: the printer reaches the back wall | Alon (Q285) |
+| The printer to the side walls [H] | about 50 to a foot and 70-80 to its frame on one side, about 100 on the other | read off photos: which side is which, and the narrowest gap at any height, are open |
+| The duct outside [E] | 100 mm flex to the 120 mm fan already in the window, on the enclosure's left | Alon's photos (T286) |
+| On the top [I] | the drybox, about 40 × 30 cm with its tubes down through the top, and the electronics beside it; they can move | Alon (T286) |
+| The makeup inlet [F] | low, at the Einsy, by [chamber-airflow.md](chamber-airflow.md) | not confirmed |
+
+- **[A] the return** runs in the wall's plane, outside the leg line, so it takes no room from the chamber. It
+  rises past the top's 50 mm edge into the chimney's side, so only the chimney's intake goes through the top.
+- **[B] the extraction's vent** stands in the same wall, high and forward of the return: the HEPA facing the
+  chamber, the carbon behind it, a 100 mm collar outside for the flex to the window's fan.
+- **The window's side is drawn**, the left: the shortest run for [B]'s flex. The chimney then takes the top's
+  back-left corner, where the drybox stands now. Which side is still open (D287, 15 Oct 2026).
+
+Drawn to the enclosure by [`scripts/figures/chimney-concept.py`](../scripts/figures/chimney-concept.py): the
+Lack, its top, the legs and the walls to scale; the chimney, the duct and the vent placed, not designed. The
+lettered labels are what is still open.
+
+![The chimney drawn to the enclosure. From above: the 550 mm Lack top with a leg in each corner and the plexiglass walls outside them, the room's wall behind; the chimney at the top's back-left corner where the drybox stands now; the return duct and the extraction's vent outside the left wall, the vent's flex out to the window's fan; the makeup air in at the right, at the Einsy; the printer's gaps to the side walls, about 5 to 8 cm and about 10. From inside, the left wall: the chamber 460 tall between the floor and the 50 mm top, the plume rising through the top into the chimney, the return duct coming down past the top's edge near the back leg and out low, and the extraction's vent high toward the front](diagrams/chimney/concept.png)
 
 ## How long the carbon lasts
 
