@@ -303,6 +303,40 @@ while the choice is still free.
   - **It also frees the duct from the scrubber**, and lets the intake sit high over the print, in the
     plume that rises from it, catching the fumes before they mix: better than the well-mixed figures.
 
+**Decided** (Alon, 15 Oct 2026: D277 a): the extraction draws on the chamber through its own HEPA and
+carbon, its intake high over the print, a small bleed. Look first at what others have built.
+
+### Filtered extractions others have built
+
+Read from their pages on 15 Oct 2026; what each says of itself is relayed, not tried.
+
+| Design | What it is | Its filters and fan | Licence |
+|---|---|---|---|
+| [120mm HEPA Air Filter for LACK Enclosure](https://www.printables.com/model/56327) (FlyBy Tom) | A stack through the Lack's top: the chamber's air up through the HEPA, the fan in the top's own cavity, then a carbon chamber that lifts off, and out of the top into the room | Two Roomba HEPA filters, carbon pellets, any 120 × 120 × 25 fan | CC BY-NC |
+| [IKEA Lack Enclosure HEPA Air Scrubber](https://www.printables.com/model/60737) (Braw) | Modular ducting; a dual end piece that recirculates and also exhausts through a closable vent in the top | A 120 mm variable-speed fan, filters chosen by what was in stock | CC BY-NC |
+| [HEPA filter box for IKEA LACK enclosure](https://www.printables.com/model/963767) (Thijmnesoy) | A small box for a 120 mm fan, with intake and exhaust covers | One 115 × 135 × 25 filter | CC BY-NC-SA |
+| [Case Fan 120mm for the Prusa Enclosure](https://www.printables.com/model/559070) (Roland Goller) | An exhaust fan box with TPU seals and flaps that open on the flow and close when it stops | Flat 120 × 120 × 15 HEPA and 120 × 120 × 10 carbon pads; a strong fan (186.7 m³/h), or the flaps stay shut | CC BY-NC-SA |
+| [HEPA Filter Exhaust](https://www.teamfdm.com/files/file/498-hepa-filter-exhaust/) for Voron 1.x/2.x (dePrintinator) | The rear exhaust pulling through a purifier's HEPA-and-carbon filter, beside a recirculating carbon filter inside - this page's two-fan split | A 120 × 120 × 25 fan run at 50 %; it reports slight negative pressure, and a couple of °C less at the exhaust port | GPL-3.0 |
+| [Voron 0.2 filtered tophat exhaust](https://www.printables.com/model/886969) (HitLuca) | An exhaust panel pulling through a HEPA, run after a print to clear and cool the chamber | The BentoBox's own 80 × 40 × 15 iLife HEPA; a 4020 fan, as a 4010 cannot pull through it | CC BY-NC |
+| [Voron 2.4 CPAP / carbon pellet / HEPA exhaust](https://www.printables.com/model/1014839) (Aldehyde Designs) | A rear exhaust with a pellet chamber, a HEPA and a muffler | A Roomba HEPA, carbon pellets | CC BY-NC |
+
+- **Every one is built round a filter that can be bought**: Roomba and iLife HEPAs, flat 120 mm pads, an
+  air purifier's spares. The filter came first and the box was drawn round it, as the BentoBox's was.
+- **None measures its flow against a pressure, or what it takes out.** FlyBy Tom timed a bin bag
+  filling - 42 s with the fan pulling through both filters, 31 s with it between the HEPA and the carbon,
+  pushing through the carbon - a test this build can use too, against a bag of known volume.
+- **The flaps** are worth taking: with the extraction off, nothing flows back through the duct.
+- **A flat carbon pad is little carbon.** 10 mm over 144 cm² is foam or fibre loaded with carbon, not
+  144 cm³ of pellets, and at a strong fan's flow the air crosses it in hundredths of a second, where the
+  scrubber's table keeps 0.26 s in a bed of pellets.
+- **FlyBy Tom's is nearest to this page's plan**: through the Lack's top, its intake the chamber's
+  ceiling, high over the print; its outlet would take the duct. Two Roomba-sized filters, about 111 × 52
+  mm each, are about 115 cm² of face: by the scrubber's table, room for 0.9 to 1.4 L/s at about 50 Pa,
+  the less for their shallower 10 mm pleats.
+  Roomba's own filters are not HEPA (see [bentobox-scrubber.md](bentobox-scrubber.md#a-bigger-bought-cartridge)),
+  so it would want aftermarket ones of a stated grade, or the bought Mijia cartridge in a box drawn round
+  it.
+
 ## Control and sensing
 
 **A dedicated node — explicitly NOT the S3 camera.** Reasoning recorded on 3 Sep 2026: the camera is
