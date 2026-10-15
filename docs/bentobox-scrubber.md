@@ -1032,6 +1032,31 @@ are what is still open.
 
 ![The chimney drawn to the enclosure. From above: the 550 mm Lack top with a leg in each corner, the room's wall behind, plexiglass walls at the back, the right and the front, and a printed wall on the left, sealed round its edge; the chimney mid-way along the top's left edge, the top not drilled, where the drybox stands now; outside the printed wall, the chimney's intake and return ducts side by side at its middle, and the extraction's vent toward the front with its flex out to the window's fan; the makeup air in at the right, at the Einsy; the printer's gaps to the side walls, about 5 to 8 cm and about 10. From inside, the printed wall: the chamber 460 tall between the floor and the 50 mm top, the plume drawn in through a slot just under the top and up past the top's edge into the chimney, the clean air back down beside it and out low, the extraction's vent high toward the front, and the TPU seal round the wall's edge](diagrams/chimney/concept.png)
 
+### Or the filter as the wall
+
+Alon asked, 15 Oct 2026: *"What if the filter was the wall"*: a thick wall, but no chimney, nothing on the top,
+and nothing hard to move, since it is the wall. Weighed here; not chosen yet (D294).
+
+- **The same air.** The Deltas set the wall's channel at about 44 mm inside, some 50 over its skins. The carbon
+  lies across the channel between the legs, 44 × 450 mm: 198 cm², the 200 the candidates are sized with. Two
+  Mijia in the wall's inner face are the same 147 cm² as two standing in the chimney: 2.32 L/s, 3.2 times today's
+  at mid grade, 2.4 at an H13-like one ([`scrubber-sizing.py candidates`](../scripts/analysis/scrubber-sizing.py)).
+  The bed is 30 mm deep, about 600 cm³ and 270 g.
+- **Room for more HEPA.** The wall's face takes far more filter than the chimney's walls: a face of 288 cm², two
+  120 mm pads', gives 4.3 times; past about 900 cm², 5.5, the carbon then setting the flow.
+- **The top stays as it is**: no chimney, no ducts past its edge, the drybox where it stands.
+- **A swap costs nothing**: the intake high and the outlet low stay where they were with the wall turned round.
+- **Heat**: with no chimney outside, its 20 to 30 W are saved. The channel's outer skin, the chamber's air moving
+  along it, loses about what the sheet it replaces did; less with a second skin and still air outside it.
+- **Its costs**:
+  - **About 50 mm thick**: out into the room on the window's side, or in toward the printer's 5 to 8 cm [H].
+  - **About 2 kg** with its two skins, the carbon and the fans, to hang on the legs and the floor's edge.
+  - **The bed must lie flat** across the channel, the air down through it: a standing slab of pellets settles,
+    and opens a gap at its top that the air takes instead.
+  - **Its outlet low and its intake high on the same wall**, as with the chimney: the outlet blows across the
+    floor towards the printer, not up the wall.
+- **Unchanged**: the extraction's vent stays a compartment of its own, with its own filter (D277 a, D278 b).
+
 ## How long the carbon lasts
 
 An estimate, from [`scripts/analysis/carbon-life.py`](../scripts/analysis/carbon-life.py), which says where each number comes

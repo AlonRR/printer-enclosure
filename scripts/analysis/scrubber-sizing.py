@@ -164,10 +164,12 @@ def show():
 # Filters that can be bought, as their listings size them (read 15 Oct 2026; a listing's size can be its box's):
 # name, the face the air enters by [m2], and the pleats' depth [mm]. A round filter takes its air in round its
 # side, so its face is its side's area. Every pleat depth not stated is taken as the model's 15 mm: deeper pleats
-# carry more paper per face, so those flows are low if anything.
+# carry more paper per face, so those flows are low if anything. A fourth value, where given, is the carbon's face
+# in place of BED_FACE: the filter wall's bed lies across its channel, 44 mm thick between the legs' 450 mm.
 CANDIDATES = [
     ("Mijia 1C / Dreame F9, flat: the chosen", 0.150 * 0.049, 15),
     ("two Mijia cartridges, standing as two walls", 2 * 0.150 * 0.049, 15),
+    ("two Mijia in a filter wall, a 44 x 450 bed", 2 * 0.150 * 0.049, 15, 0.044 * 0.450),
     ("120 x 120 x 15 pad", 0.120 * 0.120, 15),
     ("two 120 x 120 x 15 pads, as two walls", 2 * 0.120 * 0.120, 15),
     ("FlyBy Tom's two Roomba filters", 0.0132, 10),
@@ -177,13 +179,13 @@ CANDIDATES = [
 BED_FACE = 0.020                 # m2: the carbon under every candidate, 14 cm square, as deep as keeps EBCT
 
 
-def flow_through(face, pleat_mm, grade, fans=deltas):
+def flow_through(face, pleat_mm, grade, fans=deltas, bed=BED_FACE):
     """The flow at which the fans' pressure meets the losses of this HEPA face, the carbon and the floss."""
     k = cfd.MEDIA["hepa"]["dp_at_1"] * grade * 15 / pleat_mm
     lo, hi = 0.0, 2 * cfd.FAN["q_max"]
     for _ in range(100):
         q = (lo + hi) / 2
-        loss = sum(losses(q, face, BED_FACE, q * EBCT / BED_FACE, BED_FACE, hepa_at_1=k))
+        loss = sum(losses(q, face, bed, q * EBCT / bed, bed, hepa_at_1=k))
         lo, hi = (q, hi) if fans(q) > loss else (lo, q)
     return lo
 
@@ -192,12 +194,13 @@ def show_candidates():
     print(f"the two Deltas through each filter, on Delta's published curve, with {BED_FACE * 1e4:.0f} cm2 of carbon kept at "
           f"{EBCT:.2f} s and the floss; flows in L/s, and as a multiple of today's {Q_NOW * 1000:.2f}")
     print(f"{'filter':>46} {'face':>9} {'pleats':>7} {'mid grade':>17} {'H13-like (x5/3)':>17} {'mid, on a line':>15}")
-    for name, face, pleat in CANDIDATES:
+    for name, face, pleat, *bed in CANDIDATES:
+        bed = bed[0] if bed else BED_FACE
         cells = []
         for grade in (1.0, 5 / 3):
-            q = flow_through(face, pleat, grade)
+            q = flow_through(face, pleat, grade, bed=bed)
             cells.append(f"{q * 1000:>5.2f} ({q / Q_NOW:>3.1f} x) {deltas(q):>3.0f} Pa")
-        q_line = flow_through(face, pleat, 1.0, deltas_line)
+        q_line = flow_through(face, pleat, 1.0, deltas_line, bed)
         cells.append(f"{q_line * 1000:>5.2f} ({q_line / Q_NOW:>3.1f} x)")
         print(f"{name:>46} {face * 1e4:>5.0f} cm2 {pleat:>4} mm " + " ".join(f"{c:>17}" for c in cells))
     print(f"no face lets the two Deltas past {2 * cfd.FAN['q_max'] * 1000:.1f} L/s, their flow with nothing in the way")
