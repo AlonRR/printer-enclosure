@@ -273,6 +273,10 @@ hole in a different place.
 It also improves the chamber side: air entering at the bay is well away from the filter intake, so it
 crosses the volume rather than short-circuiting.
 
+**Sited** (Alon, 15 Oct 2026: Q290): the Einsy is in its original place, at the back left, and the enclosure's
+back stands against the room's wall, so the inlet goes low in the back end of the printed filter wall
+([bentobox-scrubber.md](bentobox-scrubber.md#or-the-filter-as-the-wall)).
+
 **Order of operations matters here.** Measure the bay first (below), then site the inlet, then
 re-measure. If bay cooling turns out to be the inlet's real job, that should shape where it goes
 while the choice is still free.

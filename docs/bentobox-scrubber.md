@@ -1007,7 +1007,7 @@ enclosure's back, and the enclosure stands against the room's wall.
 | The printer to the side walls [H] | about 50 to a foot and 70-80 to its frame on one side, about 100 on the other | read off photos: which side is which, and the narrowest gap at any height, are open |
 | The duct outside [E] | 100 mm flex to the 120 mm fan already in the window, on the enclosure's left | Alon's photos (T286) |
 | On the top [I] | the drybox, about 40 × 30 cm with its tubes down through the top, and the electronics beside it; they can move | Alon (T286) |
-| The makeup inlet [F] | low, at the Einsy, by [chamber-airflow.md](chamber-airflow.md) | not confirmed |
+| The makeup inlet [F] | low at the back left, where the Einsy is: in the filter wall's back end | Alon (Q290): the Einsy in its original place, at the back left |
 | The left sheet [K] | in printed clips on the legs; the front panel hangs on a hinge at the front-right leg | Alon's photos; the sheet's size not measured |
 
 **The printed wall** (Alon, 15 Oct 2026: D287 a): the left wall, on the window's side, the shortest run for the
@@ -1061,6 +1061,19 @@ printer's gap to it no longer limits it.
   - **Its outlet low and its intake high on the same wall**, as with the chimney: the outlet blows across the
     floor towards the printer, not up the wall.
 - **Unchanged**: the extraction's vent stays a compartment of its own, with its own filter (D277 a, D278 b).
+- **The makeup air comes in at the wall's back end, low** (Alon, 15 Oct 2026: Q290): the Einsy is in its original
+  place at the back left, and the back has no room behind it, so the wall itself takes the inlet, through a
+  sleeve across its channel. The extraction's vent sits at the other end, high, as far from it as the wall allows,
+  so that it does not draw the fresh air straight back out. Turned round onto the right, the inlet would leave the
+  Einsy; a grille in the left door would then take over.
+- **The two cartridges stack**, one above the other in the inner face, so the vent keeps the front end.
+- **Fixed or opening** is still open (D291).
+
+Drawn by [`scripts/figures/filter-wall.py`](../scripts/figures/filter-wall.py): the Lack and the chamber to
+scale, the wall's parts placed, not designed; its outline is the chamber's side until the sheet it replaces is
+measured [K].
+
+![The filter wall. Seen from inside: the wall between the floor and the Lack's top, a leg at each end, a TPU seal round its edge; at the top the scrubber's intake, two Mijia cartridges stacked in its inner face, and at the front end the extraction's vent with its own filter and a 100 mm collar; behind the skin, the carbon lying flat across the channel and, under it, the two Deltas in a plate; the clean air out low through a long louvre across the floor; the makeup air in low at the back end, at the Einsy. Cut across at a fan: two 3 mm skins and a 44 mm channel, 50 mm in all, standing out into the room; the plume drawn in under the top through the cartridges, down through the carbon and its floss, through the Delta, and out low across the floor; a hatch in the outer skin to change the filters from outside](diagrams/filter-wall/layout.png)
 
 ## How long the carbon lasts
 
