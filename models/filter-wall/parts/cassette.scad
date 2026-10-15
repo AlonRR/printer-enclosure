@@ -2,12 +2,15 @@
 // SPDX-License-Identifier: CC-BY-4.0
 
 // parts/cassette.scad - THE FILTER'S FRAME: a pocket the filter drops into from the room's side, and at the inner
-// face a land, with a window, that the filter seals on. It is the one part whose fit hangs on the filter in hand, so
-// it is apart from the ring and cheap to print again once the filter is measured. Four corners, each on the bed.
+// face a stop, with a window, that it rests on. It is the one part whose fit hangs on the filter in hand, so it is
+// apart from the ring and cheap to print again once the filter is measured. Four corners, each on the bed.
 // Included by filter-wall.scad; not a model on its own. Drawn where it sits.
 //
-// The seal on the land, the retainers that hold the filter on it, and how the corners join and fix into the ring
-// are not drawn yet.
+// WHICH WAY THE AIR PUSHES: the fans draw from under the carbon, so the plenum behind the filter is below the
+// chamber's pressure, and the air pushes the filter away from the stop, towards the room. So the filter seals on
+// its downstream face: a seal on a frame of its own, behind the filter, clamped in from the room's side through
+// the hatch; the air then presses the filter onto it. The stop takes no seal and no load; it only places the
+// filter. The seal's frame, its clamps, and how the corners join and fix into the ring are not drawn yet.
 
 // The land is a plate as large as the row's inside, so the cassette's outline is set; the pocket's walls stand on
 // it round the filter, and move with the filter's measures.

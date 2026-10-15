@@ -17,7 +17,7 @@ hatch_g = hatch_mm3 / 1000 * asa_density;
 
 echo(str("filter wall: ", open_l, " x ", lack_chamber, " x ", depth, " (", in_depth, " in, ", proud, " out); rows ",
          filter_row_h, " for the filter, ", carbon_row_h, " for the carbon"));
-echo(str("filter: ", starkvind, " in a pocket of ", pocket, "; the land's window ", window, "; the cassette ", cass,
+echo(str("filter: ", starkvind, " in a pocket of ", pocket, "; the stop's window ", window, "; the cassette ", cass,
          " x ", cass_d, " deep, its walls ", cass_wall, "; the plenum behind it ", plenum_d));
 echo(str("the largest filter the rows take, at this clearance: ", [cass[0] - 2 * wall_t - 2 * clearance,
          cass[1] - 2 * wall_t - 2 * clearance]));
@@ -28,7 +28,7 @@ echo(str("mass, about: ", round(mass_g), " g of ASA in the parts drawn, and ", r
          " g more in the hatches to come"));
 
 warns = [
-    if (starkvind_rim < clearance + 3) str("the land overlaps the filter's rim by under 3 mm if the filter sits to one side: ",
+    if (starkvind_rim < clearance + 3) str("the stop overlaps the filter's rim by under 3 mm if the filter sits to one side: ",
                                           "rim ", starkvind_rim, ", clearance ", clearance),
     if (plenum_d < 30) str("the plenum behind the cassette is only ", plenum_d, " deep"),
 ];

@@ -26,7 +26,7 @@ pocket = [starkvind[0] + 2 * clearance, starkvind[1] + 2 * clearance];
 cass = [cass_l, filter_row_h - 2 * wall_t];
 cass_wall = (cass - pocket) / 2;           // the cassette's walls round the pocket, along and up
 cass_d = cass_depth;
-retain = cass_d - land_t - seal_t * (1 - seal_squeeze) - starkvind[2];  // behind the filter, for its retainers
+retain = cass_d - land_t - seal_t * (1 - seal_squeeze) - starkvind[2];  // behind the seal, for the seal's frame
 window = [starkvind[0] - 2 * starkvind_rim, starkvind[1] - 2 * starkvind_rim];
 carbon_row_h = lack_chamber - filter_row_h;
 z_row = carbon_row_h;                       // where the rows meet
@@ -36,7 +36,7 @@ cass_c = [cass_y0 + cass[0] / 2, cass_z0 + cass[1] / 2];   // where the cassette
 x_cass_back = x_in - cass_d;
 plenum_d = x_cass_back - (x_out + wall_t);  // behind the cassette, the filter row's plenum
 z_ring_split = z_row + filter_row_h / 2;
-filter_x = x_in - land_t - seal_t * (1 - seal_squeeze);    // the filter's upstream face, pressed on the seal
+filter_x = x_in - land_t;                  // the filter's upstream face, on the stop
 
 // The carbon row's stack, from its top wall down.
 bed_top = z_row - wall_t - head_room;

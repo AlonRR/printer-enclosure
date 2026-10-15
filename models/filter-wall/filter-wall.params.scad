@@ -31,10 +31,11 @@ cass_depth = 50;    /* ...and how deep it is, from the inner face: the land, the
 /* [The filter's pocket] */
 clearance = 4;      /* The pocket over the filter's listed size, each side: IKEA's whole centimetres hide up to
                        5 mm either way; measure the filter, then set this and starkvind (vitamins/starkvind.scad). */
-land_layers = 10;   /* The land the filter seals on: its thickness in layers. */
-seal_t = 3;         /* The seal on the land, before it is squeezed: foam tape or a printed TPU strip, not chosen. */
+land_layers = 10;   /* The stop at the inner face the filter rests on: its thickness in layers. */
+seal_t = 3;         /* The seal on the filter's downstream face, before it is squeezed: foam tape or a printed TPU
+                       strip, not chosen. */
 seal_squeeze = 0.25;/* How much of the seal the filter squeezes. */
-retain_min = 4;     /* Behind the filter, the least room its retainers (not drawn yet) may take. */
+retain_min = 4;     /* Behind the filter and its seal, the least room the seal's frame (not drawn yet) may take. */
 
 /* [The carbon row] */
 bed_depth = 36;     /* The carbon's depth: two Deltas through STARKVIND at mid grade, kept at today's dwell time
