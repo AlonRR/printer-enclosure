@@ -234,7 +234,8 @@ def show_candidates():
 # The filter wall's layouts (Alon, 15 Oct 2026): its HEPA - four Mijia in one module, or one flat purifier panel
 # across the top row, sold at 400 x 220 x 30 mm and so on - over its carbon, in one module or across the whole bottom
 # row. A panel is modelled as the paper is, at 15 mm pleats; it is sold as H13, so read its H13-like column.
-WALL_HEPA = {"four Mijia": 4 * 0.150 * 0.049, "a 400 x 220 panel": 0.400 * 0.220}
+WALL_HEPA = {"four Mijia": 4 * 0.150 * 0.049, "a 400 x 220 panel": 0.400 * 0.220,
+             "IKEA STARKVIND, 370 x 290": 0.370 * 0.290}
 WALL_BED = {"carbon in one module": 0.084 * 0.219, "the bottom row, 50 mm deep": 0.044 * 0.444,
             "the bottom row, 70 mm deep": 0.064 * 0.444, "the bottom row, 90 mm deep": 0.084 * 0.444}
 WALL_FLOWS = (2, 3, 4, 5, 6, 8)  # L/s

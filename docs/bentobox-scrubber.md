@@ -1188,6 +1188,31 @@ scale; the panel at 400 × 220 × 30 until one is chosen; the rest placed, not d
 
 ![The filter wall, standing on the floor and under the roof between the legs, a TPU seal round it. Seen from inside: the top row one flat HEPA panel, drawn at 400 by 220 mm, its frame in pieces; the bottom row the carbon lying flat across the whole width with the carbon-dust floss under it, a plate with places for four Deltas and two fitted, the SPS30 and SGP41, the clean air's louvre low, and on the outer face the purge, a servo's damper to a 100 mm collar. Cut across at a Delta: the wall 50 mm deep within the Lack's edge, the panel in its inner face, a hatch outside; the plume drawn in under the roof, down through the carbon, the floss and the Delta; most of it back in low, a little out through the purge](diagrams/filter-wall/layout.png)
 
+### Which panel
+
+Alon, 15 Oct 2026: the panel found comes with a carbon panel, and *"due to the cost and grade it may be worth
+looking into cutting/gluing the filter into the exact size we need"*. Weighed, not chosen (D303):
+
+- **IKEA's STARKVIND particle filter fits uncut now.** With the carbon row 90 deep its bed is about 31 mm, so the
+  rows can re-split, the panel's about 305 tall and the carbon's 105, to take its 370 × 290 × 40. Its grade is
+  stated, EPA12 to EN 1822 and ISO 29463; its frame is rigid; it is sold at IKEA here; and its face, 1,073 cm², is
+  larger than the 400 × 220's 880. Two Deltas through it: 4.47 L/s, 6.2 times today's at H13, 5.25 L/s and 7.3
+  times at mid grade, EPA12 lying between ([`scrubber-sizing.py wall`](../scripts/analysis/scrubber-sizing.py)).
+  The bed then is about 1.1 L, 510 g of the pellets.
+- **The carbon panel sold with the 400 × 220** is 10 mm thick, and how much carbon it holds is not stated, where
+  the pellets' bed holds about 500 g. It could lie in front of the HEPA as an extra, at a cost in pressure not
+  known; it does not replace the bed.
+- **Cutting and gluing to size works only if every cut edge is sealed.** Cut along the pleats, a pack leaves one
+  open seam; cut across them, every pleat's end is open, and all must be potted in a glue channel in the frame, as
+  the BentoBox's glue frame was drawn for the owned paper. The media would come from a graded panel cut down, or
+  from sheet media pleated in a printed comb. It is more work than a panel that fits, and the grade is only as good
+  as the seal.
+- **The JUMPEAK's rating is not recorded.** Its title gives 120 mm, 12 V, 4-pin PWM, 3200 RPM; its pressure and
+  flow would be on its listing. A 3000 RPM 120 mm fan sold elsewhere is rated 3.5 to 5 mmH₂O (34 to 49 Pa) and
+  70 to 106 CFM, not this one's figures. If the JUMPEAK is like it, it would hold some 35 to 50 Pa at the wall's few
+  L/s, more than the Deltas' 35 there; but an axial fan at a tenth of its free flow runs near its stall, so it
+  wants its own curve, or a test, before it drives the wall.
+
 ## How long the carbon lasts
 
 An estimate, from [`scripts/analysis/carbon-life.py`](../scripts/analysis/carbon-life.py), which says where each number comes
