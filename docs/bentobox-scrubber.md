@@ -1,10 +1,9 @@
 # The other scrubber — BentoBox v2.0, with the C-MAG
 
 > **Not to be built as drawn here** (Alon, 15 Oct 2026: D282 a). The scrubber becomes the enclosure's left wall,
-> printed as a frame and four modules: four Mijia cartridges in its HEPA module, its carbon lying flat in a 90 mm
-> module under them, for 4.2 times this box's air (D294 a, D297 b; see *Or the filter as the wall* and *The
-> filter wall in modules*). The same wall holds the extraction's vent, or a purge (D300); nothing stands on the
-> top.
+> printed, standing between the floor and the roof: one flat HEPA panel across its top row and its carbon lying
+> flat across its bottom row, for about five times this box's air with two Deltas (D294 a, D302 a; see *One panel
+> and one carbon row*). The same wall holds a purge to the window (D300); nothing stands on the top.
 > The base, the tray and the sensor sample here stop; the two Deltas, the sealed joints and the outlet sensors'
 > mounts carry over into the wall. The rest of this page is the remix as it was drawn, and the analysis the
 > wall is sized from.
@@ -1073,6 +1072,9 @@ printer's gap to it no longer limits it.
 
 ### The filter wall in modules
 
+> **Its HEPA and carbon modules are superseded** by *One panel and one carbon row* (Alon, 15 Oct 2026: D302 a).
+> The floor-to-roof placement, the seal, the carbon-dust floss, the sensors and the purge carry over.
+
 Alon, 15 Oct 2026: the wall is printed in parts, so build it as modules, each a part of the wall and a job of its own:
 seen from inside, *"Top right for the HEPA, bottom right for the delta and the carbon and outlet, top left the exhaust
 and filter, bottom left filler"*, and the sensors added. Seen from inside, the right is the back: the HEPA and the
@@ -1120,11 +1122,6 @@ carbon at the back, the extraction's vent at the door's end.
 - **The bottom left is the electronics' bay** (D298 a): the SuperMini, the USB-C trigger and the fans' and
   sensors' connectors, and the servo's, their wires sealed where they cross into the carbon module.
 
-Drawn by [`scripts/figures/filter-wall.py`](../scripts/figures/filter-wall.py): the Lack, the chamber and the modules'
-size to scale; what is in them placed, not designed.
-
-![The filter wall as one unit, seen from inside: it stands on the floor and under the roof, between the legs, four modules of 225 by 205 mm on rails, a TPU seal round it. Top left, free: filler or a window. Top right, four Mijia cartridges standing side by side. Bottom right, behind the skin, the carbon lying flat with the carbon-dust floss under it, four Deltas, the SPS30 and SGP41 in the clean air, the outlet louvre low, and the purge: a servo's damper and a 100 mm collar out to the window. Bottom left, the electronics. Cut across the right column: the HEPA module 50 mm deep within the Lack's edge over the carbon module 90 mm deep, 40 of it out past the edge, joined by a gasketed port; the plume drawn in under the roof, down through the carbon, the floss and the Deltas; most of it back in low past the sensors, a little out through the purge](diagrams/filter-wall/layout.png)
-
 ### Stronger fans, or one large filter
 
 Alon asked, 15 Oct 2026: *"what if we used larger/stronger fans? can we buy 1 large filter instead of 4 small
@@ -1152,8 +1149,38 @@ time):
 - **What it costs**: the rows re-split round a 220 to 230 mm panel (the HEPA row about 240 tall, the carbon row
   about 170); the electronics need another place; the carbon grows to 1.1 to 1.5 L, 480 to 670 g. One part to
   change and one seal, in place of four.
-- **Not chosen yet** (D302). A panel is modelled as the Mijia's paper is, at 15 mm pleats, and read at H13; its
-  own pleats and grade move it.
+- **A panel is modelled as the Mijia's paper is**, at 15 mm pleats, and read at H13; its own pleats and grade move
+  it.
+
+### One panel and one carbon row
+
+**Chosen** (Alon, 15 Oct 2026: D302 a): one flat purifier HEPA panel across the wall's top row, the carbon lying flat
+across the whole bottom row.
+
+- **The panel is not chosen yet.** Wanted: at most 430 × 255 × 45 mm, its face as large as fits, a rigid frame or a
+  flat edge for the gasket, H13, or EPA12 if that is what is sold here. Leads, not checked: a 400 × 220 × 30 mm H13
+  panel sold as a replacement for Sharp's FZ-D40HFE, though another listing puts that part at about 237 × 451 ×
+  43; IKEA's STARKVIND particle filter, 37 × 29 × 4 cm and EPA12, 35 mm too tall unless the rows re-split.
+- **The rows**: the panel's 245 tall, the carbon's 165, on rails of 25 on the floor and under the roof. The
+  panel's frame prints in pieces, and a hatch outside changes the panel.
+- **The carbon row need not stand out into the room.** At the panel's H13 grade
+  ([`scrubber-sizing.py wall`](../scripts/analysis/scrubber-sizing.py)):
+
+  | The carbon row, deep | Two Deltas | Four Deltas |
+  |---|---|---|
+  | 50 mm, all within the Lack | 3.58 L/s, 5.0 × | 4.59 L/s, 6.4 × |
+  | 70 mm, 20 out past the edge | 3.96 L/s, 5.5 × | 5.39 L/s, 7.5 × |
+  | 90 mm, 40 out past the edge | 4.16 L/s, 5.8 × | 5.86 L/s, 8.1 × |
+
+  At 50 mm and two Deltas the bed is 47 mm deep, about 910 cm³ and 410 g; with four, 60 mm, 1.17 L and 530 g.
+- **Drawn with the options recommended and still open**: the wall 50 deep, all within the Lack (D301); two Deltas
+  in a plate cut for four, and a servo's damper on the purge (D300). The electronics go in a box on the outer
+  face, the top row being the panel's.
+
+Drawn by [`scripts/figures/filter-wall.py`](../scripts/figures/filter-wall.py): the Lack and the chamber to
+scale; the panel at 400 × 220 × 30 until one is chosen; the rest placed, not designed.
+
+![The filter wall, standing on the floor and under the roof between the legs, a TPU seal round it. Seen from inside: the top row one flat HEPA panel, drawn at 400 by 220 mm, its frame in pieces; the bottom row the carbon lying flat across the whole width with the carbon-dust floss under it, a plate with places for four Deltas and two fitted, the SPS30 and SGP41, the clean air's louvre low, and on the outer face the purge, a servo's damper to a 100 mm collar. Cut across at a Delta: the wall 50 mm deep within the Lack's edge, the panel in its inner face, a hatch outside; the plume drawn in under the roof, down through the carbon, the floss and the Delta; most of it back in low, a little out through the purge](diagrams/filter-wall/layout.png)
 
 ## How long the carbon lasts
 
