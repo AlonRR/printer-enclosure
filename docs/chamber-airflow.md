@@ -273,9 +273,9 @@ hole in a different place.
 It also improves the chamber side: air entering at the bay is well away from the filter intake, so it
 crosses the volume rather than short-circuiting.
 
-**Sited** (Alon, 15 Oct 2026: Q290): the Einsy is in its original place, at the back left, and the enclosure's
-back stands against the room's wall, so the inlet goes low in the back end of the printed filter wall
-([bentobox-scrubber.md](bentobox-scrubber.md#or-the-filter-as-the-wall)).
+**Not built** (Alon, 15 Oct 2026): *"the chamber is not sealed to begin with so air flows in around the gaps of
+the walls/doors"*. Those gaps are the inlet; the printed filter wall, sealed, is the one wall without them. The
+Einsy, in its original place at the back left (Q290), gets no stream of its own: watch its temperature.
 
 **Order of operations matters here.** Measure the bay first (below), then site the inlet, then
 re-measure. If bay cooling turns out to be the inlet's real job, that should shape where it goes
@@ -407,8 +407,8 @@ condition it exists for.
 4. **Add the extraction** — the JUMPEAK on the duct, its own 12 V feed. Size the orifice, run
    the duct out. ⚠️ **Take the duct off the scrubber's clean side**, so what leaves the house is
    filtered air. That was free in the one-fan design and is now a plumbing decision.
-5. **Cut the makeup inlet.** Known area, low, away from the filter intake.
-6. **Tissue test, print running.** Adjust the orifice until inflow is unambiguous.
+5. ~~**Cut the makeup inlet.**~~ Not built (Alon, 15 Oct 2026): the gaps round the walls and the doors are the inlet.
+6. **Tissue test, print running**, at the doors' gaps. Adjust the orifice until inflow is unambiguous.
 7. **Then** add the control node, the sensor, and HA integration — automation last, after the
    mechanical design is known good. A fan that is manually switched and correct beats an automated
    one that has never been verified.

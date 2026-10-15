@@ -5,15 +5,15 @@
 # requires-python = ">=3.11"
 # dependencies = ["matplotlib"]
 # ///
-"""The filter wall's layout (Alon, 15 Oct 2026: D294 a, Q295, Q290, D291 a, T293): the enclosure's left wall, printed,
-is the scrubber, built as a frame and four modules, one job each - seen from inside, the HEPA top right, the carbon,
-the Deltas and the outlet bottom right, the extraction's vent top left, and the bottom left still to choose. From the
-repository's root:
+"""The filter wall's layout (Alon, 15 Oct 2026: D294 a, Q295, D291 a, T293, Q296, D297 b, D298 a): the enclosure's left
+wall, printed, is the scrubber, built as a frame and four modules, one job each - seen from inside, four HEPA
+cartridges top right, the carbon, the Deltas, the sensors and the outlet bottom right, the extraction's vent top
+left, the electronics bottom left. From the repository's root:
 
   uv run scripts/figures/filter-wall.py       writes docs/diagrams/filter-wall/layout.png
 
 The Lack, its legs and the chamber are to scale, and so is the modules' size against the printer's bed; what is in
-them is placed, not designed. The lettered labels are what is still open.
+them is placed, not designed. No makeup inlet: the room's air comes in round the other walls' and the doors' gaps.
 """
 from pathlib import Path
 
@@ -33,25 +33,24 @@ LEG = 50            # the legs, square
 CH_H = 460          # the chamber (Q157)
 BED_XY = (250, 210)  # the printer's bed
 # placed, not designed
-OVER = 20           # the frame's rails over the top's and the floor's edges, where the seal presses
+OVER = 20           # the frame's rails over the top's and the floor's edges, where the seal presses (50 there: Q296)
 MOD = (225, 205)    # a module: along the wall, tall; face down on the bed
 COLS = (LEG, LEG + MOD[0])        # the modules' columns, from the front
 ROWS = (25, 25 + MOD[1])          # the modules' rows, from the floor
 SKIN = 3
 DEPTH = {"hepa": 50, "carbon": 90}  # the right column's two modules, deep
 SLOT = (49, 150)                  # a Mijia cartridge standing: wide, tall; four slots across the module
-FITTED = 2
+FITTED = 4
 BED_Z, BED_D, FLOSS_Z = 168, 40, 150   # in the carbon module: the bed's floor and depth, the floss's frame
 FAN_Z, DELTA = 100, (40, 20)
 FANS_Y = (COLS[1] + 25, COLS[1] + 75)
 OUTLET = (COLS[1] + 10, COLS[1] + 125, 35, 80)
 SENSORS = (COLS[1] + 20, COLS[1] + 110, 88, 100)
-MAKEUP = (COLS[1] + 172, COLS[1] + 218, 35, 125)
 
 WOOD, WOOD_EDGE = "#e6d3b1", "#8a6d3b"
 FRAME_C, MOD_C, SEAL = "#f2b98a", "#fde0c5", "#2d7d46"
 HEPA_C, CARBON_C, FLOSS_C, FAN_C = "#fff3b0", "#555555", "#e8e8e8", "#9ecae1"
-VENT_C, MAKEUP_C, ELEC_C = "#f5d0cf", "#c7e9c0", "#e5dcf2"
+VENT_C, ELEC_C = "#f5d0cf", "#e5dcf2"
 
 
 def arrows(ax, origin, a, b, size=60):
@@ -110,9 +109,9 @@ for i in range(4):
     box(wall, ys, z_slot, SLOT[0], SLOT[1], HEPA_C if fitted else "white", ec="#9a6a00", ls="-" if fitted else "--")
     label(wall, ys + SLOT[0] / 2, z_slot + SLOT[1] / 2, "Mijia" if fitted else "blank", rotation=90,
           color="#9a6a00", fontsize=8)
-label(wall, y0 + MOD[0] / 2, ROWS[1] + 12, "the scrubber's HEPA: four slots, two fitted [D297]", color="#9a6a00",
+label(wall, y0 + MOD[0] / 2, ROWS[1] + 12, "the scrubber's HEPA: four Mijia cartridges", color="#9a6a00",
       fontsize=7.5)
-# bottom right: the carbon, its dust filter, the Deltas, the clean air out, the sensors, the makeup air
+# bottom right: the carbon, its dust filter, the Deltas, the sensors, the clean air out
 box(wall, y0 + 8, BED_Z, MOD[0] - 16, BED_D, "none", ec=CARBON_C, ls="--")
 label(wall, y0 + MOD[0] / 2, BED_Z + BED_D / 2, "carbon, lying flat, behind the skin", color=CARBON_C, fontsize=7.5)
 box(wall, y0 + 8, FLOSS_Z, MOD[0] - 16, 8, FLOSS_C, ec="#777", ls="--")
@@ -128,13 +127,10 @@ box(wall, y_a, z_a, y_b - y_a, z_b - z_a, "white", ec="tab:blue")
 for y in range(int(y_a) + 12, int(y_b), 16):
     wall.plot([y, y + 7], [z_a + 6, z_b - 6], color="tab:blue", lw=0.8)
 label(wall, (y_a + y_b) / 2, z_a - 17, "the clean air out, across the floor", color="tab:blue", fontsize=7.5)
-y_a, y_b, z_a, z_b = MAKEUP
-box(wall, y_a, z_a, y_b - y_a, z_b - z_a, MAKEUP_C, ec=SEAL)
-label(wall, (y_a + y_b) / 2, (z_a + z_b) / 2, "[F]\nmakeup\nair in,\nat the\nEinsy", color=SEAL, fontsize=7)
-# bottom left: still to choose
+# bottom left: the electronics
 y0, z0 = COLS[0], ROWS[0]
 box(wall, y0 + 25, z0 + 30, 175, 140, ELEC_C, ec="#6a51a3", ls="--")
-label(wall, y0 + 112, z0 + 100, "[D298] the electronics:\nthe SuperMini, the USB-C\ntrigger, the fans' and\nsensors' connectors\n- or filler",
+label(wall, y0 + 112, z0 + 100, "the electronics:\nthe SuperMini, the USB-C\ntrigger, the fans' and\nsensors' connectors",
       color="#6a51a3", fontsize=7.5)
 # the modules' size against the bed
 dim(wall, (COLS[0], ROWS[1] + MOD[1] + 6), (COLS[1], ROWS[1] + MOD[1] + 6), "225", dy=9, fontsize=7.5)
@@ -151,7 +147,7 @@ wall.set_xlim(-150, LACK + 110)
 wall.set_ylim(-185, CH_H + TOP + 20)
 wall.set_aspect("equal")
 wall.axis("off")
-wall.set_title("The filter wall, seen from inside: the door on the left, the back and the Einsy on the right",
+wall.set_title("The filter wall, seen from inside: the door on the left, the back on the right",
                fontsize=10)
 
 # ---- cut across the right column, seen from the front: X right (the room left, the chamber right), Z up
@@ -195,7 +191,7 @@ label(cut, -cd - 12, ROWS[0] + MOD[1] / 2 - 20, "a hatch:\nthe carbon\nand the f
 label(cut, 30, CH_H - 8, "the seal on the top's edge", color=SEAL, fontsize=7, ha="left")
 label(cut, 30, -8, "and on the floor's", color=SEAL, fontsize=7, ha="left")
 dim(cut, (-hd, CH_H + TOP + 20), (0, CH_H + TOP + 20), f"{hd}", dy=12, fontsize=7.5)
-dim(cut, (-cd, -TOP - 22), (0, -TOP - 22), f"{cd}: the carbon module, deeper [D297]", dy=-15, fontsize=7.5)
+dim(cut, (-cd, -TOP - 22), (0, -TOP - 22), f"{cd}: the carbon module, deeper", dy=-15, fontsize=7.5)
 label(cut, 165, 355, "the chamber", fontsize=9, color="#555")
 label(cut, -170, 330, "the room", fontsize=9, color="#555")
 arrows(cut, (-215, -150), "+X", "+Z")
