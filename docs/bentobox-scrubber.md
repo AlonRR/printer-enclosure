@@ -3,7 +3,8 @@
 > **Not to be built as drawn here** (Alon, 15 Oct 2026: D282 a). The scrubber becomes the enclosure's left wall,
 > printed as a frame and four modules: four Mijia cartridges in its HEPA module, its carbon lying flat in a 90 mm
 > module under them, for 4.2 times this box's air (D294 a, D297 b; see *Or the filter as the wall* and *The
-> filter wall in modules*). The same wall holds the extraction's vent; nothing stands on the top.
+> filter wall in modules*). The same wall holds the extraction's vent, or a purge (D300); nothing stands on the
+> top.
 > The base, the tray and the sensor sample here stop; the two Deltas, the sealed joints and the outlet sensors'
 > mounts carry over into the wall. The rest of this page is the remix as it was drawn, and the analysis the
 > wall is sized from.
@@ -1009,7 +1010,7 @@ enclosure's back, and the enclosure stands against the room's wall.
 | On the top [I] | the drybox, about 40 × 30 cm with its tubes down through the top, and the electronics beside it; they can move | Alon (T286) |
 | The makeup inlet [F] | none: the room's air comes in round the other walls' and the doors' gaps | Alon (15 Oct 2026); the Einsy is at the back left (Q290) |
 | The left sheet [K] | 490 wide × 440 tall, 3 mm: short of the top and the floor, so it never sealed; it hangs in printed hinges, 64 × 15 × 20 mm with a 3.0 mm slot that a hex knob bolt tightens (*lack hinge with tightening*) | Alon (15 Oct 2026: T293); the slot read off the hinge's model |
-| Over the top's and the floor's edges | the sheet 7 mm now; the wall may take 50 or more | Alon (15 Oct 2026: Q296) |
+| The floor's and the roof's room, inward | the sheet takes 7 mm now; the wall may take 50 or more | Alon (15 Oct 2026: Q296) |
 
 **The printed wall** (Alon, 15 Oct 2026: D287 a): the left wall, on the window's side, the shortest run for the
 extraction's flex, is replaced by a printed one that carries all three:
@@ -1066,9 +1067,9 @@ printer's gap to it no longer limits it.
   gaps of the walls/doors"*. The filter wall, sealed, is the one wall without them. The Einsy, at the back left
   (Q290), gets no stream of the room's air of its own: the chamber sat at 45 to 47 °C in ASA prints, and
   [chamber-airflow.md](chamber-airflow.md) puts its trouble at around 60 °C.
-- **Fixed, and lifts out** (Alon, 15 Oct 2026: D291 a): the frame's hinge edge carries a 3 mm tongue, so the wall
-  hangs in the hinges the sheet hangs in, locked by their knob bolts, and lifts out for the Einsy. It swaps with the
-  plexiglass door by the same token.
+- **Fixed, and lifts out** (Alon, 15 Oct 2026: D291 a): standing between the floor and the roof and between the
+  legs, it is held by its seal and a few fixings into the legs, and lifts out for the Einsy; the sheet's hinges go
+  unused. It swaps sides as it is.
 
 ### The filter wall in modules
 
@@ -1077,12 +1078,17 @@ seen from inside, *"Top right for the HEPA, bottom right for the delta and the c
 and filter, bottom left filler"*, and the sensors added. Seen from inside, the right is the back: the HEPA and the
 carbon at the back, the extraction's vent at the door's end.
 
-- **A frame and four modules.** Each module is 225 × 205 mm, to print face down on the 250 × 210 bed; the frame
-  covers the legs and the rails, and prints in pieces. The wall is 460 tall and 20 more over each of the top's and
-  the floor's edges, where the seal presses: the sheet's 440 never reached them, and 50 is there (Q296).
+- **Between the floor and the roof** (Alon, 15 Oct 2026): *"the wall should sit inside between the floor and roof"*.
+  It stands on the floor and under the roof, between the legs, its outer face at the Lack's edge and 50 mm or more
+  in (Q296: the room on the floor and the roof, inward). The TPU seal presses on the floor, the roof and the legs.
+
+- **Four modules on two rails.** Each module is 225 × 205 mm, to print face down on the 250 × 210 bed; two fill the
+  450 between the legs, and two rows the 460 from the floor to the roof with a rail of 25 on each.
+- **The carbon module is 90 deep**: 50 within the Lack and 40 standing out past its edges into the room, drawn so
+  (D301, open), or all 90 within if the printer gives the room.
 - **The right column is one airway.** The HEPA module empties into the carbon module through a gasketed port, with no
   rail across it. Everything that crosses a joint (that port, the fans' and sensors' wires) is
-  sealed, and so is every joint of the frame, where the seal round the edge would break.
+  sealed, and so are the joints between the modules, where the seal round the edge would break.
 - **The carbon-dust filter**: a sheet of floss under the carbon on a frame of its own, changed on its own, as the
   BentoBox's dust section was; the sizing model counts it.
 - **The sensors**: the SPS30 and the SGP41 in the clean air after the fans, in the carbon module. The chamber's own
@@ -1103,14 +1109,21 @@ carbon at the back, the extraction's vent at the door's end.
 - **Four cartridges and a 90 mm carbon module** (Alon, 15 Oct 2026: D297 b, *"since it hasn't been ordered yet"*):
   the HEPA module takes the four standing side by side, 49 mm wide each, for 3.03 L/s, 4.2 times today's, and 3.5
   times at an H13-like grade. The bed is 42 mm deep across 84 × 219 mm, about 770 cm³ and 350 g of the pellets.
-  With the extraction's vent, drawn round one more, the wall takes five cartridges.
+  With the extraction's own filter, drawn round one more, the wall takes five cartridges; as one unit, four.
+- **One filter unit** (Alon, 15 Oct 2026, proposed: D300): no filter of the extraction's own; a purge on the clean
+  side, after the fans, sends a little of the cleaned air out the 100 mm duct to the window. Either the JUMPEAK
+  pulls through a small valve, or *"double the deltas. with a servo to control the outflow"*: four Deltas push,
+  and a servo's damper sets how much goes out, and shuts it. What leaves was cleaned already, so the purge holds
+  the chamber under the room's pressure and cleans nothing more. Four Deltas give 3.79 L/s, 5.3 times today's
+  (4.2 at an H13-like grade), about what the two units gave together (4.2 times and the extraction's 1): the bed
+  then 53 mm deep, about 970 cm³ and 440 g. The top left module is then free: filler, or a window to see in.
 - **The bottom left is the electronics' bay** (D298 a): the SuperMini, the USB-C trigger and the fans' and
-  sensors' connectors, their wires sealed where they cross into the carbon module.
+  sensors' connectors, and the servo's, their wires sealed where they cross into the carbon module.
 
 Drawn by [`scripts/figures/filter-wall.py`](../scripts/figures/filter-wall.py): the Lack, the chamber and the modules'
 size to scale; what is in them placed, not designed.
 
-![The filter wall as a frame and four modules, seen from inside. Top left, the extraction's vent with its own filter and a 100 mm collar outside. Top right, the scrubber's HEPA: four Mijia cartridges standing side by side. Bottom right, behind the skin, the carbon lying flat, the carbon-dust floss on its own frame under it, the two Deltas, the SPS30 and SGP41 in the clean air, and the outlet louvre low. Bottom left, the electronics. Each module 225 by 205 mm; the frame over the legs and 20 mm over the top's and the floor's edges, a TPU seal round it. Cut across the right column: the HEPA module 50 mm deep over the carbon module 90 mm deep, joined by a gasketed port; the plume drawn in under the top, down through the carbon, the floss and a Delta, past the sensors and out low across the floor; a hatch outside for the carbon and the floss](diagrams/filter-wall/layout.png)
+![The filter wall as one unit, seen from inside: it stands on the floor and under the roof, between the legs, four modules of 225 by 205 mm on rails, a TPU seal round it. Top left, free: filler or a window. Top right, four Mijia cartridges standing side by side. Bottom right, behind the skin, the carbon lying flat with the carbon-dust floss under it, four Deltas, the SPS30 and SGP41 in the clean air, the outlet louvre low, and the purge: a servo's damper and a 100 mm collar out to the window. Bottom left, the electronics. Cut across the right column: the HEPA module 50 mm deep within the Lack's edge over the carbon module 90 mm deep, 40 of it out past the edge, joined by a gasketed port; the plume drawn in under the roof, down through the carbon, the floss and the Deltas; most of it back in low past the sensors, a little out through the purge](diagrams/filter-wall/layout.png)
 
 ## How long the carbon lasts
 

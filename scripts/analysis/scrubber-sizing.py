@@ -112,6 +112,11 @@ def deltas(q):
     return one_delta(q / 2)
 
 
+def four_deltas(q):
+    """Four Deltas side by side (Alon, 15 Oct 2026: D300): each takes a quarter, at the same pressure."""
+    return one_delta(q / 4)
+
+
 def deltas_line(q):
     """cfd.py's straight line between the same ends, for comparison."""
     return cfd.FAN["p_max"] * (1 - q / (2 * cfd.FAN["q_max"]))
@@ -211,6 +216,17 @@ def show_candidates():
         cells.append(f"{q_line * 1000:>5.2f} ({q_line / Q_NOW:>3.1f} x)")
         print(f"{name:>46} {face * 1e4:>5.0f} cm2 {pleat:>4} mm " + " ".join(f"{c:>17}" for c in cells))
     print(f"no face lets the two Deltas past {2 * cfd.FAN['q_max'] * 1000:.1f} L/s, their flow with nothing in the way")
+    print("\nfour Deltas (D300) through the filter wall's four cartridges, over each depth of carbon module:")
+    for depth in (50, 70, 90):
+        bed = (depth - 6) / 1000 * 0.219
+        cells = []
+        for grade in (1.0, 5 / 3):
+            q = flow_through(4 * 0.150 * 0.049, 15, grade, four_deltas, bed)
+            cells.append(f"{q * 1000:>5.2f} ({q / Q_NOW:>3.1f} x) {four_deltas(q):>3.0f} Pa")
+        name = f"four Mijia, four Deltas, a {depth} mm module"
+        q = flow_through(4 * 0.150 * 0.049, 15, 1.0, four_deltas, bed)
+        print(f"{name:>46} {4 * 0.150 * 0.049 * 1e4:>5.0f} cm2 {15:>4} mm " + " ".join(f"{c:>17}" for c in cells)
+              + f"   bed at mid grade {q * EBCT / bed * 1000:.0f} mm, {q * EBCT * 1e6:.0f} cm3")
 
 
 def check():

@@ -341,6 +341,10 @@ Read from their pages on 15 Oct 2026; what each says of itself is relayed, not t
   so it would want aftermarket ones of a stated grade, or the bought Mijia cartridge in a box drawn round
   it.
 
+> **Under review** (Alon, 15 Oct 2026: D300): one filter unit instead - the printed filter wall, with a purge on its
+> clean side to the duct, by the JUMPEAK through a small valve or by four Deltas and a servo's damper
+> ([bentobox-scrubber.md](bentobox-scrubber.md#the-filter-wall-in-modules)).
+
 **Decided** (Alon, 15 Oct 2026: D278 b): a box of this build's own, in FlyBy Tom's layout through the
 Lack's top, drawn round the bought Mijia cartridge, with a bed of the owned pellets and Goller's flaps.
 FlyBy Tom's v2 files, measured (downloaded 15 Oct 2026, A279; not kept in this repository - they are
