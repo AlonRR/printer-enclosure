@@ -1158,9 +1158,11 @@ time):
 across the whole bottom row.
 
 - **The panel is not chosen yet.** Wanted: at most 430 × 255 × 45 mm, its face as large as fits, a rigid frame or a
-  flat edge for the gasket, H13, or EPA12 if that is what is sold here. Leads, not checked: a 400 × 220 × 30 mm H13
-  panel sold as a replacement for Sharp's FZ-D40HFE, though another listing puts that part at about 237 × 451 ×
-  43; IKEA's STARKVIND particle filter, 37 × 29 × 4 cm and EPA12, 35 mm too tall unless the rows re-split.
+  flat edge for the gasket, H13, or EPA12 if that is what is sold here. What is sold at this size (the inventory
+  session's search, 15 Oct 2026) is the size of Sharp's FZ-D40HFE: 400 × 220 × 27 to 28 mm, most in a rigid frame,
+  their grade mostly unstated; the 237 × 451 × 43 once quoted for it is its packaging. IKEA's STARKVIND particle
+  filter, 370 × 290 × 40 and EPA12, is 35 mm too tall unless the rows re-split. Measure the panel bought before its
+  frame is printed. At 28 mm it leaves a 19 mm plenum behind it in the 50 mm wall.
 - **The rows**: the panel's 245 tall, the carbon's 165, on rails of 25 on the floor and under the roof. The
   panel's frame prints in pieces, and a hatch outside changes the panel.
 - **The carbon row need not stand out into the room.** At the panel's H13 grade
