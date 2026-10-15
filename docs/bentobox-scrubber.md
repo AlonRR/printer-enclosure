@@ -1,5 +1,13 @@
 # The other scrubber — BentoBox v2.0, with the C-MAG
 
+> **Not to be built as drawn here** (Alon, 15 Oct 2026: D282 a). The scrubber becomes a chimney on the Lack's
+> top, outside the chamber: two of the bought Mijia cartridges standing as its two long walls, for about four
+> times this box's air with the extraction's (D280 a, D283 a; see *Four times the air* and *Where it stands*).
+> Its clean air returns down a back corner, its duct and the extraction's vent built into part of the wall, to
+> spend less heat and room. The base, the tray and the sensor sample here stop; the two Deltas' fan section, the
+> sealed joints and the outlet sensors' mounts carry over into the new box. The rest of this page is the remix as
+> it was drawn, and the analysis the chimney is sized from.
+
 ThrutheFrame's [BentoBox v2.0](https://www.printables.com/model/272525) is the other filter weighed for the
 chamber, against the [LunchBox](../archive/lunchbox/docs/lunchbox-scrubber.md), now archived. It is a stack of parts, each held to the next by four
 magnets and a tongue in a groove. Air comes in through the cover on top and passes a HEPA cartridge. Then it
@@ -627,7 +635,8 @@ one of them on two plates, `samples_asa` and `samples_tpu` in [`parts/samples.sc
   all the way in, the stop behind the board taking the push. Slide a nut into each of the two slots in the base's
   piece, from the end face, set it on the tray's piece and drive the two M3 × 12 up from below: the pieces should
   pull together, the heads ending flush, and the base's flat bottom closing the socket's notch.
-- **The sensor sample** (Alon, 14 Oct 2026: D264) - the base's and the tray's +Y end, from 2 mm in front of the
+- **The sensor sample** (Alon, 14 Oct 2026: D264) - **stopped, not to print** (15 Oct 2026: D282 a; the base it
+  tries is not to be built). The base's and the tray's +Y end, from 2 mm in front of the
   SPS30's pocket to the end face, the base cut 2 mm over the SGP41's recess and 2 mm behind the pocket - the back
   wall and its fan post off, and the tray's piece keeps only 2 mm of the bay's floor round its walls, as only the
   area next to the sensors is tried (Alon, 14 Oct 2026): 1 h 47 m and 17 g, where the base and the tray whole are
