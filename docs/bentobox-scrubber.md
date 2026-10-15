@@ -850,7 +850,7 @@ measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](.
   *The bottom*).
 - **Checked on a finer mesh** (1 mm instead of 2, with the section): the air through the filters comes out
   3.5 % lower, **0.65 L/s** instead of 0.68 - the lumped model's figure - and the chamber goes through it
-  every 4.6 minutes. The cover, the HEPA's ledge, the housing's floor, the sheet and the fan case's floor
+  every 3.6 minutes. The cover, the HEPA's ledge, the housing's floor, the sheet and the fan case's floor
   now carry the same air to within 0.05 %. The other two cases are likely high by about as much, so read
   the table's flows as about 3 % generous; its comparisons between them stand.
 - **None of its own air comes back in.** The duct throws the fans' air out along the floor, and the inlet
@@ -860,6 +860,32 @@ measurement. How it is built and every assumption in it: [`sim/bentobox-cfd/`](.
   ![The fans' air, followed: it runs out along the floor and none of it rises to the cover](diagrams/bentobox/cfd/tracer.png)
 
 ![Paths from the cover: down through the HEPA and the C-MAG, round the fans' hubs, out of the duct](diagrams/bentobox/cfd/streamlines.png)
+
+### Against a print's emissions
+
+A scrubber in a closed chamber does not get ahead of a print (Alon asked, 15 Oct 2026). The chamber's air rises until
+the box takes out as much as the print gives off, and stays there: that level is the emission rate over the clean
+air the box delivers, reached in three or four turnovers, about ten minutes.
+
+- **Particles.** ASA gave off the most of eight filaments in one chamber study, 1.7 × 10¹¹ particles a minute from
+  5.6 to 560 nm, and ABS 4.7 × 10¹⁰ ([Gu et al., Environment International 123, 2019](https://doi.org/10.1016/j.envint.2018.12.014)).
+  At 0.72 L/s through HEPA that stops them, the chamber holds about 4 × 10⁶ per cm³ while ASA prints; a room's air
+  has 10³ to 10⁴. That is an upper bound, as at those numbers the particles also settle on the walls and on each
+  other. Holding the chamber at 10⁵ would take forty times this box's air, more than any filter this size moves.
+- **Gases.** At 1.5 mg of VOCs an hour (see *How long the carbon lasts*; the same study measured up to 2.4 mg/h,
+  from an ABS), the chamber holds about 0.6 mg/m³ if the carbon takes all it sees, more for what it lets through.
+- **So the room is kept clean by containment, not by the filter** (see [chamber-airflow.md](chamber-airflow.md)):
+  the extraction holds the chamber below the room's pressure, so its leaks run inward, and the door stays shut
+  until the box has cleared the chamber - 99 % in about 15 minutes after the print, 99.9 % in about 22, at 0.72 L/s.
+  Opened straight away, the chamber's 139 L would add about 2 × 10⁴ particles per cm³ to a 30 m³ room.
+- **What lowers the level during a print**, each in proportion: the emission rate - ASA at the low end of its
+  temperature range, since the rate climbs steeply with the nozzle's temperature
+  ([Stabile et al., Indoor Air 27, 2017](https://doi.org/10.1111/ina.12310)); the extraction's flow, which
+  removes as surely as a perfect filter, at the cost of the chamber's heat; and this box's flow, which its HEPA's
+  area sets - the bought cartridge holds about a fifth more paper, so expect little more than that.
+- **None of it is measured yet.** The chamber's air-quality monitor has logged no particle or VOC readings (to 15 Oct
+  2026), and an SPS30 counts from 0.3 µm, so it sees few of a print's particles, which peak at 10 to 30 nm
+  (Stabile et al.).
 
 ## How long the carbon lasts
 
