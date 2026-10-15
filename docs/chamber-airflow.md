@@ -389,10 +389,10 @@ condition it exists for.
 2. **Measure the closed chamber temperature**, against the open-configuration baseline already
    recorded (31 °C ± 2, door open, 3 Sep 2026). This is the number that decides whether a chamber
    heater is ever needed — answer it before buying one.
-3. **Build the SCRUBBER** — ⚠️ **since 15 Oct 2026 a chimney on the Lack's top, not the BentoBox remix inside**
-   (D282 a, D283 a): two bought Mijia cartridges standing as its long walls, the carbon pellets, the Deltas'
-   fan section and the remix's sealed joints, its intake and return in a printed left wall with the extraction's vent
-   ([bentobox-scrubber.md](bentobox-scrubber.md#where-it-stands-outside-the-chamber)). Not drawn yet.
+3. **Build the SCRUBBER** — ⚠️ **since 15 Oct 2026 the enclosure's printed left wall, not the BentoBox remix inside**
+   (D282 a, D294 a): about 50 mm thick, two bought Mijia cartridges in its inner face, the carbon pellets lying
+   across its channel, the Deltas and the remix's sealed joints, and the extraction's vent in the same wall
+   ([bentobox-scrubber.md](bentobox-scrubber.md#or-the-filter-as-the-wall)). Not drawn yet.
    It was the BentoBox remix (the
    Auto's base and fan section, the carbon-dust section, the carbon housing with the C-MAG, the HEPA holder
    and the paper's frame, the cover, the sealed joints' bead rings),

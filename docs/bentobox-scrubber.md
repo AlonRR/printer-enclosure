@@ -1,12 +1,12 @@
 # The other scrubber — BentoBox v2.0, with the C-MAG
 
-> **Not to be built as drawn here** (Alon, 15 Oct 2026: D282 a). The scrubber becomes a chimney on the Lack's
-> top, outside the chamber: two of the bought Mijia cartridges standing as its two long walls, for about four
-> times this box's air with the extraction's (D280 a, D283 a; see *Four times the air* and *Where it stands*).
-> A printed left wall carries its intake, its return and the extraction's vent, so the top is not drilled and
-> less heat and room are spent. The base, the tray and the sensor sample here stop; the two Deltas' fan section, the
-> sealed joints and the outlet sensors' mounts carry over into the new box. The rest of this page is the remix as
-> it was drawn, and the analysis the chimney is sized from.
+> **Not to be built as drawn here** (Alon, 15 Oct 2026: D282 a). The scrubber becomes the enclosure's left wall,
+> printed and about 50 mm thick: two of the bought Mijia cartridges in its inner face, its carbon lying across
+> its channel, for about four times this box's air with the extraction's (D280 a, D294 a; see *Four times the
+> air* and *Or the filter as the wall*). The same wall holds the extraction's vent; nothing stands on the top.
+> The base, the tray and the sensor sample here stop; the two Deltas, the sealed joints and the outlet sensors'
+> mounts carry over into the wall. The rest of this page is the remix as it was drawn, and the analysis the
+> wall is sized from.
 
 ThrutheFrame's [BentoBox v2.0](https://www.printables.com/model/272525) is the other filter weighed for the
 chamber, against the [LunchBox](../archive/lunchbox/docs/lunchbox-scrubber.md), now archived. It is a stack of parts, each held to the next by four
@@ -989,6 +989,9 @@ chimney, with the extraction's vent and duct in a back corner.
 - **The Lack's top need not be drilled**: the chimney's intake and return, and the extraction, can all run in a
   printed wall (D287 a, below).
 
+> **Superseded** (Alon, 15 Oct 2026: D294 a): the filter is the wall itself, with no chimney; see *Or the filter
+> as the wall*. The chimney's reasoning stays below, since the wall's seal, its swap and the measures carry over.
+
 **Chosen** (Alon, 15 Oct 2026: D283 a): on top, as a chimney. And in his words, *"we can have the vent replace
 part of a wall"*, to limit the heat lost and the room it takes: the return duct and the extraction's vent are
 both built into a wall (Q285). **A side wall, not the back**: *"No clearance behind"*; the printer reaches the
@@ -1035,7 +1038,9 @@ are what is still open.
 ### Or the filter as the wall
 
 Alon asked, 15 Oct 2026: *"What if the filter was the wall"*: a thick wall, but no chimney, nothing on the top,
-and nothing hard to move, since it is the wall. Weighed here; not chosen yet (D294).
+and nothing hard to move, since it is the wall. **Chosen** (Alon, 15 Oct 2026: D294 a), and it stands out into
+the room: *"nothing in the way there is a lot of room"* (Q295). Its inner face stays where the sheet is, so the
+printer's gap to it no longer limits it.
 
 - **The same air.** The Deltas set the wall's channel at about 44 mm inside, some 50 over its skins. The carbon
   lies across the channel between the legs, 44 × 450 mm: 198 cm², the 200 the candidates are sized with. Two
@@ -1049,7 +1054,7 @@ and nothing hard to move, since it is the wall. Weighed here; not chosen yet (D2
 - **Heat**: with no chimney outside, its 20 to 30 W are saved. The channel's outer skin, the chamber's air moving
   along it, loses about what the sheet it replaces did; less with a second skin and still air outside it.
 - **Its costs**:
-  - **About 50 mm thick**: out into the room on the window's side, or in toward the printer's 5 to 8 cm [H].
+  - **About 50 mm thick**, out into the room on the window's side, where there is room (Q295).
   - **About 2 kg** with its two skins, the carbon and the fans, to hang on the legs and the floor's edge.
   - **The bed must lie flat** across the channel, the air down through it: a standing slab of pellets settles,
     and opens a gap at its top that the air takes instead.
